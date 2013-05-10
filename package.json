@@ -1,0 +1,26 @@
+{
+  "name": "sails-waterline",
+  "description": "An ORM for Node.js and the Sails framework",
+  "version": "0.0.0",
+  "author": "",
+  "contributors": [
+
+  ],
+  "dependencies": {
+
+  },
+  "devDependencies": {
+
+  },
+  "keywords": [
+
+  ],
+  "repository": "",
+  "main": "",
+  "scripts": {
+
+  },
+  "engines": {
+    "node": "*"
+  }
+}
