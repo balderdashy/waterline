@@ -7,10 +7,10 @@
 
   ],
   "dependencies": {
-
+    "underscore": "1.4.4"
   },
   "devDependencies": {
-
+    "mocha": "1.9.x"
   },
   "keywords": [
 
@@ -18,7 +18,7 @@
   "repository": "",
   "main": "",
   "scripts": {
-
+    "test": "mocha test/**/**"
   },
   "engines": {
     "node": "*"
