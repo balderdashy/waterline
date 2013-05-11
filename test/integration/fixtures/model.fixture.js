@@ -36,6 +36,10 @@ module.exports = Waterline.Model.extend({
     phone_number: {
       type: 'string',
       defaultsTo: '555-555-555'
+    },
+
+    full_name: function() {
+      return this.first_name + ' ' + this.last_name;
     }
   }
 
