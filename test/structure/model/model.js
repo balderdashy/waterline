@@ -1,4 +1,4 @@
-var Model = require('../../../lib/model'),
+var Model = require('../../../lib/waterline/model'),
     assert = require('assert');
 
 describe('Model', function() {

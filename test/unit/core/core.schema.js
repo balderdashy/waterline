@@ -1,4 +1,4 @@
-var Core = require('../../../lib/core'),
+var Core = require('../../../lib/waterline/core'),
     assert = require('assert');
 
 describe('Core Schema', function() {
