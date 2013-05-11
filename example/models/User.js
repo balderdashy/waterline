@@ -51,14 +51,14 @@ var User = Waterline.Model.extend({
    *
    * Run before and after various stages:
    *
-   * before_validation
-   * after_validation
-   * before_save
-   * before_create
-   * after_create
-   * after_save
-   * before_destroy
-   * after_destroy
+   * beforeValidation
+   * afterValidation
+   * beforeSave
+   * afterSave
+   * beforeCreate
+   * afterCreate
+   * beforeDestroy
+   * afterDestroy
    */
 
   beforeCreate: function(cb) {
