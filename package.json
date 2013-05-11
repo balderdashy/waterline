@@ -16,7 +16,7 @@
 
   ],
   "repository": "",
-  "main": "",
+  "main": "./lib/waterline",
   "scripts": {
     "test": "mocha test/**/**"
   },
