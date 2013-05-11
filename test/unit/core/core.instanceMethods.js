@@ -1,7 +1,7 @@
 var Core = require('../../../lib/waterline/core'),
     assert = require('assert');
 
-describe('Core Schema', function() {
+describe('Core', function() {
 
   describe('with instance methods on attributes', function() {
     var person;
