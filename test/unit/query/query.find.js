@@ -22,20 +22,13 @@ describe('Collection Query', function() {
       });
 
       // Fixture Adapter Def
-      var adapterDef = { find: function(criteria, cb) { return cb(null, [{name: 'Foo Bar'}]); }};
+      var adapterDef = { find: function(col, criteria, cb) { return cb(null, [{name: 'Foo Bar'}]); }};
       query = new Model({ adapters: { foo: adapterDef }});
-    });
-
-    it('should return an array', function(done) {
-      query.find({}, function(err, values) {
-        assert(Array.isArray(values));
-        done();
-      });
     });
 
     it('should return an instance of Model', function(done) {
       query.find({}, function(err, values) {
-        assert(typeof values[0].doSomething === 'function');
+        assert(typeof values.doSomething === 'function');
         done();
       });
     });

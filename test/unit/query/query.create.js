@@ -22,7 +22,7 @@ describe('Collection Query', function() {
       });
 
       // Fixture Adapter Def
-      var adapterDef = { create: function(values, cb) { return cb(null, values); }};
+      var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
       query = new Model({ adapters: { foo: adapterDef }});
     });
 

@@ -22,7 +22,7 @@ describe('Collection Query', function() {
       });
 
       // Fixture Adapter Def
-      var adapterDef = { findOrCreateEach: function(criteria, valuesList, cb) { return cb(null, valuesList); }};
+      var adapterDef = { findOrCreateEach: function(col, criteria, valuesList, cb) { return cb(null, valuesList); }};
       query = new Model({ adapters: { foo: adapterDef }});
     });
 
