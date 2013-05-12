@@ -4,27 +4,29 @@ var Query = require('../../../lib/waterline/query'),
 describe('Query', function() {
 
   describe('instantiation', function() {
-    var adapterDef;
+    var Model;
 
     before(function() {
 
       // Fixture Adapter Def
       // Has a foo method that should be mixed in with
       // the default adapter methods
-      adapterDef = {
-        foo: function() {}
-      };
+
+      Model = Query.extend({
+        adapter: {
+          foo: function() {}
+        }
+      });
 
     });
 
     it('should normalize adapter definition', function() {
-      var query = new Query({ adapter: adapterDef });
+      var query = new Model();
       assert(typeof query._adapter.adapter.foo === 'function');
     });
 
     it('should have adapter methods attached to an _adapter object', function() {
-      var query = new Query({ adapter: adapterDef });
-      query._adapter.find();
+      var query = new Model();
       assert(typeof query._adapter.find === 'function');
     });
 
