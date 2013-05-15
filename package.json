@@ -1,5 +1,5 @@
 {
-  "name": "sails-waterline",
+  "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
   "version": "0.0.0",
   "author": "",
