@@ -8,10 +8,12 @@ describe('Collection', function() {
    * Collection prototype works correctly
    */
 
-  it('should allow the prototype to be extended', function() {
+  it('should allow the prototype to be extended', function(done) {
     var Person = Collection.extend({ foo: 'bar' });
-    var person = new Person();
-    assert(person.foo === 'bar');
+    new Person(function(err, person) {
+      assert(person.foo === 'bar');
+      done();
+    });
   });
 
 
@@ -27,9 +29,11 @@ describe('Collection', function() {
       });
     });
 
-    it('should have a schema', function() {
-      var person = new Person();
-      assert(person._schema.foo.type === 'bar');
+    it('should have a schema', function(done) {
+      new Person(function(err, person) {
+        assert(person._schema.foo.type === 'bar');
+        done();
+      });
     });
 
   });

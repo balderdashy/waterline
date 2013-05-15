@@ -6,7 +6,7 @@ describe('Collection Query', function() {
   describe('.createEach()', function() {
     var query;
 
-    before(function() {
+    before(function(done) {
 
       // Extend for testing purposes
       var Model = Collection.extend({
@@ -23,7 +23,11 @@ describe('Collection Query', function() {
 
       // Fixture Adapter Def
       var adapterDef = { createEach: function(col, valuesList, cb) { return cb(null, valuesList); }};
-      query = new Model({ adapters: { foo: adapterDef }});
+      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        if(err) done(err);
+        query = coll;
+        done();
+      });
     });
 
 

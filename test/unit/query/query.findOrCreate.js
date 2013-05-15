@@ -6,7 +6,7 @@ describe('Collection Query', function() {
   describe('.findOrCreate()', function() {
     var query;
 
-    before(function() {
+    before(function(done) {
 
       // Extend for testing purposes
       var Model = Collection.extend({
@@ -23,7 +23,11 @@ describe('Collection Query', function() {
 
       // Fixture Adapter Def
       var adapterDef = { findOrCreate: function(col, criteria, values, cb) { return cb(null, values); }};
-      query = new Model({ adapters: { foo: adapterDef }});
+      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        if(err) done(err);
+        query = coll;
+        done();
+      });
     });
 
     it('should set default values', function(done) {

@@ -1,14 +1,22 @@
 var Model = require('./fixtures/model.fixture'),
-    assert = require('assert'),
-    User = new Model();
+    assert = require('assert');
 
 describe('Waterline Collection', function() {
+  var User;
+
+  before(function(done) {
+    new Model(function(err, collection) {
+      if(err) return done(err);
+      User = collection;
+      done();
+    });
+  });
 
   describe('schema', function() {
 
     it('should create an internal schema from the attributes', function() {
       assert(typeof User._schema === 'object');
-      assert(Object.keys(User._schema).length === 5);
+      assert(Object.keys(User._schema).length === 8); // account for auto created keys (pk, timestamps)
     });
 
     // TO-DO

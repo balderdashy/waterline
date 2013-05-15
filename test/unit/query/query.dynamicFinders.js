@@ -6,7 +6,7 @@ describe('Collection Query', function() {
   describe('.find()', function() {
     var query;
 
-    before(function() {
+    before(function(done) {
 
       // Extend for testing purposes
       var Model = Collection.extend({
@@ -16,7 +16,11 @@ describe('Collection Query', function() {
         }
       });
 
-      query = new Model();
+      new Model(function(err, coll) {
+        if(err) done(err);
+        query = coll;
+        done();
+      });
     });
 
     it('should add dynamic finder functions', function() {
