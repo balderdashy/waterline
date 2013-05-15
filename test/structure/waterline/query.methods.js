@@ -30,6 +30,14 @@ describe('Collection', function() {
         assert(typeof person.findAll === 'function');
       });
 
+      it('should have .where() method', function() {
+        assert(typeof person.where === 'function');
+      });
+
+      it('should have .select() method', function() {
+        assert(typeof person.select === 'function');
+      });
+
       it('should have .findLike() method', function() {
         assert(typeof person.findLike === 'function');
       });
@@ -80,8 +88,24 @@ describe('Collection', function() {
         assert(typeof person.update === 'function');
       });
 
+      it('should have .updateWhere() method', function() {
+        assert(typeof person.updateWhere === 'function');
+      });
+
+      it('should have .updateAll() method', function() {
+        assert(typeof person.updateAll === 'function');
+      });
+
       it('should have .destroy() method', function() {
         assert(typeof person.destroy === 'function');
+      });
+
+      it('should have .destroyWhere() method', function() {
+        assert(typeof person.destroyWhere === 'function');
+      });
+
+      it('should have .destroyAll() method', function() {
+        assert(typeof person.destroyAll === 'function');
       });
 
       it('should have .count() method', function() {
