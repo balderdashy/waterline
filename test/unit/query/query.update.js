@@ -30,9 +30,9 @@ describe('Collection Query', function() {
       });
     });
 
-    it('should change the updated_at timestamp', function(done) {
+    it('should change the updatedAt timestamp', function(done) {
       query.update({}, { name: 'foo' }, function(err, status) {
-        assert(status.updated_at);
+        assert(status.updatedAt);
         done();
       });
     });

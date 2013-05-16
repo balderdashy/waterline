@@ -56,10 +56,10 @@ describe('Collection Query', function() {
 
     it('should add timestamp values to each record', function(done) {
       query.createEach([{},{}], function(err, values) {
-        assert(values[0].created_at);
-        assert(values[0].updated_at);
-        assert(values[0].created_at);
-        assert(values[1].updated_at);
+        assert(values[0].createdAt);
+        assert(values[0].updatedAt);
+        assert(values[0].createdAt);
+        assert(values[1].updatedAt);
         done();
       });
     });

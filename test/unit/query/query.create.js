@@ -41,8 +41,8 @@ describe('Collection Query', function() {
 
       it('should add timestamps', function(done) {
         query.create({}, function(err, status) {
-          assert(status.created_at);
-          assert(status.updated_at);
+          assert(status.createdAt);
+          assert(status.updatedAt);
           done();
         });
       });
@@ -96,8 +96,8 @@ describe('Collection Query', function() {
 
       it('should NOT add timestamps', function(done) {
         query.create({}, function(err, status) {
-          assert(!status.created_at);
-          assert(!status.updated_at);
+          assert(!status.createdAt);
+          assert(!status.updatedAt);
           done();
         });
       });
