@@ -1,7 +1,7 @@
 var Collection = require('../../../lib/waterline/collection'),
     assert = require('assert');
 
-describe('.beforeSave()', function() {
+describe('.beforeCreate()', function() {
   var person;
 
   before(function(done) {
@@ -12,18 +12,14 @@ describe('.beforeSave()', function() {
         name: 'string'
       },
 
-      beforeSave: function(cb) {
+      beforeCreate: function(cb) {
         this.name = this.name + ' updated';
         cb();
       }
     });
 
     // Fixture Adapter Def
-    var adapterDef = {
-      find: function(col, criteria, cb) { return cb(null, null); },
-      create: function(col, values, cb) { return cb(null, values); }
-    };
-
+    var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
     new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
       if(err) done(err);
       person = coll;
@@ -32,15 +28,16 @@ describe('.beforeSave()', function() {
   });
 
   /**
-   * findOrCreate
+   * CreateEach
    */
 
-  describe('.findOrCreate()', function() {
+  describe('.createEach()', function() {
 
-    it('should run beforeSave and mutate values', function(done) {
-      person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
+    it('should run beforeCreate and mutate values', function(done) {
+      person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
         assert(!err);
-        assert(user.name === 'test updated');
+        assert(users[0].name === 'test updated');
+        assert(users[1].name === 'test2 updated');
         done();
       });
     });

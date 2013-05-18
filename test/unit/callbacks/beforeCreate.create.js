@@ -1,7 +1,7 @@
 var Collection = require('../../../lib/waterline/collection'),
     assert = require('assert');
 
-describe('.beforeSave()', function() {
+describe('.beforeCreate()', function() {
   var person;
 
   before(function(done) {
@@ -12,7 +12,7 @@ describe('.beforeSave()', function() {
         name: 'string'
       },
 
-      beforeSave: function(cb) {
+      beforeCreate: function(cb) {
         this.name = this.name + ' updated';
         cb();
       }
@@ -33,7 +33,7 @@ describe('.beforeSave()', function() {
 
   describe('.create()', function() {
 
-    it('should run beforeSave and mutate values', function(done) {
+    it('should run beforeCreate and mutate values', function(done) {
       person.create({ name: 'test' }, function(err, user) {
         assert(!err);
         assert(user.name === 'test updated');
