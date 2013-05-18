@@ -3,7 +3,12 @@ var Core = require('../../../lib/waterline/core'),
 
 describe('Core Lifecycle Callbacks', function() {
 
-  describe('mapping internal object', function() {
+  /**
+   * Automatically build an internal Callbacks object
+   * that uses no-op functions.
+   */
+
+  describe('default callbacks object', function() {
     var person;
 
     before(function() {
@@ -12,8 +17,6 @@ describe('Core Lifecycle Callbacks', function() {
           name: 'string'
         },
 
-        beforeCreate: function() {},
-        afterCreate: function() {},
         invalidState: function() {}
       });
 
@@ -21,14 +24,153 @@ describe('Core Lifecycle Callbacks', function() {
     });
 
     it('should build a callbacks object', function() {
-      assert(Object.keys(person._callbacks).length === 2);
-      assert(typeof person._callbacks.beforeCreate === 'function');
-      assert(typeof person._callbacks.afterCreate === 'function');
+      assert(Array.isArray(person._callbacks.beforeValidation));
+      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+
+      assert(Array.isArray(person._callbacks.afterValidation));
+      assert(typeof person._callbacks.afterValidation[0] === 'function');
+
+      assert(Array.isArray(person._callbacks.beforeSave));
+      assert(typeof person._callbacks.beforeSave[0] === 'function');
+
+      assert(Array.isArray(person._callbacks.afterSave));
+      assert(typeof person._callbacks.afterSave[0] === 'function');
+
+      assert(Array.isArray(person._callbacks.beforeCreate));
+      assert(typeof person._callbacks.beforeCreate[0] === 'function');
+
+      assert(Array.isArray(person._callbacks.afterCreate));
+      assert(typeof person._callbacks.afterCreate[0] === 'function');
+
+      assert(Array.isArray(person._callbacks.beforeDestroy));
+      assert(typeof person._callbacks.beforeDestroy[0] === 'function');
+
+      assert(Array.isArray(person._callbacks.afterDestroy));
+      assert(typeof person._callbacks.afterDestroy[0] === 'function');
     });
 
     it('should ignore invalid lifecycle states', function() {
       assert(!person._callbacks.invalidState);
     });
-
   });
+
+  /**
+   * Callback states should allow an array to be used
+   * and should be able to mutate state.
+   */
+
+  describe('callback as an array', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          name: 'string',
+
+          changeState_1: function() {
+            this.name = this.name + ' changed';
+          },
+
+          changeState_2: function() {
+            this.name = this.name + ' again';
+          }
+        },
+
+        beforeValidation: ['changeState_1', 'changeState_2']
+      });
+
+      person = new Person();
+    });
+
+    it('should map functions to internal _callbacks object', function() {
+      assert(Array.isArray(person._callbacks.beforeValidation));
+      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+    });
+
+    it('should mutate values', function() {
+      var values = { name: 'Foo' };
+      person._callbacks.beforeValidation.forEach(function(key) {
+        key.call(values);
+      });
+
+      assert(values.name === 'Foo changed again');
+    });
+  });
+
+  /**
+   * Callback states should allow an string to be used
+   * and should be able to mutate state.
+   */
+
+  describe('callback as a string', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          name: 'string',
+
+          changeState_1: function() {
+            this.name = this.name + ' changed';
+          }
+        },
+
+        beforeValidation: 'changeState_1'
+      });
+
+      person = new Person();
+    });
+
+    it('should map functions to internal _callbacks object', function() {
+      assert(Array.isArray(person._callbacks.beforeValidation));
+      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+    });
+
+    it('should mutate values', function() {
+      var values = { name: 'Foo' };
+      person._callbacks.beforeValidation.forEach(function(key) {
+        key.call(values);
+      });
+
+      assert(values.name === 'Foo changed');
+    });
+  });
+
+  /**
+   * Callback states should allow a function to be used
+   * and should be able to mutate state.
+   */
+
+  describe('callback as a function', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          name: 'string'
+        },
+
+        beforeValidation: function() {
+          this.name = this.name + ' changed';
+        }
+      });
+
+      person = new Person();
+    });
+
+    it('should map functions to internal _callbacks object', function() {
+      assert(Array.isArray(person._callbacks.beforeValidation));
+      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+    });
+
+    it('should mutate values', function() {
+      var values = { name: 'Foo' };
+      person._callbacks.beforeValidation.forEach(function(key) {
+        key.call(values);
+      });
+
+      assert(values.name === 'Foo changed');
+    });
+  });
+
 });
