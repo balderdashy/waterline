@@ -22,7 +22,7 @@ describe('Collection Query', function() {
       });
 
       // Fixture Adapter Def
-      var adapterDef = { find: function(col, criteria, cb) { return cb(null, [{name: 'Foo Bar'}]); }};
+      var adapterDef = { find: function(col, criteria, cb) { return cb(null, [criteria]); }};
       new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         query = coll;
@@ -48,6 +48,28 @@ describe('Collection Query', function() {
       query.findAll({}, {}, function(err, values) {
         assert(typeof values[0].doSomething === 'function');
         done();
+      });
+    });
+
+    it('should allow a query to be built using deferreds', function(cb) {
+      query.findAll()
+      .where({ name: 'Foo Bar' })
+      .where({ id: { '>': 1 } })
+      .limit(1)
+      .skip(1)
+      .sort({ name: 0 })
+      .done(function(err, results) {
+        assert(!err);
+        assert(Array.isArray(results));
+
+        assert(Object.keys(results[0].where).length === 2);
+        assert(results[0].where.name == 'Foo Bar');
+        assert(results[0].where.id['>'] == 1);
+        assert(results[0].limit == 1);
+        assert(results[0].skip == 1);
+        assert(results[0].sort.name == 0);
+
+        cb();
       });
     });
 
