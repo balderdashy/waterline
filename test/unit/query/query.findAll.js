@@ -51,14 +51,14 @@ describe('Collection Query', function() {
       });
     });
 
-    it('should allow a query to be built using deferreds', function(cb) {
+    it('should allow a query to be built using deferreds', function(done) {
       query.findAll()
       .where({ name: 'Foo Bar' })
       .where({ id: { '>': 1 } })
       .limit(1)
       .skip(1)
       .sort({ name: 0 })
-      .done(function(err, results) {
+      .exec(function(err, results) {
         assert(!err);
         assert(Array.isArray(results));
 
@@ -69,7 +69,7 @@ describe('Collection Query', function() {
         assert(results[0].skip == 1);
         assert(results[0].sort.name == 0);
 
-        cb();
+        done();
       });
     });
 
