@@ -70,6 +70,12 @@ describe('Core Transformations', function() {
       assert(values.login);
       assert(values.login === 'foo');
     });
+
+    it('should work recursively', function() {
+      var values = transformer.serialize({ where: { user: { username: 'foo' }}});
+      assert(values.where.user.login);
+      assert(values.where.user.login === 'foo');
+    });
   });
 
   describe('unserialize', function() {
