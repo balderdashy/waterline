@@ -36,7 +36,10 @@ var User = Waterline.Model.extend({
       type: 'string',
       length: { min: 2, max: 20 },
       unique: true,
-      required: true
+      required: true,
+
+      // Custom Column Names can be used in an attributes object:
+      columnName: 'login'
     },
 
     email: {
