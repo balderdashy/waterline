@@ -24,6 +24,22 @@ describe('Collection Query', function() {
         });
       });
 
+      it('should transform criteria before sending to adapter', function(done) {
+
+        // Fixture Adapter Def
+        var adapterDef = {
+          update: function(col, criteria, values, cb) {
+            assert(criteria.where.login);
+            return cb(null, [values]);
+          }
+        };
+
+        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          if(err) done(err);
+          coll.update({ where: { name: 'foo' }}, { name: 'foo' }, done);
+        });
+      });
+
       it('should transform values before sending to adapter', function(done) {
 
         // Fixture Adapter Def
@@ -36,7 +52,7 @@ describe('Collection Query', function() {
 
         new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
-          coll.update({}, { name: 'foo' }, done);
+          coll.update({ where: { name: 'foo' }}, { name: 'foo' }, done);
         });
       });
 
