@@ -8,7 +8,8 @@ describe('Waterline Collection', function() {
   before(function(done) {
     var Model = Waterline.Model.extend({
       attributes: {},
-      adapter: 'foobar'
+      adapter: 'foobar',
+      tableName: 'tests'
     });
 
     new Model({ adapters: { foobar: adapter }}, function(err, collection) {

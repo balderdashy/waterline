@@ -8,6 +8,12 @@ var Waterline = require('waterline');
 var User = Waterline.Model.extend({
 
   /**
+   * Set Table Name to whatever you want
+   */
+
+  tableName: 'waterline_user',
+
+  /**
    * Attributes are equal to Database Columns
    * in a relational database or documents in a
    * document-oriented database.
