@@ -38,7 +38,7 @@ describe('.beforeValidation()', function() {
   describe('.findOrCreateEach()', function() {
 
     it('should run beforeValidation and mutate values', function(done) {
-      person.findOrCreateEach(['name'], [{ name: 'test' }], function(err, users) {
+      person.findOrCreateEach([{ name: 'test' }], [{ name: 'test' }], function(err, users) {
         assert(!err);
         assert(users[0].name === 'test updated');
         done();
