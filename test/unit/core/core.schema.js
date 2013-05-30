@@ -121,4 +121,28 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with autoIncrement key', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          count: {
+            autoIncrement: true
+          }
+        }
+      });
+
+      person = new Person();
+    });
+
+    it('should pass the autoIncrement down to the adapter', function() {
+      assert(person._schema.count.autoIncrement);
+    });
+
+    it('should set the type to integer', function() {
+      assert(person._schema.count.type === 'integer');
+    });
+  });
+
 });
