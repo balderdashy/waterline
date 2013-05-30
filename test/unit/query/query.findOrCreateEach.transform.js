@@ -3,7 +3,7 @@ var Collection = require('../../../lib/waterline/collection'),
 
 describe('Collection Query', function() {
 
-  describe('.updateAll()', function() {
+  describe('.findOrCreateEach()', function() {
 
     describe('with transformed values', function() {
       var Model;
@@ -28,15 +28,15 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          update: function(col, criteria, values, cb) {
-            assert(criteria.where.login);
-            return cb(null, [values]);
+          findOrCreateEach: function(col, criteria, valuesList, cb) {
+            assert(criteria[0].where.login);
+            return cb(null, valuesList);
           }
         };
 
         new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
-          coll.updateAll({ where: { name: 'foo' }}, { name: 'foo' }, done);
+          coll.findOrCreateEach([{ where: { name: 'foo' }}], [{ name: 'foo' }], done);
         });
       });
 
@@ -44,15 +44,15 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          update: function(col, criteria, values, cb) {
-            assert(values.login);
-            return cb(null, [values]);
+          findOrCreateEach: function(col, criteria, valuesList, cb) {
+            assert(valuesList[0].login);
+            return cb(null, valuesList);
           }
         };
 
         new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
-          coll.updateAll({ where: { name: 'foo' }}, { name: 'foo' }, done);
+          coll.findOrCreateEach([{ where: { name: 'foo' }}], [{ name: 'foo' }], done);
         });
       });
 
@@ -60,15 +60,15 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          update: function(col, criteria, values, cb) {
-            assert(values.login);
-            return cb(null, [values]);
+          findOrCreateEach: function(col, criteria, valuesList, cb) {
+            assert(valuesList[0].login);
+            return cb(null, valuesList);
           }
         };
 
         new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
-          coll.updateAll({}, { name: 'foo' }, function(err, values) {
+          coll.findOrCreateEach([{}], [{ name: 'foo' }], function(err, values) {
             assert(values[0].name);
             assert(!values[0].login);
             done();
