@@ -166,4 +166,25 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with index key', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          name: {
+            type: 'string',
+            index: true
+          }
+        }
+      });
+
+      person = new Person();
+    });
+
+    it('should pass the index key down to the adapter', function() {
+      assert(person._schema.name.index);
+    });
+  });
+
 });
