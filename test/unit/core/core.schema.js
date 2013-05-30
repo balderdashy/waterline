@@ -99,4 +99,26 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with custom primary key', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          first_name: {
+            type: 'string',
+            primaryKey: true
+          }
+        }
+      });
+
+      person = new Person();
+    });
+
+    it('should pass the primary key down to the adapter', function() {
+      assert(person._schema.first_name.primaryKey);
+      assert(!person._schema.id);
+    });
+  });
+
 });
