@@ -40,7 +40,6 @@ describe('Waterline Collection', function() {
 
     it('should create an internal instanceMethods object from the attributes', function() {
       assert(typeof User._instanceMethods === 'object');
-      assert(Object.keys(User._instanceMethods).length === 1);
     });
 
   });
