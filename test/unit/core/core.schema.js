@@ -145,4 +145,25 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with uniqueness key', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          name: {
+            type: 'string',
+            unique: true
+          }
+        }
+      });
+
+      person = new Person();
+    });
+
+    it('should pass the unique key down to the adapter', function() {
+      assert(person._schema.name.unique);
+    });
+  });
+
 });
