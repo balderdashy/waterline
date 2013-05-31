@@ -3,7 +3,7 @@ var Collection = require('../../../lib/waterline/collection'),
 
 describe('Collection Query', function() {
 
-  describe('.findAll()', function() {
+  describe('.findOne()', function() {
     var query;
 
     before(function(done) {
@@ -30,44 +30,24 @@ describe('Collection Query', function() {
       });
     });
 
-    it('should allow options to be optional', function(done) {
-      query.findAll({}, function(err, values) {
-        assert(!err);
-        done();
-      });
-    });
-
-    it('should return an array', function(done) {
-      query.findAll({}, {}, function(err, values) {
-        assert(Array.isArray(values));
-        done();
-      });
-    });
-
     it('should return an instance of Model', function(done) {
-      query.findAll({}, {}, function(err, values) {
-        assert(typeof values[0].doSomething === 'function');
+      query.findOne({}, function(err, values) {
+        assert(typeof values.doSomething === 'function');
         done();
       });
     });
 
     it('should allow a query to be built using deferreds', function(done) {
-      query.findAll()
+      query.findOne()
       .where({ name: 'Foo Bar' })
       .where({ id: { '>': 1 } })
-      .limit(1)
-      .skip(1)
-      .sort({ name: 0 })
       .exec(function(err, results) {
         assert(!err);
-        assert(Array.isArray(results));
+        assert(!Array.isArray(results));
 
-        assert(Object.keys(results[0].where).length === 2);
-        assert(results[0].where.name == 'Foo Bar');
-        assert(results[0].where.id['>'] == 1);
-        assert(results[0].limit == 1);
-        assert(results[0].skip == 1);
-        assert(results[0].sort.name == 0);
+        assert(Object.keys(results.where).length === 2);
+        assert(results.where.name == 'Foo Bar');
+        assert(results.where.id['>'] == 1);
 
         done();
       });

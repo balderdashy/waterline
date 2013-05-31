@@ -24,12 +24,12 @@ describe('Collection Query', function() {
     });
 
     it('should add dynamic finder functions', function() {
+      assert(typeof query.findOneByName === 'function');
+      assert(typeof query.findOneByNameIn === 'function');
+      assert(typeof query.findOneByNameLike === 'function');
       assert(typeof query.findByName === 'function');
       assert(typeof query.findByNameIn === 'function');
       assert(typeof query.findByNameLike === 'function');
-      assert(typeof query.findAllByName === 'function');
-      assert(typeof query.findAllByNameIn === 'function');
-      assert(typeof query.findAllByNameLike === 'function');
       assert(typeof query.countByName === 'function');
       assert(typeof query.countByNameIn === 'function');
       assert(typeof query.countByNameLike === 'function');

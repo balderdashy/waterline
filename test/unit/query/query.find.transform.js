@@ -30,7 +30,7 @@ describe('Collection Query', function() {
         var adapterDef = {
           find: function(col, criteria, cb) {
             assert(criteria.where.login);
-            return cb(null, [criteria]);
+            return cb(null, [{ login: 'foo' }]);
           }
         };
 
@@ -53,8 +53,8 @@ describe('Collection Query', function() {
         new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
           coll.find({ name: 'foo' }, function(err, values) {
-            assert(values.name);
-            assert(!values.login);
+            assert(values[0].name);
+            assert(!values[0].login);
             done();
           });
         });

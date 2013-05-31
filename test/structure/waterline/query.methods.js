@@ -22,12 +22,12 @@ describe('Collection', function() {
 
     describe('Basic Finders', function() {
 
-      it('should have .find() method', function() {
-        assert(typeof person.find === 'function');
+      it('should have .findOne() method', function() {
+        assert(typeof person.findOne === 'function');
       });
 
-      it('should have .findAll() method', function() {
-        assert(typeof person.findAll === 'function');
+      it('should have .find() method', function() {
+        assert(typeof person.find === 'function');
       });
 
       it('should have .where() method', function() {
@@ -38,12 +38,12 @@ describe('Collection', function() {
         assert(typeof person.select === 'function');
       });
 
-      it('should have .findLike() method', function() {
-        assert(typeof person.findLike === 'function');
+      it('should have .findOneLike() method', function() {
+        assert(typeof person.findOneLike === 'function');
       });
 
-      it('should have .findAllLike() method', function() {
-        assert(typeof person.findAllLike === 'function');
+      it('should have .findLike() method', function() {
+        assert(typeof person.findLike === 'function');
       });
 
       it('should have .startsWith() method', function() {

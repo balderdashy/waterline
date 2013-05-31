@@ -3,7 +3,7 @@ var Collection = require('../../../lib/waterline/collection'),
 
 describe('Collection Query', function() {
 
-  describe('.findAll()', function() {
+  describe('.findOne()', function() {
 
     describe('with transformed values', function() {
       var Model;
@@ -30,13 +30,13 @@ describe('Collection Query', function() {
         var adapterDef = {
           find: function(col, criteria, cb) {
             assert(criteria.where.login);
-            return cb(null, [{ login: 'foo' }]);
+            return cb(null, [criteria]);
           }
         };
 
         new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
-          coll.findAll({ where: { name: 'foo' }}, done);
+          coll.findOne({ where: { name: 'foo' }}, done);
         });
       });
 
@@ -52,9 +52,9 @@ describe('Collection Query', function() {
 
         new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
-          coll.findAll({ name: 'foo' }, function(err, values) {
-            assert(values[0].name);
-            assert(!values[0].login);
+          coll.findOne({ name: 'foo' }, function(err, values) {
+            assert(values.name);
+            assert(!values.login);
             done();
           });
         });
