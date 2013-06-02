@@ -7,7 +7,7 @@ describe('Waterline Collection', function() {
     var User;
 
     before(function(done) {
-      var Model = Waterline.Model.extend({
+      var Model = Waterline.Collection.extend({
         attributes: {
           name: 'string'
         }
@@ -29,7 +29,7 @@ describe('Waterline Collection', function() {
     var User;
 
     before(function(done) {
-      var Model = Waterline.Model.extend({
+      var Model = Waterline.Collection.extend({
         tableName: 'foo',
         attributes: {
           name: 'string'
@@ -52,7 +52,7 @@ describe('Waterline Collection', function() {
     var User;
 
     before(function(done) {
-      var Model = Waterline.Model.extend({
+      var Model = Waterline.Collection.extend({
         tableName: 'foo',
         attributes: {
           name: 'string'

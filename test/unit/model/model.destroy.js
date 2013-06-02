@@ -15,7 +15,7 @@ describe('Model', function() {
      */
 
     before(function(done) {
-      var Model = Waterline.Model.extend({
+      var Model = Waterline.Collection.extend({
         adapter: 'foo',
         tableName: 'person',
         attributes: {

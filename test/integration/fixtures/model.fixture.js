@@ -5,7 +5,7 @@
 
 var Waterline = require('../../../lib/waterline');
 
-module.exports = Waterline.Model.extend({
+module.exports = Waterline.Collection.extend({
 
   tableName: 'test',
 
