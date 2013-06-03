@@ -7,7 +7,6 @@ describe('Model', function() {
     var Person = Model.extend({ foo: 'bar' });
     var person = new Person();
 
-    assert(person.persisted === false);
     assert(person.foo === 'bar');
   });
 
