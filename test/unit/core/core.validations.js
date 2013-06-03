@@ -30,7 +30,6 @@ describe('Core Validator', function() {
     });
 
     it('should ignore schema properties', function() {
-      assert(!person._validator.validations.first_name.type);
       assert(!person._validator.validations.last_name.defaultsTo);
     });
 

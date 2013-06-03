@@ -8,7 +8,8 @@
   ],
   "dependencies": {
     "underscore": "1.4.4",
-    "async": "0.2.8"
+    "async": "0.2.8",
+    "anchor": "git://github.com/balderdashy/anchor.git"
   },
   "devDependencies": {
     "mocha": "1.9.x"

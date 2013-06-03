@@ -28,7 +28,7 @@ describe('Waterline Collection', function() {
 
     it('should create an internal validation object from the attributes', function() {
       assert(typeof User._validator.validations === 'object');
-      assert(Object.keys(User._validator.validations).length === 4);
+      assert(Object.keys(User._validator.validations).length === 5);
     });
 
     // TO-DO

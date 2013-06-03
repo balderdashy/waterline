@@ -1,0 +1,40 @@
+var Validator = require('../../../lib/waterline/core/validations'),
+    assert = require('assert');
+
+describe('validations', function() {
+
+  describe('required', function() {
+    var validator;
+
+    before(function() {
+
+      var validations = {
+        name: {
+          type: 'string',
+          required: true
+        },
+        age: { type: 'integer' }
+      };
+
+      validator = new Validator();
+      validator.build(validations);
+    });
+
+    it('should error if no value is set', function(done) {
+      validator.validate({ name: ' ', age: 27 }, function(errors) {
+        assert(errors.name);
+        assert(errors.name[0].rule === 'required');
+        done();
+      });
+    });
+
+    it('should NOT error if value is set', function(done) {
+      validator.validate({ name: 'Foo Bar', age: 27 }, function(errors) {
+        assert(!errors);
+        done();
+      });
+    });
+
+  });
+
+});
