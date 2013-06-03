@@ -24,14 +24,14 @@ describe('Collection', function() {
     before(function() {
       Person = Collection.extend({
         attributes: {
-          foo: 'bar'
+          foo: 'string'
         }
       });
     });
 
     it('should have a schema', function(done) {
       new Person({ tableName: 'test' }, function(err, person) {
-        assert(person._schema.foo.type === 'bar');
+        assert(person._schema.foo.type === 'string');
         done();
       });
     });

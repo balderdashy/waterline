@@ -59,6 +59,24 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with special types', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          email: 'email'
+        }
+      });
+
+      person = new Person();
+    });
+
+    it('transform special schema types to strings', function() {
+      assert(person._schema.email.type === 'string');
+    });
+  });
+
   describe('with validation properties', function() {
     var person;
 
