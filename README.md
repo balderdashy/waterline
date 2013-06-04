@@ -54,6 +54,18 @@ It also allows an adapter to define it's own methods that don't necessarily fit 
 
 You may also supply an array of adapters and Waterline will map out the methods so they are both mixed in. It works similar to Underscore's [Extend](http://underscorejs.org/#extend) method where the last item in the array will override any methods in adapters before it. This allows you to mixin bothe traditional CRUD adapters such as MySQL with specialized adapters such as Twilio and have both types of methods available.
 
+#### Community Adapters
+
+  - [PostgreSQL](https://github.com/particlebanana/sails-postgresql)
+  - [MySQL](https://github.com/balderdashy/sails-mysql)
+  - [MongoDB](https://github.com/balderdashy/sails-mongo)
+  - [Redis](https://github.com/balderdashy/sails-redis)
+  - [Riak](https://github.com/balderdashy/sails-riak)
+  - [IRC](https://github.com/balderdashy/sails-irc)
+  - [Twitter](https://github.com/balderdashy/sails-twitter)
+  - [Dirty](https://github.com/balderdashy/sails-dirty)
+  - [JSDom](https://github.com/mikermcneil/sails-jsdom)
+
 ## Collection
 
 A [Collection](https://github.com/balderdashy/waterline/blob/master/lib/waterline/collection/index.js) is the main object used in Waterline. It defines the layout/schema of your data along with any validations and instance methods you create.
