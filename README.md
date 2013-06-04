@@ -1,8 +1,328 @@
 ![image_squidhome@2x.png](http://i.imgur.com/7rMxw.png)
 
-# Sails Waterline
+# Waterline
 
-An experimental version of Waterline for use with [Sails](https://github.com/balderdashy/sails) or any other Node.js
-application.
+Waterline is a brand new kind of storage and retrieval engine.
 
-It's a work in progress, to see example API implementations look in the example folder.
+It provides a uniform API for accessing stuff from different kinds of databases, protocols, and 3rd party APIs. That means you write the same code to get users, whether they live in MySQL, LDAP, MongoDB, or Facebook.
+
+At the same time, Waterline aims to learn lessons and maintain the best features from both Rails' ActiveRecord and Grails' Hibernate ORMs.
+
+## Installation
+
+Install from NPM.
+
+```bash
+$ npm install waterline
+```
+
+## Example
+
+```javascript
+var User = Waterline.Collection.extend({
+
+  attributes: {
+
+    firstName: {
+      type: 'string',
+      required: true
+    },
+
+    lastName: {
+      type: 'string',
+      required: true,
+    }
+  }
+});
+```
+
+## Overview
+
+### Using With Sails.js
+
+Waterline was extracted from the [Sails](https://github.com/balderdashy/sails) framework and is the default ORM used in Sails. For more information on using Waterline in your Sails App view the [Sails Docs](http://sailsjs.org).
+
+For examples of how to use with frameworks such as [Express](http://expressjs.com/) look in the [Example](https://github.com/balderdashy/waterline/tree/master/example) folder.
+
+### Adapters Concept
+
+Waterline uses the concept of an Adapter to translate a predefined set of methods into a query that can be understood by your data store. Adapters allow you to use various datastores such as MySQL, PostgreSQL, MongoDB, Redis, etc. and have a clear API for working with your model data.
+
+It also allows an adapter to define it's own methods that don't necessarily fit into the CRUD methods defined by default in Waterline. If an adapter defines a custom method, Waterline will simply pass the function arguments down to the adapter.
+
+**NOTE:** When using custom adapter methods the features of Waterline are not used. You no longer get the Lifecycle Callbacks and Validations as you would when using a defined Waterline method.
+
+You may also supply an array of adapters and Waterline will map out the methods so they are both mixed in. It works similar to Underscore's [Extend](http://underscorejs.org/#extend) method where the last item in the array will override any methods in adapters before it. This allows you to mixin bothe traditional CRUD adapters such as MySQL with specialized adapters such as Twilio and have both types of methods available.
+
+## Collection
+
+A [Collection](https://github.com/balderdashy/waterline/blob/master/lib/waterline/collection/index.js) is the main object used in Waterline. It defines the layout/schema of your data along with any validations and instance methods you create.
+
+To create a new collection you extend `Waterline.Collection` and add in any properties you need.
+
+Available options are: `tableName`, `adapter`, `attributes`, along with any class methods and lifecycle callbacks you define.
+
+```javascript
+var User = Waterline.Collection.extend({
+
+  // Define a custom table name
+  tableName: 'user',
+
+  // Define an adapter to use
+  adapter: 'postgresql',
+
+  // Define attributes for this collection
+  attributes: {
+
+    firstName: {
+      type: 'string',
+
+      // also accepts any validations
+      required: true
+    },
+
+    lastName: {
+      type: 'string',
+      required: true,
+      maxLength: 20
+    },
+
+    email: {
+
+      // Special types are allowed, they are used in validations and
+      // set as a string when passed to an adapter
+      type: 'email',
+
+      required: true
+    },
+
+    age: {
+      type: 'integer',
+      min: 18
+    },
+
+    // You can also define instance methods here
+    fullName: function() {
+      return this.firstName + ' ' + this.lastName
+    }
+  },
+
+  /**
+   * Lifecycle Callbacks
+   *
+   * Run before and after various stages:
+   *
+   * beforeValidation
+   * afterValidation
+   * beforeSave
+   * afterSave
+   * beforeCreate
+   * afterCreate
+   * beforeDestroy
+   * afterDestroy
+   */
+
+  beforeCreate: function(cb) {
+    var self = this;
+
+    // an example encrypt function defined somewhere
+    encrypt(this.password, function(err, password) {
+      if(err) return next(err);
+
+      self.password = password;
+      next();
+    });
+  },
+
+  // Class Method
+  doSomething: function() {
+    // do something here
+  }
+
+});
+```
+
+Now that a collection is defined we can instantiate it and begin executing queries against it. All Collections take `options` and `callback` arguments.
+
+Options will be made up of:
+
+  - `tableName`, used if not defined in a Collection definition
+  - `adapters` object that specifies each adapter, either custom definitions or from NPM
+
+```javascript
+var postgres = require('sails-postgresql');
+
+new User({ tableName: 'foobar', adapters: { postgresql: postgres }}, function(err, Model) {
+
+  // We now have an instantiated collection to execute queries against
+  Model.find()
+  .where({ age: 21 })
+  .limit(10)
+  .exec(function(err, users) {
+    // Now we have an array of users
+  });
+
+});
+```
+
+## Model
+
+Each result that gets returned from a Waterline query will be an instance of [Model](https://github.com/balderdashy/waterline/blob/master/lib/waterline/model/index.js). This will add in any instance methods defined in your collection along with some CRUD helper methods. View [Core Instance Methods](https://github.com/balderdashy/waterline/blob/master/lib/waterline/core/instanceMethods.js) to see how the methods are implemented.
+
+Default CRUD instance methods:
+
+  - save
+  - update
+  - destroy
+  - toObject
+  - toJSON
+
+If you would like to filter records and remove certain attributes you can override the `toJSON` method like so:
+
+```javascript
+var user = Waterline.Collection.extend({
+
+  attributes: {
+    name: 'string',
+    password: 'string',
+
+    // Override toJSON instance method
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.password;
+      return obj;
+    }
+  }
+});
+
+// Then on an instantiated user:
+user.find({ id: 1}).exec(function(err, model) {
+  return model.toJSON(); // will return only the name
+});
+```
+
+## Query Methods
+
+Queries can be run with either a callback interface or with a deferred object. For building complicated queries the deferred object method is the best choice.
+
+**Callback Method**
+
+```javascript
+User.findOne({ id: 1 }, function(err, user) {
+  // Do stuff here
+});
+```
+
+**Deferred Object Method**
+
+```javascript
+User.find()
+.where({ id: { '>': 100 }})
+.where({ age: 21 })
+.limit(100)
+.sort('name')
+.exec(function(err, users) {
+  // Do stuff here
+});
+```
+
+Each of the following basic methods are available by default on a Collection instance.
+
+  - findOne
+  - find
+  - create
+  - update
+  - destroy
+  - count
+
+In addition you also have the following helper methods:
+
+  - updateAll
+  - destroyAll
+  - createEach
+  - findOrCreateEach
+  - findOrCreate
+  - findOneLike
+  - findLike
+  - startsWith
+  - endsWith
+  - contains
+
+Based on your Collection attributes you also have dynamic finders. So given a `name` attribute the following queries will be available:
+
+  - findOneByName
+  - findOneByNameIn
+  - findOneByNameLike
+  - findByName
+  - findByNameIn
+  - findByNameLike
+  - countByName
+  - countByNameIn
+  - countByNameLike
+  - nameStartsWith
+  - nameEndsWith
+  - nameContains
+
+## Validations
+
+Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate. For a full list of validations see: [Anchor Validations](https://github.com/balderdashy/anchor/blob/master/lib/rules.js).
+
+Validations are defined directly in you Collection attributes. In addition you may set the attribute `type` to any supported Anchor type and Waterline will build a validation and set the schema type as a string for that attribute.
+
+```javascript
+var User = Waterline.Collection.extend({
+
+  attributes: {
+
+    firstName: {
+      type: 'string',
+      required: true,
+      minLength: 5,
+      maxLength: 15
+    },
+
+    lastName: {
+      type: 'string',
+      required: true,
+      minLength: 5,
+      maxLength: 100
+    },
+
+    age: {
+      type: 'integer',
+      after: '12/12/2001'
+    }
+  }
+});
+```
+
+## Lifecycle Callbacks
+
+Lifecycle callbacks are functions you can define to run at certain times in a query. They are useful for mutating data before creating or generating properties before they are validated.
+
+**Callbacks run on Create**
+
+  - beforeValidate
+  - afterValidate
+  - beforeCreate
+  - afterCreate
+
+**Callbacks run on Update**
+
+  - beforeValidate
+  - afterValidate
+  - beforeSave
+  - afterSave
+
+**Callbacks run on Destroy**
+
+  - beforeDestroy
+  - afterDestroy
+
+## Tests
+
+All tests are written with [mocha](http://visionmedia.github.com/mocha/) and should be run with [npm](http://npmjs.org):
+
+``` bash
+  $ npm test
+```
