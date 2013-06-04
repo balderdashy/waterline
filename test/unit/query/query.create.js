@@ -61,6 +61,16 @@ describe('Collection Query', function() {
         });
       });
 
+      it('should allow a query to be built using deferreds', function(done) {
+        query.create()
+        .set({ name: 'bob' })
+        .exec(function(err, result) {
+          assert(!err);
+          assert(result);
+          done();
+        });
+      });
+
     });
 
     describe('override auto values', function() {

@@ -51,5 +51,16 @@ describe('Collection Query', function() {
       });
     });
 
+    it('should allow a query to be built using deferreds', function(done) {
+      query.update()
+      .where({})
+      .set({ name: 'foo' })
+      .exec(function(err, result) {
+        assert(!err);
+        assert(result.name === 'foo');
+        done();
+      });
+    });
+
   });
 });

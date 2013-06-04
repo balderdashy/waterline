@@ -64,5 +64,17 @@ describe('Collection Query', function() {
       });
     });
 
+    it('should allow a query to be built using deferreds', function(done) {
+      query.createEach()
+      .set([{ name: 'bob' }, { name: 'foo'}])
+      .exec(function(err, result) {
+        assert(!err);
+        assert(result);
+        assert(result[0].name === 'bob');
+        assert(result[1].name === 'foo');
+        done();
+      });
+    });
+
   });
 });
