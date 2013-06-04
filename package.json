@@ -3,7 +3,7 @@
   "description": "An ORM for Node.js and the Sails framework",
   "version": "0.9.0",
   "contributors": [
-    { "name": "particlebanana", "github": "https://github.com/particlebanana" },
+    { "name": "particlebanana", "github": "https://github.com/particlebanana" }
   ],
   "dependencies": {
     "underscore": "1.4.4",
