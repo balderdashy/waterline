@@ -56,14 +56,15 @@ You may also supply an array of adapters and Waterline will map out the methods 
 
 #### Community Adapters
 
-  - [PostgreSQL](https://github.com/particlebanana/sails-postgresql)
-  - [MySQL](https://github.com/balderdashy/sails-mysql)
-  - [MongoDB](https://github.com/balderdashy/sails-mongo)
+  - [PostgreSQL](https://github.com/particlebanana/sails-postgresql) - *0.9+ compatible*
+  - [MySQL](https://github.com/balderdashy/sails-mysql) - *0.9+ compatible*
+  - [MongoDB](https://github.com/balderdashy/sails-mongo) - *0.9+ compatible*
+  - [Memory](https://github.com/balderdashy/sails-memory) - *0.9+ compatible*
+  - [Disk](https://github.com/balderdashy/sails-disk) - *0.9+ compatible*
   - [Redis](https://github.com/balderdashy/sails-redis)
   - [Riak](https://github.com/balderdashy/sails-riak)
   - [IRC](https://github.com/balderdashy/sails-irc)
   - [Twitter](https://github.com/balderdashy/sails-twitter)
-  - [Dirty](https://github.com/balderdashy/sails-dirty)
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
 
 ## Collection
