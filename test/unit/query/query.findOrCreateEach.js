@@ -51,6 +51,13 @@ describe('Collection Query', function() {
       });
     });
 
+    it('should strip values that don\'t belong to the schema', function(done) {
+      query.findOrCreateEach([], [{ foo: 'bar' }], function(err, values) {
+        assert(!values[0].foo);
+        done();
+      });
+    });
+
     it('should add default values to each record', function(done) {
       query.findOrCreateEach([], [{},{}], function(err, values) {
         assert(Array.isArray(values));

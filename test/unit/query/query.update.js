@@ -44,6 +44,13 @@ describe('Collection Query', function() {
       });
     });
 
+    it('should strip values that don\'t belong to the schema', function(done) {
+      query.update({}, { foo: 'bar' }, function(err, values) {
+        assert(!values.foo);
+        done();
+      });
+    });
+
     it('should return an instance of Model', function(done) {
       query.update({}, { name: 'foo' }, function(err, status) {
         assert(typeof status.doSomething === 'function');
