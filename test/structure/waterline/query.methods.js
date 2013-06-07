@@ -88,24 +88,8 @@ describe('Collection', function() {
         assert(typeof person.update === 'function');
       });
 
-      it('should have .updateWhere() method', function() {
-        assert(typeof person.updateWhere === 'function');
-      });
-
-      it('should have .updateAll() method', function() {
-        assert(typeof person.updateAll === 'function');
-      });
-
       it('should have .destroy() method', function() {
         assert(typeof person.destroy === 'function');
-      });
-
-      it('should have .destroyWhere() method', function() {
-        assert(typeof person.destroyWhere === 'function');
-      });
-
-      it('should have .destroyAll() method', function() {
-        assert(typeof person.destroyAll === 'function');
       });
 
       it('should have .count() method', function() {

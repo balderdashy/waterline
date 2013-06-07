@@ -32,14 +32,14 @@ describe('Collection Query', function() {
 
     it('should change the updatedAt timestamp', function(done) {
       query.update({}, { name: 'foo' }, function(err, status) {
-        assert(status.updatedAt);
+        assert(status[0].updatedAt);
         done();
       });
     });
 
     it('should set values', function(done) {
       query.update({}, { name: 'foo' }, function(err, status) {
-        assert(status.name === 'foo');
+        assert(status[0].name === 'foo');
         done();
       });
     });
@@ -53,7 +53,7 @@ describe('Collection Query', function() {
 
     it('should return an instance of Model', function(done) {
       query.update({}, { name: 'foo' }, function(err, status) {
-        assert(typeof status.doSomething === 'function');
+        assert(typeof status[0].doSomething === 'function');
         done();
       });
     });
@@ -62,9 +62,9 @@ describe('Collection Query', function() {
       query.update()
       .where({})
       .set({ name: 'foo' })
-      .exec(function(err, result) {
+      .exec(function(err, results) {
         assert(!err);
-        assert(result.name === 'foo');
+        assert(results[0].name === 'foo');
         done();
       });
     });

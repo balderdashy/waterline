@@ -34,9 +34,9 @@ describe('.afterValidation()', function() {
   describe('.update()', function() {
 
     it('should run afterValidation and mutate values', function(done) {
-      person.update({ name: 'criteria' }, { name: 'test' }, function(err, user) {
+      person.update({ name: 'criteria' }, { name: 'test' }, function(err, users) {
         assert(!err);
-        assert(user.name === 'test updated');
+        assert(users[0].name === 'test updated');
         done();
       });
     });
