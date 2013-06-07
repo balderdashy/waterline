@@ -12,8 +12,8 @@ describe('.beforeCreate()', function() {
         name: 'string'
       },
 
-      beforeCreate: function(cb) {
-        this.name = this.name + ' updated';
+      beforeCreate: function(values, cb) {
+        values.name = values.name + ' updated';
         cb();
       }
     });

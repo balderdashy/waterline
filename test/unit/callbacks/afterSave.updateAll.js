@@ -12,8 +12,8 @@ describe('.afterSave()', function() {
         name: 'string'
       },
 
-      afterSave: function(cb) {
-        this.name = this.name + ' updated';
+      afterSave: function(values, cb) {
+        values.name = values.name + ' updated';
         cb();
       }
     });

@@ -12,8 +12,8 @@ describe('.beforeValidation()', function() {
         name: 'string'
       },
 
-      beforeValidation: function(cb) {
-        this.name = this.name + ' updated';
+      beforeValidation: function(values, cb) {
+        values.name = values.name + ' updated';
         cb();
       }
     });

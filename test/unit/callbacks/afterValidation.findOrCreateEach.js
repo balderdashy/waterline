@@ -12,8 +12,8 @@ describe('.afterValidation()', function() {
         name: 'string'
       },
 
-      afterValidation: function(cb) {
-        this.name = this.name + ' updated';
+      afterValidation: function(values, cb) {
+        values.name = values.name + ' updated';
         cb();
       }
     });

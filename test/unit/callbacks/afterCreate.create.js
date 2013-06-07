@@ -12,8 +12,8 @@ describe('.afterCreate()', function() {
         name: 'string'
       },
 
-      afterCreate: function(cb) {
-        this.name = this.name + ' updated';
+      afterCreate: function(values, cb) {
+        values.name = values.name + ' updated';
         cb();
       }
     });

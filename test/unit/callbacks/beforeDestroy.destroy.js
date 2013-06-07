@@ -12,7 +12,7 @@ describe('.beforeDestroy()', function() {
         name: 'string'
       },
 
-      beforeDestroy: function(cb) {
+      beforeDestroy: function(criteria, cb) {
         status = true;
         cb();
       }

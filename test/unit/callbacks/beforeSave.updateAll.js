@@ -12,8 +12,8 @@ describe('.beforeSave()', function() {
         name: 'string'
       },
 
-      beforeSave: function(cb) {
-        this.name = this.name + ' updated';
+      beforeSave: function(values, cb) {
+        values.name = values.name + ' updated';
         cb();
       }
     });
