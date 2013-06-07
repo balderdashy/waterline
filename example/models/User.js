@@ -22,19 +22,20 @@ var User = Waterline.Model.extend({
   attributes: {
     first_name: {
       type: 'string',
-      length: { min: 5 },
+      minLength: 5,
       required: true
     },
 
     last_name: {
       type: 'string',
-      length: { min: 5 },
+      minLength: 5,
       required: true
     },
 
     username: {
       type: 'string',
-      length: { min: 2, max: 20 },
+      minLength: 2,
+      maxLength: 20,
       unique: true,
       required: true,
 
@@ -51,6 +52,14 @@ var User = Waterline.Model.extend({
     phone_number: {
       type: 'string',
       defaultsTo: '555-555-555'
+    },
+
+    /**
+     * Instance Methods
+     */
+
+    fullName: function() {
+      return this.first_name + ' ' + this.last_name;
     }
   },
 
@@ -70,42 +79,34 @@ var User = Waterline.Model.extend({
    * afterDestroy
    */
 
-  beforeCreate: function(cb) {
-    var self = this;
-
-    encrypt(this.password, function(err, password) {
+  beforeCreate: function(values, cb) {
+    encrypt(values.password, function(err, password) {
       if(err) return next(err);
 
-      self.secure_password = password;
+      delete values.password;
+      values.secure_password = password;
       next();
     });
-  },
-
-  /**
-   * Instance Methods
-   */
-
-  name: function() {
-    return this.first_name + ' ' + this.last_name;
   }
 
 });
 
+/*************************************************************************
+ * USAGE EXAMPLES
+ *************************************************************************/
 
+// Find with query builder
 User
-.findAll({name: 'mike'})
+.find({ name: 'mike' })
 .limit(10)
-.join('Message')
-.done(function(err, users) {
-
+.exec(function(err, users) {
+  // do something here
 });
 
+// Find a single record with callback interface
+User.findOne({ id: 7 }, function(err, user) {
+  // do something here
 
-User.find(7, function(err, user) {
-  user.messages(function(err, message) {
-    // message is an instance of the message model
-    message.from
-  });
-
-  user.message
+  // Example of using an instance method
+  var fullName = user.firstName()
 });
