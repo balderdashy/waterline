@@ -31,7 +31,7 @@ describe('Collection', function() {
 
     it('should have a schema', function(done) {
       new Person({ tableName: 'test' }, function(err, person) {
-        assert(person._schema.foo.type === 'string');
+        assert(person._schema.schema.foo.type === 'string');
         done();
       });
     });

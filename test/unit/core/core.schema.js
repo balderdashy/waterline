@@ -18,12 +18,12 @@ describe('Core Schema', function() {
     });
 
     it('should set internal schema attributes', function() {
-      assert(person._schema.first_name);
-      assert(person._schema.last_name);
+      assert(person._schema.schema.first_name);
+      assert(person._schema.schema.last_name);
     });
 
     it('should lowercase attribute types', function() {
-      assert(person._schema.first_name.type === 'string');
+      assert(person._schema.schema.first_name.type === 'string');
     });
   });
 
@@ -46,16 +46,16 @@ describe('Core Schema', function() {
     });
 
     it('should set internal schema attributes', function() {
-      assert(person._schema.first_name);
-      assert(person._schema.last_name);
+      assert(person._schema.schema.first_name);
+      assert(person._schema.schema.last_name);
     });
 
     it('should lowercase attribute types', function() {
-      assert(person._schema.first_name.type === 'string');
+      assert(person._schema.schema.first_name.type === 'string');
     });
 
     it('should set defaultsTo value', function() {
-      assert(person._schema.phone.defaultsTo === '555-555-5555');
+      assert(person._schema.schema.phone.defaultsTo === '555-555-5555');
     });
   });
 
@@ -73,7 +73,7 @@ describe('Core Schema', function() {
     });
 
     it('transform special schema types to strings', function() {
-      assert(person._schema.email.type === 'string');
+      assert(person._schema.schema.email.type === 'string');
     });
   });
 
@@ -94,7 +94,7 @@ describe('Core Schema', function() {
     });
 
     it('should ignore validation properties in the schema', function() {
-      assert(!person._schema.first_name.length);
+      assert(!person._schema.schema.first_name.length);
     });
   });
 
@@ -113,7 +113,7 @@ describe('Core Schema', function() {
     });
 
     it('should ignore instance methods in the schema', function() {
-      assert(!person._schema.doSomething);
+      assert(!person._schema.schema.doSomething);
     });
   });
 
@@ -134,8 +134,8 @@ describe('Core Schema', function() {
     });
 
     it('should pass the primary key down to the adapter', function() {
-      assert(person._schema.first_name.primaryKey);
-      assert(!person._schema.id);
+      assert(person._schema.schema.first_name.primaryKey);
+      assert(!person._schema.schema.id);
     });
   });
 
@@ -155,11 +155,11 @@ describe('Core Schema', function() {
     });
 
     it('should pass the autoIncrement down to the adapter', function() {
-      assert(person._schema.count.autoIncrement);
+      assert(person._schema.schema.count.autoIncrement);
     });
 
     it('should set the type to integer', function() {
-      assert(person._schema.count.type === 'integer');
+      assert(person._schema.schema.count.type === 'integer');
     });
   });
 
@@ -180,7 +180,7 @@ describe('Core Schema', function() {
     });
 
     it('should pass the unique key down to the adapter', function() {
-      assert(person._schema.name.unique);
+      assert(person._schema.schema.name.unique);
     });
   });
 
@@ -201,7 +201,7 @@ describe('Core Schema', function() {
     });
 
     it('should pass the index key down to the adapter', function() {
-      assert(person._schema.name.index);
+      assert(person._schema.schema.name.index);
     });
   });
 

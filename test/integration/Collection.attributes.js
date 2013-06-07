@@ -15,8 +15,8 @@ describe('Waterline Collection', function() {
   describe('schema', function() {
 
     it('should create an internal schema from the attributes', function() {
-      assert(typeof User._schema === 'object');
-      assert(Object.keys(User._schema).length === 8); // account for auto created keys (pk, timestamps)
+      assert(typeof User._schema.schema === 'object');
+      assert(Object.keys(User._schema.schema).length === 8); // account for auto created keys (pk, timestamps)
     });
 
     // TO-DO

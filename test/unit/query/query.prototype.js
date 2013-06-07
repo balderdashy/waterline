@@ -15,6 +15,11 @@ describe('Query', function() {
       Model = Query.extend({
         adapter: {
           foo: function() {}
+        },
+
+        // Fake a schema
+        _schema: {
+          schema: {}
         }
       });
 
