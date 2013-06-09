@@ -185,7 +185,6 @@ Each result that gets returned from a Waterline query will be an instance of [Mo
 Default CRUD instance methods:
 
   - save
-  - update
   - destroy
   - toObject
   - toJSON
@@ -250,8 +249,6 @@ Each of the following basic methods are available by default on a Collection ins
 
 In addition you also have the following helper methods:
 
-  - updateAll
-  - destroyAll
   - createEach
   - findOrCreateEach
   - findOrCreate
@@ -315,22 +312,22 @@ Lifecycle callbacks are functions you can define to run at certain times in a qu
 
 **Callbacks run on Create**
 
-  - beforeValidate / fn(values, cb)
-  - afterValidate / fn(values, cb)
-  - beforeCreate / fn(values, cb)
-  - afterCreate / fn(newlyInsertedRecord, cb)
+  - beforeValidation / *fn(values, cb)*
+  - afterValidation / *fn(values, cb)*
+  - beforeCreate / *fn(values, cb)*
+  - afterCreate / *fn(newlyInsertedRecord, cb)*
 
 **Callbacks run on Update**
 
-  - beforeValidate / fn(valuesToUpdate, cb)
-  - afterValidate / fn(valuesToUpdate, cb)
-  - beforeSave / fn(valuesToUpdate, cb)
-  - afterSave / fn(updatedRecord, cb)
+  - beforeValidate / *fn(valuesToUpdate, cb)*
+  - afterValidate / *fn(valuesToUpdate, cb)*
+  - beforeSave / *fn(valuesToUpdate, cb)*
+  - afterSave / *fn(updatedRecord, cb)*
 
 **Callbacks run on Destroy**
 
-  - beforeDestroy / fn(criteria, cb)
-  - afterDestroy / fn(cb)
+  - beforeDestroy / *fn(criteria, cb)*
+  - afterDestroy / *fn(cb)*
 
 ## Tests
 
