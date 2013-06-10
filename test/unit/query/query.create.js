@@ -120,5 +120,39 @@ describe('Collection Query', function() {
       });
     });
 
+    describe('cast proper values', function() {
+      var query;
+
+      before(function(done) {
+
+        // Extend for testing purposes
+        var Model = Collection.extend({
+          identity: 'user',
+          adapter: 'foo',
+
+          attributes: {
+            name: 'string',
+            age: 'integer'
+          }
+        });
+
+        // Fixture Adapter Def
+        var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
+        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          if(err) done(err);
+          query = coll;
+          done();
+        });
+      });
+
+      it('should cast values before sending to adapter', function(done) {
+        query.create({ name: 'foo', age: '27' }, function(err, values) {
+          assert(values.name === 'foo');
+          assert(values.age === 27);
+          done();
+        });
+      });
+    });
+
   });
 });
