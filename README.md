@@ -2,6 +2,8 @@
 
 # Waterline
 
+[![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline)
+
 Waterline is a brand new kind of storage and retrieval engine.
 
 It provides a uniform API for accessing stuff from different kinds of databases, protocols, and 3rd party APIs. That means you write the same code to get users, whether they live in MySQL, LDAP, MongoDB, or Facebook.
