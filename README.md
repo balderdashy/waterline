@@ -308,6 +308,30 @@ var User = Waterline.Collection.extend({
 });
 ```
 
+## Indexing
+
+You can add an index property to any attribute to create an index if your adapter supports it. This comes in handy when performing repeated queries
+against a key.
+
+```javascript
+var User = Waterline.Collection.extend({
+
+  attributes: {
+    
+    serviceID: {
+      type: 'integer',
+      index: true
+    }
+  }
+});
+```
+
+Currently Waterline doesn't support multi-column indexes in the attributes definition. If you would like to build any sort of special index you will still
+need to build that manually. Also note when adding a `unique` property to an attribute an index will automatically be created for that attribute so there is no
+need to specifiy it.
+
+There is currently an issue with adding indexes to string fields. Because Waterline performs it's queries in a case insensitive manner we are unable to use the index on a string attribute. There are some workarounds being discussed but nothing is implemented so far. This will be updated in the near future to fully support indexes on strings. 
+
 ## Lifecycle Callbacks
 
 Lifecycle callbacks are functions you can define to run at certain times in a query. They are useful for mutating data before creating or generating properties before they are validated.
