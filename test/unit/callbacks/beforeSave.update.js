@@ -2,41 +2,93 @@ var Collection = require('../../../lib/waterline/collection'),
     assert = require('assert');
 
 describe('.beforeSave()', function() {
-  var person;
 
-  before(function(done) {
-    var Model = Collection.extend({
-      identity: 'user',
-      adapter: 'foo',
-      attributes: {
-        name: 'string'
-      },
+  describe('basic function', function() {
+    var person;
 
-      beforeSave: function(values, cb) {
-        values.name = values.name + ' updated';
-        cb();
-      }
+    before(function(done) {
+      var Model = Collection.extend({
+        identity: 'user',
+        adapter: 'foo',
+        attributes: {
+          name: 'string'
+        },
+
+        beforeSave: function(values, cb) {
+          values.name = values.name + ' updated';
+          cb();
+        }
+      });
+
+      // Fixture Adapter Def
+      var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [values]); }};
+      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        if(err) done(err);
+        person = coll;
+        done();
+      });
     });
 
-    // Fixture Adapter Def
-    var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [values]); }};
-    new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
-      if(err) done(err);
-      person = coll;
-      done();
+    /**
+     * Update
+     */
+
+    describe('.update()', function() {
+
+      it('should run beforeSave and mutate values', function(done) {
+        person.update({ name: 'criteria' }, { name: 'test' }, function(err, users) {
+          assert(!err);
+          assert(users[0].name === 'test updated');
+          done();
+        });
+      });
     });
   });
 
+
   /**
-   * Update
+   * Test Callbacks can be defined as arrays and run in order.
    */
 
-  describe('.update()', function() {
+  describe('array of functions', function() {
+    var person, status;
 
-    it('should run beforeSave and mutate values', function(done) {
+    before(function(done) {
+      var Model = Collection.extend({
+        identity: 'user',
+        adapter: 'foo',
+        attributes: {
+          name: 'string'
+        },
+
+        beforeSave: [
+          // Function 1
+          function(values, cb) {
+            values.name = values.name + ' fn1';
+            cb();
+          },
+
+          // Function 2
+          function(values, cb) {
+            values.name = values.name + ' fn2';
+            cb();
+          }
+        ]
+      });
+
+      // Fixture Adapter Def
+      var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [values]); }};
+      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        if(err) done(err);
+        person = coll;
+        done();
+      });
+    });
+
+    it('should run the functions in order', function(done) {
       person.update({ name: 'criteria' }, { name: 'test' }, function(err, users) {
         assert(!err);
-        assert(users[0].name === 'test updated');
+        assert(users[0].name === 'test fn1 fn2');
         done();
       });
     });
