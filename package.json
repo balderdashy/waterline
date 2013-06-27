@@ -10,7 +10,7 @@
   ],
   "dependencies": {
     "underscore": "1.4.4",
-    "async": "0.2.8",
+    "async": "0.2.9",
     "anchor": "git://github.com/balderdashy/anchor.git",
     "q": "~0.9.4"
   },
