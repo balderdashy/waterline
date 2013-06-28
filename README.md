@@ -137,7 +137,7 @@ var User = Waterline.Collection.extend({
    * afterDestroy
    */
 
-  beforeCreate: function(cb) {
+  beforeCreate: function(values, cb) {
     var self = this;
 
     // an example encrypt function defined somewhere
@@ -317,7 +317,7 @@ against a key.
 var User = Waterline.Collection.extend({
 
   attributes: {
-    
+
     serviceID: {
       type: 'integer',
       index: true
@@ -330,7 +330,7 @@ Currently Waterline doesn't support multi-column indexes in the attributes defin
 need to build that manually. Also note when adding a `unique` property to an attribute an index will automatically be created for that attribute so there is no
 need to specifiy it.
 
-There is currently an issue with adding indexes to string fields. Because Waterline performs it's queries in a case insensitive manner we are unable to use the index on a string attribute. There are some workarounds being discussed but nothing is implemented so far. This will be updated in the near future to fully support indexes on strings. 
+There is currently an issue with adding indexes to string fields. Because Waterline performs it's queries in a case insensitive manner we are unable to use the index on a string attribute. There are some workarounds being discussed but nothing is implemented so far. This will be updated in the near future to fully support indexes on strings.
 
 ## Lifecycle Callbacks
 
