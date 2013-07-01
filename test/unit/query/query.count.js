@@ -37,5 +37,14 @@ describe('Collection Query', function() {
       });
     });
 
+    it('should allow a query to be built using deferreds', function(done) {
+      query.count()
+      .exec(function(err, result) {
+        assert(!err);
+        assert(result);
+        done();
+      });
+    });
+
   });
 });
