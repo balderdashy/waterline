@@ -19,6 +19,10 @@ describe('Collection Query', function() {
               type: 'string',
               defaultsTo: 'Foo Bar'
             },
+            age: {
+              type: 'integer',
+              required: true
+            },
             doSomething: function() {}
           }
         });
