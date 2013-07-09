@@ -15,7 +15,7 @@ describe('validations', function() {
       };
 
       validator = new Validator();
-      validator.build(validations);
+      validator.initialize(validations);
     });
 
     it('should validate email type', function(done) {
