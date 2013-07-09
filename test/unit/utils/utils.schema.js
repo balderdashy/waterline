@@ -144,25 +144,30 @@ describe('Schema utilities', function() {
     });
 
     describe('with callbacks as strings', function() {
-      var attributes, callbacks;
+      var fn_1, fn_2, callbacks;
 
       before(function() {
-        var model = {
+        var model;
+
+        fn_1 = function() {
+          this.age = this.age || this.age++;
+        };
+
+        fn_2 = function() {
+          this.first_name = this.first_name.toLowerCase();
+        };
+
+        model = {
           attributes: {
             first_name: 'STRING',
             last_name: 'string',
-            increment_age: function() {
-              this.age = this.age || this.age++;
-            },
-            lowerize_first_name: function() {
-              this.first_name = this.first_name.toLowerCase();
-            }
+            increment_age: fn_1,
+            lowerize_first_name: fn_2
           },
           afterCreate: 'lowerize_first_name',
           beforeCreate: 'increment_age'
         };
 
-        attributes = model.attributes;
         callbacks = utils.normalizeCallbacks(model);
       });
 
@@ -172,30 +177,35 @@ describe('Schema utilities', function() {
       });
 
       it('should map all callback functions', function() {
-        assert(callbacks.afterCreate[0] === attributes.lowerize_first_name);
-        assert(callbacks.beforeCreate[0] === attributes.increment_age);
+        assert(callbacks.afterCreate[0] === fn_2);
+        assert(callbacks.beforeCreate[0] === fn_1);
       });
     });
 
     describe('with callbacks as an array of strings', function() {
-      var attributes, callbacks;
+      var fn_1, fn_2, callbacks;
 
       before(function() {
-        var model = {
+        var model;
+
+        fn_1 = function() {
+          this.age = this.age || this.age++;
+        };
+
+        fn_2 = function() {
+          this.first_name = this.first_name.toLowerCase();
+        };
+
+        model = {
           attributes: {
             first_name: 'STRING',
             last_name: 'string',
-            increment_age: function() {
-              this.age = this.age || this.age++;
-            },
-            lowerize_first_name: function() {
-              this.first_name = this.first_name.toLowerCase();
-            }
+            increment_age: fn_1,
+            lowerize_first_name: fn_2
           },
           afterCreate: ['increment_age', 'lowerize_first_name']
         };
 
-        attributes = model.attributes;
         callbacks = utils.normalizeCallbacks(model);
       });
 
@@ -204,8 +214,8 @@ describe('Schema utilities', function() {
       });
 
       it('should map all callback functions', function() {
-        assert(callbacks.afterCreate[0] === attributes.increment_age);
-        assert(callbacks.afterCreate[1] === attributes.lowerize_first_name);
+        assert(callbacks.afterCreate[0] === fn_1);
+        assert(callbacks.afterCreate[1] === fn_2);
       });
     });
   });
