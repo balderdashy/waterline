@@ -17,4 +17,20 @@ describe('Model', function() {
     assert(person.name === 'Foo Bar');
   });
 
+  it('should inject crud and instance methods', function() {
+    var Person = Model.inject({}, {
+      do_something: function() {
+        // Do something
+      }
+    });
+
+    var person = new Person({name: 'cece'});
+
+    // Should have instance methods
+    ['toJSON', 'toObject', 'save',
+     'destroy', 'do_something'].forEach(function(method) {
+      assert(typeof person[method] === 'function');
+    });
+  });
+
 });
