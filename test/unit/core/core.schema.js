@@ -65,15 +65,20 @@ describe('Core Schema', function() {
     before(function() {
       var Person = Core.extend({
         attributes: {
-          email: 'email'
+          email: 'email',
+          age: 'integer'
         }
       });
 
       person = new Person();
     });
 
-    it('transform special schema types to strings', function() {
+    it('should transform unknown types to strings', function() {
       assert(person._schema.schema.email.type === 'string');
+    });
+
+    it('should not transform known type', function() {
+      assert(person._schema.schema.age.type === 'integer');
     });
   });
 
