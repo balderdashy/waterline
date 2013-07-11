@@ -67,7 +67,7 @@ describe('Collection Query', function() {
         assert(results[0].where.id['>'] == 1);
         assert(results[0].limit == 1);
         assert(results[0].skip == 1);
-        assert(results[0].sort.name == 0);
+        assert(results[0].sort.name == -1);
 
         done();
       });
