@@ -154,5 +154,37 @@ describe('Collection Query', function() {
       });
     });
 
+
+    describe('with schema set to false', function() {
+      var query;
+
+      before(function(done) {
+
+        // Extend for testing purposes
+        var Model = Collection.extend({
+          identity: 'user',
+          adapter: 'foo',
+          schema: false,
+
+          attributes: {}
+        });
+
+        // Fixture Adapter Def
+        var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
+        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          if(err) done(err);
+          query = coll;
+          done();
+        });
+      });
+
+      it.only('should allow arbitratry values to be set', function(done) {
+        query.create({ name: 'foo' }, function(err, record) {
+          assert(record.name === 'foo');
+          done();
+        });
+      });
+    });
+
   });
 });
