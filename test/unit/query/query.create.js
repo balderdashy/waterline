@@ -178,7 +178,7 @@ describe('Collection Query', function() {
         });
       });
 
-      it.only('should allow arbitratry values to be set', function(done) {
+      it('should allow arbitratry values to be set', function(done) {
         query.create({ name: 'foo' }, function(err, record) {
           assert(record.name === 'foo');
           done();
