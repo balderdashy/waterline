@@ -39,14 +39,6 @@ describe('Waterline Collection', function() {
 
     });
 
-    describe('instance methods', function() {
-
-      it('should create an internal instanceMethods object from the attributes', function() {
-        assert(typeof User._instanceMethods === 'object');
-      });
-
-    });
-
   });
 
   describe('custom fixtures', function() {

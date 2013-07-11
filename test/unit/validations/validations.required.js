@@ -17,7 +17,7 @@ describe('validations', function() {
       };
 
       validator = new Validator();
-      validator.build(validations);
+      validator.initialize(validations);
     });
 
     it('should error if no value is set', function(done) {

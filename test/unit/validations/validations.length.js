@@ -20,7 +20,7 @@ describe('validations', function() {
       };
 
       validator = new Validator();
-      validator.build(validations);
+      validator.initialize(validations);
     });
 
     describe('minLength', function() {
