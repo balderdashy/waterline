@@ -20,6 +20,11 @@ describe('Waterline Collection', function() {
 
           email: {
             type: 'email'
+          },
+
+          sex: {
+            type: 'string',
+            enum: ['male', 'female']
           }
         }
       });
@@ -44,6 +49,22 @@ describe('Waterline Collection', function() {
       User.create({ name: '', email: 'foobar@gmail.com'}, function(err, user) {
         assert(!user);
         assert(err.name[0].rule === 'required');
+        done();
+      });
+    });
+
+    it('should support valid enums on strings', function(done) {
+      User.create({ name: 'foo', sex: 'male' }, function(err, user) {
+        assert(!err);
+        assert(user.sex === 'male');
+        done();
+      });
+    });
+
+    it('should error with invalid enums on strings', function(done) {
+      User.create({ name: 'foo', sex: 'other' }, function(err, user) {
+        assert(!user);
+        assert(err.sex[0].rule === 'in');
         done();
       });
     });
