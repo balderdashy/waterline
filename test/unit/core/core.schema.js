@@ -140,6 +140,7 @@ describe('Core Schema', function() {
 
     it('should pass the primary key down to the adapter', function() {
       assert(person._schema.schema.first_name.primaryKey);
+      assert(person._schema.schema.first_name.unique);
       assert(!person._schema.schema.id);
     });
   });
