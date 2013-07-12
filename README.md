@@ -75,13 +75,34 @@ A [Collection](https://github.com/balderdashy/waterline/blob/master/lib/waterlin
 
 To create a new collection you extend `Waterline.Collection` and add in any properties you need.
 
-Available options are: `tableName`, `adapter`, `attributes`, along with any class methods and lifecycle callbacks you define.
+Available options are: `tableName`, `adapter`, `schema`, `attributes`, along with any class methods and lifecycle callbacks you define.
+
+#### Attributes
+
+The following attribute types are currently available:
+
+  - string
+  - text
+  - integer
+  - float
+  - date
+  - time
+  - datetime
+  - boolean
+  - binary
+  - array
+  - json
+
+#### Example Collection
 
 ```javascript
 var User = Waterline.Collection.extend({
 
   // Define a custom table name
   tableName: 'user',
+
+  // Set schema true/false for adapters that support schemaless
+  schema: true,
 
   // Define an adapter to use
   adapter: 'postgresql',
