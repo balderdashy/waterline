@@ -238,7 +238,7 @@ user.find({ id: 1}).exec(function(err, model) {
 
 ## Query Methods
 
-Queries can be run with either a callback interface or with a deferred object. For building complicated queries the deferred object method is the best choice.
+Queries can be run with either a callback interface or with a deferred object. For building complicated queries the deferred object method is the best choice. For convenience, promises are supported by default.
 
 **Callback Method**
 
@@ -259,7 +259,22 @@ User.find()
 .exec(function(err, users) {
   // Do stuff here
 });
+
+**Promises**
+User.findOne()
+.where({ id: 2 })
+.then(function(user){
+    var comments = Comment.find({userId: user.id}).then(function(comments){
+        return comments;
+    });
+    return [user.id, user.friendsList, comments];
+}).spread(function(userId, friendsList, comments){
+    // Promises are awesome!
+}).fail(function(err){
+    // An error occured
+})
 ```
+Promises use the [Q library](https://github.com/kriskowal/q), so anything you do after the first `then` call (or `spread`, or `fail`), will be a complete Q promise object. Remember, you must end the query somehow (by calling `then` or one of the other functions) in order to complete the database request.
 
 Each of the following basic methods are available by default on a Collection instance.
 
