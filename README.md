@@ -166,7 +166,7 @@ var User = Waterline.Collection.extend({
       if(err) return next(err);
 
       self.password = password;
-      next();
+      cb();
     });
   },
 
