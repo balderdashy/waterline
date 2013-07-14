@@ -81,11 +81,11 @@ var User = Waterline.Model.extend({
 
   beforeCreate: function(values, cb) {
     encrypt(values.password, function(err, password) {
-      if(err) return next(err);
+      if(err) return cb(err);
 
       delete values.password;
       values.secure_password = password;
-      next();
+      cb();
     });
   }
 
