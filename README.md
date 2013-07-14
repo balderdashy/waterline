@@ -163,7 +163,7 @@ var User = Waterline.Collection.extend({
 
     // an example encrypt function defined somewhere
     encrypt(this.password, function(err, password) {
-      if(err) return next(err);
+      if(err) return cb(err);
 
       self.password = password;
       cb();
