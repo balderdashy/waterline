@@ -211,4 +211,26 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with enum key', function() {
+    var person;
+
+    before(function() {
+      var Person = Core.extend({
+        attributes: {
+          sex: {
+            type: 'string',
+            enum: ['male', 'female']
+          }
+        }
+      });
+
+      person = new Person();
+    });
+
+    it('should pass the enum options down to the adapter', function() {
+      assert(Array.isArray(person._schema.schema.sex.enum));
+      assert(person._schema.schema.sex.enum.length === 2);
+    });
+  });
+
 });
