@@ -382,9 +382,9 @@ Lifecycle callbacks are functions you can define to run at certain times in a qu
 **Callbacks run on Update**
 
   - beforeValidation / *fn(valuesToUpdate, cb)*
-  - beforeSave / *fn(valuesToUpdate, cb)*
+  - beforeUpdate / *fn(valuesToUpdate, cb)*
   - afterValidation / *fn(valuesToUpdate, cb)*
-  - afterSave / *fn(updatedRecord, cb)*
+  - afterUpdate / *fn(updatedRecord, cb)*
 
 **Callbacks run on Destroy**
 

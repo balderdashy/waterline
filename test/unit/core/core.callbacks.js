@@ -30,11 +30,11 @@ describe('Core Lifecycle Callbacks', function() {
       assert(Array.isArray(person._callbacks.afterValidation));
       assert(typeof person._callbacks.afterValidation[0] === 'function');
 
-      assert(Array.isArray(person._callbacks.beforeSave));
-      assert(typeof person._callbacks.beforeSave[0] === 'function');
+      assert(Array.isArray(person._callbacks.beforeUpdate));
+      assert(typeof person._callbacks.beforeUpdate[0] === 'function');
 
-      assert(Array.isArray(person._callbacks.afterSave));
-      assert(typeof person._callbacks.afterSave[0] === 'function');
+      assert(Array.isArray(person._callbacks.afterUpdate));
+      assert(typeof person._callbacks.afterUpdate[0] === 'function');
 
       assert(Array.isArray(person._callbacks.beforeCreate));
       assert(typeof person._callbacks.beforeCreate[0] === 'function');
