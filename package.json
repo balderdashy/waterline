@@ -6,6 +6,14 @@
     {
       "name": "particlebanana",
       "github": "https://github.com/particlebanana"
+    },
+    {
+      "name": "mikermcneil",
+      "github": "https://github.com/mikermcneil"
+    },
+    {
+      "name": "zolmeister",
+      "github": "https://github.com/zolmeister"
     }
   ],
   "dependencies": {
