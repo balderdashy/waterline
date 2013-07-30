@@ -37,14 +37,14 @@ describe('Collection Query', function() {
       });
 
       it('should set default values', function(done) {
-        query.findOrCreate({}, {}, function(err, status) {
+        query.findOrCreate({ name: 'Foo Bar' }, {}, function(err, status) {
           assert(status.name === 'Foo Bar');
           done();
         });
       });
 
       it('should add timestamps', function(done) {
-        query.findOrCreate({}, {}, function(err, status) {
+        query.findOrCreate({ name: 'Foo Bar' }, {}, function(err, status) {
           assert(status.createdAt);
           assert(status.updatedAt);
           done();
@@ -52,21 +52,21 @@ describe('Collection Query', function() {
       });
 
       it('should set values', function(done) {
-        query.findOrCreate({}, { name: 'Bob' }, function(err, status) {
+        query.findOrCreate({ name: 'Foo Bar' }, { name: 'Bob' }, function(err, status) {
           assert(status.name === 'Bob');
           done();
         });
       });
 
       it('should strip values that don\'t belong to the schema', function(done) {
-        query.findOrCreate({}, { foo: 'bar' }, function(err, values) {
+        query.findOrCreate({ name: 'Foo Bar'}, { foo: 'bar' }, function(err, values) {
           assert(!values.foo);
           done();
         });
       });
 
       it('should return an instance of Model', function(done) {
-        query.findOrCreate({}, {}, function(err, status) {
+        query.findOrCreate({ name: 'Foo Bar' }, {}, function(err, status) {
           assert(typeof status.doSomething === 'function');
           done();
         });
@@ -114,7 +114,7 @@ describe('Collection Query', function() {
       });
 
       it('should cast values before sending to adapter', function(done) {
-        query.findOrCreate({}, { name: 'foo', age: '27' }, function(err, values) {
+        query.findOrCreate({ name: 'Foo Bar' }, { name: 'foo', age: '27' }, function(err, values) {
           assert(values.name === 'foo');
           assert(values.age === 27);
           done();

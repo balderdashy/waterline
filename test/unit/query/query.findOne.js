@@ -31,7 +31,7 @@ describe('Collection Query', function() {
     });
 
     it('should return an instance of Model', function(done) {
-      query.findOne({}, function(err, values) {
+      query.findOne({ name: 'foo' }, function(err, values) {
         assert(typeof values.doSomething === 'function');
         done();
       });
