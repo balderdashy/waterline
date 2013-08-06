@@ -19,6 +19,10 @@ describe('Collection Query', function() {
               type: 'string',
               defaultsTo: 'Foo Bar'
             },
+            arr: {
+              type: 'array',
+              defaultsTo: []
+            },
             doSomething: function() {}
           }
         });
@@ -52,6 +56,17 @@ describe('Collection Query', function() {
           assert(Array.isArray(values));
           assert(values[0].name === 'Foo Bar');
           assert(values[1].name === 'Foo Bar');
+          done();
+        });
+      });
+
+      it('should clone default values for each record', function(done) {
+        query.createEach([{},{}], function(err, values) {
+          assert(Array.isArray(values));
+          assert(values[0].arr !== values[1].arr);
+          values[1].arr.push('another');
+          assert(values[0].arr.length === 0);
+          assert(values[1].arr.length === 1);
           done();
         });
       });
