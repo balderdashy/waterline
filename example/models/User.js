@@ -71,8 +71,8 @@ var User = Waterline.Model.extend({
    *
    * beforeValidation
    * afterValidation
-   * beforeSave
-   * afterSave
+   * beforeUpdate
+   * afterUpdate
    * beforeCreate
    * afterCreate
    * beforeDestroy

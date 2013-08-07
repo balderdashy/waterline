@@ -150,8 +150,8 @@ var User = Waterline.Collection.extend({
    *
    * beforeValidation
    * afterValidation
-   * beforeSave
-   * afterSave
+   * beforeUpdate
+   * afterUpdate
    * beforeCreate
    * afterCreate
    * beforeDestroy
