@@ -87,6 +87,36 @@ describe('Schema utilities', function() {
     });
   });
 
+  describe('`associations`', function() {
+    var attributes, associations;
+
+    before(function() {
+      attributes = {
+        users: {
+          collection: 'User'
+        },
+        item: {
+          model: 'Item'
+        },
+        foo: 'string'
+      };
+
+      associations = utils.associations(attributes);
+    });
+
+    it('should break up associations into models and collections', function() {
+      assert(Object.keys(associations.models).length === 1);
+      assert(Object.keys(associations.collections).length === 1);
+      assert(associations.models.item === 'Item');
+      assert(associations.collections.users === 'User');
+    });
+
+    it('should remove attributes from attributes object', function() {
+      assert(!attributes.users);
+      assert(!attributes.item);
+    });
+  });
+
   describe('`normalizeCallbacks`', function() {
 
     describe('with callbacks as function', function() {
