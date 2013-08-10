@@ -3,7 +3,7 @@ var Collection = require('../../../lib/waterline/collection'),
 
 describe('Collection Query', function() {
 
-  describe('.find()', function() {
+  describe('dynamicFinders', function() {
     var query;
 
     before(function(done) {
@@ -12,7 +12,10 @@ describe('Collection Query', function() {
       var Model = Collection.extend({
         identity: 'user',
         attributes: {
-          name: 'string'
+          name: 'string',
+          group: {
+            model: 'Group'
+          }
         }
       });
 
@@ -36,6 +39,24 @@ describe('Collection Query', function() {
       assert(typeof query.nameStartsWith === 'function');
       assert(typeof query.nameEndsWith === 'function');
       assert(typeof query.nameContains === 'function');
+    });
+
+    it('should not create generic dynamic finders for has_one and belongs_to associations', function() {
+      assert(!query.findOneByGroup);
+      assert(!query.findOneByGroupIn);
+      assert(!query.findOneByGroupLike);
+      assert(!query.findByGroupIn);
+      assert(!query.findByGroupLike);
+      assert(!query.countByGroup);
+      assert(!query.countByGroupIn);
+      assert(!query.countByGroupLike);
+      assert(!query.groupStartsWith);
+      assert(!query.groupEndsWith);
+      assert(!query.groupContains);
+    });
+
+    it('should create limited dynamic finders for has_one and belongs_to associations', function() {
+      assert(typeof query.findByGroup === 'function');
     });
 
   });
