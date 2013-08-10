@@ -41,7 +41,7 @@
   "homepage": "http://github.com/balderdashy/waterline",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "mocha test/**/**"
+    "test": "mocha test --recursive"
   },
   "engines": {
     "node": "*"
