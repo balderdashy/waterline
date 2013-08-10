@@ -107,8 +107,8 @@ describe('Schema utilities', function() {
     it('should break up associations into models and collections', function() {
       assert(Object.keys(associations.models).length === 1);
       assert(Object.keys(associations.collections).length === 1);
-      assert(associations.models.item === 'Item');
-      assert(associations.collections.users === 'User');
+      assert(associations.models.item.model === 'Item');
+      assert(associations.collections.users.collection === 'User');
     });
 
     it('should remove attributes from attributes object', function() {
