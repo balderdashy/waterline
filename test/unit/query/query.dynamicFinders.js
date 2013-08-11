@@ -42,7 +42,6 @@ describe('Collection Query', function() {
     });
 
     it('should not create generic dynamic finders for has_one and belongs_to associations', function() {
-      assert(!query.findOneByGroup);
       assert(!query.findOneByGroupIn);
       assert(!query.findOneByGroupLike);
       assert(!query.findByGroupIn);
@@ -57,6 +56,7 @@ describe('Collection Query', function() {
 
     it('should create limited dynamic finders for has_one and belongs_to associations', function() {
       assert(typeof query.findByGroup === 'function');
+      assert(typeof query.findOneByGroup === 'function');
     });
 
   });
