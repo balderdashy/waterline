@@ -28,7 +28,7 @@ describe('Model', function() {
       });
 
       var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [values]); }};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         collection = coll;
         done();

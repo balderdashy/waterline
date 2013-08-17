@@ -34,7 +34,7 @@ describe('Model', function() {
         }
       });
 
-      new Model({ adapters: { foo: {} }}, function(err, coll) {
+      new Model({}, { adapters: { foo: {} }}, function(err, coll) {
         if(err) done(err);
         collection = coll;
         done();

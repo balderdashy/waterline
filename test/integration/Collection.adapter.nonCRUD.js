@@ -12,7 +12,7 @@ describe('Waterline Collection', function() {
       tableName: 'tests'
     });
 
-    new Model({ adapters: { foobar: adapter }}, function(err, collection) {
+    new Model({}, { adapters: { foobar: adapter }}, function(err, collection) {
       if(err) return done(err);
       User = collection;
       done();

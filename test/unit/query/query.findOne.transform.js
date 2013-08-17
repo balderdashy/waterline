@@ -34,7 +34,7 @@ describe('Collection Query', function() {
           }
         };
 
-        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
           coll.findOne({ where: { name: 'foo' }}, done);
         });
@@ -50,7 +50,7 @@ describe('Collection Query', function() {
           }
         };
 
-        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
           coll.findOne({ name: 'foo' }, function(err, values) {
             assert(values.name);

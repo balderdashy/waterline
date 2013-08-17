@@ -19,7 +19,7 @@ describe('Collection Query', function() {
         }
       });
 
-      new Model(function(err, coll) {
+      new Model({}, function(err, coll) {
         if(err) done(err);
         query = coll;
         done();

@@ -8,7 +8,7 @@ describe('Waterline Collection', function() {
         User;
 
     before(function(done) {
-      new Model(function(err, collection) {
+      new Model({}, function(err, collection) {
         if(err) return done(err);
         User = collection;
         done();
@@ -54,7 +54,7 @@ describe('Waterline Collection', function() {
           }
         });
 
-        new Model(function(err, collection) {
+        new Model({}, function(err, collection) {
           if(err) return done(err);
           User = collection;
           done();
@@ -81,7 +81,7 @@ describe('Waterline Collection', function() {
           }
         });
 
-        new Model(function(err, collection) {
+        new Model({}, function(err, collection) {
           if(err) return done(err);
           User = collection;
           done();

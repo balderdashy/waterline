@@ -24,11 +24,7 @@ describe('Collection sum', function () {
           return cb(null, [criteria]);
         }
       };
-      new Model({
-        adapters: {
-          foo: adapterDef
-        }
-      }, function (err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function (err, coll) {
         if (err) done(err);
         query = coll;
         done();
@@ -44,7 +40,7 @@ describe('Collection sum', function () {
         done(err);
       });
     });
-    
+
     it('should accept an array', function (done) {
       var promise = query.find().sum(['age', 'percent']).then(function (obj) {
         assert(obj[0].sum[0] === 'age');
@@ -54,6 +50,6 @@ describe('Collection sum', function () {
         done(err);
       });
     });
-    
+
   });
 });

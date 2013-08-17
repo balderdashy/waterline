@@ -22,7 +22,7 @@ describe('.beforeDestroy()', function() {
 
       // Fixture Adapter Def
       var adapterDef = { destroy: function(col, options, cb) { return cb(null, options); }};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         person = coll;
         done();
@@ -78,7 +78,7 @@ describe('.beforeDestroy()', function() {
 
       // Fixture Adapter Def
       var adapterDef = { destroy: function(col, options, cb) { return cb(null, options); }};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         person = coll;
         done();

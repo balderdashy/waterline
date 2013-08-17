@@ -47,7 +47,7 @@ describe('Waterline Collection', function() {
 
       // Fixture Adapter Def
       var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         User = coll;
         done();

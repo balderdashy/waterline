@@ -29,7 +29,7 @@ describe('.afterDestroy()', function() {
         create: function(col, options, cb) { return cb(null, { status: true }); }
       };
 
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         person = coll;
         done();
@@ -89,7 +89,7 @@ describe('.afterDestroy()', function() {
         create: function(col, options, cb) { return cb(null, { status: true }); }
       };
 
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         person = coll;
         done();

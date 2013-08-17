@@ -33,7 +33,7 @@ describe('Collection Query', function() {
         }
       };
 
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         coll.createEach([{ name: 'foo' }], done);
       });
@@ -49,7 +49,7 @@ describe('Collection Query', function() {
         }
       };
 
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         coll.createEach([{ name: 'foo' }], function(err, values) {
           assert(values[0].name);

@@ -22,7 +22,7 @@ describe('.beforeValidation()', function() {
 
       // Fixture Adapter Def
       var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [values]); }};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         person = coll;
         done();
@@ -78,7 +78,7 @@ describe('.beforeValidation()', function() {
 
       // Fixture Adapter Def
       var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [values]); }};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         person = coll;
         done();

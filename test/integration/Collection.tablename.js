@@ -13,7 +13,7 @@ describe('Waterline Collection', function() {
         }
       });
 
-      new Model({ tableName: 'foo' }, function(err, collection) {
+      new Model({}, { tableName: 'foo' }, function(err, collection) {
         if(err) return done(err);
         User = collection;
         done();
@@ -36,7 +36,7 @@ describe('Waterline Collection', function() {
         }
       });
 
-      new Model(function(err, collection) {
+      new Model({}, function(err, collection) {
         if(err) return done(err);
         User = collection;
         done();
@@ -59,7 +59,7 @@ describe('Waterline Collection', function() {
         }
       });
 
-      new Model({ tableName: 'fooBar' }, function(err, collection) {
+      new Model({}, { tableName: 'fooBar' }, function(err, collection) {
         if(err) return done(err);
         User = collection;
         done();
