@@ -25,7 +25,7 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = { findOrCreateEach: function(col, criteria, valuesList, cb) { return cb(null, valuesList); }};
-        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
           query = coll;
           done();
@@ -109,7 +109,7 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = { findOrCreateEach: function(col, criteria, valuesList, cb) { return cb(null, valuesList); }};
-        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
           query = coll;
           done();

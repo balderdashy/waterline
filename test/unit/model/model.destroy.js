@@ -28,7 +28,7 @@ describe('Model', function() {
       });
 
       var adapterDef = { destroy: function(col, options, cb) { return cb(null, true); }};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
         if(err) done(err);
         collection = coll;
         done();

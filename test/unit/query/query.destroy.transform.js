@@ -34,7 +34,7 @@ describe('Collection Query', function() {
           }
         };
 
-        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
           if(err) done(err);
           coll.destroy({ name: 'foo' }, done);
         });

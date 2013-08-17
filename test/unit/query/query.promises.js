@@ -27,11 +27,8 @@ describe('Collection Promise', function () {
           return cb(null, [criteria]);
         }
       };
-      new Model({
-        adapters: {
-          foo: adapterDef
-        }
-      }, function (err, coll) {
+
+      new Model({}, { adapters: { foo: adapterDef }}, function (err, coll) {
         if (err) done(err);
         query = coll;
         done();
@@ -41,7 +38,7 @@ describe('Collection Promise', function () {
     it('should return a promise object', function (done) {
       var promise = query.find({}).then(function (obj) {
         assert(obj);
-        return 'test'
+        return 'test';
       }).then(function (test) {
         assert(test === 'test');
         done();

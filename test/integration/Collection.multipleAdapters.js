@@ -27,7 +27,7 @@ describe('Waterline Collection', function() {
       tableName: 'tests'
     });
 
-    new Model({ adapters: { foo: adapter_1, bar: adapter_2 }}, function(err, collection) {
+    new Model({}, { adapters: { foo: adapter_1, bar: adapter_2 }}, function(err, collection) {
       if(err) return done(err);
       User = collection;
       done();
