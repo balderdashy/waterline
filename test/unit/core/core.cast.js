@@ -8,12 +8,17 @@ describe('Core Type Casting', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          name: {
-            type: 'string'
-          },
-          age: {
-            type: 'integer'
+        identity: 'foo',
+        tables: {
+          foo: {
+            attributes: {
+              name: {
+                type: 'string'
+              },
+              age: {
+                type: 'integer'
+              }
+            }
           }
         }
       });
@@ -37,12 +42,17 @@ describe('Core Type Casting', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          name: {
-            type: 'STRING'
-          },
-          age: {
-            type: 'INTEGER'
+        identity: 'foo',
+        tables: {
+          foo: {
+            attributes: {
+              name: {
+                type: 'STRING'
+              },
+              age: {
+                type: 'INTEGER'
+              }
+            }
           }
         }
       });
