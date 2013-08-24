@@ -1,5 +1,5 @@
-var Waterline = require('../../../lib/waterline'),
-    Schema = require('../../../lib/waterline/schema'),
+var Waterline = require('../../../../lib/waterline'),
+    Schema = require('../../../../lib/waterline/schema'),
     assert = require('assert');
 
 describe('Schema', function() {
@@ -31,7 +31,6 @@ describe('Schema', function() {
 
       // Reset schema to test method
       schema.schema = {};
-
       schema.buildCollectionDefinitions(collections);
     });
 
