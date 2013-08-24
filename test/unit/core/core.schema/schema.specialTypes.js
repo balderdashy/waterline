@@ -8,9 +8,14 @@ describe('Core Schema', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          email: 'email',
-          age: 'integer'
+        identity: 'person',
+        tables: {
+          person: {
+            attributes: {
+              email: 'email',
+              age: 'integer'
+            }
+          }
         }
       });
 

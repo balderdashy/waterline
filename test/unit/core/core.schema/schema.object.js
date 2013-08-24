@@ -8,12 +8,17 @@ describe('Core Schema', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          first_name: { type: 'STRING' },
-          last_name: { type: 'STRING' },
-          phone: {
-            type: 'STRING',
-            defaultsTo: '555-555-5555'
+        identity: 'person',
+        tables: {
+          person: {
+            attributes: {
+              first_name: { type: 'STRING' },
+              last_name: { type: 'STRING' },
+              phone: {
+                type: 'STRING',
+                defaultsTo: '555-555-5555'
+              }
+            }
           }
         }
       });

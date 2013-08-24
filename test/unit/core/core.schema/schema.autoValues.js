@@ -8,10 +8,15 @@ describe('Core Schema', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          first_name: {
-            type: 'string',
-            primaryKey: true
+        identity: 'person',
+        tables: {
+          person: {
+            attributes: {
+              first_name: {
+                type: 'string',
+                primaryKey: true
+              }
+            }
           }
         }
       });
@@ -31,9 +36,14 @@ describe('Core Schema', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          count: {
-            autoIncrement: true
+        identity: 'person',
+        tables: {
+          person: {
+            attributes: {
+              count: {
+                autoIncrement: true
+              }
+            }
           }
         }
       });
@@ -55,10 +65,15 @@ describe('Core Schema', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          name: {
-            type: 'string',
-            unique: true
+        identity: 'person',
+        tables: {
+          person: {
+            attributes: {
+              name: {
+                type: 'string',
+                unique: true
+              }
+            }
           }
         }
       });
@@ -76,10 +91,15 @@ describe('Core Schema', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          name: {
-            type: 'string',
-            index: true
+        identity: 'person',
+        tables: {
+          person: {
+            attributes: {
+              name: {
+                type: 'string',
+                index: true
+              }
+            }
           }
         }
       });
@@ -97,10 +117,15 @@ describe('Core Schema', function() {
 
     before(function() {
       var Person = Core.extend({
-        attributes: {
-          sex: {
-            type: 'string',
-            enum: ['male', 'female']
+        identity: 'person',
+        tables: {
+          person: {
+            attributes: {
+              sex: {
+                type: 'string',
+                enum: ['male', 'female']
+              }
+            }
           }
         }
       });

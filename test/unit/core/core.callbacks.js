@@ -13,6 +13,8 @@ describe('Core Lifecycle Callbacks', function() {
 
     before(function() {
       var Person = Core.extend({
+        tables: { foo: { attributes: {}}},
+        identity: 'foo',
         attributes: {
           name: 'string'
         },
@@ -49,6 +51,7 @@ describe('Core Lifecycle Callbacks', function() {
       assert(typeof person._callbacks.afterDestroy[0] === 'function');
     });
 
+
     it('should ignore invalid lifecycle states', function() {
       assert(!person._callbacks.invalidState);
     });
@@ -64,6 +67,8 @@ describe('Core Lifecycle Callbacks', function() {
 
     before(function() {
       var Person = Core.extend({
+        tables: { foo: { attributes: {}}},
+        identity: 'foo',
         attributes: {
           name: 'string',
 
@@ -107,6 +112,8 @@ describe('Core Lifecycle Callbacks', function() {
 
     before(function() {
       var Person = Core.extend({
+        tables: { foo: { attributes: {}}},
+        identity: 'foo',
         attributes: {
           name: 'string',
 
@@ -146,6 +153,8 @@ describe('Core Lifecycle Callbacks', function() {
 
     before(function() {
       var Person = Core.extend({
+        tables: { foo: { attributes: {}}},
+        identity: 'foo',
         attributes: {
           name: 'string'
         },
