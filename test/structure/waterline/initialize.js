@@ -13,38 +13,86 @@ describe('Waterline', function() {
 
     it('should keep an internal mapping of collection definitions', function() {
       var collection = Waterline.Collection.extend({ foo: 'bar' });
-      var collections = waterline.loadCollection('foo', collection);
+      var collections = waterline.loadCollection(collection);
 
-      assert(collections.foo);
+      assert(Array.isArray(collections));
+      assert(collections.length === 1);
     });
   });
 
 
   describe('initialize', function() {
-    var waterline;
 
-    before(function() {
-      waterline = new Waterline();
+    describe('without junction tables', function() {
+      var waterline;
 
-      // Setup Fixture Model
-      var collection = Waterline.Collection.extend({
-        tableName: 'foo',
-        attributes: {
-          foo: 'string'
-        }
+      before(function() {
+        waterline = new Waterline();
+
+        // Setup Fixture Model
+        var collection = Waterline.Collection.extend({
+          tableName: 'foo',
+          attributes: {
+            foo: 'string'
+          }
+        });
+
+        waterline.loadCollection(collection);
       });
 
-      waterline.loadCollection('foo', collection);
+
+      it('should return an array of initialized collections', function(done) {
+        waterline.initialize({ adapters: { foo: 'test' }}, function(err, collections) {
+          if(err) return done(err);
+
+          assert(Object.keys(collections).length === 1);
+          assert(collections.foo);
+          done();
+        });
+      });
     });
 
 
-    it('should return an array of initialized collections', function(done) {
-      waterline.initialize({ adapters: { foo: 'test' }}, function(err, collections) {
-        if(err) return done(err);
+    describe('with junction tables', function() {
+      var waterline;
 
-        assert(collections.length === 1);
-        assert(collections[0]._schema.schema.foo.type === 'string');
-        done();
+      before(function() {
+        waterline = new Waterline();
+
+        // Setup Fixture Models
+        var foo = Waterline.Collection.extend({
+          tableName: 'foo',
+          attributes: {
+            bar: {
+              collection: 'bar'
+            }
+          }
+        });
+
+        var bar = Waterline.Collection.extend({
+          tableName: 'bar',
+          attributes: {
+            foo: {
+              collection: 'foo'
+            }
+          }
+        });
+
+        waterline.loadCollection(foo);
+        waterline.loadCollection(bar);
+      });
+
+
+      it('should not expose junction tables to the outside world', function(done) {
+        waterline.initialize({ adapters: { foo: 'test' }}, function(err, collections) {
+          if(err) return done(err);
+
+          assert(Object.keys(collections).length === 2);
+          assert(collections.foo);
+          assert(collections.bar);
+
+          done();
+        });
       });
     });
 
