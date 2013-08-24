@@ -1,4 +1,6 @@
-var Transformer = require('../../../../lib/waterline/core/transformations'),
+var Waterline = require('../../../../lib/waterline'),
+    Schema = require('../../../../lib/waterline/schema'),
+    Transformer = require('../../../../lib/waterline/core/transformations'),
     assert = require('assert');
 
 describe('Core Transformations', function() {
@@ -16,7 +18,7 @@ describe('Core Transformations', function() {
           }
         };
 
-        transformer = new Transformer(attributes, { models: {}, collections: {} });
+        transformer = new Transformer(attributes, {});
       });
 
       it('should change username key to login', function() {
@@ -35,27 +37,47 @@ describe('Core Transformations', function() {
     describe('with associations', function() {
       var transformer;
 
-      before(function() {
-        var attributes = {
-          name: 'string',
-          car: {
-            model: 'Car'
-          }
-        };
+      /**
+       * Build up real waterline schema for accurate testing
+       */
 
-        transformer = new Transformer(attributes, { models: {}, collections: {} });
+      before(function() {
+        var collections = {},
+            waterline = new Waterline();
+
+        collections.customer = Waterline.Collection.extend({
+          tableName: 'customer',
+          attributes: {
+            uuid: {
+              type: 'string',
+              primaryKey: true
+            }
+          }
+        });
+
+        collections.foo = Waterline.Collection.extend({
+          tableName: 'foo',
+          attributes: {
+            customer: {
+              model: 'customer'
+            }
+          }
+        });
+
+        var schema = new Schema(collections);
+        transformer = new Transformer(collections.foo.prototype.attributes, schema.schema);
       });
 
-      it('should change car key to car_id', function() {
-        var values = transformer.serialize({ car: 1 });
-        assert(values.car_id);
-        assert(values.car_id === 1);
+      it('should change customer key to customer_uuid', function() {
+        var values = transformer.serialize({ customer: 1 });
+        assert(values.customer_uuid);
+        assert(values.customer_uuid === 1);
       });
 
       it('should work recursively', function() {
-        var values = transformer.serialize({ where: { user: { car: 1 }}});
-        assert(values.where.user.car_id);
-        assert(values.where.user.car_id === 1);
+        var values = transformer.serialize({ where: { user: { customer: 1 }}});
+        assert(values.where.user.customer_uuid);
+        assert(values.where.user.customer_uuid === 1);
       });
     });
   });

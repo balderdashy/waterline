@@ -16,7 +16,7 @@ describe('Core Transformations', function() {
           }
         };
 
-        transformer = new Transformer(attributes, { models: {}, collections: {} });
+        transformer = new Transformer(attributes, {});
       });
 
       it('should change login key to username', function() {
@@ -26,39 +26,5 @@ describe('Core Transformations', function() {
       });
     });
 
-    describe('with associations', function() {
-      var transformer;
-
-      before(function() {
-        var attributes = {
-          name: 'string',
-          car: {
-            model: 'Car'
-          }
-        };
-
-        transformer = new Transformer(attributes, { models: {}, collections: {} });
-      });
-
-      it('should change car_id key to car', function() {
-        var values = transformer.unserialize({ car_id: 1 });
-        assert(values.car);
-        assert(!values.car_id);
-        assert(values.car === 1);
-      });
-
-      it('should group results prefixed with special `__` character sequence', function() {
-        var values = transformer.unserialize({
-          name: 'foo',
-          car__id: 1,
-          car__make: 'porsche',
-          car__model: 'cayman'
-        });
-
-        assert(values.car);
-        assert(Object.keys(values.car).length === 3);
-      });
-    });
   });
-
 });
