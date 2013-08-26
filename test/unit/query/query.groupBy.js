@@ -1,5 +1,5 @@
-var Collection = require('../../../lib/waterline/collection'),
-  assert = require('assert');
+var Waterline = require('../../../lib/waterline'),
+    assert = require('assert');
 
 describe('Collection groupBy', function () {
 
@@ -8,8 +8,8 @@ describe('Collection groupBy', function () {
 
     before(function (done) {
 
-      // Extend for testing purposes
-      var Model = Collection.extend({
+      var waterline = new Waterline();
+      var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -18,6 +18,8 @@ describe('Collection groupBy', function () {
         }
       });
 
+      waterline.loadCollection(Model);
+
       // Fixture Adapter Def
       var adapterDef = {
         find: function (col, criteria, cb) {
@@ -25,30 +27,34 @@ describe('Collection groupBy', function () {
         }
       };
 
-      new Model({}, { adapters: { foo: adapterDef }}, function (err, coll) {
-        if (err) done(err);
-        query = coll;
+      waterline.initialize({ adapters: { foo: adapterDef }}, function (err, colls) {
+        if (err) return done(err);
+        query = colls.user;
         done();
       });
     });
 
     it('should return criteria with group sets', function (done) {
-      var promise = query.find().groupBy('age', 'percent').then(function (obj) {
+      query.find()
+      .groupBy('age', 'percent')
+      .exec(function (err, obj) {
+        if(err) return done(err);
+
         assert(obj[0].groupBy[0] === 'age');
         assert(obj[0].groupBy[1] === 'percent');
         done();
-      }).fail(function (err) {
-        done(err);
       });
     });
 
     it('should accept an array', function (done) {
-      var promise = query.find().groupBy(['age', 'percent']).then(function (obj) {
+      query.find()
+      .groupBy(['age', 'percent'])
+      .exec(function (err, obj) {
+        if(err) return done(err);
+
         assert(obj[0].groupBy[0] === 'age');
         assert(obj[0].groupBy[1] === 'percent');
         done();
-      }).fail(function (err) {
-        done(err);
       });
     });
 

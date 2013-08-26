@@ -12,9 +12,12 @@ describe('Waterline Collection', function() {
       tableName: 'tests'
     });
 
-    new Model({}, { adapters: { foobar: adapter }}, function(err, collection) {
+    var waterline = new Waterline();
+    waterline.loadCollection(Model);
+
+    waterline.initialize({ adapters: { foobar: adapter }}, function(err, colls) {
       if(err) return done(err);
-      User = collection;
+      User = colls.tests;
       done();
     });
   });

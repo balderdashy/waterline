@@ -1,4 +1,4 @@
-var Collection = require('../../../lib/waterline/collection'),
+var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('.afterCreate()', function() {
@@ -7,7 +7,8 @@ describe('.afterCreate()', function() {
     var person;
 
     before(function(done) {
-      var Model = Collection.extend({
+      var waterline = new Waterline();
+      var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -20,11 +21,13 @@ describe('.afterCreate()', function() {
         }
       });
 
+      waterline.loadCollection(Model);
+
       // Fixture Adapter Def
       var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
-      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
+      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
         if(err) done(err);
-        person = coll;
+        person = colls.user;
         done();
       });
     });
@@ -55,7 +58,8 @@ describe('.afterCreate()', function() {
     var person;
 
     before(function(done) {
-      var Model = Collection.extend({
+      var waterline = new Waterline();
+      var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -77,11 +81,13 @@ describe('.afterCreate()', function() {
         ]
       });
 
+      waterline.loadCollection(Model);
+
       // Fixture Adapter Def
       var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
-      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
+      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
         if(err) done(err);
-        person = coll;
+        person = colls.user;
         done();
       });
     });

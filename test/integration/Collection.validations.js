@@ -4,7 +4,8 @@ var Waterline = require('../../lib/waterline'),
 describe('Waterline Collection', function() {
 
   describe('validations', function() {
-    var User;
+    var waterline = new Waterline(),
+        User;
 
     before(function(done) {
 
@@ -29,11 +30,13 @@ describe('Waterline Collection', function() {
         }
       });
 
+      waterline.loadCollection(Model);
+
       // Fixture Adapter Def
       var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
-      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
+      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
         if(err) done(err);
-        User = coll;
+        User = colls.user;
         done();
       });
     });

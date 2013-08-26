@@ -4,10 +4,12 @@ var Waterline = require('../../lib/waterline'),
 describe('Waterline Collection', function() {
 
   describe('with custom column name', function() {
-    var User;
+    var waterline = new Waterline(),
+        User;
 
     before(function(done) {
       var Model = Waterline.Collection.extend({
+        tableName: 'foo',
         attributes: {
           name: {
             type: 'string',
@@ -16,9 +18,11 @@ describe('Waterline Collection', function() {
         }
       });
 
-      new Model({}, { tableName: 'foo' }, function(err, collection) {
+      waterline.loadCollection(Model);
+
+      waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
         if(err) return done(err);
-        User = collection;
+        User = colls.foo;
         done();
       });
     });

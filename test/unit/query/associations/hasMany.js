@@ -55,7 +55,7 @@ describe('Collection Query', function() {
       .exec(function(err, values) {
         assert(values.joins[0].collection === 'car');
         assert(values.joins[0].pk === 'uuid');
-        assert(values.joins[0].fk === 'id');
+        assert(values.joins[0].fk === 'user_uuid');
         done();
       });
     });

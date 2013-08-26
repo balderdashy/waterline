@@ -1,4 +1,4 @@
-var Collection = require('../../../lib/waterline/collection'),
+var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('Collection Query', function() {
@@ -6,12 +6,12 @@ describe('Collection Query', function() {
   describe('.count()', function() {
 
     describe('with transformed values', function() {
-      var Model;
+      var query;
 
-      before(function() {
+      before(function(done) {
 
-        // Extend for testing purposes
-        Model = Collection.extend({
+        var waterline = new Waterline();
+        var Model = Waterline.Collection.extend({
           identity: 'user',
           adapter: 'foo',
 
@@ -22,9 +22,8 @@ describe('Collection Query', function() {
             }
           }
         });
-      });
 
-      it('should transform values before sending to adapter', function(done) {
+        waterline.loadCollection(Model);
 
         // Fixture Adapter Def
         var adapterDef = {
@@ -34,9 +33,18 @@ describe('Collection Query', function() {
           }
         };
 
-        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
-          if(err) done(err);
-          coll.count({ name: 'foo' }, done);
+        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+          if(err) return done(err);
+          query = colls.user;
+          done();
+        });
+      });
+
+      it('should transform values before sending to adapter', function(done) {
+        query.count({ name: 'foo' }, function(err, obj) {
+          if(err) return done(err);
+          assert(obj === 1);
+          done();
         });
       });
     });

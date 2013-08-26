@@ -1,5 +1,5 @@
-var Collection = require('../../../lib/waterline/collection'),
-  assert = require('assert');
+var Waterline = require('../../../lib/waterline'),
+    assert = require('assert');
 
 describe('Collection average', function () {
 
@@ -9,7 +9,8 @@ describe('Collection average', function () {
     before(function (done) {
 
       // Extend for testing purposes
-      var Model = Collection.extend({
+      var waterline = new Waterline();
+      var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -25,30 +26,32 @@ describe('Collection average', function () {
         }
       };
 
-      new Model({}, { adapters: { foo: adapterDef }}, function (err, coll) {
-        if (err) done(err);
-        query = coll;
+      waterline.loadCollection(Model);
+
+      waterline.initialize({ adapters: { foo: adapterDef }}, function (err, colls) {
+        if (err) return done(err);
+        query = colls.user;
         done();
       });
     });
 
     it('should return criteria with average set', function (done) {
-      var promise = query.find().average('age', 'percent').then(function (obj) {
+      query.find().average('age', 'percent').exec(function (err, obj) {
+        if(err) return done(err);
+
         assert(obj[0].average[0] === 'age');
         assert(obj[0].average[1] === 'percent');
         done();
-      }).fail(function (err) {
-        done(err);
       });
     });
 
     it('should accept an array', function (done) {
-      var promise = query.find().average(['age', 'percent']).then(function (obj) {
+      query.find().average(['age', 'percent']).exec(function (err, obj) {
+        if(err) return done(err);
+
         assert(obj[0].average[0] === 'age');
         assert(obj[0].average[1] === 'percent');
         done();
-      }).fail(function (err) {
-        done(err);
       });
     });
 
