@@ -4,13 +4,15 @@ var Waterline = require('../../lib/waterline'),
 describe('Waterline Collection', function() {
 
   describe('basic fixture', function() {
-    var Model = require('./fixtures/model.fixture'),
+    var waterline = new Waterline(),
+        Model = require('./fixtures/model.fixture'),
         User;
 
     before(function(done) {
-      new Model({}, function(err, collection) {
+      waterline.loadCollection(Model);
+      waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
         if(err) return done(err);
-        User = collection;
+        User = colls.test;
         done();
       });
     });
@@ -44,7 +46,8 @@ describe('Waterline Collection', function() {
   describe('custom fixtures', function() {
 
     describe('lowercase type', function() {
-      var User;
+      var waterline = new Waterline(),
+          User;
 
       before(function(done) {
         var Model = Waterline.Collection.extend({
@@ -54,9 +57,10 @@ describe('Waterline Collection', function() {
           }
         });
 
-        new Model({}, function(err, collection) {
+        waterline.loadCollection(Model);
+        waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
           if(err) return done(err);
-          User = collection;
+          User = colls.lowercaseType;
           done();
         });
       });
@@ -71,7 +75,8 @@ describe('Waterline Collection', function() {
     });
 
     describe('uppercase type', function() {
-      var User;
+      var waterline = new Waterline(),
+          User;
 
       before(function(done) {
         var Model = Waterline.Collection.extend({
@@ -81,9 +86,10 @@ describe('Waterline Collection', function() {
           }
         });
 
-        new Model({}, function(err, collection) {
+        waterline.loadCollection(Model);
+        waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
           if(err) return done(err);
-          User = collection;
+          User = colls.uppercaseType;
           done();
         });
       });

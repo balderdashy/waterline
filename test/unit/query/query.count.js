@@ -1,4 +1,4 @@
-var Collection = require('../../../lib/waterline/collection'),
+var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('Collection Query', function() {
@@ -8,8 +8,8 @@ describe('Collection Query', function() {
 
     before(function(done) {
 
-      // Extend for testing purposes
-      var Model = Collection.extend({
+      var waterline = new Waterline();
+      var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -21,17 +21,21 @@ describe('Collection Query', function() {
         }
       });
 
+      waterline.loadCollection(Model);
+
       // Fixture Adapter Def
       var adapterDef = { count: function(col, criteria, cb) { return cb(null, 1); }};
-      new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
-        if(err) done(err);
-        query = coll;
+      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        if(err) return done(err);
+        query = colls.user;
         done();
       });
     });
 
     it('should return a count', function(done) {
       query.count({ name: 'foo'}, {}, function(err, count) {
+        if(err) return done(err);
+
         assert(count > 0);
         done();
       });
@@ -40,7 +44,8 @@ describe('Collection Query', function() {
     it('should allow a query to be built using deferreds', function(done) {
       query.count()
       .exec(function(err, result) {
-        assert(!err);
+        if(err) return done(err);
+
         assert(result);
         done();
       });

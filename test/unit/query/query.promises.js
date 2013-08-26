@@ -1,5 +1,5 @@
-var Collection = require('../../../lib/waterline/collection'),
-  assert = require('assert');
+var Waterline = require('../../../lib/waterline'),
+    assert = require('assert');
 
 describe('Collection Promise', function () {
 
@@ -8,8 +8,8 @@ describe('Collection Promise', function () {
 
     before(function (done) {
 
-      // Extend for testing purposes
-      var Model = Collection.extend({
+      var waterline = new Waterline();
+      var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -21,6 +21,8 @@ describe('Collection Promise', function () {
         }
       });
 
+      waterline.loadCollection(Model);
+
       // Fixture Adapter Def
       var adapterDef = {
         find: function (col, criteria, cb) {
@@ -28,9 +30,9 @@ describe('Collection Promise', function () {
         }
       };
 
-      new Model({}, { adapters: { foo: adapterDef }}, function (err, coll) {
-        if (err) done(err);
-        query = coll;
+      waterline.initialize({ adapters: { foo: adapterDef }}, function (err, colls) {
+        if (err) return done(err);
+        query = colls.user;
         done();
       });
     });

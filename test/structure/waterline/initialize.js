@@ -83,13 +83,14 @@ describe('Waterline', function() {
       });
 
 
-      it('should not expose junction tables to the outside world', function(done) {
+      it('should add the junction tables to the collection output', function(done) {
         waterline.initialize({ adapters: { foo: 'test' }}, function(err, collections) {
           if(err) return done(err);
 
-          assert(Object.keys(collections).length === 2);
+          assert(Object.keys(collections).length === 3);
           assert(collections.foo);
           assert(collections.bar);
+          assert(collections.bar_foo);
 
           done();
         });

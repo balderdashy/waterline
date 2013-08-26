@@ -65,7 +65,7 @@ describe('Core Transformations', function() {
         });
 
         var schema = new Schema(collections);
-        transformer = new Transformer(collections.foo.prototype.attributes, schema.schema);
+        transformer = new Transformer(schema.schema.foo.attributes, schema.schema);
       });
 
       it('should change customer key to customer_uuid', function() {

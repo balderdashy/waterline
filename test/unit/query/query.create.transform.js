@@ -1,4 +1,4 @@
-var Collection = require('../../../lib/waterline/collection'),
+var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('Collection Query', function() {
@@ -10,8 +10,7 @@ describe('Collection Query', function() {
 
       before(function() {
 
-        // Extend for testing purposes
-        Model = Collection.extend({
+        Model = Waterline.Collection.extend({
           identity: 'user',
           adapter: 'foo',
 
@@ -26,6 +25,9 @@ describe('Collection Query', function() {
 
       it('should transform values before sending to adapter', function(done) {
 
+        var waterline = new Waterline();
+        waterline.loadCollection(Model);
+
         // Fixture Adapter Def
         var adapterDef = {
           create: function(col, values, cb) {
@@ -34,14 +36,18 @@ describe('Collection Query', function() {
           }
         };
 
-        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
-          if(err) done(err);
-          coll.create({ name: 'foo' }, done);
+        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+          if(err) return done(err);
+          colls.user.create({ name: 'foo' }, done);
         });
+
       });
 
       it('should transform values after receiving from adapter', function(done) {
 
+        var waterline = new Waterline();
+        waterline.loadCollection(Model);
+
         // Fixture Adapter Def
         var adapterDef = {
           create: function(col, values, cb) {
@@ -50,9 +56,9 @@ describe('Collection Query', function() {
           }
         };
 
-        new Model({}, { adapters: { foo: adapterDef }}, function(err, coll) {
-          if(err) done(err);
-          coll.create({ name: 'foo' }, function(err, values) {
+        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+          if(err) return done(err);
+          colls.user.create({ name: 'foo' }, function(err, values) {
             assert(values.name);
             assert(!values.login);
             done();
