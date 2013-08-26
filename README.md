@@ -343,6 +343,37 @@ var User = Waterline.Collection.extend({
   }
 });
 ```
+## Custom Types
+You can define your own types and thier validation with the `types` hash
+
+```javascript
+var User = Waterline.Collection.extend({
+
+  types: {
+  
+     point: function(latlng){
+         return latlng.x && latlng.y
+      }
+   }
+
+  attributes: {
+
+    firstName: {
+      type: 'string',
+      required: true,
+      minLength: 5,
+      maxLength: 15
+    },
+
+    location: {
+      //note, that the base type still has to be define
+      type: 'json',
+      point: true
+    
+    }
+  }
+});
+```
 
 ## Indexing
 
