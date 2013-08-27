@@ -10,7 +10,8 @@ describe('Collection', function() {
 
   it('should allow the prototype to be extended', function(done) {
     var Person = Collection.extend({ foo: 'bar' });
-    new Person({ test: { attributes: {}}}, { tableName: 'test', attributes: {} }, function(err, person) {
+    var schema = { schema: { test: { attributes: {} }}};
+    new Person(schema, { tableName: 'test' }, function(err, person) {
       assert(person.foo === 'bar');
       done();
     });
@@ -30,7 +31,8 @@ describe('Collection', function() {
     });
 
     it('should have a schema', function(done) {
-      new Person({ test: { attributes: { foo: { type: 'string' }}}}, { tableName: 'test' }, function(err, person) {
+      var schema = { schema: { test: { attributes: { foo: { type: 'string' }} }}};
+      new Person(schema, { tableName: 'test' }, function(err, person) {
         assert(person._schema.schema.foo.type === 'string');
         done();
       });

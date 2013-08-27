@@ -1,4 +1,4 @@
-var Core = require('../../../lib/waterline/core'),
+var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('Core Lifecycle Callbacks', function() {
@@ -11,18 +11,21 @@ describe('Core Lifecycle Callbacks', function() {
   describe('default callbacks object', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
-        tables: { foo: { attributes: {}}},
-        identity: 'foo',
-        attributes: {
-          name: 'string'
-        },
+    before(function(done) {
+      var waterline = new Waterline();
 
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
+        attributes: {},
         invalidState: function() {}
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should build a callbacks object', function() {
@@ -65,10 +68,11 @@ describe('Core Lifecycle Callbacks', function() {
   describe('callback as an array', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
-        tables: { foo: { attributes: {}}},
-        identity: 'foo',
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
         attributes: {
           name: 'string',
 
@@ -84,7 +88,12 @@ describe('Core Lifecycle Callbacks', function() {
         beforeValidation: ['changeState_1', 'changeState_2']
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should map functions to internal _callbacks object', function() {
@@ -110,10 +119,11 @@ describe('Core Lifecycle Callbacks', function() {
   describe('callback as a string', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
-        tables: { foo: { attributes: {}}},
-        identity: 'foo',
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
         attributes: {
           name: 'string',
 
@@ -125,7 +135,12 @@ describe('Core Lifecycle Callbacks', function() {
         beforeValidation: 'changeState_1'
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should map functions to internal _callbacks object', function() {
@@ -151,10 +166,11 @@ describe('Core Lifecycle Callbacks', function() {
   describe('callback as a function', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
-        tables: { foo: { attributes: {}}},
-        identity: 'foo',
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
         attributes: {
           name: 'string'
         },
@@ -164,7 +180,12 @@ describe('Core Lifecycle Callbacks', function() {
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should map functions to internal _callbacks object', function() {

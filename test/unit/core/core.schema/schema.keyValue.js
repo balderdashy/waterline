@@ -1,4 +1,4 @@
-var Core = require('../../../../lib/waterline/core'),
+var Waterline = require('../../../../lib/waterline'),
     assert = require('assert');
 
 describe('Core Schema', function() {
@@ -6,20 +6,23 @@ describe('Core Schema', function() {
   describe('with simple key/value attributes', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              first_name: 'STRING',
-              last_name: 'STRING'
-            }
-          }
+        attributes: {
+          first_name: 'STRING',
+          last_name: 'STRING'
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should set internal schema attributes', function() {

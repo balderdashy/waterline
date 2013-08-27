@@ -1,4 +1,4 @@
-var Core = require('../../../lib/waterline/core'),
+var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('Core Type Casting', function() {
@@ -6,24 +6,27 @@ describe('Core Type Casting', function() {
   describe('.cast() with model attributes', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
-        identity: 'foo',
-        tables: {
-          foo: {
-            attributes: {
-              name: {
-                type: 'string'
-              },
-              age: {
-                type: 'integer'
-              }
-            }
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
+        attributes: {
+          name: {
+            type: 'string'
+          },
+          age: {
+            type: 'integer'
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should cast values to proper types', function() {
@@ -40,24 +43,27 @@ describe('Core Type Casting', function() {
   describe('.cast() with model attributes and uppercase types', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
-        identity: 'foo',
-        tables: {
-          foo: {
-            attributes: {
-              name: {
-                type: 'STRING'
-              },
-              age: {
-                type: 'INTEGER'
-              }
-            }
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
+        attributes: {
+          name: {
+            type: 'STRING'
+          },
+          age: {
+            type: 'INTEGER'
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should cast values to proper types', function() {

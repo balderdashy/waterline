@@ -1,4 +1,4 @@
-var Core = require('../../../lib/waterline/core'),
+var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('Core Validator', function() {
@@ -6,27 +6,30 @@ describe('Core Validator', function() {
   describe('.build() with model attributes', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              first_name: {
-                type: 'string',
-                length: { min: 2, max: 5 }
-              },
-              last_name: {
-                type: 'string',
-                required: true,
-                defaultsTo: 'Smith'
-              }
-            }
+        attributes: {
+          first_name: {
+            type: 'string',
+            length: { min: 2, max: 5 }
+          },
+          last_name: {
+            type: 'string',
+            required: true,
+            defaultsTo: 'Smith'
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
 
@@ -54,28 +57,31 @@ describe('Core Validator', function() {
   describe('.validate()', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              first_name: {
-                type: 'string',
-                min: 2,
-                max: 5
-              },
-              last_name: {
-                type: 'string',
-                required: true,
-                defaultsTo: 'Smith'
-              }
-            }
+        attributes: {
+          first_name: {
+            type: 'string',
+            min: 2,
+            max: 5
+          },
+          last_name: {
+            type: 'string',
+            required: true,
+            defaultsTo: 'Smith'
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
 

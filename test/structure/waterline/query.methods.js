@@ -14,7 +14,8 @@ describe('Collection', function() {
     // Setup Fixture Model
     before(function(done) {
       var collection = Collection.extend({});
-      new collection({ test: { attributes: {} }}, { tableName: 'test', attributes: {} }, function(err, coll) {
+      var schema = { schema: { test: { attributes: {} }}};
+      new collection(schema, { tableName: 'test' }, function(err, coll) {
         person = coll;
         done();
       });
