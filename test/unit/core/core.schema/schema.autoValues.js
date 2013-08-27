@@ -1,4 +1,4 @@
-var Core = require('../../../../lib/waterline/core'),
+var Waterline = require('../../../../lib/waterline'),
     assert = require('assert');
 
 describe('Core Schema', function() {
@@ -6,22 +6,25 @@ describe('Core Schema', function() {
   describe('with custom primary key', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              first_name: {
-                type: 'string',
-                primaryKey: true
-              }
-            }
+        attributes: {
+          first_name: {
+            type: 'string',
+            primaryKey: true
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should pass the primary key down to the adapter', function() {
@@ -34,21 +37,24 @@ describe('Core Schema', function() {
   describe('with autoIncrement key', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              count: {
-                autoIncrement: true
-              }
-            }
+        attributes: {
+          count: {
+            autoIncrement: true
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should pass the autoIncrement down to the adapter', function() {
@@ -63,22 +69,25 @@ describe('Core Schema', function() {
   describe('with uniqueness key', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              name: {
-                type: 'string',
-                unique: true
-              }
-            }
+        attributes: {
+          name: {
+            type: 'string',
+            unique: true
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should pass the unique key down to the adapter', function() {
@@ -89,22 +98,25 @@ describe('Core Schema', function() {
   describe('with index key', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              name: {
-                type: 'string',
-                index: true
-              }
-            }
+        attributes: {
+          name: {
+            type: 'string',
+            index: true
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should pass the index key down to the adapter', function() {
@@ -115,22 +127,25 @@ describe('Core Schema', function() {
   describe('with enum key', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              sex: {
-                type: 'string',
-                enum: ['male', 'female']
-              }
-            }
+        attributes: {
+          sex: {
+            type: 'string',
+            enum: ['male', 'female']
           }
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should pass the enum options down to the adapter', function() {

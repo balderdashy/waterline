@@ -1,4 +1,4 @@
-var Core = require('../../../../lib/waterline/core'),
+var Waterline = require('../../../../lib/waterline'),
     assert = require('assert');
 
 describe('Core Schema', function() {
@@ -6,20 +6,23 @@ describe('Core Schema', function() {
   describe('with instance methods', function() {
     var person;
 
-    before(function() {
-      var Person = Core.extend({
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
         identity: 'person',
-        tables: {
-          person: {
-            attributes: {
-              first_name: 'string',
-              doSomething: function() {}
-            }
-          }
+        attributes: {
+          first_name: 'string',
+          doSomething: function() {}
         }
       });
 
-      person = new Person();
+      waterline.loadCollection(Person);
+      waterline.initialize({ adapters: { }}, function(err, colls) {
+        if(err) return done(err);
+        person = colls.person;
+        done();
+      });
     });
 
     it('should ignore instance methods in the schema', function() {
