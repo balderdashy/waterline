@@ -53,9 +53,11 @@ describe('Collection Query', function() {
       Car.findOne({ driver: 1 })
       .populate('driver')
       .exec(function(err, values) {
-        assert(values.joins[0].collection === 'user');
-        assert(values.joins[0].pk === 'id');
-        assert(values.joins[0].fk === 'uuid');
+        assert(values.joins[0].parent === 'car');
+        assert(values.joins[0].parentKey === 'user_uuid');
+        assert(values.joins[0].child === 'user');
+        assert(values.joins[0].childKey === 'uuid');
+        assert(values.joins[0].removeParentKey === true);
         done();
       });
     });

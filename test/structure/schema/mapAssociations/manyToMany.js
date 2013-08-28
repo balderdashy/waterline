@@ -56,17 +56,17 @@ describe('Schema', function() {
           assert(schemaDef.schema.bar_foo);
           assert(schemaDef.schema.bar_foo.junctionTable === true);
 
-          assert(schemaDef.schema.bar_foo.attributes.foo_id);
-          assert(schemaDef.schema.bar_foo.attributes.foo_id.columnName === 'foo_id');
-          assert(schemaDef.schema.bar_foo.attributes.foo_id.foreignKey === true);
-          assert(schemaDef.schema.bar_foo.attributes.foo_id.references === 'foo');
-          assert(schemaDef.schema.bar_foo.attributes.foo_id.on === 'id');
+          assert(schemaDef.schema.bar_foo.attributes.foo);
+          assert(schemaDef.schema.bar_foo.attributes.foo.columnName === 'foo_id');
+          assert(schemaDef.schema.bar_foo.attributes.foo.foreignKey === true);
+          assert(schemaDef.schema.bar_foo.attributes.foo.references === 'foo');
+          assert(schemaDef.schema.bar_foo.attributes.foo.on === 'id');
 
-          assert(schemaDef.schema.bar_foo.attributes.bar_id);
-          assert(schemaDef.schema.bar_foo.attributes.bar_id.columnName === 'bar_id');
-          assert(schemaDef.schema.bar_foo.attributes.bar_id.foreignKey === true);
-          assert(schemaDef.schema.bar_foo.attributes.bar_id.references === 'bar');
-          assert(schemaDef.schema.bar_foo.attributes.bar_id.on === 'id');
+          assert(schemaDef.schema.bar_foo.attributes.bar);
+          assert(schemaDef.schema.bar_foo.attributes.bar.columnName === 'bar_id');
+          assert(schemaDef.schema.bar_foo.attributes.bar.foreignKey === true);
+          assert(schemaDef.schema.bar_foo.attributes.bar.references === 'bar');
+          assert(schemaDef.schema.bar_foo.attributes.bar.on === 'id');
         });
       });
 
@@ -127,19 +127,19 @@ describe('Schema', function() {
           assert(schemaDef.schema.bar_foo);
           assert(schemaDef.schema.bar_foo.junctionTable === true);
 
-          assert(schemaDef.schema.bar_foo.attributes.foo_uuid);
-          assert(schemaDef.schema.bar_foo.attributes.foo_uuid.columnName === 'foo_uuid');
-          assert(schemaDef.schema.bar_foo.attributes.foo_uuid.type === 'string');
-          assert(schemaDef.schema.bar_foo.attributes.foo_uuid.foreignKey === true);
-          assert(schemaDef.schema.bar_foo.attributes.foo_uuid.references === 'foo');
-          assert(schemaDef.schema.bar_foo.attributes.foo_uuid.on === 'uuid');
+          assert(schemaDef.schema.bar_foo.attributes.foo);
+          assert(schemaDef.schema.bar_foo.attributes.foo.columnName === 'foo_uuid');
+          assert(schemaDef.schema.bar_foo.attributes.foo.type === 'string');
+          assert(schemaDef.schema.bar_foo.attributes.foo.foreignKey === true);
+          assert(schemaDef.schema.bar_foo.attributes.foo.references === 'foo');
+          assert(schemaDef.schema.bar_foo.attributes.foo.on === 'uuid');
 
-          assert(schemaDef.schema.bar_foo.attributes.bar_area);
-          assert(schemaDef.schema.bar_foo.attributes.bar_area.columnName === 'bar_area');
-          assert(schemaDef.schema.bar_foo.attributes.bar_area.type === 'integer');
-          assert(schemaDef.schema.bar_foo.attributes.bar_area.foreignKey === true);
-          assert(schemaDef.schema.bar_foo.attributes.bar_area.references === 'bar');
-          assert(schemaDef.schema.bar_foo.attributes.bar_area.on === 'area');
+          assert(schemaDef.schema.bar_foo.attributes.bar);
+          assert(schemaDef.schema.bar_foo.attributes.bar.columnName === 'bar_area');
+          assert(schemaDef.schema.bar_foo.attributes.bar.type === 'integer');
+          assert(schemaDef.schema.bar_foo.attributes.bar.foreignKey === true);
+          assert(schemaDef.schema.bar_foo.attributes.bar.references === 'bar');
+          assert(schemaDef.schema.bar_foo.attributes.bar.on === 'area');
         });
       });
 

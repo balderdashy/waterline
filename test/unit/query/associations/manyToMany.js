@@ -49,16 +49,23 @@ describe('Collection Query', function() {
       User.findOne(1)
       .populate('cars')
       .exec(function(err, values) {
+
         assert(values.joins.length === 2);
+
         assert(values.joins[0].parent === 'user');
-        assert(values.joins[0].collection === 'car_user');
-        assert(values.joins[0].pk === 'id');
-        assert(values.joins[0].fk === 'user_id');
+        assert(values.joins[0].parentKey === 'id');
+        assert(values.joins[0].child === 'car_user');
+        assert(values.joins[0].childKey === 'user_id');
+        assert(values.joins[0].select === false);
+        assert(values.joins[0].removeParentKey === false);
 
         assert(values.joins[1].parent === 'car_user');
-        assert(values.joins[1].collection === 'car');
-        assert(values.joins[1].pk === 'car_id');
-        assert(values.joins[1].fk === 'id');
+        assert(values.joins[1].parentKey === 'car_id');
+        assert(values.joins[1].child === 'car');
+        assert(values.joins[1].childKey === 'id');
+        assert(values.joins[1].select === true);
+        assert(values.joins[1].removeParentKey === false);
+
         done();
       });
     });
