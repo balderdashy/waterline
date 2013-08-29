@@ -71,6 +71,9 @@ describe('Model', function() {
             name: 'string',
             bars: {
               collection: 'bar'
+            },
+            foobars: {
+              collection: 'baz'
             }
           }
         });
@@ -86,8 +89,19 @@ describe('Model', function() {
           }
         });
 
+        var Baz = Waterline.Collection.extend({
+          adapter: 'foo',
+          tableName: 'baz',
+          attributes: {
+            foo: {
+              model: 'foo'
+            }
+          }
+        });
+
         waterline.loadCollection(Foo);
         waterline.loadCollection(Bar);
+        waterline.loadCollection(Baz);
 
         waterline.initialize({ adapters: { foo: {} }}, function(err, colls) {
           if(err) done(err);
@@ -103,6 +117,7 @@ describe('Model', function() {
         assert(obj === Object(obj));
         assert(obj.name === 'foobar');
         assert(!obj.bars);
+        assert(!obj.baz);
       });
 
       it('should keep the association key when showJoins option is passed', function() {
@@ -112,6 +127,17 @@ describe('Model', function() {
         assert(obj === Object(obj));
         assert(obj.name === 'foobar');
         assert(obj.bars);
+        assert(obj.foobars);
+      });
+
+      it('should selectively keep the association keys when joins option is passed', function() {
+        var person = new collection._model({ name: 'foobar' }, { showJoins: true, joins: ['bar'] });
+        var obj = person.toObject();
+
+        assert(obj === Object(obj));
+        assert(obj.name === 'foobar');
+        assert(obj.bars);
+        assert(!obj.foobars);
       });
     });
 
