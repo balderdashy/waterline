@@ -60,7 +60,7 @@ describe('Waterline Collection', function() {
         waterline.loadCollection(Model);
         waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
           if(err) return done(err);
-          User = colls.lowercaseType;
+          User = colls.lowercasetype;
           done();
         });
       });
@@ -89,7 +89,7 @@ describe('Waterline Collection', function() {
         waterline.loadCollection(Model);
         waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
           if(err) return done(err);
-          User = colls.uppercaseType;
+          User = colls.uppercasetype;
           done();
         });
       });
