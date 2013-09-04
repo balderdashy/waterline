@@ -75,7 +75,16 @@ A [Collection](https://github.com/balderdashy/waterline/blob/master/lib/waterlin
 
 To create a new collection you extend `Waterline.Collection` and add in any properties you need.
 
-Available options are: `tableName`, `adapter`, `schema`, `attributes`, along with any class methods and lifecycle callbacks you define.
+#### options
+
+Available options are
+
+  - `tableName` Define a custom table name to store the models
+  - `adapters` the name of the adapter you would like to use for this collection
+  - `schema`  Set schema true/false to only allow fields defined in `attributes` to be saved. Only for schemaless adapters.
+  - `attributes` A hash of attributes to be defined for a model 
+  - [lifecyle callbacks](#lifecycle-callbacks)
+  - anyother class method you define!
 
 #### Attributes
 
@@ -259,8 +268,11 @@ User.find()
 .exec(function(err, users) {
   // Do stuff here
 });
+```
 
 **Promises**
+
+```javascript
 User.findOne()
 .where({ id: 2 })
 .then(function(user){
@@ -344,20 +356,17 @@ var User = Waterline.Collection.extend({
 });
 ```
 ## Custom Types
-You can define your own types and thier validation with the `types` hash
+You can define your own types and their validation with the `types` hash
 
 ```javascript
 var User = Waterline.Collection.extend({
-
   types: {
+    point: function(latlng){
+     return latlng.x && latlng.y
+    }
+  },
   
-     point: function(latlng){
-         return latlng.x && latlng.y
-      }
-   }
-
   attributes: {
-
     firstName: {
       type: 'string',
       required: true,
@@ -366,10 +375,9 @@ var User = Waterline.Collection.extend({
     },
 
     location: {
-      //note, that the base type still has to be define
+      //note, that the base type (json) still has to be define
       type: 'json',
       point: true
-    
     }
   }
 });
