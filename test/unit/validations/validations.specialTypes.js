@@ -27,7 +27,8 @@ describe('validations', function() {
 
     it('should error if incorrect email is passed', function(done) {
       validator.validate({ email: 'foobar' }, function(errors) {
-        assert(errors.email);
+        assert(errors.ValidationError);
+        assert(errors.ValidationError.email);
         done();
       });
     });

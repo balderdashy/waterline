@@ -22,8 +22,9 @@ describe('validations', function() {
 
     it('should error if no value is set', function(done) {
       validator.validate({ name: ' ', age: 27 }, function(errors) {
-        assert(errors.name);
-        assert(errors.name[0].rule === 'required');
+        assert(errors.ValidationError);
+        assert(errors.ValidationError.name);
+        assert(errors.ValidationError.name[0].rule === 'required');
         done();
       });
     });

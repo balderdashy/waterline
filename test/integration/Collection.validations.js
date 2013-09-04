@@ -48,7 +48,8 @@ describe('Waterline Collection', function() {
     it('should error with invalid data', function(done) {
       User.create({ name: '', email: 'foobar@gmail.com'}, function(err, user) {
         assert(!user);
-        assert(err.name[0].rule === 'required');
+        assert(err.ValidationError);
+        assert(err.ValidationError.name[0].rule === 'required');
         done();
       });
     });
@@ -64,7 +65,8 @@ describe('Waterline Collection', function() {
     it('should error with invalid enums on strings', function(done) {
       User.create({ name: 'foo', sex: 'other' }, function(err, user) {
         assert(!user);
-        assert(err.sex[0].rule === 'in');
+        assert(err.ValidationError);
+        assert(err.ValidationError.sex[0].rule === 'in');
         done();
       });
     });

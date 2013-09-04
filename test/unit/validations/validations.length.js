@@ -34,7 +34,8 @@ describe('validations', function() {
 
       it('should error if length is shorter', function(done) {
         validator.validate({ firstName: 'f' }, function(errors) {
-          assert(errors.firstName);
+          assert(errors.ValidationError);
+          assert(errors.ValidationError.firstName);
           done();
         });
       });
@@ -51,7 +52,8 @@ describe('validations', function() {
 
       it('should error if length is longer', function(done) {
         validator.validate({ lastName: 'foobar' }, function(errors) {
-          assert(errors.lastName);
+          assert(errors.ValidationError);
+          assert(errors.ValidationError.lastName);
           done();
         });
       });
