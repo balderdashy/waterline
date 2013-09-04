@@ -268,8 +268,11 @@ User.find()
 .exec(function(err, users) {
   // Do stuff here
 });
+```
 
 **Promises**
+
+```javascript
 User.findOne()
 .where({ id: 2 })
 .then(function(user){
