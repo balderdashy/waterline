@@ -57,7 +57,9 @@ describe('Collection Query', function() {
         assert(values.joins[0].parentKey === 'uuid');
         assert(values.joins[0].child === 'car');
         assert(values.joins[0].childKey === 'user_uuid');
+        assert(values.joins[0].select === true);
         assert(values.joins[0].removeParentKey === false);
+
         done();
       });
     });
