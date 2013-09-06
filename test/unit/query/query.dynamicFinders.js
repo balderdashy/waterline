@@ -9,7 +9,7 @@ describe('Collection Query', function() {
     before(function(done) {
 
       var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
+      var User = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -28,7 +28,7 @@ describe('Collection Query', function() {
         }
       });
 
-      waterline.loadCollection(Model);
+      waterline.loadCollection(User);
       waterline.loadCollection(Group);
 
       waterline.initialize({ adapters: { foo: {} }}, function(err, colls) {
@@ -66,7 +66,7 @@ describe('Collection Query', function() {
       assert(!query.groupContains);
     });
 
-    it.skip('should create limited dynamic finders for has_one and belongs_to associations', function() {
+    it('should create limited dynamic finders for has_one and belongs_to associations', function() {
       assert(typeof query.findByGroup === 'function');
       assert(typeof query.findOneByGroup === 'function');
     });
