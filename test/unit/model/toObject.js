@@ -71,7 +71,7 @@ describe('instance methods', function() {
       });
 
       it('should selectively keep the association keys when joins option is passed', function() {
-        var person = new model({ name: 'foobar' }, { showJoins: true, joins: ['bars'] });
+        var person = new model({ name: 'foobar' }, { showJoins: true, joins: ['bar'] });
         var obj = person.toObject();
 
         assert(obj === Object(obj));
