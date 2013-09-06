@@ -1,0 +1,57 @@
+var Waterline = require('../../../lib/waterline'),
+    assert = require('assert');
+
+describe('Model', function() {
+  describe('.save()', function() {
+
+    /////////////////////////////////////////////////////
+    // TEST SETUP
+    ////////////////////////////////////////////////////
+
+    var collection;
+
+    before(function(done) {
+      var waterline = new Waterline();
+      var Collection = Waterline.Collection.extend({
+        adapter: 'foo',
+        tableName: 'person',
+        attributes: {
+          first_name: 'string',
+          last_name: 'string',
+          full_name: function() {
+            return this.first_name + ' ' + this.last_name;
+          }
+        }
+      });
+
+      waterline.loadCollection(Collection);
+
+      var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [values]); }};
+      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        if(err) done(err);
+        collection = colls.person;
+        done();
+      });
+    });
+
+
+    /////////////////////////////////////////////////////
+    // TEST METHODS
+    ////////////////////////////////////////////////////
+
+    it('should pass model values to update method', function(done) {
+      var person = new collection._model({ id: 1, first_name: 'foo', last_name: 'bar' });
+
+      // Update a value
+      person.last_name = 'foobaz';
+
+      person.save(function(err, values) {
+        assert(!err);
+        assert(values.last_name === 'foobaz');
+        assert(person.last_name === 'foobaz');
+        done();
+      });
+    });
+
+  });
+});
