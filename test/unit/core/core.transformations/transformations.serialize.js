@@ -1,5 +1,5 @@
 var Waterline = require('../../../../lib/waterline'),
-    Schema = require('../../../../lib/waterline/schema'),
+    Schema = require('waterline-schema'),
     Transformer = require('../../../../lib/waterline/core/transformations'),
     assert = require('assert');
 
@@ -65,7 +65,7 @@ describe('Core Transformations', function() {
         });
 
         var schema = new Schema(collections);
-        transformer = new Transformer(schema.schema.foo.attributes, schema.schema);
+        transformer = new Transformer(schema.foo.attributes, schema.schema);
       });
 
       it('should change customer key to customer_uuid', function() {
