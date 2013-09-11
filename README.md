@@ -84,7 +84,7 @@ Available options are
   - `schema`  Set schema true/false to only allow fields defined in `attributes` to be saved. Only for schemaless adapters.
   - `attributes` A hash of attributes to be defined for a model 
   - `autoCreatedAt` and `autoUpdateddAt` Set false to prevent creating `createdAt` and `updatedAt` properties in your model
-  - `autoCreatedAt` Set false to prevent creating `id`. By default `id` will be created as index with auto increment
+  - `autoPK` Set false to prevent creating `id`. By default `id` will be created as index with auto increment
   - [lifecyle callbacks](#lifecycle-callbacks)
   - anyother class method you define!
 
