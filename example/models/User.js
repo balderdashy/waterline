@@ -108,5 +108,5 @@ User.findOne({ id: 7 }, function(err, user) {
   // do something here
 
   // Example of using an instance method
-  var fullName = user.firstName()
+  var fullName = user.fullName()
 });
