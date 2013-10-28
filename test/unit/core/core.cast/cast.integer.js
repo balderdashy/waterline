@@ -39,10 +39,10 @@ describe('Core Type Casting', function() {
       assert(values.id === '51f88ddc5d7967808b000002');
     });
 
-    it('should try and cast mongo ID\'s when anything other than an id property is used', function() {
+    it('should not try and cast mongo ID\'s when value matches a mongo string', function() {
       var values = person._cast.run({ name: '51f88ddc5d7967808b000002' });
-      assert(typeof values.name === 'number');
-      assert(values.name === 51);
+      assert(typeof values.name === 'string');
+      assert(values.name === '51f88ddc5d7967808b000002');
     });
 
   });
