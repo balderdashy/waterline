@@ -52,29 +52,58 @@ describe('Core Transformations', function() {
   });
 
   describe('serialize', function() {
-    var transformer;
+    describe('with different names', function() {
+      var transformer;
 
-    before(function() {
-      var attributes = {
-        name: 'string',
-        username: {
-          columnName: 'login'
-        }
-      };
+      before(function() {
+        var attributes = {
+          name: 'string',
+          username: {
+            columnName: 'login'
+          }
+        };
 
-      transformer = new Transformer(attributes);
+        transformer = new Transformer(attributes);
+      });
+
+      it('should change username key to login', function() {
+        var values = transformer.serialize({ username: 'foo' });
+        assert(values.login);
+        assert(values.login === 'foo');
+      });
+
+      it('should work recursively', function() {
+        var values = transformer.serialize({ where: { user: { username: 'foo' }}});
+        assert(values.where.user.login);
+        assert(values.where.user.login === 'foo');
+      });
     });
 
-    it('should change username key to login', function() {
-      var values = transformer.serialize({ username: 'foo' });
-      assert(values.login);
-      assert(values.login === 'foo');
-    });
+    describe('with the same names', function() {
+      var transformer;
 
-    it('should work recursively', function() {
-      var values = transformer.serialize({ where: { user: { username: 'foo' }}});
-      assert(values.where.user.login);
-      assert(values.where.user.login === 'foo');
+      before(function() {
+        var attributes = {
+          name: 'string',
+          username: {
+            columnName: 'username'
+          }
+        };
+
+        transformer = new Transformer(attributes);
+      });
+
+      it('should keep the username key', function() {
+        var values = transformer.serialize({ username: 'foo' });
+        assert(values.username);
+        assert(values.username === 'foo');
+      });
+
+      it('should work recursively', function() {
+        var values = transformer.serialize({ where: { user: { username: 'foo' }}});
+        assert(values.where.user.username);
+        assert(values.where.user.username === 'foo');
+      });
     });
   });
 
