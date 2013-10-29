@@ -12,7 +12,13 @@ describe('Collection Query', function() {
       var Model = Collection.extend({
         identity: 'user',
         adapter: 'foo',
+        autoPK: false,
         attributes: {
+          myPk: {
+            type: 'integer',
+            primaryKey: true,
+            defaultsTo: 1
+          },
           name: {
             type: 'string',
             defaultsTo: 'Foo Bar'
@@ -40,7 +46,7 @@ describe('Collection Query', function() {
     it('should allow an integer to be passed in as criteria', function(done) {
       query.findOne(1, function(err, values) {
         assert(!err);
-        assert(values.where.id === 1);
+        assert(values.where.myPk === 1);
         done();
       });
     });
