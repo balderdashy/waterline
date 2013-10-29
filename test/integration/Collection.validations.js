@@ -25,6 +25,13 @@ describe('Waterline Collection', function() {
           sex: {
             type: 'string',
             enum: ['male', 'female']
+          },
+
+          username: {
+            type: 'string',
+            contains: function() {
+              return this.name;
+            }
           }
         }
       });
@@ -67,6 +74,22 @@ describe('Waterline Collection', function() {
         assert(!user);
         assert(err.ValidationError);
         assert(err.ValidationError.sex[0].rule === 'in');
+        done();
+      });
+    });
+
+    it('should work with valid username', function(done) {
+      User.create({ name: 'foo', username: 'foozball' }, function(err, user) {
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should error with invalid username', function(done) {
+      User.create({ name: 'foo', username: 'baseball' }, function(err, user) {
+        assert(!user);
+        assert(err.ValidationError);
+        assert(err.ValidationError.username[0].rule === 'contains');
         done();
       });
     });
