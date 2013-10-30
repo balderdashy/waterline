@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "contributors": [
     {
       "name": "particlebanana",
@@ -17,10 +17,10 @@
     }
   ],
   "dependencies": {
-    "underscore": "1.4.4",
-    "async": "0.2.9",
-    "anchor": "~0.9.5",
-    "q": "0.9.4"
+    "underscore": "~1.5.2",
+    "async": "~0.2.9",
+    "anchor": "~0.9.6",
+    "q": "~0.9.7"
   },
   "devDependencies": {
     "mocha": "1.9.x"
