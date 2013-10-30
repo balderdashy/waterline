@@ -12,6 +12,11 @@ describe('Waterline Collection', function() {
       var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
+        types: {
+          idcode: function(val) {
+            return this.name + '_' + this.sex === val;
+          }
+        },
         attributes: {
           name: {
             type: 'string',
@@ -32,6 +37,10 @@ describe('Waterline Collection', function() {
             contains: function() {
               return this.name;
             }
+          },
+
+          code: {
+            type: 'idcode'
           }
         }
       });
@@ -90,6 +99,22 @@ describe('Waterline Collection', function() {
         assert(!user);
         assert(err.ValidationError);
         assert(err.ValidationError.username[0].rule === 'contains');
+        done();
+      });
+    });
+
+    it('should support custom type functions with the model\'s context', function(done) {
+      User.create({ name: 'foo', sex: 'male', code: 'foo_male' }, function(err, user) {
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should error with invalid input for custom type', function(done) {
+      User.create({ name: 'foo', sex: 'male', code: 'foo_female' }, function(err, user) {
+        assert(!user);
+        assert(err.ValidationError);
+        assert(err.ValidationError.code[0].rule === 'idcode');
         done();
       });
     });
