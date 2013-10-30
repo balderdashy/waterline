@@ -50,7 +50,6 @@ describe('Model', function() {
       assert(obj === Object(obj));
       assert(obj.first_name === 'foo');
       assert(!obj.last_name);
-      assert(!obj.full_name);
     });
 
   });
