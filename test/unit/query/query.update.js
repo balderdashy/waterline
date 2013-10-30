@@ -110,5 +110,48 @@ describe('Collection Query', function() {
       });
     });
 
+    describe('with custom columnName set', function() {
+      var query;
+
+      before(function(done) {
+
+        // Extend for testing purposes
+        var Model = Collection.extend({
+          identity: 'user',
+          adapter: 'foo',
+          autoPK: false,
+          attributes: {
+            name: {
+              type: 'string',
+              defaultsTo: 'Foo Bar'
+            },
+            myPk: {
+              type: 'integer',
+              primaryKey: true,
+              columnName: 'pkColumn',
+              defaultsTo: 1
+            }
+          }
+        });
+
+        // Fixture Adapter Def
+        var adapterDef = { update: function(col, criteria, values, cb) { return cb(null, [criteria]); }};
+        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          if(err) done(err);
+          query = coll;
+          done();
+        });
+      });
+
+
+      it('should use the custom primary key when a single value is passed in', function(done) {
+        query.update(1, { name: 'foo' }, function(err, values) {
+          assert(!err);
+          assert(values[0].where.pkColumn === 1);
+          done();
+        });
+      });
+    });
+
   });
 });
