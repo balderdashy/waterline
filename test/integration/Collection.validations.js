@@ -13,8 +13,8 @@ describe('Waterline Collection', function() {
         identity: 'user',
         adapter: 'foo',
         types: {
-          idcode: function(val) {
-            return this.name + '_' + this.sex === val;
+          password: function(val) {
+            return val === this.passwordConfirmation;
           }
         },
         attributes: {
@@ -39,8 +39,8 @@ describe('Waterline Collection', function() {
             }
           },
 
-          code: {
-            type: 'idcode'
+          password: {
+            type: 'password'
           }
         }
       });
@@ -88,14 +88,14 @@ describe('Waterline Collection', function() {
     });
 
     it('should work with valid username', function(done) {
-      User.create({ name: 'foo', username: 'foozball' }, function(err, user) {
+      User.create({ name: 'foo', username: 'foozball_dude' }, function(err, user) {
         assert(!err);
         done();
       });
     });
 
     it('should error with invalid username', function(done) {
-      User.create({ name: 'foo', username: 'baseball' }, function(err, user) {
+      User.create({ name: 'foo', username: 'baseball_dude' }, function(err, user) {
         assert(!user);
         assert(err.ValidationError);
         assert(err.ValidationError.username[0].rule === 'contains');
@@ -104,17 +104,17 @@ describe('Waterline Collection', function() {
     });
 
     it('should support custom type functions with the model\'s context', function(done) {
-      User.create({ name: 'foo', sex: 'male', code: 'foo_male' }, function(err, user) {
+      User.create({ name: 'foo', sex: 'male', password: 'passW0rd', passwordConfirmation: 'passW0rd' }, function(err, user) {
         assert(!err);
         done();
       });
     });
 
     it('should error with invalid input for custom type', function(done) {
-      User.create({ name: 'foo', sex: 'male', code: 'foo_female' }, function(err, user) {
+      User.create({ name: 'foo', sex: 'male', password: 'passW0rd' }, function(err, user) {
         assert(!user);
         assert(err.ValidationError);
-        assert(err.ValidationError.code[0].rule === 'idcode');
+        assert(err.ValidationError.password[0].rule === 'password');
         done();
       });
     });
