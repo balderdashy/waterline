@@ -4,10 +4,11 @@ var Collection = require('../../../lib/waterline/collection'),
 describe('.afterCreate()', function() {
 
   describe('basic function', function() {
-    var person;
+    var person,
+        Model;
 
     before(function(done) {
-      var Model = Collection.extend({
+      Model = Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -20,17 +21,7 @@ describe('.afterCreate()', function() {
         }
       });
 
-      // Fixture Adapter Def
-      var adapterDef = {
-        find: function(col, criteria, cb) { return cb(null, null); },
-        create: function(col, values, cb) { return cb(null, values); }
-      };
-
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
-        if(err) done(err);
-        person = coll;
-        done();
-      });
+      done();
     });
 
     /**
@@ -39,11 +30,52 @@ describe('.afterCreate()', function() {
 
     describe('.findOrCreate()', function() {
 
-      it('should run afterCreate and mutate values', function(done) {
-        person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-          assert(!err);
-          assert(user.name === 'test updated');
-          done();
+      describe('without a record', function() {
+
+        before(function(done) {
+          // Fixture Adapter Def
+          var adapterDef = {
+            find: function(col, criteria, cb) { return cb(null, []); },
+            create: function(col, values, cb) { return cb(null, values); }
+          };
+
+          new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+            if(err) done(err);
+            person = coll;
+            done();
+          });
+        });
+
+        it('should run afterCreate and mutate values on create', function(done) {
+          person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
+            assert(!err);
+            assert(user.name === 'test updated');
+            done();
+          });
+        });
+      });
+
+      describe('with a record', function() {
+
+        before(function(done) {
+          var adapterDef = {
+            find: function(col, criteria, cb) { return cb(null, [criteria.where]); },
+            create: function(col, values, cb) { return cb(null, values); }
+          };
+
+          new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+            if(err) done(err);
+            person = coll;
+            done();
+          });
+        });
+
+        it('should not run afterCreate and mutate values on find', function(done) {
+          person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
+            assert(!err);
+            assert(user.name === 'test');
+            done();
+          });
         });
       });
     });
@@ -55,10 +87,11 @@ describe('.afterCreate()', function() {
    */
 
   describe('array of functions', function() {
-    var person;
+    var person,
+        Model;
 
     before(function(done) {
-      var Model = Collection.extend({
+      Model = Collection.extend({
         identity: 'user',
         adapter: 'foo',
         attributes: {
@@ -80,26 +113,59 @@ describe('.afterCreate()', function() {
         ]
       });
 
-      // Fixture Adapter Def
-      var adapterDef = {
-        find: function(col, criteria, cb) { return cb(null, null); },
-        create: function(col, values, cb) { return cb(null, values); }
-      };
+      done();
+    });
 
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
-        if(err) done(err);
-        person = coll;
-        done();
+    describe('without a record', function() {
+
+      before(function(done) {
+        // Fixture Adapter Def
+        var adapterDef = {
+          find: function(col, criteria, cb) { return cb(null, []); },
+          create: function(col, values, cb) { return cb(null, values); }
+        };
+
+        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          if(err) done(err);
+          person = coll;
+          done();
+        });
+      });
+
+      it('should run the functions in order', function(done) {
+        person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
+          assert(!err);
+          assert(user.name === 'test fn1 fn2');
+          done();
+        });
       });
     });
 
-    it('should run the functions in order', function(done) {
-      person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-        assert(!err);
-        assert(user.name === 'test fn1 fn2');
-        done();
+    describe('with a record', function() {
+
+      before(function(done) {
+        // Fixture Adapter Def
+        var adapterDef = {
+          find: function(col, criteria, cb) { return cb(null, [criteria.where]); },
+          create: function(col, values, cb) { return cb(null, values); }
+        };
+
+        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          if(err) done(err);
+          person = coll;
+          done();
+        });
+      });
+
+      it('should not run any of the functions', function(done) {
+        person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
+          assert(!err);
+          assert(user.name === 'test');
+          done();
+        });
       });
     });
+
   });
 
 });
