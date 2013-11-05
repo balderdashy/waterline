@@ -30,7 +30,7 @@ describe('Collection Query', function() {
         var adapterDef = {
           find: function(col, criteria, cb) {
             assert(criteria.where.login);
-            return cb(null, null);
+            return cb(null, []);
           },
           create: function(col, values, cb) {
             assert(values.login);
@@ -50,7 +50,7 @@ describe('Collection Query', function() {
         var adapterDef = {
           find: function(col, criteria, cb) {
             assert(criteria.where.login);
-            return cb(null, null);
+            return cb(null, []);
           },
           create: function(col, values, cb) {
             assert(values.login);
@@ -70,7 +70,7 @@ describe('Collection Query', function() {
         var adapterDef = {
           find: function(col, criteria, cb) {
             assert(criteria.where.login);
-            return cb(null, null);
+            return cb(null, []);
           },
           create: function(col, values, cb) {
             assert(values.login);
