@@ -132,7 +132,7 @@ describe('.afterCreate()', function() {
         });
       });
 
-      it('should run the functions in order', function(done) {
+      it('should run the functions in order on create', function(done) {
         person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
           assert(!err);
           assert(user.name === 'test fn1 fn2');
@@ -157,7 +157,7 @@ describe('.afterCreate()', function() {
         });
       });
 
-      it('should not run any of the functions', function(done) {
+      it('should not run any of the functions on find', function(done) {
         person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
           assert(!err);
           assert(user.name === 'test');
