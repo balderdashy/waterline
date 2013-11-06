@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "contributors": [
     {
       "name": "particlebanana",
