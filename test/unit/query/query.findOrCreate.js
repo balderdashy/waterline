@@ -25,7 +25,7 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          find: function(col, criteria, cb) { return cb(null, null); },
+          find: function(col, criteria, cb) { return cb(null, []); },
           create: function(col, values, cb) { return cb(null, values); }
         };
 
@@ -102,7 +102,7 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          find: function(col, criteria, cb) { return cb(null, null); },
+          find: function(col, criteria, cb) { return cb(null, []); },
           create: function(col, values, cb) { return cb(null, values); }
         };
 
