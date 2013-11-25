@@ -8,6 +8,7 @@ var Waterline = require('../../../lib/waterline');
 module.exports = Waterline.Collection.extend({
 
   tableName: 'test',
+  softDelete: true,
 
   attributes: {
     first_name: {

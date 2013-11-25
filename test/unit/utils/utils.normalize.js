@@ -7,7 +7,8 @@ describe("Normalize utility", function() {
 
     describe("sort", function() {
       it("should default to asc", function() {
-        var criteria = normalize.criteria({ sort: "name" });
+        // Normalize criteria with empty schema
+        var criteria = normalize.criteria({ sort: "name" }, {});
 
         assert(criteria.sort.name === 1);
       });
@@ -16,7 +17,8 @@ describe("Normalize utility", function() {
         var error;
 
         try {
-          normalize.criteria({ sort: "name up" });
+          // Normalize criteria with empty schema
+          normalize.criteria({ sort: "name up" }, {});
         } catch(e) {
           error = e;
         }
@@ -25,7 +27,8 @@ describe("Normalize utility", function() {
       });
 
       it("should properly normalize valid sort", function() {
-        var criteria = normalize.criteria({ sort: "name desc" });
+        // Normalize criteria with empty schema
+        var criteria = normalize.criteria({ sort: "name desc" }, {});
 
         assert(criteria.sort.name === -1);
       });

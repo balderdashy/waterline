@@ -21,7 +21,7 @@ describe('Waterline Collection', function() {
         assert(typeof User._schema.schema === 'object');
         // account for auto created keys (pk, timestamps)
         // also account for the specification of the pk
-        assert(Object.keys(User._schema.schema).length === 9);
+        assert(Object.keys(User._schema.schema).length === 10);
       });
 
       // TO-DO
