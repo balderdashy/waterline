@@ -80,7 +80,17 @@ describe('Collection Query', function() {
           done();
         });
       });
-
+      it('should not modify timestamps if set by the user',function(done){
+        var date = new Date(1385637390000);
+        var date2 = new Date(1385637360000);
+        query.findOrCreateEach([],[{createdAt: date,updatedAt:date},{createdAt: date2,updatedAt:date2}], function(err, values) {
+          assert.equal(date.getTime(),values[0].createdAt.getTime());
+          assert.equal(date.getTime(),values[0].updatedAt.getTime());
+          assert.equal(date2.getTime(),values[1].createdAt.getTime());
+          assert.equal(date2.getTime(),values[1].updatedAt.getTime());
+          done();
+        });
+      });
       it('should allow a query to be built using deferreds', function(done) {
         query.findOrCreateEach([{ name: 'foo' }])
         .set([{ name: 'bob' }, { name: 'foo'}])
