@@ -21,7 +21,8 @@
     "async": "0.2.9",
     "anchor": "git://github.com/particlebanana/anchor.git#hackyhack",
     "q": "0.9.4",
-    "waterline-schema": "git://github.com/balderdashy/waterline-schema.git"
+    "waterline-schema": "git://github.com/balderdashy/waterline-schema.git",
+    "sails-util": "git://github.com/balderdashy/sails-util.git"
   },
   "devDependencies": {
     "mocha": "1.9.x"
