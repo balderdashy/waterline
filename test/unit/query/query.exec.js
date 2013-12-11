@@ -1,5 +1,6 @@
 var Waterline = require('../../../lib/waterline'),
-  assert = require('assert');
+  assert = require('assert'),
+  async = require('async');
 
 describe('Collection Query', function() {
 
@@ -55,8 +56,41 @@ describe('Collection Query', function() {
       });
     });
 
-    it('should allow multiple handlers to be passed to .exec() in lieu of a callback', function(done) {
-      done();
+    describe('when passed an object with multiple handlers', function () {
+
+      before(function getTheQueryResultsForTestsBelow(done) {
+        var self = this;
+
+        async.auto({
+          objUsage: function (cb) {
+            query.find()
+            .exec({
+              success: function (results) {
+                cb(null, results);
+              },
+              error: cb
+            });
+          },
+          cbUsage: function (cb) {
+            query.find().exec(cb);
+          }
+        }, function asyncComplete (err, async_data) {
+          // Save results for use below
+          self._error = err;
+          self._results = async_data;
+          done();
+        });
+
+      });
+      
+      it('should not fail', function() {
+        assert(this._results);
+        assert(!this._error);
+      });
+
+      it('should work the same as it does with a callback', function() {
+        assert(this._results.cbUsage.length === this._results.objUsage.length);
+      });
     });
 
   });
