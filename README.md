@@ -324,6 +324,21 @@ Based on your Collection attributes you also have dynamic finders. So given a `n
   - nameEndsWith
   - nameContains
 
+
+## Sorting
+
+Sorting is performed in the deferred object query method `sort`. Simply specify an attribute name for natural (ascending) sort, or specify an `asc` or `desc` flag for ascending or descending orders respectively.
+
+```javascript
+User.find()
+.sort('roleId asc')
+.sort('createdAt desc')
+.exec(function(err, users) {
+  // Do stuff here
+});
+```
+
+
 ## Validations
 
 Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate. For a full list of validations see: [Anchor Validations](https://github.com/balderdashy/anchor/blob/master/lib/rules.js).
