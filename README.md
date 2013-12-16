@@ -82,7 +82,7 @@ Available options are
   - `tableName` Define a custom table name to store the models
   - `adapters` the name of the adapter you would like to use for this collection
   - `schema`  Set schema true/false to only allow fields defined in `attributes` to be saved. Only for schemaless adapters.
-  - `attributes` A hash of attributes to be defined for a model 
+  - `attributes` A hash of attributes to be defined for a model
   - `autoCreatedAt` and `autoUpdateddAt` Set false to prevent creating `createdAt` and `updatedAt` properties in your model
   - `autoPK` Set false to prevent creating `id`. By default `id` will be created as index with auto increment
   - [lifecyle callbacks](#lifecycle-callbacks)
@@ -327,12 +327,12 @@ Based on your Collection attributes you also have dynamic finders. So given a `n
 
 ## Sorting
 
-Sorting is performed in the deferred object query method `sort`. Simply specify an attribute name for natural (ascending) sort, or specify an `asc` or `desc` flag for ascending or descending orders respectively.
+Sorting can be performed in the deferred object query method `sort` or by adding the sort key into the criteria object. Simply specify an attribute name for natural (ascending) sort, or specify an `asc` or `desc` flag for ascending or descending orders respectively.
 
 ```javascript
 User.find()
 .sort('roleId asc')
-.sort('createdAt desc')
+.sort({ createdAt: 'desc' })
 .exec(function(err, users) {
   // Do stuff here
 });
@@ -381,7 +381,7 @@ var User = Waterline.Collection.extend({
      return latlng.x && latlng.y
     }
   },
-  
+
   attributes: {
     firstName: {
       type: 'string',
