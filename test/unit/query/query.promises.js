@@ -49,5 +49,25 @@ describe('Collection Promise', function () {
         done(err);
       });
     });
+
+    it('should reject the promise if the then handler fails', function (done) {
+      var promise = query.find({}).then(function (obj) {
+        throw new Error("Error in promise handler");
+      }).then(function (unexpected) {
+        done(new Error("Unexpected success"));
+      }).fail(function (expected) {
+        done();
+      })
+    });
+
+    it('should reject the promise if the spread handler fails', function (done) {
+      var promise = query.find({}).spread(function (obj) {
+        throw new Error("Error in promise handler");
+      }).then(function (unexpected) {
+        done(new Error("Unexpected success"));
+      }).fail(function (expected) {
+        done();
+      })
+    });
   });
 });
