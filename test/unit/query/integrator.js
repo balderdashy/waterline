@@ -21,6 +21,11 @@ describe('integrator', function () {
 		});
 
 		joins = [{
+			where: {/* ... */},
+			select: [ /* ... */ ],
+			limit: undefined,
+			skip: undefined,
+			joins: [/* ... */],
 			parent: 'user',				// left table name
 			parentKey: 'id',			// left table primary key
 			child: 'message_to_user',	// right table name
@@ -36,6 +41,12 @@ describe('integrator', function () {
 
 
 
-	it('should')
+	it('should populate the aliases specified in `joins`');
+
+	describe('populated alias', function (){
+		
+		it('should contain an array of objects, where each one is exactly the same as its source object in the cache');
+		
+	});
 
 });
