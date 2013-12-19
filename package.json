@@ -25,7 +25,8 @@
     "sails-util": "git://github.com/balderdashy/sails-util.git"
   },
   "devDependencies": {
-    "mocha": "1.9.x"
+    "mocha": "1.9.x",
+    "should": "~2.1.1"
   },
   "keywords": [
     "mvc",
