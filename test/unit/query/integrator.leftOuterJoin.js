@@ -10,7 +10,7 @@ var should = require('should');
 var _ = require('lodash');
 
 
-describe('integrator :: leftOuterJoin', function () {
+describe('leftOuterJoin', function () {
 
 	describe('with invalid input', function () {
 
@@ -43,7 +43,7 @@ describe('integrator :: leftOuterJoin', function () {
 	});
 
 
-	describe('with valid input', function () {
+	describe('when run with valid input', function () {
 
 		var results;
 		var expected = {
@@ -61,51 +61,48 @@ describe('integrator :: leftOuterJoin', function () {
 			});
 		});
 
+		it('output should be an array', function () {
+			results.should.be.Array;
+		});
 
+		it('output should match the expected results', function () {
+			results.should.have.lengthOf(expected['results.length']);
+		});
 
-		describe(':: results',function () {
+		describe('when run again, using previous results as left side', function () {
 
-			it('should be an array', function () {
-				results.should.be.Array;
+			var results_2;
+			var expected = {
+				'results_2.length': 2,
+				properties: ['email', 'id', 'user_id', 'subject', 'body', 'from']
+			};
+
+			it('should not throw', function () {
+				assert.doesNotThrow(function () {
+					results_2 = leftOuterJoin({
+						left: results,
+						right: fixtures.cache.user, 
+						leftKey: 'user_id',
+						rightKey: 'id'
+					});
+				});
 			});
 
-			it('should contain the proper number of results', function () {
-				results.should.have.lengthOf(expected['results.length']);
+			it('output should be an array', function () {
+				results_2.should.be.Array;
 			});
 
-	// 		describe(':: populated aliases', function () {
-	// 			var aliases = Object.keys(_.groupBy(fixtures.joins, 'alias'));
-
-	// 			it('should exist for every alias specified in `joins` (i.e. every `populate()`)', function () {
-
-	// 				// Each result is an object and contains a valid alias
-	// 				_.each(results, function (result) {
-	// 					result
-	// 					.should.be.Object;
-						
-	// 					_.any(aliases, function (alias) {
-	// 						return result[alias];
-	// 					})
-	// 					.should.be.true;
-	// 				});
-
-	// 				// Double check.
-	// 				_.each(results, function (result) {
-	// 					result.should.be.Object;
-
-	// 					_.each(aliases, function (alias) {
-	// 						result[alias].should.be.ok;
-	// 						result[alias].should.be.ok;
-	// 					});
-	// 				});
-
-	// 				// All aliases are accounted for in results
-	// 				_.all(aliases, function (alias) {
-	// 					return results.length === _.pluck(results, alias).length;
-	// 				}).should.be.true;
-	// 			});
-	// 		});
+			it('output should match the expected results', function () {
+				// console.log('\n', ':: results_2 ::\n',results_2);
+				results_2.should.have.lengthOf(expected['results_2.length']);
+				_.each(results_2, function (result) {
+					_.each(expected.properties, function (property) {
+						result.should.have.property(property);
+					});
+				});
+			});
 		});
 	});
+
 
 });

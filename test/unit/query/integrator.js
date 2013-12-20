@@ -47,10 +47,12 @@ describe('integrator', function () {
 		var results;
 
 		it('should not throw', function (done){
+			// console.log('!!!START!!!');
 			assert.doesNotThrow(function () {
 				integrate(fixtures.cache, fixtures.joins, function (err, _results) {
 					assert(!err);
 					results = _results;
+					// console.log('!!!END!!!');
 					done();
 				});
 			});
@@ -60,6 +62,7 @@ describe('integrator', function () {
 
 			it('should be an array', function () {
 				results.should.be.Array;
+				// console.log('\n\n** RESULTS **\n', results);
 			});
 
 			// TODO: need to get a hold of actual physical schema to check this
