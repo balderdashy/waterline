@@ -345,6 +345,8 @@ Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which
 
 Validations are defined directly in you Collection attributes. In addition you may set the attribute `type` to any supported Anchor type and Waterline will build a validation and set the schema type as a string for that attribute.
 
+Validation rules may be defined as simple values or functions (both sync and async) that return the value to test against. 
+
 ```javascript
 var User = Waterline.Collection.extend({
 
@@ -367,19 +369,56 @@ var User = Waterline.Collection.extend({
     age: {
       type: 'integer',
       after: '12/12/2001'
+    },
+
+    website: {
+      type: 'string',
+      // Validation rule may be defined as a function. Here, an async function is mimicked.
+      contains: function(cb) {
+        setTimeout(function() {
+          cb('http://');
+        }, 1);
+      }
     }
   }
 });
+
+var Event = Waterline.Collection.extend({
+
+  attributes: {
+    
+    startDate: {
+      type: 'date',
+      // Validation rule functions allow you to validate values against other attributes
+      before: function() {
+        return this.endDate;
+      }
+    },
+
+    endDate: {
+      type: 'date',
+      after: function() {
+        return this.startDate;
+      }
+    }
+
+  }
+
+}
 ```
 ## Custom Types
-You can define your own types and their validation with the `types` hash
+You can define your own types and their validation with the `types` hash. It's possible to access and compare values to other attributes.
 
 ```javascript
 var User = Waterline.Collection.extend({
   types: {
     point: function(latlng){
      return latlng.x && latlng.y
-    }
+    },
+
+    password: function(password) {
+      return password === this.passwordConfirmation;
+    });
   },
 
   attributes: {
@@ -394,6 +433,15 @@ var User = Waterline.Collection.extend({
       //note, that the base type (json) still has to be define
       type: 'json',
       point: true
+    },
+
+    password: {
+      type: 'string',
+      password: true
+    },
+
+    passwordConfirmation: {
+      type: 'string'
     }
   }
 });
