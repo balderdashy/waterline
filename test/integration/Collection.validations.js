@@ -12,6 +12,11 @@ describe('Waterline Collection', function() {
       var Model = Waterline.Collection.extend({
         identity: 'user',
         adapter: 'foo',
+        types: {
+          password: function(val) {
+            return val === this.passwordConfirmation;
+          }
+        },
         attributes: {
           name: {
             type: 'string',
@@ -25,6 +30,17 @@ describe('Waterline Collection', function() {
           sex: {
             type: 'string',
             enum: ['male', 'female']
+          },
+
+          username: {
+            type: 'string',
+            contains: function() {
+              return this.name;
+            }
+          },
+
+          password: {
+            type: 'password'
           }
         }
       });
@@ -67,6 +83,38 @@ describe('Waterline Collection', function() {
         assert(!user);
         assert(err.ValidationError);
         assert(err.ValidationError.sex[0].rule === 'in');
+        done();
+      });
+    });
+
+    it('should work with valid username', function(done) {
+      User.create({ name: 'foo', username: 'foozball_dude' }, function(err, user) {
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should error with invalid username', function(done) {
+      User.create({ name: 'foo', username: 'baseball_dude' }, function(err, user) {
+        assert(!user);
+        assert(err.ValidationError);
+        assert(err.ValidationError.username[0].rule === 'contains');
+        done();
+      });
+    });
+
+    it('should support custom type functions with the model\'s context', function(done) {
+      User.create({ name: 'foo', sex: 'male', password: 'passW0rd', passwordConfirmation: 'passW0rd' }, function(err, user) {
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should error with invalid input for custom type', function(done) {
+      User.create({ name: 'foo', sex: 'male', password: 'passW0rd' }, function(err, user) {
+        assert(!user);
+        assert(err.ValidationError);
+        assert(err.ValidationError.password[0].rule === 'password');
         done();
       });
     });
