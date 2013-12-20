@@ -47,7 +47,12 @@ describe('leftOuterJoin', function () {
 
 		var results;
 		var expected = {
-			'results.length': 2
+			'results.length': 4,
+			properties: [
+				'id', 'subject', 'body', 'from',
+				// Joined properties won't always exist since this is an outer join.
+				/* 'user_id','email' */
+			]
 		};
 
 		it('should not throw', function () {
@@ -73,8 +78,12 @@ describe('leftOuterJoin', function () {
 
 			var results_2;
 			var expected = {
-				'results_2.length': 2,
-				properties: ['email', 'id', 'user_id', 'subject', 'body', 'from']
+				'results_2.length': 4,
+				properties: [
+				'id', 'subject', 'body', 'from',
+				// Joined properties won't always exist since this is an outer join.
+				/* 'user_id','email' */
+			]
 			};
 
 			it('should not throw', function () {
