@@ -73,5 +73,82 @@ describe('Collection Query', function() {
       });
     });
 
+    describe('.paginate()', function() {
+      it('should not set skip and limit by default', function(done) {
+        query.find()
+        .paginate()
+        .exec(function(err, results) {
+          assert(!err);
+          assert(Array.isArray(results));
+
+          assert(results[0].skip == undefined);
+          assert(results[0].limit == undefined);
+
+          done();
+        });
+      });
+
+      it('should not set skip from page 0', function(done) {
+        query.find()
+        .paginate({page: 1})
+        .exec(function(err, results) {
+          assert(results[0].skip == undefined);
+
+          done();
+        });
+      });
+
+      it('should not set skip from page 1', function(done) {
+        query.find()
+        .paginate({page: 1})
+        .exec(function(err, results) {
+          assert(results[0].skip == undefined);
+
+          done();
+        });
+      });
+
+      it('should set skip to 1', function(done) {
+        query.find()
+        .paginate({page: 2})
+        .exec(function(err, results) {
+          assert(results[0].skip == 1);
+
+          done();
+        });
+      });
+
+      it('should set limit to 1', function(done) {
+        query.find()
+        .paginate({limit: 1})
+        .exec(function(err, results) {
+          assert(results[0].limit == 1);
+
+          done();
+        });
+      });
+
+      it('should set skip to 10 and limit to 10', function(done) {
+        query.find()
+        .paginate({page: 2, limit: 10})
+        .exec(function(err, results) {
+          assert(results[0].skip  == 10);
+          assert(results[0].limit == 10);
+
+          done();
+        });
+      });
+
+      it('should set skip to 20 and limit to 10', function(done) {
+        query.find()
+        .paginate({page: 3, limit: 10})
+        .exec(function(err, results) {
+          assert(results[0].skip  == 20);
+          assert(results[0].limit == 10);
+
+          done();
+        });
+      });
+    });
   });
 });
