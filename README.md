@@ -416,7 +416,7 @@ var User = Waterline.Collection.extend({
      return latlng.x && latlng.y
     },
 
-    password: (password) {
+    password: function(password) {
       return password === this.passwordConfirmation;
     });
   },
