@@ -5,7 +5,9 @@
  */
 module.exports = [
 	{
-		where: {/* ... */},
+		alias: 'to',				// the `alias` -- e.g. name of association
+
+		where: {/* ... */},			// join subcriteria
 		select: [ /* ... */ ],
 		limit: undefined,
 		skip: undefined,
@@ -17,7 +19,9 @@ module.exports = [
 		childKey: 'user_id'			// right table foreign key
 	},
 	{
-		where: {/* ... */},
+		alias: 'to',				// the `alias` -- e.g. name of association
+
+		where: {/* ... */},			// join subcriteria
 		select: [ /* ... */ ],
 		limit: undefined,
 		skip: undefined,
