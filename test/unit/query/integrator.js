@@ -49,10 +49,8 @@ describe('integrator', function () {
 			var results;
 
 			before(function (done){
-				// console.log('!!!START!!!');
 				assert.doesNotThrow(function () {
 					integrate(fixtures.cache, fixtures.joins, function (err, _results) {
-						// console.log('!!!END!!!', err, _results);
 						assert(!err);
 						results = _results;
 						done(err);
@@ -97,9 +95,9 @@ describe('integrator', function () {
 					}).should.be.true;
 				});
 
-				it('should not include extraneous attributes', function () {
-					console.log('n..m::\n',results[0]);
-				});
+				// it('should not include extraneous attributes', function () {
+				// 	console.log('n..m::\n',results[0]);
+				// });
 			});
 		});
 
@@ -163,6 +161,10 @@ describe('integrator', function () {
 					}).should.be.true;
 				});
 			});
+
+			// it('should not include extraneous attributes', function () {
+			// 	console.log('1..n::\n',results);
+			// });
 		});
 	});
 
@@ -225,6 +227,10 @@ describe('integrator', function () {
 				}).should.be.true;
 			});
 		});
+
+		// it('should not include extraneous attributes', function () {
+		// 	console.log('multiple ::\n',results);
+		// });
 	});
 
 });
