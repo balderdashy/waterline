@@ -43,8 +43,8 @@ describe('integrator', function () {
 		describe(':: N..M :: ',function () {
 
 			var fixtures = {
-				joins: require('../../support/fixtures/integrator/n..m.joins.js'),
-				cache: require('../../support/fixtures/integrator/cache')
+				joins: _.cloneDeep(require('../../support/fixtures/integrator/n..m.joins.js')),
+				cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
 			};
 			var results;
 
@@ -88,7 +88,6 @@ describe('integrator', function () {
 
 						_.each(aliases, function (alias) {
 							result[alias].should.be.ok;
-							result[alias].should.be.ok;
 						});
 					});
 
@@ -96,6 +95,10 @@ describe('integrator', function () {
 					_.all(aliases, function (alias) {
 						return results.length === _.pluck(results, alias).length;
 					}).should.be.true;
+				});
+
+				it('should not include extraneous attributes', function () {
+					console.log('n..m::\n',results[0]);
 				});
 			});
 		});
@@ -110,8 +113,8 @@ describe('integrator', function () {
 
 			var results;
 			var fixtures = {
-				joins: require('../../support/fixtures/integrator/n..1.joins.js'),
-				cache: require('../../support/fixtures/integrator/cache')
+				joins: _.cloneDeep(require('../../support/fixtures/integrator/n..1.joins.js')),
+				cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
 			};
 
 			before(function (done){
@@ -168,12 +171,12 @@ describe('integrator', function () {
 
 
 
-	describe(':: 1..N ::',function () {
+	describe(':: multiple populates ::',function () {
 
 		var results;
 		var fixtures = {
-			joins: require('../../support/fixtures/integrator/n..1.joins.js'),
-			cache: require('../../support/fixtures/integrator/cache')
+			joins: _.cloneDeep(require('../../support/fixtures/integrator/multiple.joins.js')),
+			cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
 		};
 
 		before(function (done){
