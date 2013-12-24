@@ -3,7 +3,8 @@
  */
 var leftOuterJoin = require('../../../lib/waterline/query/integrator/leftOuterJoin');
 var fixtures = {
-  cache: require('../../support/fixtures/integrator/cache')
+  cache: require('../../support/fixtures/integrator/cache'),
+  joinResults: require('../../support/fixtures/integrator/joinResults')
 };
 var assert = require('assert');
 var should = require('should');
@@ -68,29 +69,7 @@ describe('leftOuterJoin', function() {
         // Joined properties won't always exist since this is an outer join.
         /* 'user_id','email' */
       ],
-      results: [{
-        id: 10,
-        user_id: 2,
-        subject: 'msgA',
-        body: 'A test message.',
-        from: 1
-      }, {
-        id: 10,
-        user_id: 3,
-        subject: 'msgA',
-        body: 'A test message.',
-        from: 1
-      }, {
-        id: 20,
-        subject: 'msgB',
-        body: 'Another test message.',
-        from: 1
-      }, {
-        id: 30,
-        subject: 'msgC',
-        body: 'Aint sent this one yet.',
-        from: null
-      }]
+      results: fixtures.joinResults.message___message_to_user
     };
 
     it('should not throw', function() {
@@ -126,31 +105,7 @@ describe('leftOuterJoin', function() {
           // Joined properties (user_id, email) won't always exist since this is an outer join.
           'id', 'subject', 'body', 'from',
         ],
-        results: [{
-          email: 'a@recipient.com',
-          id: 10,
-          user_id: 2,
-          subject: 'msgA',
-          body: 'A test message.',
-          from: 1
-        }, {
-          email: 'b@recipient.com',
-          id: 10,
-          user_id: 3,
-          subject: 'msgA',
-          body: 'A test message.',
-          from: 1
-        }, {
-          id: 20,
-          subject: 'msgB',
-          body: 'Another test message.',
-          from: 1
-        }, {
-          id: 30,
-          subject: 'msgC',
-          body: 'Aint sent this one yet.',
-          from: null
-        }]
+        results: fixtures.joinResults.message___message_to_user___user
       };
 
       it('should not throw', function() {
