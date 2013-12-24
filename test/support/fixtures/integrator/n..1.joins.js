@@ -7,9 +7,9 @@ module.exports = [
 	{
 		alias: 'from',				// the `alias` -- e.g. name of association
 		parent: 'message',			// left table name
-		parentKey: 'id',			// left table primary key
+		parentKey: 'from',			// left table key
 		child: 'user',				// right table name
-		childKey: 'id'				// right table foreign key
+		childKey: 'id'				// right table key
 	}
 ];
 
@@ -25,7 +25,7 @@ skip: undefined,
 joins: [ { SUBQUERY_CAN_GO_HERE } ],
 
 parent: 'user',				// left table name
-parentKey: 'id',			// left table primary key
+parentKey: 'id',			// left table key
 child: 'message_to_user',	// right table name
-childKey: 'user_id'			// right table foreign key
+childKey: 'user_id'			// right table key
 */
