@@ -95,9 +95,9 @@ describe('integrator', function () {
 					}).should.be.true;
 				});
 
-				it('should not include extraneous attributes', function () {
-					console.log('n..m::\n',results);
-				});
+				// it('should not include extraneous attributes', function () {
+				// 	console.log('n..m::\n',results);
+				// });
 			});
 		});
 
@@ -225,11 +225,12 @@ describe('integrator', function () {
 				_.all(aliases, function (alias) {
 					return results.length === _.pluck(results, alias).length;
 				}).should.be.true;
+
+				console.log('results ::\n',require('util').inspect(results, {depth: 4}));
 			});
 		});
 
 		// it('should not include extraneous attributes', function () {
-		// 	console.log('multiple ::\n',results);
 		// });
 	});
 
