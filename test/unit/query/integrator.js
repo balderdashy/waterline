@@ -95,9 +95,9 @@ describe('integrator', function () {
 					}).should.be.true;
 				});
 
-				// it('should not include extraneous attributes', function () {
-				// 	console.log('n..m::\n',results[0]);
-				// });
+				it('should not include extraneous attributes', function () {
+					console.log('n..m::\n',results);
+				});
 			});
 		});
 
