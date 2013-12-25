@@ -226,6 +226,7 @@ describe('integrator', function () {
 					return results.length === _.pluck(results, alias).length;
 				}).should.be.true;
 
+				// console.log('results ::\n',require('util').inspect(results, {depth: 4}));
 			});
 		});
 
