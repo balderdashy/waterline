@@ -213,7 +213,7 @@ new User({ tableName: 'foobar', adapters: { postgresql: postgres }}, function(er
 
 ## Model
 
-Each result that gets returned from a Waterline query will be an instance of [Model](https://github.com/balderdashy/waterline/blob/master/lib/waterline/model/index.js). This will add in any instance methods defined in your collection along with some CRUD helper methods. View [Core Instance Methods](https://github.com/balderdashy/waterline/blob/master/lib/waterline/core/instanceMethods.js) to see how the methods are implemented.
+Each result that gets returned from a Waterline query will be an instance of [Model](https://github.com/balderdashy/waterline/blob/master/lib/waterline/model/index.js). This will add in any instance methods defined in your collection along with some CRUD helper methods. View the [Core Instance Methods](https://github.com/balderdashy/waterline/blob/master/lib/waterline/model/index.js) to see how they are implemented.
 
 Default CRUD instance methods:
 
