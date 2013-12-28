@@ -324,6 +324,46 @@ Based on your Collection attributes you also have dynamic finders. So given a `n
   - nameEndsWith
   - nameContains
 
+## Pagination
+
+In addition to the other find methods, there are a few helper methods to take care of pagination:
+
+  - skip
+  - limit
+  - paginate
+
+Skip takes an integer and can be used to skip records:
+
+``` javascript
+User.find().skip(20);
+```
+
+Limit takes an integer and limits the amount of records returned:
+
+``` javascript
+User.find().limit(10);
+```
+
+And put together they create the ability to paginate through records as you would pages. For example, if I wanted 'page 2' of a given record set, and I only want to see 10 records at a time, I know that I need to ```skip(10)``` and ```limit(10)``` like so:
+
+``` javascript
+User.find().skip(10).limit(10);
+```
+
+But, while we are thinking in terms of pagination, or pages, it might be easier to use the final helper - paginate:
+
+``` javascript
+User.find().paginate({page: 2, limit: 10});
+```
+
+Paginate has several options:
+
+  - ```paginate()``` defaults options to ```{page: 0, limit: 10}```
+  - ```paginate({page: 2})``` uses ```{page: 2, limit: 10}``` as the options
+  - ```paginate({limit: 20})``` uses ```{page: 0, limit: 20}``` as the options
+  - ```paginate({page: 1, limit: 20})``` uses ```{page: 1, limit: 20}``` as the options
+
+It returns a deferred object so that you can continue to chain your helpers.
 
 ## Sorting
 
