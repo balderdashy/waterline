@@ -4,6 +4,9 @@
  * @type {Array}
  */
 module.exports = [
+
+	// N..M Populate
+	// (Message has an association "to" which points to a collection of User)
 	{
 		alias: 'to',				// the `alias` -- e.g. name of association
 		parent: 'message',			// left table name
@@ -18,6 +21,9 @@ module.exports = [
 		child: 'user',				// right table name
 		childKey: 'id'				// right table key
 	},
+
+	// N..1 Populate
+	// (Message has an association "from" which points to one User)
 	{
 		alias: 'from',				// the `alias` -- e.g. name of association
 		parent: 'message',			// left table name
@@ -25,6 +31,9 @@ module.exports = [
 		child: 'user',				// right table name
 		childKey: 'id'				// right table key
 	},
+
+	// N..M Populate
+	// (Message has an association "cc" which points to a collection of User)
 	{
 		alias: 'cc',				// the `alias` -- e.g. name of association
 		parent: 'message',			// left table name
