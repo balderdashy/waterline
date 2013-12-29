@@ -4,7 +4,7 @@
  */
 module.exports = {
 
-    // N..1 Populate
+    // 1..N..1 (Pretty much like reverse populate)
     message___message_to_user: [{
         id: 10,
         subject: 'msgA',
