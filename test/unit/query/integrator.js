@@ -95,9 +95,7 @@ describe('integrator', function () {
 					}).should.be.true;
 				});
 
-				// it('should not include extraneous attributes', function () {
-				// 	console.log('n..m::\n',results);
-				// });
+				it('should not include extraneous attributes');
 			});
 		});
 
@@ -239,12 +237,8 @@ describe('integrator', function () {
 			});
 		});
 
-		/*
-		it('should not include extraneous attributes', function () {
-			console.log('\n\n:: multiple populates ::\nresults ::\n',
-				require('util').inspect(results, {depth: 4}));
-		});
-		*/
+
+		it('should not include extraneous attributes');
 	});
 
 });
