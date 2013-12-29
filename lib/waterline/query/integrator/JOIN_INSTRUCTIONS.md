@@ -1,23 +1,23 @@
 
 
-## Expected format of join instructions
+## Join Syntax
 
 ```javascript
 // A join instruction object
 {
 
-    // join SELECT/projection to perform on joined results
-    // includes all attributes of child collection by default--
-    // e.g. populate('friends') -> might result in:
+    // The attributes to pluck from results.
+    //
+    // By default, should include all attributes of child collection, e.g.
+    // `populate('friends')` might result in:
     // [ 'name', 'email', 'age', 'favoriteColor', 'id' ]
     //
-    // In the future, it may also be overridden, e.g.:
-    // populate('friends', { select: ['name', 'favoriteColor'] } ))
-    // -> might result in:
+    // Or it can be explicitly specified, e.g.
+    // `populate('friends', { select: ['name', 'favoriteColor'] } ))` might result in:
     select: ['name', 'favoriteColor'],
 
     // join subcriteria-- (e.g. populate('friends', { age: { '>' : 40 } } ))
-    // this is expected to be handled by the individual queries themselves
+    // this should be handled by the individual queries themselves
     where: { age: { '>' : 40 } },
 
     // limit, skip, and sort are expected to be handled by the individual queries themselves
