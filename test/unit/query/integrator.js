@@ -160,11 +160,21 @@ describe('integrator', function () {
 						return results.length === _.pluck(results, alias).length;
 					}).should.be.true;
 				});
+
+				it('should have proper number of users in "from"', function () {
+					
+					// console.log('\n\n:: 1..N ::\nresults ::\n',
+						// require('util').inspect(results, {depth: 4}));
+					
+					results[0].should.have.property('from').with.lengthOf(1);
+					results[1].should.have.property('from').with.lengthOf(1);
+					results[2].should.have.property('from').with.lengthOf(0);
+
+				});
 			});
 
-			// it('should not include extraneous attributes', function () {
-			// 	console.log('1..n::\n',results);
-			// });
+
+			it('should not include extraneous attributes');
 		});
 	});
 
@@ -226,12 +236,15 @@ describe('integrator', function () {
 					return results.length === _.pluck(results, alias).length;
 				}).should.be.true;
 
-				// console.log('results ::\n',require('util').inspect(results, {depth: 4}));
 			});
 		});
 
-		// it('should not include extraneous attributes', function () {
-		// });
+		/*
+		it('should not include extraneous attributes', function () {
+			console.log('\n\n:: multiple populates ::\nresults ::\n',
+				require('util').inspect(results, {depth: 4}));
+		});
+		*/
 	});
 
 });
