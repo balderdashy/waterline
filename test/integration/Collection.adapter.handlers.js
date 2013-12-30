@@ -39,18 +39,18 @@ describe('Waterline Collection', function() {
       test.adapterMethod(methodName)
         .options({ _simulate: 'traditionalError' })
         .expect(expect.cbHasErr)
-        .inspect('Adapter method (' + methodName + ') calls: `cb(err)`');
+        .inspect('Adapter.' + methodName + '() calls: `cb(err)`');
 
       test.adapterMethod(methodName)
         .options({ _simulate: 'traditionalSuccess' })
         .expect(expect.cbHasNoErr)
-        .inspect('Adapter method (' + methodName + ') calls: `cb()`');
+        .inspect('Adapter.' + methodName + '() calls: `cb()`');
 
       // TODO: test other usages (handlers)
     });
 
 
-    // "Update" is a special case
+    // "Update" is a special case since it has an extra arg
     // TODO: test update
 
 
