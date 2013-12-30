@@ -39,7 +39,7 @@ describe('Collection Query', function() {
       waterline.loadCollection(collections.car);
 
       // Fixture Adapter Def
-      var adapterDef = { find: function(col, criteria, cb) { return cb(null, [criteria]); }};
+      var adapterDef = { identity: 'foo', join: function(col, criteria, cb) { return cb(null, [criteria]); }};
 
       waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
         if(err) done(err);
@@ -54,7 +54,7 @@ describe('Collection Query', function() {
       .populate('driver')
       .exec(function(err, values) {
         assert(values.joins[0].parent === 'car');
-        assert(values.joins[0].parentKey === 'user_uuid');
+        assert(values.joins[0].parentKey === 'driver_user_uuid');
         assert(values.joins[0].child === 'user');
         assert(values.joins[0].childKey === 'uuid');
         assert(values.joins[0].removeParentKey === true);

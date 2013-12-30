@@ -35,7 +35,7 @@ describe('Collection Query', function() {
       waterline.loadCollection(collections.car);
 
       // Fixture Adapter Def
-      var adapterDef = { find: function(col, criteria, cb) { return cb(null, [criteria]); }};
+      var adapterDef = { identity: 'foo', join: function(col, criteria, cb) { return cb(null, [criteria]); }};
 
       waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
         if(err) done(err);
@@ -50,7 +50,8 @@ describe('Collection Query', function() {
       .populate('cars')
       .exec(function(err, values) {
 
-        assert(values.joins.length === 2);
+        assert(values.joins.length === 1);
+        assert(values.joins[0].children.length === 1);
 
         assert(values.joins[0].parent === 'user');
         assert(values.joins[0].parentKey === 'id');
@@ -59,12 +60,12 @@ describe('Collection Query', function() {
         assert(values.joins[0].select === false);
         assert(values.joins[0].removeParentKey === false);
 
-        assert(values.joins[1].parent === 'car_user');
-        assert(values.joins[1].parentKey === 'car_id');
-        assert(values.joins[1].child === 'car');
-        assert(values.joins[1].childKey === 'id');
-        assert(values.joins[1].select === true);
-        assert(values.joins[1].removeParentKey === false);
+        assert(values.joins[0].children[0].parent === 'car_user');
+        assert(values.joins[0].children[0].parentKey === 'car_id');
+        assert(values.joins[0].children[0].child === 'car');
+        assert(values.joins[0].children[0].childKey === 'id');
+        assert(values.joins[0].children[0].select === true);
+        assert(values.joins[0].children[0].removeParentKey === false);
 
         done();
       });

@@ -81,9 +81,9 @@ describe('Model', function() {
 
             assert(prefValues.length === 2);
             assert(prefValues[0].id === 1);
-            assert(prefValues[0].values.person_id === null);
+            assert(prefValues[0].values.user_person_id === null);
             assert(prefValues[1].id === 2);
-            assert(prefValues[1].values.person_id === null);
+            assert(prefValues[1].values.user_person_id === null);
 
             done();
           });
