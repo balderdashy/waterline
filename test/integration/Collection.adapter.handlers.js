@@ -89,12 +89,11 @@ var Deferred = function (config) {
 
   this.inspect = function ( /* [testMsg], mochaDescribeFn */ ) {
 
-    var testMsg =
-      typeof arguments[0] === 'string' ?
-      arguments[0] : '';
-    var mochaDescribeFn = arguments[1] || function () { it('should not crash', function () {}); };
+    // Message override
+    var testMsg = typeof arguments[0] === 'string' ? arguments[0] : '';
+    var mochaDescribeFn = typeof arguments[0] !== 'string' ? arguments[0] : arguments[1];
+    mochaDescribeFn = mochaDescribeFn;// || function () { it('should not crash', function () {}); };
 
-    if (typeof arguments[0] !== 'string') mochaDescribeFn = arguments[0];
 
 
     state.mochaDescribeFn = mochaDescribeFn;
@@ -186,38 +185,36 @@ var test = {
 
 describe('Waterline Collection', function() {
 
-  describe('error negotiation & handlers', function() {
+  describe(':: error negotiation & handlers ::', function() {
 
     before(bootstrap);
 
 
 
-    describe('Vocabulary methods upgrade callbacks to handlers', function () {
+    // Vocabulary methods should upgrade callbacks to handlers
 
-      _.each([
-        'find',
-        'create',
-        'destroy'
-      ],
-      function eachMethod (methodName) {
-        test.adapterMethod(methodName)
-          .options({ _simulate: 'traditionalError' })
-          .expect(expect.cbHasErr)
-          .inspect('Adapter method (' + methodName + ') calls: `cb(err)`');
+    _.each([
+      'find',
+      'create',
+      'destroy'
+    ],
+    function eachMethod (methodName) {
+      test.adapterMethod(methodName)
+        .options({ _simulate: 'traditionalError' })
+        .expect(expect.cbHasErr)
+        .inspect('Adapter method (' + methodName + ') calls: `cb(err)`');
 
-        test.adapterMethod(methodName)
-          .options({ _simulate: 'traditionalSuccess' })
-          .expect(expect.cbHasNoErr)
-          .inspect('Adapter method (' + methodName + ') calls: `cb()`');
+      test.adapterMethod(methodName)
+        .options({ _simulate: 'traditionalSuccess' })
+        .expect(expect.cbHasNoErr)
+        .inspect('Adapter method (' + methodName + ') calls: `cb()`');
 
-        // TODO: test other usages (handlers)
-      });
-
-
-      // "Update" is a special case
-      // TODO: test update
-
+      // TODO: test other usages (handlers)
     });
+
+
+    // "Update" is a special case
+    // TODO: test update
 
 
 
@@ -228,21 +225,21 @@ describe('Waterline Collection', function() {
 
     // Methods of dummy custom adapter methods do exactly what you would expect
     // based on their names.  Usage signature is: `Foo.bar(options, callback)`
-    describe('Custom methods still work', function () {
+    
 
-      it('should have the expected methods for use in our test', function () {
-        this.SomeCollection.traditionalError.should.be.a.Function;
-        this.SomeCollection.traditionalSuccess.should.be.a.Function;
-      });
-
-      test.adapterMethod('traditionalError')
-        .expect(expect.cbHasErr)
-        .inspect();
-
-      test.adapterMethod('traditionalSuccess')
-        .expect(expect.cbHasNoErr)
-        .inspect();
+    // Custom methods should still work
+    it('should have the expected methods for use in our test', function () {
+      this.SomeCollection.traditionalError.should.be.a.Function;
+      this.SomeCollection.traditionalSuccess.should.be.a.Function;
     });
 
+    test.adapterMethod('traditionalError')
+      .expect(expect.cbHasErr)
+      .inspect();
+
+    test.adapterMethod('traditionalSuccess')
+      .expect(expect.cbHasNoErr)
+      .inspect();
   });
+
 });
