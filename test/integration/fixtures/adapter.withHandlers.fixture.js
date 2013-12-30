@@ -4,8 +4,6 @@
 
 module.exports = {
 
-  identity: 'barbaz',
-
   // Waterline Vocabulary Methods
   // 
   // (supports automatic switching for handlers since we know the fn signature)

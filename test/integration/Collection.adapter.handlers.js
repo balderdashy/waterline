@@ -1,184 +1,18 @@
-var Waterline = require('../../lib/waterline'),
-    adapter = require('./fixtures/adapter.withHandlers.fixture'),
-    assert = require('assert'),
+/**
+ * Module dependencies
+ */
+var assert = require('assert'),
     should = require('should'),
     util = require('util'),
     _ = require('lodash');
 
 
-// Helpers
-//////////////////////////////////////////////////////////////////////////////
-var bootstrap = function(done) {
-  var self = this;
-
-  var Model = Waterline.Collection.extend({
-    attributes: {},
-    adapter: 'barbaz',
-    tableName: 'tests'
-  });
-
-  var waterline = new Waterline();
-  waterline.loadCollection(Model);
-
-  waterline.initialize({ adapters: { barbaz: adapter }}, function(err, colls) {
-    if(err) return done(err);
-    SomeCollection = colls.tests;
-    self.SomeCollection = SomeCollection;
-    done();
-  });
-};
-
-
-
-/**
- * Helper class for more literate asynchronous tests.
- * @param {Object} config
- */
-var Deferred = function (config) {
-
-  var deferred = this;
-
-  var state = {
-    expectations: []
-  };
-
-
-
-  var _run = function ( ) {
-
-    // Generate a better default test message
-    state.testMsg = state.testMsg || 
-      ('.' +config.nameOfMethod + '('+(state.options ? util.inspect(state.options) : '')+')');
-
-    describe(state.testMsg, function () {
-
-      // Simulates a call like :: `SomeCollection.nameOfMethod( options, cb )`
-      before(function (done){  
-
-        var mochaCtx = this;
-
-        var ctx = mochaCtx.SomeCollection;
-        var fn = mochaCtx.SomeCollection[config.nameOfMethod];
-        var options = state.options || {};
-        var cb = function adapterFnCallback () {
-          // console.log('result args::',arguments);
-          mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
-          return done();
-        };
-        // console.log('Doing: ', config.nameOfMethod, 'with opts:',options);
-        fn.apply(ctx, [options, cb]);
-      });
-
-
-      // Run explicit describe function if specified
-      if (state.mochaDescribeFn) {
-        state.mochaDescribeFn();
-      }
-
-      // Otherwise check expectations
-      else {
-        _.each(state.expectations, function (expectFn) {
-          expectFn();
-        });
-      }
-    });
-
-  };
-
-
-
-  this.inspect = function ( /* [testMsg], mochaDescribeFn */ ) {
-
-    // Message override
-    var testMsg = typeof arguments[0] === 'string' ? arguments[0] : '';
-    var mochaDescribeFn = typeof arguments[0] !== 'string' ? arguments[0] : arguments[1];
-    mochaDescribeFn = mochaDescribeFn;// || function () { it('should not crash', function () {}); };
-
-
-
-    state.mochaDescribeFn = mochaDescribeFn;
-    state.testMsg = testMsg;
-
-    _run();
-
-    // Chainable
-    return deferred;
-  };
-
-
-
-  this.options = function (options) {
-
-    state.options = options || {};
-
-    // Chainable
-    return deferred;
-  };
-
-
-  this.expect = function (fn) {
-    state.expectations.push(fn);
-
-    // Chainable
-    return deferred;
-  };
-};
-
-
-
-var expect = {
-  cbHasErr: function (shouldMsg) {
-    it(shouldMsg || 'should provide conventional error arg to caller cb', function () {
-      var err = this.resultArgs[0];
-      assert(err, 'Error argument should be present.');
-    });
-  },
-  cbHasNoErr: function (shouldMsg) {
-    it(shouldMsg || 'should provide NO error arg to caller cb', function () {
-      // console.log('RESULT AGS :',this.resultArgs);
-      var err = this.resultArgs[0];
-      assert(!err, 'Error argument should NOT be present.');
-    });
-  }
-};
-
-
-
-
-
+// Helpers/suites
+var bootstrapCollection = require('./helpers/Collection.bootstrap');
 var test = {
-
-  // Deferred object allows chained usage, i.e.:
-  // adapterMethod(foo).inspect(mochaDescribeFn)
-  adapterMethod: function (nameOfMethod) {
-    return new Deferred({
-      nameOfMethod: nameOfMethod
-    });
-  }
+  adapterMethod: require('./helpers/adapterMethod.helper.js')
 };
-//////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var expect = require('./helpers/cb.helper.js');
 
 
 
@@ -187,7 +21,10 @@ describe('Waterline Collection', function() {
 
   describe(':: error negotiation & handlers ::', function() {
 
-    before(bootstrap);
+    // Bootstrap a collection
+    before( bootstrapCollection({
+      adapter: require('./fixtures/adapter.withHandlers.fixture')
+    }) );
 
 
 
