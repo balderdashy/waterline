@@ -11,10 +11,19 @@ module.exports = {
   // The tests work by passing a `_simulate` option as a property to the first argument,
   // which might be `options` or `values`.  If `options`, it's a criteria, so we have to 
   // check the `where`
-  find: function (cid, options, cb) { return _interpretUsageTest(options.where && options.where._simulate, cb); },
-  create: function (cid, values, cb) { return _interpretUsageTest(values._simulate, cb); },
-  update: function (cid, options, values, cb) { return _interpretUsageTest(options.where && options.where._simulate, cb); },
-  destroy: function (cid, options, cb) { return _interpretUsageTest(options.where && options.where._simulate, cb); },
+  find: function (cid, options, cb) {
+    return _interpretUsageTest(options.where && options.where._simulate, cb);
+  },
+  create: function (cid, values, cb) {
+    return _interpretUsageTest(values._simulate, cb);
+  },
+  update: function (cid, options, values, cb) {
+    return _interpretUsageTest(options.where && options.where._simulate, cb);
+  },
+  destroy: function (cid, options, cb) {
+    console.log('destroy() ->', options.where && options.where._simulate);
+    return _interpretUsageTest(options.where && options.where._simulate, cb);
+  },
 
 
   // Custom Methods

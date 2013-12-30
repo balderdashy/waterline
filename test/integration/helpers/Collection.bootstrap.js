@@ -21,7 +21,8 @@ module.exports = function (options) {
     var Model = Waterline.Collection.extend({
       attributes: {},
       adapter: adapterIdentity,
-      tableName: 'tests'
+      tableName: 'tests',
+      schema: false
     });
 
     var waterline = new Waterline();
