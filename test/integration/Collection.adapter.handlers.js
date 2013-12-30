@@ -1,7 +1,9 @@
 var Waterline = require('../../lib/waterline'),
     adapter = require('./fixtures/adapter.withHandlers.fixture'),
     assert = require('assert'),
-    should = require('should');
+    should = require('should'),
+    util = require('util'),
+    _ = require('lodash');
 
 
 // Helpers
@@ -27,66 +29,122 @@ var bootstrap = function(done) {
 };
 
 
+
+/**
+ * Helper class for more literate asynchronous tests.
+ * @param {Object} config
+ */
+var Deferred = function (config) {
+
+  var deferred = this;
+
+  var state = {
+    expectations: []
+  };
+
+
+
+  var _run = function ( ) {
+
+    // Generate a better default test message
+    state.testMsg = state.testMsg || 
+      ('.' +config.nameOfMethod + '('+(state.options ? util.inspect(state.options) : '')+')');
+
+    describe(state.testMsg, function () {
+
+      // Simulates a call like :: `SomeCollection.nameOfMethod( options, cb )`
+      before(function (done){  
+
+        var mochaCtx = this;
+
+        var ctx = mochaCtx.SomeCollection;
+        var fn = mochaCtx.SomeCollection[config.nameOfMethod];
+        var options = state.options || {};
+        var cb = function adapterFnCallback () {
+          // console.log('result args::',arguments);
+          mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
+          return done();
+        };
+        // console.log('Doing: ', config.nameOfMethod, 'with opts:',options);
+        fn.apply(ctx, [options, cb]);
+      });
+
+
+      // Run explicit describe function if specified
+      if (state.mochaDescribeFn) {
+        state.mochaDescribeFn();
+      }
+
+      // Otherwise check expectations
+      else {
+        _.each(state.expectations, function (expectFn) {
+          expectFn();
+        });
+      }
+    });
+
+  };
+
+
+
+  this.inspect = function ( /* [testMsg], mochaDescribeFn */ ) {
+
+    var testMsg =
+      typeof arguments[0] === 'string' ?
+      arguments[0] : '';
+    var mochaDescribeFn = arguments[1] || function () { it('should not crash', function () {}); };
+
+    if (typeof arguments[0] !== 'string') mochaDescribeFn = arguments[0];
+
+
+    state.mochaDescribeFn = mochaDescribeFn;
+    state.testMsg = testMsg;
+
+    _run();
+
+    // Chainable
+    return deferred;
+  };
+
+
+
+  this.options = function (options) {
+
+    state.options = options || {};
+
+    // Chainable
+    return deferred;
+  };
+
+
+  this.expect = function (fn) {
+    state.expectations.push(fn);
+
+    // Chainable
+    return deferred;
+  };
+};
+
+
+
 var expect = {
   cbHasErr: function (shouldMsg) {
     it(shouldMsg || 'should provide conventional error arg to caller cb', function () {
       var err = this.resultArgs[0];
-      should(err).exist;
+      assert(err, 'Error argument should be present.');
     });
   },
   cbHasNoErr: function (shouldMsg) {
     it(shouldMsg || 'should provide NO error arg to caller cb', function () {
+      // console.log('RESULT AGS :',this.resultArgs);
       var err = this.resultArgs[0];
-      should(err).not.exist;
+      assert(!err, 'Error argument should NOT be present.');
     });
   }
 };
 
 
 
-
-
-        // // Run default msg fn
-        // var optionsArg = args && args[0];
-        // var msg = '.'+nameOfMethod+'()' + (optionsArg ? '  [usage: "' + optionsArg._simulate + '"]' : '');
-var Deferred = {
-  inspect: function (config) {
-
-    return function _inspect ( /* [testMsg], mochaDescribeFn */ ) {
-      var testMsg = typeof arguments[0] === 'string' ? arguments[0] : '???';
-      var mochaDescribeFn = arguments[1] || function () { it('should not crash', function () {}); };
-
-      if (typeof arguments[0] !== 'string') mochaDescribeFn = arguments[0];
-
-      describe(testMsg, function () {
-
-        // Simulates a call like :: `SomeCollection.nameOfMethod( options, cb )`
-        before(function (done){  
-
-          var self = this;
-          var fn = this.SomeCollection[config.nameOfMethod];
-          var options = this.options || {};
-          var cb = function adapterFnCallback () {
-            self.resultArgs = Array.prototype.slice.call(arguments);
-            return done();
-          };
-
-          console.log(options);
-          fn.apply(null, [options, cb]);
-        });
-
-        mochaDescribeFn();
-      });
-    };
-  },
-
-  options: function (options) {
-    before(function () {
-      this.options = options;
-    });
-  }
-  
-};
 
 
 var test = {
@@ -94,10 +152,9 @@ var test = {
   // Deferred object allows chained usage, i.e.:
   // adapterMethod(foo).inspect(mochaDescribeFn)
   adapterMethod: function (nameOfMethod) {
-    return {
-      inspect: Deferred.inspect({ nameOfMethod: nameOfMethod }),
-      options: Deferred.options()
-    };
+    return new Deferred({
+      nameOfMethod: nameOfMethod
+    });
   }
 };
 //////////////////////////////////////////////////////////////////////////////
@@ -127,15 +184,15 @@ describe('Waterline Collection', function() {
 
     describe('Vocabulary methods upgrade callbacks to handlers', function () {
 
-      test.adapterMethod('find', { _simulate: 'traditionalSuccess' })
-      .inspect(function () {
-        expect.cbHasNoErr();
-      });
+      test.adapterMethod('find')
+        .options({ _simulate: 'traditionalError' })
+        .expect(expect.cbHasErr)
+        .inspect();
 
-      test.adapterMethod('find', { _simulate: 'traditionalSuccess' })
-      .inspect(function () {
-        expect.cbHasNoErr();
-      });
+      test.adapterMethod('find')
+        .options({ _simulate: 'traditionalSuccess' })
+        .expect(expect.cbHasNoErr)
+        .inspect();
 
     });
 
@@ -155,13 +212,13 @@ describe('Waterline Collection', function() {
         this.SomeCollection.traditionalSuccess.should.be.a.Function;
       });
 
-      test.adapterMethod('traditionalError').inspect(function (){
-        expect.cbHasErr();
-      });
+      test.adapterMethod('traditionalError')
+        .expect(expect.cbHasErr)
+        .inspect();
 
-      test.adapterMethod('traditionalSuccess').inspect(function (){
-        expect.cbHasNoErr();
-      });
+      test.adapterMethod('traditionalSuccess')
+        .expect(expect.cbHasNoErr)
+        .inspect();
     });
 
   });
