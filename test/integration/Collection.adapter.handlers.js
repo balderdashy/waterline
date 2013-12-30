@@ -30,31 +30,85 @@ describe('Waterline Collection', function() {
 
     // Vocabulary methods should upgrade callbacks to handlers
 
-    _.each([
-      'find',
-      'create',
-      'destroy'
-    ],
-    function eachMethod (methodName) {
+    _.each({
+      find: {},
+      create: {},
+      update: { extraArgs: [{ /* dummy values argument */ }] },
+      destroy: {}
+    },
+    function eachMethod (testOpts, methodName) {
+
+      // We simulate different types of cb/handler usage by sneaking a property
+      // into the first argument.
+      var SIMULATE = {
+        CB: {
+          'err': [{ _simulate: 'traditionalError' }],
+          '': [{ _simulate: 'traditionalSuccess' }]
+        },
+        ERROR: {
+          'err': [{ _simulate: 'error' }],
+          '': [{ _simulate: 'anonError' }]
+        },
+        INVALID: {
+          'err': [{ _simulate: 'invalid' }],
+          '': [{ _simulate: 'anonInvalid' }]
+        },
+        SUCCESS: {
+          'err': [{ _simulate: 'success' }],
+          '': [{ _simulate: 'anonSuccess' }]
+        }
+      };
+      function _mixinExtraArgs (firstArg) {return firstArg.concat(testOpts.extraArgs || []);}
+      SIMULATE.CB = _.map(SIMULATE.CB, _mixinExtraArgs);
+      SIMULATE.ERROR = _.map(SIMULATE.ERROR, _mixinExtraArgs);
+      SIMULATE.INVALID = _.map(SIMULATE.INVALID, _mixinExtraArgs);
+      SIMULATE.SUCCESS = _.map(SIMULATE.SUCCESS, _mixinExtraArgs);
+
+
+      // Now test the different usages:
+      // 
+
+      // Adapter invokes callback
       test.adapterMethod(methodName)
-        .usage({ _simulate: 'traditionalError' })
+        .usage.apply(test, SIMULATE.CB['err'])
         .expect(expect.cbHasErr)
         .inspect('Adapter.' + methodName + '() calls: `cb(err)`');
-
       test.adapterMethod(methodName)
-        .usage({ _simulate: 'traditionalSuccess' })
+        .usage.apply(test, SIMULATE.CB[''])
         .expect(expect.cbHasNoErr)
         .inspect('Adapter.' + methodName + '() calls: `cb()`');
 
-      // TODO: test other usages (handlers)
-    });
-
-
-    // "Update" is a special case since it has an extra arg
-    test.adapterMethod('update')
-      .usage({ _simulate: 'traditionalError' }, {/* dummy values argument */})
+      // Adapter invokes error handler
+      test.adapterMethod(methodName)
+      .usage.apply(test, SIMULATE.ERROR['err'])
       .expect(expect.cbHasErr)
-      .inspect('Adapter.update() calls: `cb(err)`');
+      .inspect();
+      test.adapterMethod(methodName)
+      .usage.apply(test, SIMULATE.ERROR[''])
+      .expect(expect.cbHasErr)
+      .inspect();
+
+      // Adapter invokes invalid handler
+      test.adapterMethod(methodName)
+      .usage.apply(test, SIMULATE.INVALID['err'])
+      .expect(expect.cbHasErr)
+      .inspect();
+      test.adapterMethod(methodName)
+      .usage.apply(test, SIMULATE.INVALID[''])
+      .expect(expect.cbHasErr)
+      .inspect();
+
+      // Adapter invokes success handler
+      test.adapterMethod(methodName)
+      .usage.apply(test, SIMULATE.SUCCESS['err'])
+      .expect(expect.cbHasNoErr)
+      .inspect();
+      test.adapterMethod(methodName)
+      .usage.apply(test, SIMULATE.SUCCESS[''])
+      .expect(expect.cbHasNoErr)
+      .inspect();
+
+    });
 
 
 
@@ -85,3 +139,7 @@ describe('Waterline Collection', function() {
   });
 
 });
+
+
+
+
