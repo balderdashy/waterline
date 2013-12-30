@@ -70,14 +70,14 @@ describe('Core Transformations', function() {
 
       it('should change customer key to customer_uuid', function() {
         var values = transformer.serialize({ customer: 1 });
-        assert(values.customer_uuid);
-        assert(values.customer_uuid === 1);
+        assert(values.customer_customer_uuid);
+        assert(values.customer_customer_uuid === 1);
       });
 
       it('should work recursively', function() {
         var values = transformer.serialize({ where: { user: { customer: 1 }}});
-        assert(values.where.user.customer_uuid);
-        assert(values.where.user.customer_uuid === 1);
+        assert(values.where.user.customer_customer_uuid);
+        assert(values.where.user.customer_customer_uuid === 1);
       });
     });
   });

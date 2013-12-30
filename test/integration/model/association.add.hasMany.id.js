@@ -80,8 +80,8 @@ describe('Model', function() {
             if(err) return done(err);
 
             assert(prefValues.length === 2);
-            assert(prefValues[0].person_id === 1);
-            assert(prefValues[1].person_id === 1);
+            assert(prefValues[0].user_person_id === 1);
+            assert(prefValues[1].user_person_id === 1);
 
             done();
           });
