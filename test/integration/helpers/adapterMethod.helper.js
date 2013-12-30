@@ -24,8 +24,11 @@ var Deferred = function (config) {
   var _run = function ( ) {
 
     // Generate a better default test message
-    state.testMsg = state.testMsg || 
-      ('.' +config.nameOfMethod + '('+(state.options ? util.inspect(state.options) : '')+')');
+    var prettyUsage = '';
+    prettyUsage += '.' +config.nameOfMethod + '(';
+    prettyUsage += (_.map(state.usage, function (arg){ return util.inspect(arg); })).join(',');
+    prettyUsage += ')';
+    state.testMsg = state.testMsg || prettyUsage;
 
     describe(state.testMsg, function () {
 
@@ -34,16 +37,22 @@ var Deferred = function (config) {
 
         var mochaCtx = this;
 
-        var ctx = mochaCtx.SomeCollection;
+        // Decide the fn, args, and `this` value (ctx)
         var fn = mochaCtx.SomeCollection[config.nameOfMethod];
-        var options = state.options || {};
+        var ctx = mochaCtx.SomeCollection;
+        var args = state.usage || [];
+
+        // Add callback as final argument
         var cb = function adapterFnCallback () {
           // console.log('result args::',arguments);
           mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
           return done();
         };
-        // console.log('Doing: ', config.nameOfMethod, 'with opts:',options);
-        fn.apply(ctx, [options, cb]);
+        args.push(cb);
+
+        // console.log('Doing: ', config.nameOfMethod, 'with args:',args);
+        
+        fn.apply(ctx, args);
       });
 
 
@@ -63,40 +72,45 @@ var Deferred = function (config) {
   };
 
 
-
+  /**
+   * @param  {String} testMsg  [optional override]
+   * @param  {Function} mochaDescribeFn  [optional override]
+   * @return {Deferred} [chainable]
+   */
   this.inspect = function ( /* [testMsg], mochaDescribeFn */ ) {
 
-    // Message override
     var testMsg = typeof arguments[0] === 'string' ? arguments[0] : '';
+    if (testMsg) {
+      state.testMsg = testMsg;
+    }
+
     var mochaDescribeFn = typeof arguments[0] !== 'string' ? arguments[0] : arguments[1];
-    mochaDescribeFn = mochaDescribeFn;// || function () { it('should not crash', function () {}); };
-
-
-
-    state.mochaDescribeFn = mochaDescribeFn;
-    state.testMsg = testMsg;
+    if (mochaDescribeFn) {
+      state.mochaDescribeFn = mochaDescribeFn;
+    }
 
     _run();
-
-    // Chainable
     return deferred;
   };
 
 
 
-  this.options = function (options) {
-
-    state.options = options || {};
-
-    // Chainable
+  /**
+   * Save specified arguments as the usage of the function we're testing.
+   * @return {Deferred} [chainable]
+   */
+  this.usage = function () {
+    state.usage = Array.prototype.slice.call(arguments) || [];
     return deferred;
   };
 
 
+  /**
+   * @param  {Function} fn  [function to test]
+   * @return {Deferred} [chainable]
+   */
   this.expect = function (fn) {
     state.expectations.push(fn);
-
-    // Chainable
     return deferred;
   };
 };

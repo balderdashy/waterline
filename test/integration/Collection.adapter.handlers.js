@@ -37,12 +37,12 @@ describe('Waterline Collection', function() {
     ],
     function eachMethod (methodName) {
       test.adapterMethod(methodName)
-        .options({ _simulate: 'traditionalError' })
+        .usage({ _simulate: 'traditionalError' })
         .expect(expect.cbHasErr)
         .inspect('Adapter.' + methodName + '() calls: `cb(err)`');
 
       test.adapterMethod(methodName)
-        .options({ _simulate: 'traditionalSuccess' })
+        .usage({ _simulate: 'traditionalSuccess' })
         .expect(expect.cbHasNoErr)
         .inspect('Adapter.' + methodName + '() calls: `cb()`');
 
@@ -51,7 +51,10 @@ describe('Waterline Collection', function() {
 
 
     // "Update" is a special case since it has an extra arg
-    // TODO: test update
+    test.adapterMethod('update')
+      .usage({ _simulate: 'traditionalError' }, {/* dummy values argument */})
+      .expect(expect.cbHasErr)
+      .inspect('Adapter.update() calls: `cb(err)`');
 
 
 
@@ -71,10 +74,12 @@ describe('Waterline Collection', function() {
     });
 
     test.adapterMethod('traditionalError')
+      .usage({/* dummy options argument */})
       .expect(expect.cbHasErr)
       .inspect();
 
     test.adapterMethod('traditionalSuccess')
+      .usage({/* dummy options argument */})
       .expect(expect.cbHasNoErr)
       .inspect();
   });
