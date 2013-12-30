@@ -59,10 +59,7 @@ describe('Waterline Collection', function() {
         }
       };
       function _mixinExtraArgs (firstArg) {return firstArg.concat(testOpts.extraArgs || []);}
-      SIMULATE.CB = _.map(SIMULATE.CB, _mixinExtraArgs);
-      SIMULATE.ERROR = _.map(SIMULATE.ERROR, _mixinExtraArgs);
-      SIMULATE.INVALID = _.map(SIMULATE.INVALID, _mixinExtraArgs);
-      SIMULATE.SUCCESS = _.map(SIMULATE.SUCCESS, _mixinExtraArgs);
+      SIMULATE = _.mapValues(SIMULATE, function (group) { return _.mapValues(group, _mixinExtraArgs); });
 
 
       // Now test the different usages:
@@ -72,11 +69,11 @@ describe('Waterline Collection', function() {
       test.adapterMethod(methodName)
         .usage.apply(test, SIMULATE.CB['err'])
         .expect(expect.cbHasErr)
-        .inspect('Adapter.' + methodName + '() calls: `cb(err)`');
+        .inspect();//.inspect('Adapter.' + methodName + '() calls: `cb(err)`');
       test.adapterMethod(methodName)
         .usage.apply(test, SIMULATE.CB[''])
         .expect(expect.cbHasNoErr)
-        .inspect('Adapter.' + methodName + '() calls: `cb()`');
+        .inspect();//.inspect('Adapter.' + methodName + '() calls: `cb()`');
 
       // Adapter invokes error handler
       test.adapterMethod(methodName)
