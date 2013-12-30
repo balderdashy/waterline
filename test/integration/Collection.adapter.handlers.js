@@ -6,6 +6,27 @@ var Waterline = require('../../lib/waterline'),
 
 // Helpers
 //////////////////////////////////////////////////////////////////////////////
+var bootstrap = function(done) {
+  var self = this;
+
+  var Model = Waterline.Collection.extend({
+    attributes: {},
+    adapter: 'barbaz',
+    tableName: 'tests'
+  });
+
+  var waterline = new Waterline();
+  waterline.loadCollection(Model);
+
+  waterline.initialize({ adapters: { barbaz: adapter }}, function(err, colls) {
+    if(err) return done(err);
+    SomeCollection = colls.tests;
+    self.SomeCollection = SomeCollection;
+    done();
+  });
+};
+
+
 var expect = {
   cbHasErr: function (shouldMsg) {
     it(shouldMsg || 'should provide conventional error arg to caller cb', function () {
@@ -20,110 +41,128 @@ var expect = {
     });
   }
 };
-var run = {
 
-  // Simulates a call like :: `SomeCollection.nameOfMethod( {}, cb )`
-  adapterMethod: function (nameOfMethod) {
-    before(function (done){
-      
-      var self = this;
-      this.SomeCollection[nameOfMethod]( {}, function adapterFnCallback () {
-        self.resultArgs = Array.prototype.slice.call(arguments);
-        return done();
+
+
+
+
+        // // Run default msg fn
+        // var optionsArg = args && args[0];
+        // var msg = '.'+nameOfMethod+'()' + (optionsArg ? '  [usage: "' + optionsArg._simulate + '"]' : '');
+var Deferred = {
+  inspect: function (config) {
+
+    return function _inspect ( /* [testMsg], mochaDescribeFn */ ) {
+      var testMsg = typeof arguments[0] === 'string' ? arguments[0] : '???';
+      var mochaDescribeFn = arguments[1] || function () { it('should not crash', function () {}); };
+
+      if (typeof arguments[0] !== 'string') mochaDescribeFn = arguments[0];
+
+      describe(testMsg, function () {
+
+        // Simulates a call like :: `SomeCollection.nameOfMethod( options, cb )`
+        before(function (done){  
+
+          var self = this;
+          var fn = this.SomeCollection[config.nameOfMethod];
+          var options = this.options || {};
+          var cb = function adapterFnCallback () {
+            self.resultArgs = Array.prototype.slice.call(arguments);
+            return done();
+          };
+
+          console.log(options);
+          fn.apply(null, [options, cb]);
+        });
+
+        mochaDescribeFn();
       });
+    };
+  },
 
+  options: function (options) {
+    before(function () {
+      this.options = options;
     });
+  }
+  
+};
+
+
+var test = {
+
+  // Deferred object allows chained usage, i.e.:
+  // adapterMethod(foo).inspect(mochaDescribeFn)
+  adapterMethod: function (nameOfMethod) {
+    return {
+      inspect: Deferred.inspect({ nameOfMethod: nameOfMethod }),
+      options: Deferred.options()
+    };
   }
 };
 //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 describe('Waterline Collection', function() {
 
   describe('error negotiation & handlers', function() {
 
-    var SomeCollection;
+    before(bootstrap);
 
-    before(function(done) {
-      var self = this;
 
-      var Model = Waterline.Collection.extend({
-        attributes: {},
-        adapter: 'barbaz',
-        tableName: 'tests'
+
+    describe('Vocabulary methods upgrade callbacks to handlers', function () {
+
+      test.adapterMethod('find', { _simulate: 'traditionalSuccess' })
+      .inspect(function () {
+        expect.cbHasNoErr();
       });
 
-      var waterline = new Waterline();
-      waterline.loadCollection(Model);
-
-      waterline.initialize({ adapters: { barbaz: adapter }}, function(err, colls) {
-        if(err) return done(err);
-        SomeCollection = colls.tests;
-        self.SomeCollection = SomeCollection;
-        done();
+      test.adapterMethod('find', { _simulate: 'traditionalSuccess' })
+      .inspect(function () {
+        expect.cbHasNoErr();
       });
+
     });
 
 
-    // Methods of dummy adapter do exactly what you would expect based on their names.
-    // Usage signature is: `Foo.bar(options, callback)`
-    it('should have the expected methods for use in our test', function () {
-        SomeCollection.traditionalError.should.be.a.Function;
-        SomeCollection.traditionalSuccess.should.be.a.Function;
-
-        SomeCollection.invalid.should.be.a.Function;
-        SomeCollection.anonInvalid.should.be.a.Function;
-
-        SomeCollection.error.should.be.a.Function;
-        SomeCollection.anonError.should.be.a.Function;
-
-        SomeCollection.success.should.be.a.Function;
-        SomeCollection.anonSuccess.should.be.a.Function;
-    });
 
 
-    describe('-> when adapter calls `cb(err)`, it', function() {
-      run.adapterMethod('traditionalError');
-      expect.cbHasErr();
-    });
 
-    describe('-> when adapter calls `cb(null)`, it', function() {
-      run.adapterMethod('traditionalSuccess');
-      expect.cbHasNoErr();
-    });
 
-    describe('-> when adapter calls `cb.error(foo)`, it', function() {
-      run.adapterMethod('error');
-      expect.cbHasErr();
-    });
 
-    describe('-> when adapter calls `cb.error()`, it', function() {
-      run.adapterMethod('anonError');
-      expect.cbHasErr();
-    });
 
-    describe('-> when adapter calls `cb.invalid(foo)`, it', function() {
-      run.adapterMethod('invalid');
-      expect.cbHasErr();
-    });
+    // Methods of dummy custom adapter methods do exactly what you would expect
+    // based on their names.  Usage signature is: `Foo.bar(options, callback)`
+    describe('Custom methods still work', function () {
 
-    describe('-> when adapter calls `cb.invalid()`, it', function() {
-      run.adapterMethod('anonInvalid');
-      expect.cbHasErr();
-    });
+      it('should have the expected methods for use in our test', function () {
+        this.SomeCollection.traditionalError.should.be.a.Function;
+        this.SomeCollection.traditionalSuccess.should.be.a.Function;
+      });
 
-    describe('-> when adapter calls `cb.success(foo)`, it', function() {
-      run.adapterMethod('success');
-      expect.cbHasNoErr();
-    });
+      test.adapterMethod('traditionalError').inspect(function (){
+        expect.cbHasErr();
+      });
 
-    describe('-> when adapter calls `cb.success()`, it', function() {
-      run.adapterMethod('anonSuccess');
-      expect.cbHasNoErr();
+      test.adapterMethod('traditionalSuccess').inspect(function (){
+        expect.cbHasNoErr();
+      });
     });
 
   });
 });
-
-
-
