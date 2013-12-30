@@ -21,7 +21,6 @@ module.exports = {
     return _interpretUsageTest(options.where && options.where._simulate, cb);
   },
   destroy: function (cid, options, cb) {
-    console.log('destroy() ->', options.where && options.where._simulate);
     return _interpretUsageTest(options.where && options.where._simulate, cb);
   },
 
