@@ -174,6 +174,16 @@ var test = {
 
 
 
+
+
+
+
+
+
+
+
+
+
 describe('Waterline Collection', function() {
 
   describe('error negotiation & handlers', function() {
@@ -184,15 +194,28 @@ describe('Waterline Collection', function() {
 
     describe('Vocabulary methods upgrade callbacks to handlers', function () {
 
-      test.adapterMethod('find')
-        .options({ _simulate: 'traditionalError' })
-        .expect(expect.cbHasErr)
-        .inspect();
+      _.each([
+        'find',
+        'create',
+        'destroy'
+      ],
+      function eachMethod (methodName) {
+        test.adapterMethod(methodName)
+          .options({ _simulate: 'traditionalError' })
+          .expect(expect.cbHasErr)
+          .inspect('Adapter method (' + methodName + ') calls: `cb(err)`');
 
-      test.adapterMethod('find')
-        .options({ _simulate: 'traditionalSuccess' })
-        .expect(expect.cbHasNoErr)
-        .inspect();
+        test.adapterMethod(methodName)
+          .options({ _simulate: 'traditionalSuccess' })
+          .expect(expect.cbHasNoErr)
+          .inspect('Adapter method (' + methodName + ') calls: `cb()`');
+
+        // TODO: test other usages (handlers)
+      });
+
+
+      // "Update" is a special case
+      // TODO: test update
 
     });
 
