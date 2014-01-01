@@ -56,7 +56,7 @@ describe('Collection Query', function() {
       });
     });
 
-    describe('when passed an object with multiple handlers', function () {
+    describe('when passed a switchback (object with multiple handlers)', function () {
 
       before(function getTheQueryResultsForTestsBelow(done) {
         var self = this;
