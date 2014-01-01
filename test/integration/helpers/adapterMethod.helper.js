@@ -42,17 +42,52 @@ var Deferred = function (config) {
         var ctx = mochaCtx.SomeCollection;
         var args = state.usage || [];
 
-        // Add callback as final argument
-        var cb = function adapterFnCallback () {
-          // console.log('result args::',arguments);
-          mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
-          return done();
-        };
-        args.push(cb);
 
-        // console.log('Doing: ', config.nameOfMethod, 'with args:',args);
+        if ( !state.useHandlers ) {
+
+          // console.log('Doing: ', config.nameOfMethod, 'with args:',args);
+          // Add callback as final argument
+          fn.apply(ctx,args.concat([function adapterFnCallback () {
+            // console.log('result args::',arguments);
+            mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
+            return done();
+          }]));
+
+          return;
+        }
+
+        else {
+
+          // console.log('WITH HANDLERS!! Doing: ', config.nameOfMethod, 'with args:',args);
+          // console.log('fn::',fn);
+          
+          // Or use handlers instead
+          fn.apply(ctx, args.concat([{
+            success: function (){
+              console.log('SUCCESS HANDLER');
+              mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
+              mochaCtx.handlerName = 'success';
+              return done();
+            },
+            error: function (){
+              console.log('ERROR HANDLER');
+              mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
+              mochaCtx.handlerName = 'error';
+              return done();
+            },
+            invalid: function (){
+              console.log('INVALID HANDLER');
+              mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
+              mochaCtx.handlerName = 'invalid';
+              return done();
+            }
+          }]));
+
+          return;
+        }
         
-        fn.apply(ctx, args);
+
+
       });
 
 
@@ -69,6 +104,15 @@ var Deferred = function (config) {
       }
     });
 
+  };
+
+
+  /**
+   * @return {Deferred} [chainable]
+   */
+  this.callbackStyle = function (style) {
+    state.useHandlers = style !== 'cb';
+    return deferred;
   };
 
 

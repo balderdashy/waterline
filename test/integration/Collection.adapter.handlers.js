@@ -61,49 +61,61 @@ describe('Waterline Collection', function() {
       function _mixinExtraArgs (firstArg) {return firstArg.concat(testOpts.extraArgs || []);}
       SIMULATE = _.mapValues(SIMULATE, function (group) { return _.mapValues(group, _mixinExtraArgs); });
 
-
-      // Now test the different usages:
-      // 
-
-      // Adapter invokes callback
-      test.adapterMethod(methodName)
+      // Test all the different usages on the adapter side:
+      function testAdapterUsage (style) {
+        
+        // Adapter invokes callback
+        test.adapterMethod(methodName)
         .usage.apply(test, SIMULATE.CB['err'])
         .expect(expect.cbHasErr)
-        .inspect();//.inspect('Adapter.' + methodName + '() calls: `cb(err)`');
-      test.adapterMethod(methodName)
+        .callbackStyle(style)
+        .inspect();
+        test.adapterMethod(methodName)
         .usage.apply(test, SIMULATE.CB[''])
         .expect(expect.cbHasNoErr)
-        .inspect();//.inspect('Adapter.' + methodName + '() calls: `cb()`');
+        .callbackStyle(style)
+        .inspect();
 
-      // Adapter invokes error handler
-      test.adapterMethod(methodName)
-      .usage.apply(test, SIMULATE.ERROR['err'])
-      .expect(expect.cbHasErr)
-      .inspect();
-      test.adapterMethod(methodName)
-      .usage.apply(test, SIMULATE.ERROR[''])
-      .expect(expect.cbHasErr)
-      .inspect();
+        // Adapter invokes error handler
+        test.adapterMethod(methodName)
+        .usage.apply(test, SIMULATE.ERROR['err'])
+        .expect(expect.cbHasErr)
+        .callbackStyle(style)
+        .inspect();
+        test.adapterMethod(methodName)
+        .usage.apply(test, SIMULATE.ERROR[''])
+        .expect(expect.cbHasErr)
+        .callbackStyle(style)
+        .inspect();
 
-      // Adapter invokes invalid handler
-      test.adapterMethod(methodName)
-      .usage.apply(test, SIMULATE.INVALID['err'])
-      .expect(expect.cbHasErr)
-      .inspect();
-      test.adapterMethod(methodName)
-      .usage.apply(test, SIMULATE.INVALID[''])
-      .expect(expect.cbHasErr)
-      .inspect();
+        // Adapter invokes invalid handler
+        test.adapterMethod(methodName)
+        .usage.apply(test, SIMULATE.INVALID['err'])
+        .expect(expect.cbHasErr)
+        .callbackStyle(style)
+        .inspect();
+        test.adapterMethod(methodName)
+        .usage.apply(test, SIMULATE.INVALID[''])
+        .expect(expect.cbHasErr)
+        .callbackStyle(style)
+        .inspect();
 
-      // Adapter invokes success handler
-      test.adapterMethod(methodName)
-      .usage.apply(test, SIMULATE.SUCCESS['err'])
-      .expect(expect.cbHasNoErr)
-      .inspect();
-      test.adapterMethod(methodName)
-      .usage.apply(test, SIMULATE.SUCCESS[''])
-      .expect(expect.cbHasNoErr)
-      .inspect();
+        // Adapter invokes success handler
+        test.adapterMethod(methodName)
+        .usage.apply(test, SIMULATE.SUCCESS['err'])
+        .expect(expect.cbHasNoErr)
+        .callbackStyle(style)
+        .inspect();
+        test.adapterMethod(methodName)
+        .usage.apply(test, SIMULATE.SUCCESS[''])
+        .expect(expect.cbHasNoErr)
+        .callbackStyle(style)
+        .inspect();
+      }
+
+      // Test the different usages on the app side:
+      testAdapterUsage('cb');
+      testAdapterUsage('handlers');
 
     });
 
