@@ -67,7 +67,7 @@ var Deferred = function (config) {
           // console.log('fn::',fn);
           
           // Or use handlers instead
-          fn.apply(ctx, args.concat([{
+          fn.apply(ctx, args).exec({
             success: function (){
               console.log('SUCCESS HANDLER');
               mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
@@ -86,7 +86,7 @@ var Deferred = function (config) {
               mochaCtx.handlerName = 'invalid';
               return done();
             }
-          }]));
+          });
 
           return;
         }
