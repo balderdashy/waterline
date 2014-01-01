@@ -16,7 +16,6 @@ var expect = require('./helpers/cb.helper.js');
 
 
 
-/*
 describe('Waterline Collection', function() {
 
   describe(':: error negotiation & handlers ::', function() {
@@ -152,6 +151,3 @@ describe('Waterline Collection', function() {
 });
 
 
-
-
-*/

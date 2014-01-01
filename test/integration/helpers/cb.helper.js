@@ -17,7 +17,7 @@ module.exports = {
   cbHasNoErr: function (shouldMsg) {
     it(shouldMsg || 'should provide NO error arg to caller cb', function () {
       var err = this.resultArgs[0];
-      assert(!err, 'Error argument should NOT be present.');
+      assert(!err, 'Error argument should NOT be present- but it was:\n' + util.inspect(err));
     });
   },
 
