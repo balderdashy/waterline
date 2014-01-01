@@ -47,11 +47,16 @@ var Deferred = function (config) {
 
           // console.log('Doing: ', config.nameOfMethod, 'with args:',args);
           // Add callback as final argument
-          fn.apply(ctx,args.concat([function adapterFnCallback () {
-            // console.log('result args::',arguments);
+          // fn.apply(ctx,args.concat([function adapterFnCallback () {
+          //   // console.log('result args::',arguments);
+          //   mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
+          //   return done();
+          // }]));
+          // 
+          fn.apply(ctx,args).exec(function adapterFnCallback () {
             mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
             return done();
-          }]));
+          });
 
           return;
         }
