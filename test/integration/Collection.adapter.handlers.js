@@ -16,7 +16,7 @@ var expect = require('./helpers/cb.helper.js');
 
 
 
-
+/*
 describe('Waterline Collection', function() {
 
   describe(':: error negotiation & handlers ::', function() {
@@ -30,10 +30,11 @@ describe('Waterline Collection', function() {
 
     // Vocabulary methods should upgrade callbacks to handlers
 
+    var dummyValues = {};
     _.each({
       find: {},
       create: {},
-      update: { extraArgs: [{ /* dummy values argument */ }] },
+      update: { extraArgs: [ dummyValues ] },
       destroy: {}
     },
     function eachMethod (testOpts, methodName) {
@@ -136,13 +137,14 @@ describe('Waterline Collection', function() {
       this.SomeCollection.traditionalSuccess.should.be.a.Function;
     });
 
+  var dummyOptions = {};
     test.adapterMethod('traditionalError')
-      .usage({/* dummy options argument */})
+      .usage(dummyOptions)
       .expect(expect.cbHasErr)
       .inspect();
 
     test.adapterMethod('traditionalSuccess')
-      .usage({/* dummy options argument */})
+      .usage(dummyOptions)
       .expect(expect.cbHasNoErr)
       .inspect();
   });
@@ -152,3 +154,4 @@ describe('Waterline Collection', function() {
 
 
 
+*/
