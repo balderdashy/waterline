@@ -66,7 +66,7 @@ describe('Collection Query', function() {
       assert(!query.groupContains);
     });
 
-    it('should create limited dynamic finders for has_one and belongs_to associations', function() {
+    it.skip('should create limited dynamic finders for has_one and belongs_to associations', function() {
       assert(typeof query.findByGroup === 'function');
       assert(typeof query.findOneByGroup === 'function');
     });

@@ -25,7 +25,8 @@
     "node-switchback": "~0.0.4"
   },
   "devDependencies": {
-    "mocha": "1.9.x"
+    "mocha": "1.9.x",
+    "should": "~2.1.1"
   },
   "keywords": [
     "mvc",

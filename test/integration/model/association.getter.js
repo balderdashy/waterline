@@ -38,13 +38,16 @@ describe('Model', function() {
         waterline.loadCollection(Preference);
 
         var _values = [
-          { preference: [{ foo: 'bar' }, { foo: 'foobar' }] },
-          { preference: [{ foo: 'a' }, { foo: 'b' }] },
+          { preferences: [{ foo: 'bar' }, { foo: 'foobar' }] },
+          { preferences: [{ foo: 'a' }, { foo: 'b' }] },
         ];
 
         var adapterDef = {
-          find: function(col, criteria, cb) { return cb(null, _values); }
+          identity: 'foo',
+          join: function(col, criteria, cb) { return cb(null, _values); },
         };
+
+        adapterDef.find = adapterDef.join;
 
         waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
           if(err) done(err);

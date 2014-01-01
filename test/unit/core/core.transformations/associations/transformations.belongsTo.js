@@ -50,7 +50,7 @@ describe('Core Transformations', function() {
       it('should have a core transformation for the customer model key on the foo table', function() {
         var transformations = fooCollection._transformer._transformations;
         assert(transformations.customer);
-        assert(transformations.customer === 'customer_uuid');
+        assert(transformations.customer === 'customer_customer_uuid');
       });
 
     });
