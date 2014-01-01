@@ -16,9 +16,26 @@ module.exports = {
   },
   cbHasNoErr: function (shouldMsg) {
     it(shouldMsg || 'should provide NO error arg to caller cb', function () {
-      // console.log('RESULT AGS :',this.resultArgs);
       var err = this.resultArgs[0];
       assert(!err, 'Error argument should NOT be present.');
+    });
+  },
+
+  errorHandler: function (shouldMsg) {
+    it(shouldMsg || 'should trigger the `error` handler', function () {
+      should(this.handlerName).equal('error');
+    });
+  },
+
+  invalidHandler: function (shouldMsg) {
+    it(shouldMsg || 'should trigger the `invalid` handler', function () {
+      should(this.handlerName).equal('invalid');
+    });
+  },
+
+  successHandler: function (shouldMsg) {
+    it(shouldMsg || 'should trigger the `success` handler', function () {
+      should(this.handlerName).equal('success');
     });
   }
 };
