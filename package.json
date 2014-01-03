@@ -17,12 +17,12 @@
     }
   ],
   "dependencies": {
-    "lodash": "1.3.1",
+    "lodash": "~2.4.1",
     "async": "0.2.9",
     "anchor": "git://github.com/particlebanana/anchor.git#hackyhack",
     "q": "0.9.4",
     "waterline-schema": "git://github.com/balderdashy/waterline-schema.git",
-    "sails-util": "git://github.com/balderdashy/sails-util.git"
+    "node-switchback": "~0.0.4"
   },
   "devDependencies": {
     "mocha": "1.9.x",
