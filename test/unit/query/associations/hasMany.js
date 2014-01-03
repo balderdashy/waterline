@@ -4,7 +4,7 @@ var Waterline = require('../../../../lib/waterline'),
 describe('Collection Query', function() {
 
   describe('has many association', function() {
-    var User;
+    var User, generatedCriteria;
 
     before(function(done) {
 
@@ -39,7 +39,10 @@ describe('Collection Query', function() {
       waterline.loadCollection(collections.car);
 
       // Fixture Adapter Def
-      var adapterDef = { identity: 'foo', join: function(col, criteria, cb) { return cb(null, [criteria]); }};
+      var adapterDef = { identity: 'foo', join: function(col, criteria, cb) {
+        generatedCriteria = criteria;
+        return cb();
+      }};
 
       waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
         if(err) done(err);
@@ -53,12 +56,13 @@ describe('Collection Query', function() {
       User.findOne(1)
       .populate('cars')
       .exec(function(err, values) {
-        assert(values.joins[0].parent === 'user');
-        assert(values.joins[0].parentKey === 'uuid');
-        assert(values.joins[0].child === 'car');
-        assert(values.joins[0].childKey === 'driver_user_uuid');
-        assert(values.joins[0].select === true);
-        assert(values.joins[0].removeParentKey === false);
+        if(err) return done(err);
+        assert(generatedCriteria.joins[0].parent === 'user');
+        assert(generatedCriteria.joins[0].parentKey === 'uuid');
+        assert(generatedCriteria.joins[0].child === 'car');
+        assert(generatedCriteria.joins[0].childKey === 'driver_user_uuid');
+        assert(generatedCriteria.joins[0].select === true);
+        assert(generatedCriteria.joins[0].removeParentKey === false);
 
         done();
       });
