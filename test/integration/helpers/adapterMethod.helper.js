@@ -53,35 +53,36 @@ var Deferred = function (config) {
           //   return done();
           // }]));
           // 
-          fn.apply(ctx,args).exec(function adapterFnCallback () {
+          fn.apply(ctx,args.concat([function adapterFnCallback () {
             mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
+            // console.log('!);');
             return done();
-          });
+          }]));
 
           return;
         }
 
         else {
 
-          // console.log('WITH HANDLERS!! Doing: ', config.nameOfMethod, 'with args:',args);
+          // console.log('WITH HANDLERS!! Doing:', config.nameOfMethod, 'with args:',args);
           // console.log('fn::',fn);
           
           // Or use handlers instead
           fn.apply(ctx, args).exec({
             success: function (){
-              console.log('SUCCESS HANDLER');
+              // console.log('SUCCESS HANDLER');
               mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
               mochaCtx.handlerName = 'success';
               return done();
             },
             error: function (){
-              console.log('ERROR HANDLER');
+              // console.log('ERROR HANDLER');
               mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
               mochaCtx.handlerName = 'error';
               return done();
             },
             invalid: function (){
-              console.log('INVALID HANDLER');
+              // console.log('INVALID HANDLER');
               mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
               mochaCtx.handlerName = 'invalid';
               return done();
