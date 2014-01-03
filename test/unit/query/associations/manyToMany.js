@@ -68,7 +68,7 @@ describe('Collection Query', function() {
         assert(generatedCriteria.joins[0].children[0].parentKey === 'car_id');
         assert(generatedCriteria.joins[0].children[0].child === 'car');
         assert(generatedCriteria.joins[0].children[0].childKey === 'id');
-        assert(generatedCriteria.joins[0].children[0].select === true);
+        assert(Array.isArray(generatedCriteria.joins[0].children[0].select));
         assert(generatedCriteria.joins[0].children[0].removeParentKey === false);
 
         done();
