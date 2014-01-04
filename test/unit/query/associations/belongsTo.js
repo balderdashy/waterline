@@ -58,7 +58,7 @@ describe('Collection Query', function() {
       .exec(function(err, values) {
         if(err) return done(err);
         assert(generatedCriteria.joins[0].parent === 'car');
-        assert(generatedCriteria.joins[0].parentKey === 'driver_user_uuid');
+        assert(generatedCriteria.joins[0].parentKey === 'driver');
         assert(generatedCriteria.joins[0].child === 'user');
         assert(generatedCriteria.joins[0].childKey === 'uuid');
         assert(generatedCriteria.joins[0].removeParentKey === true);
