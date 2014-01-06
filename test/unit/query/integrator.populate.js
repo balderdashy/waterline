@@ -12,9 +12,6 @@ var should = require('should');
 var _ = require('lodash');
 
 
-
-var CHILD_ATTR_PREFIX = '.';
-
 describe('populate', function() {
 
 
@@ -40,8 +37,8 @@ describe('populate', function() {
             rightKey: 'message_id'
           }),
           parentPK: 'id',
-          childPK: 'user_id',
-          fkToChild: CHILD_ATTR_PREFIX + 'user_id'
+          childPK: '.' + 'user_id',
+          fkToChild: '.' + 'user_id'
         });
       });
     });
@@ -83,13 +80,14 @@ describe('populate', function() {
               leftKey: 'id',
               rightKey: 'message_id'
             }),
-            leftKey: 'user_id',
+            leftKey: '.user_id',
             rightKey: 'id',
-            right: fixtures.cache.user
+            right: fixtures.cache.user,
+            childNamespace: '..'
           }),
           parentPK: 'id',
-          fkToChild: CHILD_ATTR_PREFIX + 'user_id',
-          childPK: CHILD_ATTR_PREFIX + 'id'
+          fkToChild: '.user_id',
+          childPK: '..id'
         });
       });
     });
