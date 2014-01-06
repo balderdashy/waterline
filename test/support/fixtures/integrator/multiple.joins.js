@@ -23,7 +23,7 @@ module.exports = [
 
 		child: 'user',				// right table name
 		childKey: 'id',				// right table key
-		// select: ['id', 'email']
+		select: ['id', 'email']
 	},
 
 	// N..1 Populate
@@ -35,7 +35,7 @@ module.exports = [
 
 		child: 'user',				// right table name
 		childKey: 'id',				// right table key
-		// select: ['email', 'id']
+		select: ['email', 'id']
 	},
 
 	// N..M Populate
@@ -56,6 +56,6 @@ module.exports = [
 
 		child: 'user',				// right table name
 		childKey: 'id',				// right table key
-		// select: ['id', 'email']
+		select: ['id', 'email']
 	},
 ];
