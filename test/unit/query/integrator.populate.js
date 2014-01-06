@@ -12,6 +12,9 @@ var should = require('should');
 var _ = require('lodash');
 
 
+
+var CHILD_ATTR_PREFIX = '.';
+
 describe('populate', function() {
 
 
@@ -38,7 +41,7 @@ describe('populate', function() {
           }),
           parentPK: 'id',
           childPK: 'user_id',
-          fkToChild: 'user_id'
+          fkToChild: CHILD_ATTR_PREFIX + 'user_id'
         });
       });
     });
@@ -85,8 +88,8 @@ describe('populate', function() {
             right: fixtures.cache.user
           }),
           parentPK: 'id',
-          fkToChild: 'user_id',
-          childPK: 'id'
+          fkToChild: CHILD_ATTR_PREFIX + 'user_id',
+          childPK: CHILD_ATTR_PREFIX + 'id'
         });
       });
     });
