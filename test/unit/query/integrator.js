@@ -28,7 +28,7 @@ describe('integrator', function () {
 
 		it('should trigger cb(err)', function (done) {
 			assert.doesNotThrow(function () {
-				integrate('foo', 'bar', function (err, results) {
+				integrate('foo', 'bar', 'id', function (err, results) {
 					assert(err);
 					done();
 				});
@@ -50,7 +50,7 @@ describe('integrator', function () {
 
 			before(function (done){
 				assert.doesNotThrow(function () {
-					integrate(fixtures.cache, fixtures.joins, function (err, _results) {
+					integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
 						assert(!err);
 						results = _results;
 						done(err);
@@ -73,7 +73,7 @@ describe('integrator', function () {
 					_.each(results, function (result) {
 						result
 						.should.be.Object;
-						
+
 						_.any(aliases, function (alias) {
 							return result[alias];
 						})
@@ -115,7 +115,7 @@ describe('integrator', function () {
 
 			before(function (done){
 				assert.doesNotThrow(function () {
-					integrate(fixtures.cache, fixtures.joins, function (err, _results) {
+					integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
 						assert(!err);
 						results = _results;
 						done(err);
@@ -136,7 +136,7 @@ describe('integrator', function () {
 					_.each(results, function (result) {
 						result
 						.should.be.Object;
-						
+
 						_.any(aliases, function (alias) {
 							return result[alias];
 						})
@@ -160,10 +160,10 @@ describe('integrator', function () {
 				});
 
 				it('should have proper number of users in "from"', function () {
-					
+
 					// console.log('\n\n:: 1..N ::\nresults ::\n',
 						// require('util').inspect(results, {depth: 4}));
-					
+
 					results[0].should.have.property('from').with.lengthOf(1);
 					results[1].should.have.property('from').with.lengthOf(1);
 					results[2].should.have.property('from').with.lengthOf(0);
@@ -191,7 +191,7 @@ describe('integrator', function () {
 
 		before(function (done){
 			assert.doesNotThrow(function () {
-				integrate(fixtures.cache, fixtures.joins, function (err, _results) {
+				integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
 					assert(!err);
 					results = _results;
 					done(err);
@@ -212,7 +212,7 @@ describe('integrator', function () {
 				_.each(results, function (result) {
 					result
 					.should.be.Object;
-					
+
 					_.any(aliases, function (alias) {
 						return result[alias];
 					})
@@ -237,7 +237,7 @@ describe('integrator', function () {
 			});
 
 			it('should contain expected results', function () {
-					
+
 				// console.log('\n\n:: multiple populates ::\nresults ::\n',
 					// require('util').inspect(results, {depth: 4}));
 				// results[0].should.have.property('from').with.lengthOf(1);
