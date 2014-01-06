@@ -113,8 +113,9 @@ describe('leftOuterJoin', function() {
           results_2 = leftOuterJoin({
             left: results,
             right: fixtures.cache.user,
-            leftKey: 'user_id',
-            rightKey: 'id'
+            leftKey: '.user_id',
+            rightKey: 'id',
+            childNamespace: '..'
           });
         });
       });
