@@ -48,7 +48,14 @@ describe('Collection Query', function() {
           done();
         });
       });
-
+      it('should not modify timestamps if set by the user',function(done){
+        var date = new Date(1385637390000);
+        query.create({createdAt: date,updatedAt:date}, function(err, status) {
+          assert.equal(date.getTime(),status.createdAt.getTime());
+          assert.equal(date.getTime(),status.updatedAt.getTime());
+          done();
+        });
+      });
       it('should set values', function(done) {
         query.create({ name: 'Bob' }, function(err, status) {
           assert(status.name === 'Bob');

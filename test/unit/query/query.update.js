@@ -44,7 +44,13 @@ describe('Collection Query', function() {
           done();
         });
       });
-
+      it('should not change the updatedAt timestamp if set by the user', function(done) {
+        var date = new Date(1385637390000);
+        query.update({}, { name: 'foo',updatedAt:date }, function(err, status) {
+          assert.equal(date.getTime(),status[0].updatedAt.getTime());
+          done();
+        });
+      });
       it('should set values', function(done) {
         query.update({}, { name: 'foo' }, function(err, status) {
           assert(status[0].name === 'foo');
