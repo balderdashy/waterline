@@ -12,6 +12,7 @@ module.exports = {
         from: 1,
         to: [{
             id: 10,
+            '.message_id': 10,
             subject: 'msgA',
             body: 'A test message.',
             from: 1,
@@ -19,6 +20,7 @@ module.exports = {
             '.id': 1
         }, {
             id: 10,
+            '.message_id': 10,
             subject: 'msgA',
             body: 'A test message.',
             from: 1,
@@ -52,6 +54,7 @@ module.exports = {
             '.id': 1,
             '..id': 2,
             id: 10,
+            '.message_id': 10,
             subject: 'msgA',
             body: 'A test message.',
             from: 1
@@ -60,6 +63,7 @@ module.exports = {
             '.id': 2,
             '..id': 3,
             id: 10,
+            '.message_id': 10,
             subject: 'msgA',
             body: 'A test message.',
             from: 1
