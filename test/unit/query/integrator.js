@@ -238,11 +238,11 @@ describe('integrator', function () {
 
 			it('should contain expected results', function () {
 
-				// console.log('\n\n:: multiple populates ::\nresults ::\n',
-					// require('util').inspect(results, {depth: 4}));
-				// results[0].should.have.property('from').with.lengthOf(1);
-				// results[1].should.have.property('from').with.lengthOf(1);
-				// results[2].should.have.property('from').with.lengthOf(0);
+				console.log('\n\n:: multiple populates ::\nresults ::\n',
+					require('util').inspect(results, {depth: 4}));
+				results[0].should.have.property('from').with.lengthOf(1);
+				results[1].should.have.property('from').with.lengthOf(1);
+				results[2].should.have.property('from').with.lengthOf(0);
 			});
 		});
 
