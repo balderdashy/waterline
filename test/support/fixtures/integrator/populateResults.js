@@ -15,13 +15,15 @@ module.exports = {
             subject: 'msgA',
             body: 'A test message.',
             from: 1,
-            user_id: 2
+            '.user_id': 2,
+            '.id': 1
         }, {
             id: 10,
             subject: 'msgA',
             body: 'A test message.',
             from: 1,
-            user_id: 3
+            '.user_id': 3,
+            '.id': 2
         }]
     }, {
         id: 20,
@@ -46,14 +48,18 @@ module.exports = {
         body: 'A test message.',
         from: 1,
         to: [{
-            email: 'a@recipient.com',
-            id: 2,
+            '..email': 'a@recipient.com',
+            '.id': 1,
+            '..id': 2,
+            id: 10,
             subject: 'msgA',
             body: 'A test message.',
             from: 1
         }, {
-            email: 'b@recipient.com',
-            id: 3,
+            '..email': 'b@recipient.com',
+            '.id': 2,
+            '..id': 3,
+            id: 10,
             subject: 'msgA',
             body: 'A test message.',
             from: 1

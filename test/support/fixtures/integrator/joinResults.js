@@ -8,7 +8,7 @@ module.exports = {
 
   // Inner join
   ___inner___message___message_to_user: [{
-    '.id': 2,
+    '.id': 1,
     '.user_id': 2,
     id: 10,
     subject: 'msgA',
@@ -28,7 +28,7 @@ module.exports = {
   // Left outer join:
   message___message_to_user: [{
     id: 10,
-    '.id': 2,
+    '.id': 1,
     '.user_id': 2,
     subject: 'msgA',
     body: 'A test message.',
@@ -58,7 +58,7 @@ module.exports = {
   message___message_to_user___user: [{
     '..email': 'a@recipient.com',
     id: 10,
-    '.id': 2,
+    '.id': 1,
     '.user_id': 2,
     subject: 'msgA',
     body: 'A test message.',
