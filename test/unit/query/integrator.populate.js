@@ -1,10 +1,11 @@
 /**
  * Test dependencies
  */
+var _ = require('lodash');
 var leftOuterJoin = require('../../../lib/waterline/query/integrator/leftOuterJoin');
 var populate = require('../../../lib/waterline/query/integrator/populate');
 var fixtures = {
-  cache: require('../../support/fixtures/integrator/cache'),
+  cache: _.cloneDeep(require('../../support/fixtures/integrator/cache')),
   populateResults: require('../../support/fixtures/integrator/populateResults')
 };
 var assert = require('assert');

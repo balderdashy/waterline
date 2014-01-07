@@ -9,8 +9,6 @@ var _ = require('lodash');
 
 
 
-
-
 describe('integrator', function () {
 
 	describe('with no callback', function () {
@@ -96,6 +94,24 @@ describe('integrator', function () {
 				});
 
 				it('should not include extraneous attributes');
+
+
+				describe('with no matching child records',function () {
+
+					// Empty the child table in the cache
+					before(function () {
+						fixtures.cache.message_to_user = [];
+					});
+
+					it('should still work in a predictable way (populate an empty array)', function (done) {
+						assert.doesNotThrow(function () {
+							integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
+								assert(!err);
+								return done(err);
+							});
+						});
+					});
+				});
 			});
 		});
 

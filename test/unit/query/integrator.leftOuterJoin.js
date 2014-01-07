@@ -143,4 +143,33 @@ describe('leftOuterJoin', function() {
   });
 
 
+  describe('with no matching child rows', function () {
+
+    var results;
+
+    // Empty out the child table in cache
+    before(function () {
+      fixtures.cache.message_to_user = [];
+    });
+
+
+    it('should not throw', function() {
+      assert.doesNotThrow(function() {
+        results = leftOuterJoin({
+          left: fixtures.cache.message,
+          right: fixtures.cache.message_to_user,
+          leftKey: 'id',
+          rightKey: 'message_id'
+        });
+      });
+    });
+
+
+    it('should still return all the items from parent table', function () {
+      results.should.be.an.Array;
+      results.should.have.lengthOf(fixtures.cache.message.length);
+    });
+  });
+
+
 });
