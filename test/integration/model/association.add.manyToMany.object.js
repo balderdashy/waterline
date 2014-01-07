@@ -89,11 +89,11 @@ describe('Model', function() {
             if(err) return done(err);
 
             assert(fooValues.length === 2);
-            assert(fooValues[0].preference_id === 1);
-            assert(fooValues[0].person_id === 1);
+            assert(fooValues[0].preference === 1);
+            assert(fooValues[0].person === 1);
 
-            assert(fooValues[1].preference_id === 2);
-            assert(fooValues[1].person_id === 1);
+            assert(fooValues[1].preference === 2);
+            assert(fooValues[1].person === 1);
 
             done();
           });

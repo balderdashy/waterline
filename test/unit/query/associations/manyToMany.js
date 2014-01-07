@@ -60,12 +60,12 @@ describe('Collection Query', function() {
         assert(generatedCriteria.joins[0].parent === 'user');
         assert(generatedCriteria.joins[0].parentKey === 'id');
         assert(generatedCriteria.joins[0].child === 'car_user');
-        assert(generatedCriteria.joins[0].childKey === 'user_id');
+        assert(generatedCriteria.joins[0].childKey === 'user');
         assert(generatedCriteria.joins[0].select === false);
         assert(generatedCriteria.joins[0].removeParentKey === false);
 
         assert(generatedCriteria.joins[0].children[0].parent === 'car_user');
-        assert(generatedCriteria.joins[0].children[0].parentKey === 'car_id');
+        assert(generatedCriteria.joins[0].children[0].parentKey === 'car');
         assert(generatedCriteria.joins[0].children[0].child === 'car');
         assert(generatedCriteria.joins[0].children[0].childKey === 'id');
         assert(Array.isArray(generatedCriteria.joins[0].children[0].select));
