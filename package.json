@@ -26,7 +26,8 @@
   },
   "devDependencies": {
     "mocha": "1.9.x",
-    "should": "~2.1.1"
+    "should": "~2.1.1",
+    "browserify": "~3.19.1"
   },
   "keywords": [
     "mvc",
