@@ -1,2 +1,2 @@
 // Expose global `Waterline` object
-Waterline = require('waterline');
+Waterline = require('../../lib/waterline');
