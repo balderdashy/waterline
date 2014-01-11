@@ -20,7 +20,18 @@ $ npm install waterline
 
 ## Example
 
+#### With Sails.js
+
+Waterline was extracted from the [Sails](https://github.com/balderdashy/sails) framework and is the default ORM used in Sails. For more information on using Waterline in your Sails App view the [Sails Docs](http://sailsjs.org).
+
+For examples of how to use with frameworks such as [Express](http://expressjs.com/) look in the [Example](https://github.com/balderdashy/waterline/tree/master/example) folder.
+
+
+#### Usage
 ```javascript
+var Waterline = require('waterline');
+
+// Define your collection (aka model)
 var User = Waterline.Collection.extend({
 
   attributes: {
@@ -39,12 +50,6 @@ var User = Waterline.Collection.extend({
 ```
 
 ## Overview
-
-### Using With Sails.js
-
-Waterline was extracted from the [Sails](https://github.com/balderdashy/sails) framework and is the default ORM used in Sails. For more information on using Waterline in your Sails App view the [Sails Docs](http://sailsjs.org).
-
-For examples of how to use with frameworks such as [Express](http://expressjs.com/) look in the [Example](https://github.com/balderdashy/waterline/tree/master/example) folder.
 
 ### Adapters Concept
 
