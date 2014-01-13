@@ -75,8 +75,10 @@ describe('Collection Query', function() {
 
         before(function(done) {
 
+          var waterline = new Waterline();
+
           // Extend for testing purposes
-          var Model = Collection.extend({
+          var Model = Waterline.Collection.extend({
             identity: 'user',
             adapter: 'foo',
             autoPK: false,
@@ -93,11 +95,13 @@ describe('Collection Query', function() {
             }
           });
 
+          waterline.loadCollection(Model);
+
           // Fixture Adapter Def
           var adapterDef = { find: function(col, criteria, cb) { return cb(null, [criteria]); }};
-          new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
             if(err) done(err);
-            query = coll;
+            query = colls.user;
             done();
           });
         });
@@ -117,8 +121,10 @@ describe('Collection Query', function() {
 
         before(function(done) {
 
+          var waterline = new Waterline();
+
           // Extend for testing purposes
-          var Model = Collection.extend({
+          var Model = Waterline.Collection.extend({
             identity: 'user',
             adapter: 'foo',
             autoPK: false,
@@ -136,11 +142,13 @@ describe('Collection Query', function() {
             }
           });
 
+          waterline.loadCollection(Model);
+
           // Fixture Adapter Def
           var adapterDef = { find: function(col, criteria, cb) { return cb(null, [criteria]); }};
-          new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+          waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
             if(err) done(err);
-            query = coll;
+            query = colls.user;
             done();
           });
         });

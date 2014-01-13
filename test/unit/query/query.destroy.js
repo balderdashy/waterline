@@ -56,8 +56,10 @@ describe('Collection Query', function() {
 
       before(function(done) {
 
+        var waterline = new Waterline();
+
         // Extend for testing purposes
-        var Model = Collection.extend({
+        var Model = Waterline.Collection.extend({
           identity: 'user',
           adapter: 'foo',
           autoPK: false,
@@ -75,11 +77,13 @@ describe('Collection Query', function() {
           }
         });
 
+        waterline.loadCollection(Model);
+
         // Fixture Adapter Def
         var adapterDef = { destroy: function(col, options, cb) { return cb(null, options); }};
-        new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
           if(err) done(err);
-          query = coll;
+          query = colls.user;
           done();
         });
       });

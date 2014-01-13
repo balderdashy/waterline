@@ -15,6 +15,8 @@ describe('Model', function() {
      */
 
     before(function(done) {
+      var waterline = new Waterline();
+
       var Model = Waterline.Collection.extend({
         adapter: 'foo',
         tableName: 'person',
@@ -30,10 +32,12 @@ describe('Model', function() {
         }
       });
 
+      waterline.loadCollection(Model);
+
       var adapterDef = {};
-      new Model({ adapters: { foo: adapterDef }}, function(err, coll) {
+      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
         if(err) done(err);
-        collection = coll;
+        collection = colls.person;
         done();
       });
     });

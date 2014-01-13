@@ -19,7 +19,7 @@
   "dependencies": {
     "lodash": "~2.4.1",
     "async": "0.2.9",
-    "anchor": "git://github.com/particlebanana/anchor.git#hackyhack",
+    "anchor": "git://github.com/balderdashy/anchor.git#0.10.beta",
     "q": "0.9.7",
     "waterline-schema": "git://github.com/balderdashy/waterline-schema.git",
     "node-switchback": "~0.0.4"
