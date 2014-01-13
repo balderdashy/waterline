@@ -80,7 +80,7 @@ To create a new collection you extend `Waterline.Collection` and add in any prop
 Available options are
 
   - `tableName` Define a custom table name to store the models
-  - `adapters` the name of the adapter you would like to use for this collection
+  - `adapter` the name of the adapter you would like to use for this collection
   - `schema`  Set schema true/false to only allow fields defined in `attributes` to be saved. Only for schemaless adapters.
   - `attributes` A hash of attributes to be defined for a model
   - `autoCreatedAt` and `autoUpdateddAt` Set false to prevent creating `createdAt` and `updatedAt` properties in your model
@@ -385,7 +385,7 @@ Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which
 
 Validations are defined directly in you Collection attributes. In addition you may set the attribute `type` to any supported Anchor type and Waterline will build a validation and set the schema type as a string for that attribute.
 
-Validation rules may be defined as simple values or functions (both sync and async) that return the value to test against. 
+Validation rules may be defined as simple values or functions (both sync and async) that return the value to test against.
 
 ```javascript
 var User = Waterline.Collection.extend({
@@ -426,7 +426,7 @@ var User = Waterline.Collection.extend({
 var Event = Waterline.Collection.extend({
 
   attributes: {
-    
+
     startDate: {
       type: 'date',
       // Validation rule functions allow you to validate values against other attributes
