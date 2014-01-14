@@ -6,12 +6,11 @@ var leftOuterJoin = require('../../../lib/waterline/query/integrator/leftOuterJo
 var populate = require('../../../lib/waterline/query/integrator/populate');
 var fixtures = {
   cache: _.cloneDeep(require('../../support/fixtures/integrator/cache')),
-  populateResults: require('../../support/fixtures/integrator/populateResults')
+  populateResults: _.cloneDeep(require('../../support/fixtures/integrator/populateResults'))
 };
 var assert = require('assert');
 var should = require('should');
 var _ = require('lodash');
-
 
 describe('populate', function() {
 
@@ -66,7 +65,7 @@ describe('populate', function() {
     var expected = {
       length: 3,
       properties: ['to', 'id', 'subject', 'body', 'from'],
-      results: fixtures.populateResults.message___message_to_user___user
+      results: _.cloneDeep(fixtures.populateResults.message___message_to_user___user)
     };
 
     it('should not throw', function() {
