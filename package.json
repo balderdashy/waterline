@@ -2,7 +2,7 @@
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
   "version": "0.9.11",
-  "homepage": "http://sailsjs.org",
+  "homepage": "http://github.com/balderdashy/waterline",
   "contributors": [
     {
       "name": "particlebanana",
@@ -42,10 +42,10 @@
     "sails.js"
   ],
   "repository": "git://github.com/balderdashy/waterline.git",
-  "homepage": "http://github.com/balderdashy/waterline",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "mocha test --recursive"
+    "test": "mocha test --recursive",
+    "prepublish": "npm prune"
   },
   "engines": {
     "node": "*"
