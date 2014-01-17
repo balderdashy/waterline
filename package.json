@@ -2,6 +2,7 @@
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
   "version": "0.9.11",
+  "homepage": "http://sailsjs.org",
   "contributors": [
     {
       "name": "particlebanana",
@@ -18,9 +19,9 @@
   ],
   "dependencies": {
     "lodash": "~2.4.1",
-    "async": "0.2.9",
+    "async": "~0.2.9",
     "anchor": "git://github.com/balderdashy/anchor.git#0.10.beta",
-    "q": "0.9.7",
+    "q": "~0.9.7",
     "waterline-schema": "git://github.com/balderdashy/waterline-schema.git",
     "node-switchback": "~0.0.4"
   },
@@ -30,15 +31,15 @@
   },
   "keywords": [
     "mvc",
-    "sails",
-    "sailsjs",
-    "sails.js",
     "orm",
     "mysql",
     "postgresql",
     "redis",
     "mongodb",
-    "active-record"
+    "active-record",
+    "waterline",
+    "sails",
+    "sails.js"
   ],
   "repository": "git://github.com/balderdashy/waterline.git",
   "homepage": "http://github.com/balderdashy/waterline",
