@@ -292,7 +292,7 @@ User.findOne()
     // An error occured
 })
 ```
-Promises use the [Q library](https://github.com/kriskowal/q), so anything you do after the first `then` call (or `spread`, or `fail`), will be a complete Q promise object. Remember, you must end the query somehow (by calling `then` or one of the other functions) in order to complete the database request.
+Promises use the [Bluebird library](https://github.com/petkaantonov/bluebird), so anything you do after the first `then` call (or `spread`, or `catch`), will be a complete Bluebird promise object. Remember, you must end the query somehow (by calling `then` or one of the other functions) in order to complete the database request.
 
 Each of the following basic methods are available by default on a Collection instance.
 

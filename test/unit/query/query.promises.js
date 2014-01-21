@@ -44,7 +44,7 @@ describe('Collection Promise', function () {
       }).then(function (test) {
         assert(test === 'test');
         done();
-      }).fail(function (err) {
+      }).catch(function (err) {
         done(err);
       });
     });
@@ -54,9 +54,9 @@ describe('Collection Promise', function () {
         throw new Error("Error in promise handler");
       }).then(function (unexpected) {
         done(new Error("Unexpected success"));
-      }).fail(function (expected) {
+      }).catch(function (expected) {
         done();
-      })
+      });
     });
 
     it('should reject the promise if the spread handler fails', function (done) {
@@ -64,9 +64,9 @@ describe('Collection Promise', function () {
         throw new Error("Error in promise handler");
       }).then(function (unexpected) {
         done(new Error("Unexpected success"));
-      }).fail(function (expected) {
+      }).catch(function (expected) {
         done();
-      })
+      });
     });
   });
 });
