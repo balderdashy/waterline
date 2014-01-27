@@ -8,13 +8,12 @@ describe('Collection', function() {
    * Collection prototype works correctly
    */
 
-  it('should allow the prototype to be extended', function(done) {
-    var Person = Collection.extend({ foo: 'bar' });
+  it('should allow the prototype to be extended', function() {
+    var Person = Collection.extend({ identity: 'test', foo: 'bar' });
     var schema = { schema: { test: { attributes: {} }}};
-    new Person(schema, { tableName: 'test' }, function(err, person) {
-      assert(person.foo === 'bar');
-      done();
-    });
+    var person = new Person(schema, { test: {} });
+
+    assert(person.foo === 'bar');
   });
 
 
@@ -24,18 +23,18 @@ describe('Collection', function() {
     // Setup Fixture Model
     before(function() {
       Person = Collection.extend({
+        identity: 'test',
         attributes: {
           foo: 'string'
         }
       });
     });
 
-    it('should have a schema', function(done) {
+    it('should have a schema', function() {
       var schema = { schema: { test: { attributes: { foo: { type: 'string' }} }}};
-      new Person(schema, { tableName: 'test' }, function(err, person) {
-        assert(person._schema.schema.foo.type === 'string');
-        done();
-      });
+      var person = new Person(schema, { test: {} });
+
+      assert(person._schema.schema.foo.type === 'string');
     });
 
   });

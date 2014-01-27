@@ -10,7 +10,7 @@ describe('Collection Query', function() {
 
       Model = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           name: {
             type: 'string',
@@ -29,15 +29,21 @@ describe('Collection Query', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        createEach: function(col, valuesList, cb) {
+        createEach: function(con, col, valuesList, cb) {
           assert(valuesList[0].login);
           return cb(null, valuesList);
         }
       };
 
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        colls.user.createEach([{ name: 'foo' }], done);
+        colls.collections.user.createEach([{ name: 'foo' }], done);
       });
     });
 
@@ -48,15 +54,21 @@ describe('Collection Query', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        createEach: function(col, valuesList, cb) {
+        createEach: function(con, col, valuesList, cb) {
           assert(valuesList[0].login);
           return cb(null, valuesList);
         }
       };
 
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        colls.user.createEach([{ name: 'foo' }], function(err, values) {
+        colls.collections.user.createEach([{ name: 'foo' }], function(err, values) {
           assert(values[0].name);
           assert(!values[0].login);
           done();

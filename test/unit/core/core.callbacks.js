@@ -16,14 +16,22 @@ describe('Core Lifecycle Callbacks', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {},
         invalidState: function() {}
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });
@@ -73,6 +81,7 @@ describe('Core Lifecycle Callbacks', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           name: 'string',
 
@@ -89,9 +98,16 @@ describe('Core Lifecycle Callbacks', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });
@@ -124,6 +140,7 @@ describe('Core Lifecycle Callbacks', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           name: 'string',
 
@@ -136,9 +153,16 @@ describe('Core Lifecycle Callbacks', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });
@@ -171,6 +195,7 @@ describe('Core Lifecycle Callbacks', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           name: 'string'
         },
@@ -181,9 +206,16 @@ describe('Core Lifecycle Callbacks', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });

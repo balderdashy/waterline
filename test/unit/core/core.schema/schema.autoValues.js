@@ -11,6 +11,7 @@ describe('Core Schema', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           first_name: {
             type: 'string',
@@ -20,9 +21,16 @@ describe('Core Schema', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });
@@ -42,6 +50,7 @@ describe('Core Schema', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           count: {
             autoIncrement: true
@@ -50,9 +59,16 @@ describe('Core Schema', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });
@@ -74,6 +90,7 @@ describe('Core Schema', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           name: {
             type: 'string',
@@ -83,9 +100,16 @@ describe('Core Schema', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });
@@ -103,6 +127,7 @@ describe('Core Schema', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           name: {
             type: 'string',
@@ -112,9 +137,16 @@ describe('Core Schema', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });
@@ -132,6 +164,7 @@ describe('Core Schema', function() {
 
       var Person = Waterline.Collection.extend({
         identity: 'person',
+        connection: 'foo',
         attributes: {
           sex: {
             type: 'string',
@@ -141,9 +174,16 @@ describe('Core Schema', function() {
       });
 
       waterline.loadCollection(Person);
-      waterline.initialize({ adapters: { }}, function(err, colls) {
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        person = colls.person;
+        person = colls.collections.person;
         done();
       });
     });

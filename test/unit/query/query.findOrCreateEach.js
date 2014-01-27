@@ -13,7 +13,7 @@ describe('Collection Query', function() {
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
           attributes: {
             name: {
               type: 'string',
@@ -26,10 +26,17 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { findOrCreateEach: function(col, criteria, valuesList, cb) { return cb(null, valuesList); }};
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var adapterDef = { findOrCreateEach: function(con, col, valuesList, cb) { return cb(null, valuesList); }};
+
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          query = colls.user;
+          query = colls.collections.user;
           done();
         });
       });
@@ -102,7 +109,7 @@ describe('Collection Query', function() {
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
           attributes: {
             name: 'string',
             age: 'integer'
@@ -112,10 +119,17 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { findOrCreateEach: function(col, criteria, valuesList, cb) { return cb(null, valuesList); }};
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var adapterDef = { findOrCreateEach: function(con, col, valuesList, cb) { return cb(null, valuesList); }};
+
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          query = colls.user;
+          query = colls.collections.user;
           done();
         });
       });

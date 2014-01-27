@@ -13,7 +13,7 @@ describe('Model', function() {
     before(function(done) {
       var waterline = new Waterline();
       var Collection = Waterline.Collection.extend({
-        adapter: 'foo',
+        connection: 'my_foo',
         tableName: 'person',
         attributes: {
           first_name: 'string',
@@ -26,9 +26,15 @@ describe('Model', function() {
 
       waterline.loadCollection(Collection);
 
-      waterline.initialize({ adapters: { foo: {} }}, function(err, colls) {
+      var connections = {
+        'my_foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        collection = colls.person;
+        collection = colls.collections.person;
         done();
       });
     });

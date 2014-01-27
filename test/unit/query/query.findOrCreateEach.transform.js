@@ -13,7 +13,7 @@ describe('Collection Query', function() {
         // Extend for testing purposes
         Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
 
           attributes: {
             name: {
@@ -24,25 +24,6 @@ describe('Collection Query', function() {
         });
       });
 
-      it('should transform criteria before sending to adapter', function(done) {
-
-        var waterline = new Waterline();
-        waterline.loadCollection(Model);
-
-        // Fixture Adapter Def
-        var adapterDef = {
-          findOrCreateEach: function(col, criteria, valuesList, cb) {
-            assert(criteria[0].where.login);
-            return cb(null, valuesList);
-          }
-        };
-
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
-          if(err) return done(err);
-          colls.user.findOrCreateEach([{ where: { name: 'foo' }}], [{ name: 'foo' }], done);
-        });
-      });
-
       it('should transform values before sending to adapter', function(done) {
 
         var waterline = new Waterline();
@@ -50,15 +31,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          findOrCreateEach: function(col, criteria, valuesList, cb) {
+          findOrCreateEach: function(con, col, valuesList, cb) {
             assert(valuesList[0].login);
             return cb(null, valuesList);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.findOrCreateEach([{ where: { name: 'foo' }}], [{ name: 'foo' }], done);
+          colls.collections.user.findOrCreateEach([{ where: { name: 'foo' }}], [{ name: 'foo' }], done);
         });
       });
 
@@ -69,15 +56,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          findOrCreateEach: function(col, criteria, valuesList, cb) {
+          findOrCreateEach: function(con, col, valuesList, cb) {
             assert(valuesList[0].login);
             return cb(null, valuesList);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.findOrCreateEach([{}], [{ name: 'foo' }], function(err, values) {
+          colls.collections.user.findOrCreateEach([{}], [{ name: 'foo' }], function(err, values) {
             assert(values[0].name);
             assert(!values[0].login);
             done();

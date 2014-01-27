@@ -13,7 +13,7 @@ describe('Collection Query', function() {
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
 
           attributes: {
             name: {
@@ -27,15 +27,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          count: function(col, criteria, cb) {
+          count: function(con, col, criteria, cb) {
             assert(criteria.where.login);
             return cb(null, 1);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          query = colls.user;
+          query = colls.collections.user;
           done();
         });
       });

@@ -10,7 +10,7 @@ describe('.beforeCreate()', function() {
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           name: 'string'
         },
@@ -24,10 +24,17 @@ describe('.beforeCreate()', function() {
       waterline.loadCollection(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        person = colls.user;
+        person = colls.collections.user;
         done();
       });
     });
@@ -60,7 +67,7 @@ describe('.beforeCreate()', function() {
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           name: 'string'
         },
@@ -83,10 +90,17 @@ describe('.beforeCreate()', function() {
       waterline.loadCollection(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        person = colls.user;
+        person = colls.collections.user;
         done();
       });
     });

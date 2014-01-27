@@ -8,14 +8,16 @@ describe('Waterline Collection', function() {
 
 
     var adapter_1 = {
-      registerCollection: function(collection, cb) {
+      identity: 'foo',
+      registerConnection: function(connection, collections, cb) {
         status++;
         cb();
       }
     };
 
     var adapter_2 = {
-      registerCollection: function(collection, cb) {
+      identity: 'bar',
+      registerConnection: function(connection, collections, cb) {
         status++;
         cb();
       }
@@ -23,16 +25,25 @@ describe('Waterline Collection', function() {
 
     var Model = Waterline.Collection.extend({
       attributes: {},
-      adapter: ['foo', 'bar'],
+      connection: ['my_foo', 'my_bar'],
       tableName: 'tests'
     });
 
     var waterline = new Waterline();
     waterline.loadCollection(Model);
 
-    waterline.initialize({ adapters: { foo: adapter_1, bar: adapter_2 }}, function(err, colls) {
+    var connections = {
+      'my_foo': {
+        adapter: 'foo'
+      },
+      'my_bar': {
+        adapter: 'bar'
+      }
+    };
+
+    waterline.initialize({ adapters: { 'foo': adapter_1, 'bar': adapter_2 }, connections: connections }, function(err, colls) {
       if(err) return done(err);
-      User = colls.tests;
+      User = colls.collections.tests;
       done();
     });
   });

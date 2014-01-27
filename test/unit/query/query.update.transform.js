@@ -13,7 +13,7 @@ describe('Collection Query', function() {
         // Extend for testing purposes
         Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
 
           attributes: {
             name: {
@@ -31,15 +31,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          update: function(col, criteria, values, cb) {
+          update: function(con, col, criteria, values, cb) {
             assert(criteria.where.login);
             return cb(null, [values]);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.update({ where: { name: 'foo' }}, { name: 'foo' }, done);
+          colls.collections.user.update({ where: { name: 'foo' }}, { name: 'foo' }, done);
         });
       });
 
@@ -50,15 +56,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          update: function(col, criteria, values, cb) {
+          update: function(con, col, criteria, values, cb) {
             assert(values.login);
             return cb(null, [values]);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.update({ where: { name: 'foo' }}, { name: 'foo' }, done);
+          colls.collections.user.update({ where: { name: 'foo' }}, { name: 'foo' }, done);
         });
       });
 
@@ -69,15 +81,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          update: function(col, criteria, values, cb) {
+          update: function(con, col, criteria, values, cb) {
             assert(values.login);
             return cb(null, [values]);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.update({}, { name: 'foo' }, function(err, values) {
+          colls.collections.user.update({}, { name: 'foo' }, function(err, values) {
             assert(values[0].name);
             assert(!values[0].login);
             done();

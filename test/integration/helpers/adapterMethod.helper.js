@@ -33,7 +33,7 @@ var Deferred = function (config) {
     describe(state.testMsg, function () {
 
       // Simulates a call like :: `SomeCollection.nameOfMethod( options, cb )`
-      before(function (done){  
+      before(function (done){
 
         var mochaCtx = this;
 
@@ -52,7 +52,7 @@ var Deferred = function (config) {
           //   mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
           //   return done();
           // }]));
-          // 
+          //
           fn.apply(ctx,args.concat([function adapterFnCallback () {
             mochaCtx.resultArgs = Array.prototype.slice.call(arguments);
             // console.log('!);');
@@ -66,7 +66,7 @@ var Deferred = function (config) {
 
           // console.log('WITH HANDLERS!! Doing:', config.nameOfMethod, 'with args:',args);
           // console.log('fn::',fn);
-          
+
           // Or use handlers instead
           fn.apply(ctx, args).exec({
             success: function (){
@@ -91,7 +91,7 @@ var Deferred = function (config) {
 
           return;
         }
-        
+
 
 
       });
@@ -164,25 +164,6 @@ var Deferred = function (config) {
     return deferred;
   };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Deferred object allows chained usage, i.e.:
 // adapterMethod(foo).inspect(mochaDescribeFn)

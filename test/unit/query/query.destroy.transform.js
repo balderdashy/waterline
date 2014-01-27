@@ -13,7 +13,7 @@ describe('Collection Query', function() {
         // Extend for testing purposes
         Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
 
           attributes: {
             name: {
@@ -31,15 +31,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          destroy: function(col, options, cb) {
+          destroy: function(con, col, options, cb) {
             assert(options.where.login);
             return cb(null);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.destroy({ name: 'foo' }, done);
+          colls.collections.user.destroy({ name: 'foo' }, done);
         });
       });
     });

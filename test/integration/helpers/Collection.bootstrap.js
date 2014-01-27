@@ -20,7 +20,7 @@ module.exports = function (options) {
 
     var Model = Waterline.Collection.extend({
       attributes: {},
-      adapter: adapterIdentity,
+      connection: 'my_foo',
       tableName: 'tests',
       schema: false
     });
@@ -28,13 +28,15 @@ module.exports = function (options) {
     var waterline = new Waterline();
     waterline.loadCollection(Model);
 
-    waterline.initialize({
-      adapters: {
-        barbaz: options.adapter
+    var connections = {
+      'my_foo': {
+        adapter: adapterIdentity
       }
-    }, function(err, colls) {
+    };
+
+    waterline.initialize({ adapters: { barbaz: options.adapter }, connections: connections }, function(err, colls) {
       if (err) return done(err);
-      SomeCollection = colls.tests;
+      SomeCollection = colls.collections.tests;
       self.SomeCollection = SomeCollection;
       done();
     });

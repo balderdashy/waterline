@@ -5,35 +5,35 @@
 module.exports = {
 
   // Waterline Vocabulary Methods
-  // 
+  //
   // (supports automatic switching for handlers since we know the fn signature)
   //
   // The tests work by passing a `_simulate` option as a property to the first argument,
-  // which might be `options` or `values`.  If `options`, it's a criteria, so we have to 
+  // which might be `options` or `values`.  If `options`, it's a criteria, so we have to
   // check the `where` since it's being automatically normalized in Waterline core.
-  find: function (cid, options, cb) {
+  find: function (conn, cid, options, cb) {
     // console.log('IN FIND::', require('util').inspect(arguments));
     return _interpretUsageTest(options.where && options.where._simulate, cb);
   },
-  create: function (cid, values, cb) {
+  create: function (conn, cid, values, cb) {
     return _interpretUsageTest(values._simulate, cb);
   },
-  update: function (cid, options, values, cb) {
+  update: function (conn, cid, options, values, cb) {
     return _interpretUsageTest(options.where && options.where._simulate, cb);
   },
-  destroy: function (cid, options, cb) {
+  destroy: function (conn, cid, options, cb) {
     return _interpretUsageTest(options.where && options.where._simulate, cb);
   },
 
 
   // Custom Methods
-  // 
+  //
   // (automatic switching is not enabled since we don't know the fn signature)
-  traditionalError: function(cid, options, cb) {
+  traditionalError: function(conn, cid, options, cb) {
     return cb(new Error('oops'));
   },
 
-  traditionalSuccess: function(cid, options, cb) {
+  traditionalSuccess: function(conn, cid, options, cb) {
     return cb(null, [{ someResults: [] }]);
   },
 

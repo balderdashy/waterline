@@ -12,13 +12,10 @@ describe('Collection', function() {
     var person;
 
     // Setup Fixture Model
-    before(function(done) {
-      var collection = Collection.extend({});
+    before(function() {
+      var collection = Collection.extend({ identity: 'test' });
       var schema = { schema: { test: { attributes: {} }}};
-      new collection(schema, { tableName: 'test' }, function(err, coll) {
-        person = coll;
-        done();
-      });
+      person = new collection(schema, { test: {} });
     });
 
     describe('Basic Finders', function() {

@@ -13,7 +13,7 @@ describe('Collection Query', function() {
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
           attributes: {
             name: {
               type: 'string',
@@ -26,10 +26,17 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { destroy: function(col, options, cb) { return cb(null); }};
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var adapterDef = { destroy: function(con, col, options, cb) { return cb(null); }};
+
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          query = colls.user;
+          query = colls.collections.user;
           done();
         });
       });
@@ -61,7 +68,7 @@ describe('Collection Query', function() {
         // Extend for testing purposes
         var Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
           autoPK: false,
           attributes: {
             name: {
@@ -80,10 +87,17 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { destroy: function(col, options, cb) { return cb(null, options); }};
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, options); }};
+
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) done(err);
-          query = colls.user;
+          query = colls.collections.user;
           done();
         });
       });

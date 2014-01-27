@@ -11,7 +11,7 @@ describe('Collection Query', function() {
       var waterline = new Waterline();
       var User = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           name: 'string',
           group: {
@@ -22,7 +22,7 @@ describe('Collection Query', function() {
 
       var Group = Waterline.Collection.extend({
         identity: 'group',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           name: 'string'
         }
@@ -31,9 +31,15 @@ describe('Collection Query', function() {
       waterline.loadCollection(User);
       waterline.loadCollection(Group);
 
-      waterline.initialize({ adapters: { foo: {} }}, function(err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        query = colls.user;
+        query = colls.collections.user;
         done();
       });
     });

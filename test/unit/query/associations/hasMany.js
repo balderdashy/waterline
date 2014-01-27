@@ -13,7 +13,7 @@ describe('Collection Query', function() {
 
       collections.user = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           uuid: {
             type: 'string',
@@ -27,7 +27,7 @@ describe('Collection Query', function() {
 
       collections.car = Waterline.Collection.extend({
         identity: 'car',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           driver: {
             model: 'user'
@@ -39,14 +39,26 @@ describe('Collection Query', function() {
       waterline.loadCollection(collections.car);
 
       // Fixture Adapter Def
-      var adapterDef = { identity: 'foo', join: function(col, criteria, cb) {
-        generatedCriteria = criteria;
-        return cb();
-      }};
+      var adapterDef = {
+        identity: 'foo',
+        join: function(con, col, criteria, cb) {
+          generatedCriteria = criteria;
+          return cb();
+        },
+        find: function(con, col, criteria, cb) {
+          return cb();
+        }
+      };
 
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        User = colls.user;
+        User = colls.collections.user;
         done();
       });
     });

@@ -10,9 +10,16 @@ describe('Waterline Collection', function() {
 
     before(function(done) {
       waterline.loadCollection(Model);
-      waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
+
+      var connections = {
+        'my_foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) return done(err);
-        User = colls.test;
+        User = colls.collections.test;
         done();
       });
     });
@@ -52,15 +59,23 @@ describe('Waterline Collection', function() {
       before(function(done) {
         var Model = Waterline.Collection.extend({
           tableName: 'lowercaseType',
+          connection: 'my_foo',
           attributes: {
             name: 'string'
           }
         });
 
         waterline.loadCollection(Model);
-        waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
+
+        var connections = {
+          'my_foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          User = colls.lowercasetype;
+          User = colls.collections.lowercasetype;
           done();
         });
       });
@@ -81,15 +96,23 @@ describe('Waterline Collection', function() {
       before(function(done) {
         var Model = Waterline.Collection.extend({
           tableName: 'uppercaseType',
+          connection: 'my_foo',
           attributes: {
             name: 'STRING'
           }
         });
 
         waterline.loadCollection(Model);
-        waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
+
+        var connections = {
+          'my_foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          User = colls.uppercasetype;
+          User = colls.collections.uppercasetype;
           done();
         });
       });

@@ -14,7 +14,7 @@ describe('Model', function() {
       var waterline = new Waterline();
 
       var Foo = Waterline.Collection.extend({
-        adapter: 'foo',
+        connection: 'my_foo',
         tableName: 'foo',
         attributes: {
           name: 'string',
@@ -28,7 +28,7 @@ describe('Model', function() {
       });
 
       var Bar = Waterline.Collection.extend({
-        adapter: 'foo',
+        connection: 'my_foo',
         tableName: 'bar',
         attributes: {
           name: 'string',
@@ -39,7 +39,7 @@ describe('Model', function() {
       });
 
       var Baz = Waterline.Collection.extend({
-        adapter: 'foo',
+        connection: 'my_foo',
         tableName: 'baz',
         attributes: {
           foo: {
@@ -52,9 +52,15 @@ describe('Model', function() {
       waterline.loadCollection(Bar);
       waterline.loadCollection(Baz);
 
-      waterline.initialize({ adapters: { foo: {} }}, function(err, colls) {
+      var connections = {
+        'my_foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        collection = colls.foo;
+        collection = colls.collections.foo;
         done();
       });
     });

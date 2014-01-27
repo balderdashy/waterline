@@ -13,7 +13,7 @@ describe('Collection Query', function() {
 
       collections.user = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           cars: {
             collection: 'car'
@@ -23,7 +23,7 @@ describe('Collection Query', function() {
 
       collections.car = Waterline.Collection.extend({
         identity: 'car',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           drivers: {
             collection: 'user'
@@ -35,14 +35,26 @@ describe('Collection Query', function() {
       waterline.loadCollection(collections.car);
 
       // Fixture Adapter Def
-      var adapterDef = { identity: 'foo', join: function(col, criteria, cb) {
-        generatedCriteria = criteria;
-        return cb();
-      }};
+      var adapterDef = {
+        identity: 'foo',
+        join: function(con, col, criteria, cb) {
+          generatedCriteria = criteria;
+          return cb();
+        },
+        find: function(con, col, criteria, cb) {
+          return cb();
+        }
+      };
 
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        User = colls.user;
+        User = colls.collections.user;
         done();
       });
     });
@@ -54,8 +66,7 @@ describe('Collection Query', function() {
       .exec(function(err, values) {
         if(err) return done(err);
 
-        assert(generatedCriteria.joins.length === 1);
-        assert(generatedCriteria.joins[0].children.length === 1);
+        assert(generatedCriteria.joins.length === 2);
 
         assert(generatedCriteria.joins[0].parent === 'user');
         assert(generatedCriteria.joins[0].parentKey === 'id');
@@ -64,12 +75,12 @@ describe('Collection Query', function() {
         assert(generatedCriteria.joins[0].select === false);
         assert(generatedCriteria.joins[0].removeParentKey === false);
 
-        assert(generatedCriteria.joins[0].children[0].parent === 'car_user');
-        assert(generatedCriteria.joins[0].children[0].parentKey === 'car');
-        assert(generatedCriteria.joins[0].children[0].child === 'car');
-        assert(generatedCriteria.joins[0].children[0].childKey === 'id');
-        assert(Array.isArray(generatedCriteria.joins[0].children[0].select));
-        assert(generatedCriteria.joins[0].children[0].removeParentKey === false);
+        assert(generatedCriteria.joins[1].parent === 'car_user');
+        assert(generatedCriteria.joins[1].parentKey === 'car');
+        assert(generatedCriteria.joins[1].child === 'car');
+        assert(generatedCriteria.joins[1].childKey === 'id');
+        assert(Array.isArray(generatedCriteria.joins[1].select));
+        assert(generatedCriteria.joins[1].removeParentKey === false);
 
         done();
       });

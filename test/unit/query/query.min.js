@@ -11,7 +11,7 @@ describe('Collection sum', function () {
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           age: 'integer',
           percent: 'float'
@@ -22,14 +22,20 @@ describe('Collection sum', function () {
 
       // Fixture Adapter Def
       var adapterDef = {
-        find: function (col, criteria, cb) {
+        find: function (con, col, criteria, cb) {
           return cb(null, [criteria]);
         }
       };
 
-      waterline.initialize({ adapters: { foo: adapterDef }}, function (err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if (err) return done(err);
-        query = colls.user;
+        query = colls.collections.user;
         done();
       });
     });

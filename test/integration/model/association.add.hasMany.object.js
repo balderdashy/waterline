@@ -16,7 +16,7 @@ describe('Model', function() {
         var waterline = new Waterline();
 
         var User = Waterline.Collection.extend({
-          adapter: 'foo',
+          connection: 'my_foo',
           tableName: 'person',
           attributes: {
             preferences: {
@@ -26,7 +26,7 @@ describe('Model', function() {
         });
 
         var Preference = Waterline.Collection.extend({
-          adapter: 'foo',
+          connection: 'my_foo',
           tableName: 'preference',
           attributes: {
             foo: 'string',
@@ -45,17 +45,23 @@ describe('Model', function() {
         ];
 
         var adapterDef = {
-          find: function(col, criteria, cb) { return cb(null, _values); },
-          create: function(col, values, cb) {
+          find: function(con, col, criteria, cb) { return cb(null, _values); },
+          create: function(con, col, values, cb) {
             fooValues.push(values.foo);
             return cb(null, values);
           },
-          update: function(col, criteria, values, cb) { return cb(null, values); }
+          update: function(con, col, criteria, values, cb) { return cb(null, values); }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'my_foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) done(err);
-          collections = colls;
+          collections = colls.collections;
           done();
         });
       });

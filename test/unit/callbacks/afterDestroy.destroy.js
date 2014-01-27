@@ -10,7 +10,7 @@ describe('.afterDestroy()', function() {
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           name: 'string'
         },
@@ -28,13 +28,19 @@ describe('.afterDestroy()', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        destroy: function(col, options, cb) { return cb(null, options); },
-        create: function(col, options, cb) { return cb(null, { status: true }); }
+        destroy: function(con, col, options, cb) { return cb(null, options); },
+        create: function(con, col, options, cb) { return cb(null, { status: true }); }
       };
 
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        person = colls.user;
+        person = colls.collections.user;
         done();
       });
     });
@@ -67,7 +73,7 @@ describe('.afterDestroy()', function() {
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'foo',
         attributes: {
           name: 'string'
         },
@@ -89,15 +95,21 @@ describe('.afterDestroy()', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        destroy: function(col, options, cb) { return cb(null, options); },
-        create: function(col, options, cb) { return cb(null, { status: true }); }
+        destroy: function(con, col, options, cb) { return cb(null, options); },
+        create: function(con, col, options, cb) { return cb(null, { status: true }); }
       };
 
       waterline.loadCollection(Model);
 
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        person = colls.user;
+        person = colls.collections.user;
         done();
       });
     });

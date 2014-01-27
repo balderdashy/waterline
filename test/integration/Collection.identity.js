@@ -10,6 +10,7 @@ describe('Waterline Collection', function() {
     before(function(done) {
       var Model = Waterline.Collection.extend({
         tableName: 'foo',
+        connection: 'my_foo',
         attributes: {
           name: 'string'
         }
@@ -17,15 +18,22 @@ describe('Waterline Collection', function() {
 
       waterline.loadCollection(Model);
 
-      waterline.initialize({ adapters: { foo: 'foo' }}, function(err, colls) {
+      var connections = {
+        'my_foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
+
         if(err) return done(err);
-        User = colls.foo;
+        User = colls.collections.foo;
         done();
       });
     });
 
-    it('should have _tableName set', function() {
-      assert(User._tableName === 'foo');
+    it('should have identity set', function() {
+      assert(User.identity === 'foo');
     });
   });
 

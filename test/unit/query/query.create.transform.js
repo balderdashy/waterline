@@ -12,7 +12,7 @@ describe('Collection Query', function() {
 
         Model = Waterline.Collection.extend({
           identity: 'user',
-          adapter: 'foo',
+          connection: 'foo',
 
           attributes: {
             name: {
@@ -30,15 +30,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          create: function(col, values, cb) {
+          create: function(con, col, values, cb) {
             assert(values.login);
             return cb(null, values);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.create({ name: 'foo' }, done);
+          colls.collections.user.create({ name: 'foo' }, done);
         });
 
       });
@@ -50,15 +56,21 @@ describe('Collection Query', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          create: function(col, values, cb) {
+          create: function(con, col, values, cb) {
             assert(values.login);
             return cb(null, values);
           }
         };
 
-        waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
-          colls.user.create({ name: 'foo' }, function(err, values) {
+          colls.collections.user.create({ name: 'foo' }, function(err, values) {
             assert(values.name);
             assert(!values.login);
             done();

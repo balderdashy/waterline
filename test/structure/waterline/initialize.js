@@ -32,6 +32,7 @@ describe('Waterline', function() {
         // Setup Fixture Model
         var collection = Waterline.Collection.extend({
           tableName: 'foo',
+          connection: 'my_foo',
           attributes: {
             foo: 'string'
           }
@@ -42,11 +43,19 @@ describe('Waterline', function() {
 
 
       it('should return an array of initialized collections', function(done) {
-        waterline.initialize({ adapters: { foo: 'test' }}, function(err, collections) {
+
+        var connections = {
+          'my_foo': {
+            adapter: 'foo'
+          }
+        };
+
+        waterline.initialize({ adapters: { foo: {} }, connections: connections }, function(err, data) {
           if(err) return done(err);
 
-          assert(Object.keys(collections).length === 1);
-          assert(collections.foo);
+          assert(data.collections);
+          assert(Object.keys(data.collections).length === 1);
+          assert(data.collections.foo);
           done();
         });
       });
@@ -62,6 +71,7 @@ describe('Waterline', function() {
         // Setup Fixture Models
         var foo = Waterline.Collection.extend({
           tableName: 'foo',
+          connection: 'my_foo',
           attributes: {
             bar: {
               collection: 'bar'
@@ -71,6 +81,7 @@ describe('Waterline', function() {
 
         var bar = Waterline.Collection.extend({
           tableName: 'bar',
+          connection: 'my_foo',
           attributes: {
             foo: {
               collection: 'foo'
@@ -84,13 +95,21 @@ describe('Waterline', function() {
 
 
       it('should add the junction tables to the collection output', function(done) {
-        waterline.initialize({ adapters: { foo: 'test' }}, function(err, collections) {
+
+        var connections = {
+          'my_foo': {
+            adapter: 'foo'
+          }
+        };
+
+        waterline.initialize({ adapters: { foo: {} }, connections: connections }, function(err, data) {
           if(err) return done(err);
 
-          assert(Object.keys(collections).length === 3);
-          assert(collections.foo);
-          assert(collections.bar);
-          assert(collections.bar_foo);
+          assert(data.collections);
+          assert(Object.keys(data.collections).length === 3);
+          assert(data.collections.foo);
+          assert(data.collections.bar);
+          assert(data.collections.bar_foo);
 
           done();
         });

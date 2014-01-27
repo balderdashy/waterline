@@ -2,9 +2,9 @@
  * Module dependencies
  */
 var assert = require('assert'),
-  should = require('should'),
-  util = require('util'),
-  _ = require('lodash');
+    should = require('should'),
+    util = require('util'),
+    _ = require('lodash');
 
 
 // Helpers/suites
@@ -14,8 +14,6 @@ var test = {
 };
 var expect = require('./helpers/cb.helper.js');
 
-
-
 describe('Waterline Collection', function() {
 
   describe(':: error negotiation & handlers ::', function() {
@@ -24,8 +22,6 @@ describe('Waterline Collection', function() {
     before(bootstrapCollection({
       adapter: require('./fixtures/adapter.withHandlers.fixture')
     }));
-
-
 
     // Vocabulary methods should upgrade callbacks to handlers
 

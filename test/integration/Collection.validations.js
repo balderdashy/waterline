@@ -12,7 +12,7 @@ describe('Waterline Collection', function() {
       // Extend for testing purposes
       var Model = Waterline.Collection.extend({
         identity: 'user',
-        adapter: 'foo',
+        connection: 'my_foo',
         types: {
           password: function(val) {
             return val === this.passwordConfirmation;
@@ -48,11 +48,17 @@ describe('Waterline Collection', function() {
 
       waterline.loadCollection(Model);
 
+      var connections = {
+        'my_foo': {
+          adapter: 'foobar'
+        }
+      };
+
       // Fixture Adapter Def
-      var adapterDef = { create: function(col, values, cb) { return cb(null, values); }};
-      waterline.initialize({ adapters: { foo: adapterDef }}, function(err, colls) {
+      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        User = colls.user;
+        User = colls.collections.user;
         done();
       });
     });

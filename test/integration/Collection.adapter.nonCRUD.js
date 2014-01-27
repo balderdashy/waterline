@@ -8,16 +8,22 @@ describe('Waterline Collection', function() {
   before(function(done) {
     var Model = Waterline.Collection.extend({
       attributes: {},
-      adapter: 'foobar',
+      connection: 'my_foo',
       tableName: 'tests'
     });
 
     var waterline = new Waterline();
     waterline.loadCollection(Model);
 
-    waterline.initialize({ adapters: { foobar: adapter }}, function(err, colls) {
+    var connections = {
+      'my_foo': {
+        adapter: 'foobar'
+      }
+    };
+
+    waterline.initialize({ adapters: { foobar: adapter }, connections: connections }, function(err, colls) {
       if(err) return done(err);
-      User = colls.tests;
+      User = colls.collections.tests;
       done();
     });
   });
