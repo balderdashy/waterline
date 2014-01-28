@@ -15,6 +15,18 @@ describe('Collection Query', function() {
           identity: 'user',
           adapter: 'foo',
           attributes: {
+            first:{
+              type: 'string',
+              defaultsTo: 'Foo'
+            },
+            second: {
+              type: 'string',
+              defaultsTo: 'Bar'
+            },
+            full: {
+              type: 'string',
+              defaultsTo: function(self){ return self.first + " " + self.second}
+            },
             name: {
               type: 'string',
               defaultsTo: 'Foo Bar'
@@ -56,6 +68,15 @@ describe('Collection Query', function() {
           assert(Array.isArray(values));
           assert(values[0].name === 'Foo Bar');
           assert(values[1].name === 'Foo Bar');
+          done();
+        });
+      });
+
+      it('should add default values to each record when function', function(done) {
+        query.createEach([{},{}], function(err, values) {
+          assert(Array.isArray(values));
+          assert(values[0].full === 'Foo Bar');
+          assert(values[1].full === 'Foo Bar');
           done();
         });
       });
