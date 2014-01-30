@@ -1,25 +1,96 @@
 /**
- * A simple example of how to use Waterline with Express
+ * A simple example of how to use Waterline v0.10 with Express
  */
 
 var express = require('express'),
+    _ = require('lodash'),
     app = express(),
-    Waterline = require('../../lib/waterline.js');
+    Waterline = require('waterline');
+
+
+
+// Instantiate a new instance of the ORM
+var orm = new Waterline();
+
+
+//////////////////////////////////////////////////////////////////
+// WATERLINE CONFIG
+//////////////////////////////////////////////////////////////////
 
 // Require any waterline compatible adapters here
-var adapter = require('sails-postgresql');
+var diskAdapter = require('sails-disk'),
+    mysqlAdapter = require('sails-mysql');
+
+
+// Build A Config Object
+var config = {
+
+  // Setup Adapters
+  // Creates named adapters that have have been required
+  adapters: {
+    'default': diskAdapter,
+    disk: diskAdapter,
+    mysql: mysqlAdapter
+  },
+
+  // Build Connections Config
+  // Setup connections using the named adapter configs
+  connections: {
+    myLocalDisk: {
+      adapter: 'disk'
+    },
+
+    myLocalMySql: {
+      adapter: 'mysql',
+      host: 'localhost',
+      database: 'foobar'
+    }
+  }
+
+};
+
+
+//////////////////////////////////////////////////////////////////
+// WATERLINE MODELS
+//////////////////////////////////////////////////////////////////
+
+var User = Waterline.Collection.extend({
+
+  identity: 'user',
+  connection: 'myLocalDisk',
+
+  attributes: {
+    first_name: 'string',
+    last_name: 'string'
+  }
+});
+
+var Pet = Waterline.Collection.extend({
+
+  identity: 'pet',
+  connection: 'myLocalMySql',
+
+  attributes: {
+    name: 'string',
+    breed: 'string'
+  }
+});
+
+
+// Load the Models into the ORM
+orm.loadCollection(User);
+orm.loadCollection(Pet);
+
+
+
+//////////////////////////////////////////////////////////////////
+// EXPRESS SETUP
+//////////////////////////////////////////////////////////////////
+
 
 // Setup Express Application
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-
-// Set Adapter Config
-adapter.database = 'waterline_test';
-adapter.user = 'root';
-adapter.password = '';
-
-// Namespaced Models Object
-app.models = {};
 
 // Build Express Routes (CRUD routes for /users)
 
@@ -61,20 +132,18 @@ app.put('/users/:id', function(req, res) {
   });
 });
 
-// Build A Model
-var User = Waterline.Collection.extend({
-  adapter: 'postgresql',
-  tableName: 'users',
 
-  attributes: {
-    first_name: 'string',
-    last_name: 'string'
-  }
-});
 
-// Load Models passing adapters in
-new User({ adapters: { postgresql: adapter }}, function(err, collection) {
-  app.models.user = collection;
+//////////////////////////////////////////////////////////////////
+// START WATERLINE
+//////////////////////////////////////////////////////////////////
+
+// Start Waterline passing adapters in
+orm.initialize(config, function(err, models) {
+  if(err) throw err;
+
+  app.models = models.collections;
+  app.connections = models.connections;
 
   // Start Server
   app.listen(3000);
