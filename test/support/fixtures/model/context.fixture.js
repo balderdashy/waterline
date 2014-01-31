@@ -1,5 +1,6 @@
 /**
  * Base Context Fixture
+ * (for a collection)
  */
 
 module.exports = {
