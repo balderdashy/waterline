@@ -2,6 +2,7 @@
  * Module Dependencies
  */
 var Waterline = require('../../../lib/waterline');
+var _ = require('lodash');
 
 /**
  * @option {Adapter} adapter
@@ -18,12 +19,14 @@ module.exports = function (options) {
     var adapterIdentity = 'barbaz';
     options.adapter.identity = adapterIdentity;
 
-    var Model = Waterline.Collection.extend({
-      attributes: {},
-      connection: 'my_foo',
-      tableName: 'tests',
-      schema: false
-    });
+    var Model = Waterline.Collection.extend(
+      _.merge({
+        attributes: {},
+        connection: 'my_foo',
+        tableName: 'tests',
+        schema: false
+      }, options.properties || {})
+    );
 
     var waterline = new Waterline();
     waterline.loadCollection(Model);
@@ -34,9 +37,14 @@ module.exports = function (options) {
       }
     };
 
-    waterline.initialize({ adapters: { barbaz: options.adapter }, connections: connections }, function(err, colls) {
+    waterline.initialize({ adapters: { barbaz: options.adapter }, connections: connections }, function(err, ocean) {
       if (err) return done(err);
-      SomeCollection = colls.collections.tests;
+
+      // Save access to all collections + connections
+      self.ocean = ocean;
+
+      // expose global?
+      SomeCollection = ocean.collections.tests;
       self.SomeCollection = SomeCollection;
       done();
     });
