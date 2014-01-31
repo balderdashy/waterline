@@ -1,7 +1,18 @@
 /**
+ * Module dependencies
+ */
+var _ = require('lodash');
+
+
+
+
+// Keeps track of registered collections
+var _colls = {};
+
+
+/**
  * Test Adapter Which Uses Handlers
  */
-
 module.exports = {
 
   // Waterline Vocabulary Methods
@@ -24,6 +35,54 @@ module.exports = {
   destroy: function (conn, cid, options, cb) {
     return _interpretUsageTest(options.where && options.where._simulate, cb);
   },
+
+
+  // DDL Methods
+  // 
+  describe: function (conn, cid, cb) {
+    cb(null, _colls[cid]);
+  },
+
+  define: function (conn, cid, definition, cb) {
+    _colls[cid] = definition;
+    cb();
+  },
+
+  addAttribute: function (conn, cid, attrName, attrDef, cb) {
+    try {
+      _colls[cid].definition[attrName] = attrDef;
+    }
+    catch (e) { return cb(e); }
+    
+    cb();
+  },
+
+  removeAttribute: function (conn, cid, attrName, cb) {
+    try {
+      delete _colls[cid].definition[attrName];
+    }
+    catch (e) { return cb(e); }
+
+    cb();
+  },
+
+  drop: function (conn, cid, relations, cb) {
+    try {
+      delete _colls[cid];
+    }
+    catch (e) { return cb(e); }
+
+    cb();
+  },
+
+
+  // Lifecycle
+  //
+  registerConnection: function (con, collections, cb) {
+    _.extend(_colls, collections);
+    cb();
+  },
+
 
 
   // Custom Methods
@@ -68,6 +127,8 @@ module.exports = {
 
 
 };
+
+
 
 
 /**
