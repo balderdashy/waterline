@@ -20,7 +20,8 @@ describe('Model', function() {
           tableName: 'person',
           attributes: {
             preferences: {
-              collection: 'preference'
+              collection: 'preference',
+              via: 'people'
             }
           }
         });
@@ -31,7 +32,8 @@ describe('Model', function() {
           attributes: {
             foo: 'string',
             people: {
-              collection: 'person'
+              collection: 'person',
+              via: 'preferences'
             }
           }
         });
@@ -48,7 +50,7 @@ describe('Model', function() {
 
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            if(col === 'person_preference') return cb(null, []);
+            if(col === 'person_preferences__preference_people') return cb(null, []);
             cb(null, _values);
           },
           update: function(con, col, criteria, values, cb) {
@@ -95,8 +97,9 @@ describe('Model', function() {
             if(err) return done(err);
 
             assert(prefValues.length === 2);
-            assert(prefValues[0].person === 1);
-            assert(prefValues[1].person === 1);
+
+            assert(prefValues[0].person_preferences === 1);
+            assert(prefValues[1].person_preferences === 1);
 
             done();
           });

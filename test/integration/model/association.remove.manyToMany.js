@@ -20,7 +20,8 @@ describe('Model', function() {
           tableName: 'person',
           attributes: {
             preferences: {
-              collection: 'preference'
+              collection: 'preference',
+              via: 'people'
             }
           }
         });
@@ -31,7 +32,8 @@ describe('Model', function() {
           attributes: {
             foo: 'string',
             people: {
-              collection: 'person'
+              collection: 'person',
+              via: 'preferences'
             }
           }
         });
@@ -52,7 +54,7 @@ describe('Model', function() {
             cb(null, _values);
           },
           destroy: function(con, col, criteria, cb) {
-            if(col === 'person_preference') {
+            if(col === 'person_preferences__preference_people') {
               prefValues.push(criteria.where);
             }
             return cb(null, criteria);
@@ -97,10 +99,11 @@ describe('Model', function() {
             if(err) return done(err);
 
             assert(prefValues.length === 2);
-            assert(prefValues[0].person === 1);
-            assert(prefValues[0].preference === 1);
-            assert(prefValues[1].person === 1);
-            assert(prefValues[1].preference === 2);
+
+            assert(prefValues[0].person_preferences === 1);
+            assert(prefValues[0].preference_people === 1);
+            assert(prefValues[1].person_preferences === 1);
+            assert(prefValues[1].preference_people === 2);
 
             done();
           });

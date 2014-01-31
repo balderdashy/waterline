@@ -16,7 +16,8 @@ describe('Collection Query', function() {
         connection: 'foo',
         attributes: {
           cars: {
-            collection: 'car'
+            collection: 'car',
+            via: 'drivers'
           }
         }
       });
@@ -26,7 +27,8 @@ describe('Collection Query', function() {
         connection: 'foo',
         attributes: {
           drivers: {
-            collection: 'user'
+            collection: 'user',
+            via: 'cars'
           }
         }
       });
@@ -70,13 +72,13 @@ describe('Collection Query', function() {
 
         assert(generatedCriteria.joins[0].parent === 'user');
         assert(generatedCriteria.joins[0].parentKey === 'id');
-        assert(generatedCriteria.joins[0].child === 'car_user');
-        assert(generatedCriteria.joins[0].childKey === 'user');
+        assert(generatedCriteria.joins[0].child === 'car_drivers__user_cars');
+        assert(generatedCriteria.joins[0].childKey === 'user_cars');
         assert(generatedCriteria.joins[0].select === false);
         assert(generatedCriteria.joins[0].removeParentKey === false);
 
-        assert(generatedCriteria.joins[1].parent === 'car_user');
-        assert(generatedCriteria.joins[1].parentKey === 'car');
+        assert(generatedCriteria.joins[1].parent === 'car_drivers__user_cars');
+        assert(generatedCriteria.joins[1].parentKey === 'car_drivers');
         assert(generatedCriteria.joins[1].child === 'car');
         assert(generatedCriteria.joins[1].childKey === 'id');
         assert(Array.isArray(generatedCriteria.joins[1].select));

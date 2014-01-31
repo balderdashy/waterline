@@ -13,35 +13,34 @@ describe('instance methods', function() {
       ////////////////////////////////////////////////////
 
       var model;
-      var container = { update: [], destroy: [] };
-      var foo = _.cloneDeep(container);
-      var bar_foo = _.cloneDeep(container);
+      var i = 1;
+      var results = [];
 
       before(function() {
         var fixture = manyToManyFixture();
 
         // Mock Collection Update Method
-        var updateFn = function(container) {
-          return function(criteria, values, cb) {
-            var obj = { criteria: criteria, values: values };
-            container.update.push(obj);
-            cb(null, [new model(values)]);
-          };
+        var updateFn = function(criteria, values, cb) {
+          var obj = {};
+          obj.criteria = criteria;
+          obj.values = values;
+          cb(null, [new model(values)]);
         };
 
         // Mock Collection Destroy Method
-        var destroyFn = function(container) {
-          return function(criteria, cb) {
-            var obj = { criteria: criteria };
-            container.destroy.push(obj);
-            cb(null);
-          };
+        var destroyFn = function(criteria, cb) {
+          var obj = { criteria: criteria };
+          results.push(obj);
+          cb(null);
         };
 
         // Add Collection Methods to all fixture collections
-        fixture.update = updateFn(foo);
-        fixture.waterline.collections.foo.update = updateFn(foo);
-        fixture.waterline.collections.bar_foo.destroy = destroyFn(bar_foo);
+        fixture.waterline.connections.my_foo._adapter.update = updateFn;
+        fixture.waterline.connections.my_foo._adapter.destroy = destroyFn;
+
+        fixture.update = updateFn;
+        fixture.waterline.collections.bar_foos__foo_bars.destroy = destroyFn;
+
 
         model = new Model(fixture, {});
       });
@@ -59,11 +58,11 @@ describe('instance methods', function() {
 
         person.save(function(err) {
 
-          assert(bar_foo.destroy.length === 2);
-          assert(bar_foo.destroy[0].criteria.bar_id === 1);
-          assert(bar_foo.destroy[0].criteria.foo_id === 1);
-          assert(bar_foo.destroy[1].criteria.bar_id === 2);
-          assert(bar_foo.destroy[1].criteria.foo_id === 1);
+          assert(results.length === 2);
+          assert(results[0].criteria.foo_bars === 1);
+          assert(results[0].criteria.bar_foos === 1);
+          assert(results[1].criteria.foo_bars === 2);
+          assert(results[1].criteria.bar_foos === 1);
 
           done();
         });

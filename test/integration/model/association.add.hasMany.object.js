@@ -20,7 +20,8 @@ describe('Model', function() {
           tableName: 'person',
           attributes: {
             preferences: {
-              collection: 'preference'
+              collection: 'preference',
+              via: 'user'
             }
           }
         });

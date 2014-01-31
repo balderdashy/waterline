@@ -20,7 +20,10 @@ module.exports = function() {
     },
 
     name: { type: 'string' },
-    bars: { collection: 'bar' }
+    bars: {
+      collection: 'bar',
+      via: 'foo'
+    }
   };
 
   // Build a mock global schema object

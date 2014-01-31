@@ -14,46 +14,43 @@ describe('instance methods', function() {
 
       var model;
       var i = 1;
-      var container = { update: [], create: [] };
-      var foo = _.cloneDeep(container);
-      var bar_foo = _.cloneDeep(container);
+      var results = [];
 
       before(function() {
         var fixture = manyToManyFixture();
 
         // Mock Collection Update Method
-        var updateFn = function(container) {
-          return function(criteria, values, cb) {
-            var obj = {};
-            obj.criteria = criteria;
-            obj.values = values;
-            container.update.push(obj);
-            cb(null, [new model(values)]);
-          };
+        var updateFn = function(criteria, values, cb) {
+          var obj = {};
+          obj.criteria = criteria;
+          obj.values = values;
+          cb(null, [new model(values)]);
         };
 
         // Mock Collection Create Method
-        var createFn = function(container) {
-          return function(values, cb) {
-            var obj = { values: values };
-            values.id = i;
-            i++;
-            container.create.push(obj);
-            cb(null, new model(values));
-          };
+        var createFn = function(values, cb) {
+          var obj = { values: values };
+          values.id = i;
+          i++;
+          results.push(values);
+          cb(null, new model(values));
         };
 
         // Mock Find One Method
-        fixture.findOne = function(criteria, cb) {
+        var findOneFn = function(criteria, cb) {
           return cb();
         };
 
         // Add Collection Methods to all fixture collections
-        fixture.update = updateFn(foo);
-        fixture.waterline.collections.foo.update = updateFn(foo);
-        fixture.waterline.collections.bar_foo.update = updateFn(bar_foo);
-        fixture.waterline.collections.bar_foo.create = createFn(bar_foo);
-        fixture.waterline.collections.bar_foo.findOne = fixture.findOne;
+        fixture.waterline.connections.my_foo._adapter.update = updateFn;
+        fixture.waterline.connections.my_foo._adapter.create = createFn;
+        fixture.waterline.connections.my_foo._adapter.findOne = findOneFn;
+
+        fixture.update = updateFn;
+        fixture.findOne = findOneFn;
+        fixture.waterline.collections.bar_foos__foo_bars.findOne = findOneFn;
+        fixture.waterline.collections.bar_foos__foo_bars.create = createFn;
+
 
         model = new Model(fixture, {});
       });
@@ -71,11 +68,11 @@ describe('instance methods', function() {
 
         person.save(function(err) {
 
-          assert(bar_foo.create.length === 2);
-          assert(bar_foo.create[0].values.bar_id);
-          assert(bar_foo.create[0].values.foo_id);
-          assert(bar_foo.create[1].values.bar_id);
-          assert(bar_foo.create[1].values.foo_id);
+          assert(results.length === 2);
+          assert(results[0].foo_bars = 1);
+          assert(results[0].bar_foos = 1);
+          assert(results[1].foo_bars = 2);
+          assert(results[1].bar_foos = 1);
 
           done();
         });

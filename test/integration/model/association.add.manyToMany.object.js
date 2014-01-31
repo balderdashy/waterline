@@ -20,7 +20,8 @@ describe('Model', function() {
           tableName: 'person',
           attributes: {
             preferences: {
-              collection: 'preference'
+              collection: 'preference',
+              via: 'people'
             }
           }
         });
@@ -31,7 +32,8 @@ describe('Model', function() {
           attributes: {
             foo: 'string',
             people: {
-              collection: 'person'
+              collection: 'person',
+              via: 'preferences'
             }
           }
         });
@@ -40,19 +42,19 @@ describe('Model', function() {
         waterline.loadCollection(Preference);
 
         var _values = [
-          { id: 1, preference: [{ id: 1, foo: 'bar' }, { id: 2, foo: 'foobar' }] },
-          { id: 2, preference: [{ id: 3, foo: 'a' }, { id: 4, foo: 'b' }] },
+          { id: 1, preferences: [{ id: 1, foo: 'bar' }, { id: 2, foo: 'foobar' }] },
+          { id: 2, preferences: [{ id: 3, foo: 'a' }, { id: 4, foo: 'b' }] },
         ];
 
         var i = 1;
 
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            if(col === 'person_preference') return cb();
+            if(col === 'person_preferences__preference_people') return cb();
             return cb(null, _values);
           },
           create: function(con, col, values, cb) {
-            if(col !== 'person_preference') {
+            if(col !== 'person_preferences__preference_people') {
               values.id = i;
               i++;
               return cb(null, values);
@@ -95,11 +97,12 @@ describe('Model', function() {
             if(err) return done(err);
 
             assert(fooValues.length === 2);
-            assert(fooValues[0].preference === 1);
-            assert(fooValues[0].person === 1);
 
-            assert(fooValues[1].preference === 2);
-            assert(fooValues[1].person === 1);
+            assert(fooValues[0].person_preferences === 1);
+            assert(fooValues[0].preference_people === 1);
+
+            assert(fooValues[1].preference_people === 2);
+            assert(fooValues[1].person_preferences === 1);
 
             done();
           });
