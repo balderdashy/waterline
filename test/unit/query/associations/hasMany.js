@@ -20,7 +20,8 @@ describe('Collection Query', function() {
             primaryKey: true
           },
           cars: {
-            collection: 'car'
+            collection: 'car',
+            via: 'driver'
           }
         }
       });

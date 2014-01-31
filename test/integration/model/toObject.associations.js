@@ -19,10 +19,12 @@ describe('Model', function() {
         attributes: {
           name: 'string',
           bars: {
-            collection: 'bar'
+            collection: 'bar',
+            via: 'foo'
           },
           foobars: {
-            collection: 'baz'
+            collection: 'baz',
+            via: 'foo'
           }
         }
       });

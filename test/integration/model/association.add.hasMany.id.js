@@ -20,7 +20,8 @@ describe('Model', function() {
           tableName: 'person',
           attributes: {
             preferences: {
-              collection: 'preference'
+              collection: 'preference',
+              via: 'user'
             }
           }
         });
@@ -39,13 +40,13 @@ describe('Model', function() {
         waterline.loadCollection(User);
         waterline.loadCollection(Preference);
 
-        var _values = [
-          { id: 1, preference: [{ foo: 'bar' }, { foo: 'foobar' }] },
-          { id: 2, preference: [{ foo: 'a' }, { foo: 'b' }] },
-        ];
+        var _values = [{ id: 1 }, { id: 2 }];
 
         var adapterDef = {
-          find: function(con, col, criteria, cb) { return cb(null, _values); },
+          find: function(con, col, criteria, cb) {
+            if(col === 'person') return cb(null, _values);
+            cb(null, []);
+          },
           update: function(con, col, criteria, values, cb) {
             if(col === 'preference') {
               prefValues.push(values);

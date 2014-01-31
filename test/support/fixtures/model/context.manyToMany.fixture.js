@@ -7,27 +7,22 @@ var structure = require('./context.fixture');
 module.exports = function() {
   var context = structure;
 
-  // Name the collection
   context.identity = 'foo';
 
-  // Set collection attributes
-  context._attributes = {
-    id: {
-      type: 'integer',
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true
-    },
-
-    name: { type: 'string' },
-    bars: { collection: 'bar' },
-    foobars: { collection: 'baz' }
+  context.connections = {
+    my_foo: {
+      config: {},
+      _adapter: {},
+      _collections: []
+    }
   };
 
-  // Build a mock global schema object
-  context.waterline.schema = {
+
+  // Build Out Model Definitions
+  var models = {
     foo: {
       identity: 'foo',
+      connection: 'my_foo',
       attributes: {
         id: {
           type: 'integer',
@@ -35,27 +30,22 @@ module.exports = function() {
           primaryKey: true,
           unique: true
         },
-
         name: {
           type: 'string'
         },
-
         bars: {
-          collection: 'bar_foo',
-          references: 'bar_foo',
-          on: 'foo_id'
+          collection: 'bar',
+          via: 'foos'
         },
-
         foobars: {
-          collection: 'baz',
-          references: 'baz',
-          on: 'foo_id'
+          collection: 'baz' ,
+          via: 'foo'
         }
       }
     },
-
     bar: {
       identity: 'bar',
+      connection: 'my_foo',
       attributes: {
         id: {
           type: 'integer',
@@ -67,15 +57,14 @@ module.exports = function() {
           type: 'string'
         },
         foos: {
-          collection: 'bar_foo',
-          references: 'bar_foo',
-          on: 'bar_id'
+          collection: 'foo',
+          via: 'bars'
         }
       }
     },
-
     baz: {
       identity: 'baz',
+      connection: 'my_foo',
       attributes: {
         id: {
           type: 'integer',
@@ -84,90 +73,154 @@ module.exports = function() {
           unique: true
         },
         foo: {
-          columnName: 'foo_id',
-          type: 'integer',
-          foreignKey: true,
-          references: 'foo',
-          on: 'id'
-        },
+          model: 'foo'
+        }
       }
     },
-
-    bar_foo: {
-      identity: 'bar_foo',
+    bar_foos__foo_bars: {
+      identity: 'bar_foos__foo_bars',
+      connection: 'my_foo',
+      tables: ['bar', 'foo'],
       junctionTable: true,
+
       attributes: {
-        foo: {
-          columnName: 'foo_id',
-          type: 'integer',
-          foreignKey: true,
-          references: 'foo',
-          on: 'id',
-          groupKey: 'foo'
+        id: {
+          primaryKey: true,
+          autoIncrement: true,
+          type: 'integer'
         },
-        bar: {
-          columnName: 'bar_id',
+        bar_foos: {
+          columnName: 'bar_foos',
           type: 'integer',
           foreignKey: true,
           references: 'bar',
           on: 'id',
-          groupKey: 'bar'
+          via: 'foo_bars',
+          groupBy: 'bar'
+        },
+
+        foo_bars: {
+          columnName: 'foo_bars',
+          type: 'integer',
+          foreignKey: true,
+          references: 'foo',
+          on: 'id',
+          via: 'bar_foos',
+          groupBy: 'foo'
         }
       }
     }
   };
 
-  // Build global collections
-  context.waterline.collections.foo = {
+
+  // Set context collections
+  context.waterline.collections = models;
+
+  // Set collection attributes
+  context._attributes = models.foo.attributes;
+  context.attributes = context._attributes;
+  context.waterline.connections = context.connections;
+
+  // Build Up Waterline Schema
+  context.waterline.schema.foo = {
     identity: 'foo',
-    _attributes: context._attributes
-  };
-
-  context.waterline.collections.bar = {
-    identity: 'bar',
-    _attributes: {
-      id: {
-        type: 'integer',
-        autoIncrement: true,
-        primaryKey: true,
-        unique: true
-      },
-      name: { type: 'string' },
-      foos: { collection: 'foo' }
-    }
-  };
-
-  context.waterline.collections.baz = {
-    identity: 'baz',
-    _attributes: {
-      id: {
-        type: 'integer',
-        autoIncrement: true,
-        primaryKey: true,
-        unique: true
-      },
-      foo: { model: 'foo' }
-    }
-  };
-
-  context.waterline.collections.bar_foo = {
-    identity: 'bar_foo',
+    connection: 'my_foo',
     attributes: {
-      foo: { columnName: 'foo_id',
+      id: {
+        type: 'integer',
+        autoIncrement: true,
+        primaryKey: true,
+        unique: true
+      },
+      name: {
+        type: 'string'
+      },
+
+      bars: {
+        collection: 'bar_foos__foo_bars',
+        references: 'bar_foos__foo_bars',
+        on: 'bar_foos'
+      },
+
+      foobars: {
+        collection: 'baz',
+        references: 'baz',
+        on: 'foo_id'
+      }
+    }
+  };
+
+  context.waterline.schema.bar = {
+    identity: 'bar',
+    connection: 'my_foo',
+    attributes: {
+      id: {
+        type: 'integer',
+        autoIncrement: true,
+        primaryKey: true,
+        unique: true
+      },
+      name: {
+        type: 'string'
+      },
+      foos: {
+        collection: 'bar_foos__foo_bars',
+        references: 'bar_foos__foo_bars',
+        on: 'foo_bars'
+      }
+    }
+  };
+
+  context.waterline.schema.baz = {
+    identity: 'baz',
+    connection: 'my_foo',
+    attributes: {
+      id: {
+        type: 'integer',
+        autoIncrement: true,
+        primaryKey: true,
+        unique: true
+      },
+      foo: {
+        columnName: 'foo_id',
         type: 'integer',
         foreignKey: true,
         references: 'foo',
-        on: 'id',
-        groupKey: 'foo'
-      },
+        on: 'id'
+      }
+    }
+  };
 
-      bar: {
-        columnName: 'bar_id',
+  context.waterline.schema.bar_foos__foo_bars = {
+    identity: 'bar_foos__foo_bars',
+    connection: 'my_foo',
+    tables: ['bar', 'foo'],
+    junctionTable: true,
+
+    attributes: {
+      id: {
+        primaryKey: true,
+        autoIncrement: true,
+        type: 'integer'
+      },
+      bar_foos: {
+        columnName: 'bar_foos',
         type: 'integer',
         foreignKey: true,
         references: 'bar',
         on: 'id',
-        groupKey: 'bar'
+        via: 'foo_bars',
+        groupBy: 'bar'
+      },
+
+      foo_bars: {
+        columnName: 'foo_bars',
+        type: 'integer',
+        foreignKey: true,
+        references: 'foo',
+        on: 'id',
+        via: 'bar_foos',
+        groupBy: 'foo'
       }
     }
   };

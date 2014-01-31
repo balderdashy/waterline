@@ -3,9 +3,16 @@
  */
 
 module.exports = {
+  connections: {},
   waterline: {
+    _collections: [],
+    _connections: {},
     collections: {},
+    connections: {},
     schema: {}
   },
-  _attributes: {}
+  attributes: {},
+  adapter: {},
+  _attributes: {},
+  _schema: {}
 };

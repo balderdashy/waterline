@@ -74,7 +74,8 @@ describe('Waterline', function() {
           connection: 'my_foo',
           attributes: {
             bar: {
-              collection: 'bar'
+              collection: 'bar',
+              via: 'foo'
             }
           }
         });
@@ -84,7 +85,8 @@ describe('Waterline', function() {
           connection: 'my_foo',
           attributes: {
             foo: {
-              collection: 'foo'
+              collection: 'foo',
+              via: 'bar'
             }
           }
         });
@@ -109,7 +111,7 @@ describe('Waterline', function() {
           assert(Object.keys(data.collections).length === 3);
           assert(data.collections.foo);
           assert(data.collections.bar);
-          assert(data.collections.bar_foo);
+          assert(data.collections.bar_foo__foo_bar);
 
           done();
         });
