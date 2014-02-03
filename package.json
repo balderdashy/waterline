@@ -45,7 +45,8 @@
   "main": "./lib/waterline",
   "scripts": {
     "test": "mocha test --recursive",
-    "prepublish": "npm prune"
+    "prepublish": "npm prune",
+    "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js"
   },
   "engines": {
     "node": "*"

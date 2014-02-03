@@ -3,3 +3,4 @@ node_modules
 .editorconfig
 *.swp
 *.swo
+.dist
