@@ -6,12 +6,12 @@
     "Cody Stoltman <@particlebanana>",
     "Mike McNeil <@mikermcneil>"
   ],
-  "description": "A JavaScript ORM for the browser and Node.js",
+  "description": "JavaScript ORM for the browser and Node.js",
   "main": ".dist/waterline.min.js",
   "keywords": [
+    "orm",
     "models",
     "collections",
-    "orm",
     "mvc",
     "sails"
   ],
