@@ -25,7 +25,7 @@ describe('Collection Query', function() {
             },
             full: {
               type: 'string',
-              defaultsTo: function(self){ return self.first + " " + self.second}
+              defaultsTo: function() { return this.first + ' ' + this.second; }
             },
             name: {
               type: 'string',

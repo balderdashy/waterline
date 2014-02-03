@@ -13,9 +13,9 @@ describe('validations', function() {
           type: 'string',
           required: true
         },
-        employed: { 
-          type: 'boolean', 
-          required: true 
+        employed: {
+          type: 'boolean',
+          required: true
         },
         age: { type: 'integer' }
       };
@@ -32,7 +32,7 @@ describe('validations', function() {
         done();
       });
     });
-    
+
     it('should error if no value is set for required boolean field', function(done) {
       validator.validate({ name: 'Frederick P. Frederickson', age: 27 }, function(errors) {
         assert(errors.ValidationError);
