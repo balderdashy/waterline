@@ -44,14 +44,12 @@ describe('calling describe', function() {
 	it('should work', function (done) {
 		Collection.describe({
 			success: function ( schema ) {
-				
-				console.log('SCHEMA FOR '+Collection.identity + '::',schema);
 
-				schema.definition
+				schema
 					.should.be.an.Object;
-				schema.definition
+				schema
 					.should.have.property('name');
-				schema.definition
+				schema
 					.should.have.property('age');
 
 				done();
