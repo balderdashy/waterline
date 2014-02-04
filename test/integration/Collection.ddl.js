@@ -45,6 +45,8 @@ describe('calling describe', function() {
 		Collection.describe({
 			success: function ( schema ) {
 				
+				console.log('SCHEMA FOR '+Collection.identity + '::',schema);
+
 				schema.definition
 					.should.be.an.Object;
 				schema.definition
