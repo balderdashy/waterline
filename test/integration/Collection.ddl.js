@@ -71,7 +71,7 @@ describe('calling drop', function() {
 		bootstrapCollection({
 			adapter: Adapter,
 			properties: {
-				identity: 'foo',
+				identity: 'tests',
 				attributes: {
 					name: 'string',
 					age: 'integer'
