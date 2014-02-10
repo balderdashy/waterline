@@ -28,7 +28,8 @@ describe('Collection Query', function() {
         attributes: {
           drivers: {
             collection: 'user',
-            via: 'cars'
+            via: 'cars',
+            dominant: true
           }
         }
       });

@@ -75,7 +75,8 @@ describe('Waterline', function() {
           attributes: {
             bar: {
               collection: 'bar',
-              via: 'foo'
+              via: 'foo',
+              dominant: true
             }
           }
         });

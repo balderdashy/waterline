@@ -35,11 +35,13 @@ module.exports = function() {
         },
         bars: {
           collection: 'bar',
-          via: 'foos'
+          via: 'foos',
+          dominant: true
         },
         foobars: {
           collection: 'baz' ,
-          via: 'foo'
+          via: 'foo',
+          dominant: true
         }
       }
     },

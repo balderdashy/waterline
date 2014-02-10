@@ -21,7 +21,8 @@ describe('Model', function() {
           attributes: {
             preferences: {
               collection: 'preference',
-              via: 'people'
+              via: 'people',
+              dominant: true
             }
           }
         });
