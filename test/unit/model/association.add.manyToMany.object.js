@@ -38,6 +38,7 @@ describe('instance methods', function() {
 
         // Mock Find One Method
         var findOneFn = function(criteria, cb) {
+          if(criteria.id) return cb(null, criteria);
           return cb();
         };
 
@@ -48,6 +49,7 @@ describe('instance methods', function() {
 
         fixture.update = updateFn;
         fixture.findOne = findOneFn;
+        fixture.waterline.collections.foo.findOne = findOneFn;
         fixture.waterline.collections.bar.findOne = findOneFn;
         fixture.waterline.collections.bar.create = createFn;
         fixture.waterline.collections.bar_foos__foo_bars.findOne = findOneFn;
