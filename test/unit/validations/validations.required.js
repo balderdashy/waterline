@@ -43,6 +43,16 @@ describe('validations', function() {
       });
     });
 
+    it('should error if no value is set for required boolean field', function(done) {
+      validator.validate({ name: 'Frederick P. Frederickson', age: 27 }, function(errors) {
+        assert(errors.ValidationError);
+        assert(errors.ValidationError.employed);
+        assert(errors.ValidationError.employed[0].rule === 'boolean');
+        assert(errors.ValidationError.employed[1].rule === 'required');
+        done();
+      });
+    });
+
     it('should NOT error if all required values are set', function(done) {
       validator.validate({ name: 'Foo Bar', employed: true, age: 27 }, function(errors) {
         assert(!errors);
