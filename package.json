@@ -20,9 +20,9 @@
   "dependencies": {
     "lodash": "~2.4.1",
     "async": "~0.2.9",
-    "anchor": "git://github.com/balderdashy/anchor.git#0.10.beta",
+    "anchor": "~0.9.7",
     "q": "~0.9.7",
-    "waterline-schema": "git://github.com/balderdashy/waterline-schema.git",
+    "waterline-schema": "~0.1.0",
     "node-switchback": "~0.0.4"
   },
   "devDependencies": {
