@@ -1,7 +1,7 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
-describe('.beforeValidation()', function() {
+describe('.beforeValidate()', function() {
 
   describe('basic function', function() {
     var person;
@@ -15,7 +15,7 @@ describe('.beforeValidation()', function() {
           name: 'string'
         },
 
-        beforeValidation: function(values, cb) {
+        beforeValidate: function(values, cb) {
           values.name = values.name + ' updated';
           cb();
         }
@@ -45,7 +45,7 @@ describe('.beforeValidation()', function() {
 
     describe('.createEach()', function() {
 
-      it('should run beforeValidation and mutate values', function(done) {
+      it('should run beforeValidate and mutate values', function(done) {
         person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
           assert(!err);
           assert(users[0].name === 'test updated');
@@ -73,7 +73,7 @@ describe('.beforeValidation()', function() {
           name: 'string'
         },
 
-        beforeValidation: [
+        beforeValidate: [
           // Function 1
           function(values, cb) {
             values.name = values.name + ' fn1';

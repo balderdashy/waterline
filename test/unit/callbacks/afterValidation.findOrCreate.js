@@ -1,7 +1,7 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
-describe('.afterValidation()', function() {
+describe('.afterValidate()', function() {
 
   describe('basic function', function() {
 
@@ -24,7 +24,7 @@ describe('.afterValidation()', function() {
               name: 'string'
             },
 
-            afterValidation: function(values, cb) {
+            afterValidate: function(values, cb) {
               values.name = values.name + ' updated';
               cb();
             }
@@ -51,7 +51,7 @@ describe('.afterValidation()', function() {
           });
         });
 
-        it('should run afterValidation and mutate values on create', function(done) {
+        it('should run afterValidate and mutate values on create', function(done) {
           person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
             assert(!err);
             assert(user.name === 'test updated');
@@ -73,7 +73,7 @@ describe('.afterValidation()', function() {
               name: 'string'
             },
 
-            afterValidation: function(values, cb) {
+            afterValidate: function(values, cb) {
               values.name = values.name + ' updated';
               cb();
             }
@@ -100,7 +100,7 @@ describe('.afterValidation()', function() {
           });
         });
 
-        it('should not run afterValidation and mutate values on find', function(done) {
+        it('should not run afterValidate and mutate values on find', function(done) {
           person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
             assert(!err);
             assert(user.name === 'test');
@@ -134,7 +134,7 @@ describe('.afterValidation()', function() {
             name: 'string'
           },
 
-          afterValidation: [
+          afterValidate: [
             // Function 1
             function(values, cb) {
               values.name = values.name + ' fn1';
@@ -192,7 +192,7 @@ describe('.afterValidation()', function() {
             name: 'string'
           },
 
-          afterValidation: [
+          afterValidate: [
             // Function 1
             function(values, cb) {
               values.name = values.name + ' fn1';
