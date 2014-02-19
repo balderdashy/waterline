@@ -1,7 +1,7 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
-describe('.afterValidation()', function() {
+describe('.afterValidate()', function() {
 
   describe('basic function', function() {
     var person;
@@ -15,7 +15,7 @@ describe('.afterValidation()', function() {
           name: 'string'
         },
 
-        afterValidation: function(values, cb) {
+        afterValidate: function(values, cb) {
           values.name = values.name + ' updated';
           cb();
         }
@@ -45,7 +45,7 @@ describe('.afterValidation()', function() {
 
     describe('.create()', function() {
 
-      it('should run afterValidation and mutate values', function(done) {
+      it('should run afterValidate and mutate values', function(done) {
         person.create({ name: 'test' }, function(err, user) {
           assert(!err);
           assert(user.name === 'test updated');
@@ -72,7 +72,7 @@ describe('.afterValidation()', function() {
           name: 'string'
         },
 
-        afterValidation: [
+        afterValidate: [
           // Function 1
           function(values, cb) {
             values.name = values.name + ' fn1';

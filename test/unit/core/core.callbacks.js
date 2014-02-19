@@ -37,11 +37,11 @@ describe('Core Lifecycle Callbacks', function() {
     });
 
     it('should build a callbacks object', function() {
-      assert(Array.isArray(person._callbacks.beforeValidation));
-      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+      assert(Array.isArray(person._callbacks.beforeValidate));
+      assert(typeof person._callbacks.beforeValidate[0] === 'function');
 
-      assert(Array.isArray(person._callbacks.afterValidation));
-      assert(typeof person._callbacks.afterValidation[0] === 'function');
+      assert(Array.isArray(person._callbacks.afterValidate));
+      assert(typeof person._callbacks.afterValidate[0] === 'function');
 
       assert(Array.isArray(person._callbacks.beforeUpdate));
       assert(typeof person._callbacks.beforeUpdate[0] === 'function');
@@ -94,7 +94,7 @@ describe('Core Lifecycle Callbacks', function() {
           }
         },
 
-        beforeValidation: ['changeState_1', 'changeState_2']
+        beforeValidate: ['changeState_1', 'changeState_2']
       });
 
       waterline.loadCollection(Person);
@@ -113,13 +113,13 @@ describe('Core Lifecycle Callbacks', function() {
     });
 
     it('should map functions to internal _callbacks object', function() {
-      assert(Array.isArray(person._callbacks.beforeValidation));
-      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+      assert(Array.isArray(person._callbacks.beforeValidate));
+      assert(typeof person._callbacks.beforeValidate[0] === 'function');
     });
 
     it('should mutate values', function() {
       var values = { name: 'Foo' };
-      person._callbacks.beforeValidation.forEach(function(key) {
+      person._callbacks.beforeValidate.forEach(function(key) {
         key.call(values);
       });
 
@@ -149,7 +149,7 @@ describe('Core Lifecycle Callbacks', function() {
           }
         },
 
-        beforeValidation: 'changeState_1'
+        beforeValidate: 'changeState_1'
       });
 
       waterline.loadCollection(Person);
@@ -168,13 +168,13 @@ describe('Core Lifecycle Callbacks', function() {
     });
 
     it('should map functions to internal _callbacks object', function() {
-      assert(Array.isArray(person._callbacks.beforeValidation));
-      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+      assert(Array.isArray(person._callbacks.beforeValidate));
+      assert(typeof person._callbacks.beforeValidate[0] === 'function');
     });
 
     it('should mutate values', function() {
       var values = { name: 'Foo' };
-      person._callbacks.beforeValidation.forEach(function(key) {
+      person._callbacks.beforeValidate.forEach(function(key) {
         key.call(values);
       });
 
@@ -200,7 +200,7 @@ describe('Core Lifecycle Callbacks', function() {
           name: 'string'
         },
 
-        beforeValidation: function() {
+        beforeValidate: function() {
           this.name = this.name + ' changed';
         }
       });
@@ -221,13 +221,13 @@ describe('Core Lifecycle Callbacks', function() {
     });
 
     it('should map functions to internal _callbacks object', function() {
-      assert(Array.isArray(person._callbacks.beforeValidation));
-      assert(typeof person._callbacks.beforeValidation[0] === 'function');
+      assert(Array.isArray(person._callbacks.beforeValidate));
+      assert(typeof person._callbacks.beforeValidate[0] === 'function');
     });
 
     it('should mutate values', function() {
       var values = { name: 'Foo' };
-      person._callbacks.beforeValidation.forEach(function(key) {
+      person._callbacks.beforeValidate.forEach(function(key) {
         key.call(values);
       });
 
