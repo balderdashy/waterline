@@ -22,7 +22,7 @@
     "async": "~0.2.9",
     "anchor": "~0.9.7",
     "q": "~0.9.7",
-    "waterline-schema": "~0.1.0",
+    "waterline-schema": "~0.1.1",
     "node-switchback": "~0.0.4"
   },
   "devDependencies": {
