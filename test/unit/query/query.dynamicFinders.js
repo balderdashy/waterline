@@ -15,7 +15,7 @@ describe('Collection Query', function() {
         attributes: {
           name: 'string',
           group: {
-            model: 'Group'
+            model: 'group'
           }
         }
       });
