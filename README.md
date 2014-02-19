@@ -6,9 +6,9 @@
 
 Waterline is a brand new kind of storage and retrieval engine.
 
-It provides a uniform API for accessing stuff from different kinds of databases, protocols, and 3rd party APIs. That means you write the same code to get users, whether they live in MySQL, LDAP, MongoDB, or Facebook.
+It provides a uniform API for accessing stuff from different kinds of databases, protocols, and 3rd party APIs. That means you write the same code to get and store things like users, whether they live in Redis, mySQL, LDAP, MongoDB, or Postgres.
 
-At the same time, Waterline aims to learn lessons and maintain the best features from both Rails' ActiveRecord and Grails' Hibernate ORMs.
+Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
 
 ## Installation
 
