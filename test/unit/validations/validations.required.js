@@ -25,7 +25,7 @@ describe('validations', function() {
     });
 
     it('should error if no value is set for required string field', function(done) {
-      validator.validate({ name: ' ', employed: true, age: 27 }, function(errors) {
+      validator.validate({ name: '', employed: true, age: 27 }, function(errors) {
         assert(errors.ValidationError);
         assert(errors.ValidationError.name);
         assert(errors.ValidationError.name[0].rule === 'required');
