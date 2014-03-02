@@ -35,5 +35,14 @@ describe('instance methods', function() {
       });
     });
 
+    it('should return a promise', function(done) {
+      var person = new model({ id: 1, name: 'foo' });
+
+      person.destroy().then(function(status) {
+        assert(status.id);
+        assert(status.id === 1);
+        done();
+      });
+    });
   });
 });
