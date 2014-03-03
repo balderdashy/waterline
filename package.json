@@ -20,7 +20,7 @@
   "dependencies": {
     "lodash": "~2.4.1",
     "async": "~0.2.9",
-    "anchor": "~0.9.10",
+    "anchor": "~0.9.12",
     "q": "~0.9.7",
     "waterline-schema": "~0.1.3",
     "node-switchback": "~0.0.4"
