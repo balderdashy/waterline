@@ -49,6 +49,8 @@ var User = Waterline.Collection.extend({
 });
 ```
 
+**Sails Note:** When Sails schema mode is set TRUE, additional Waterline Schema options are available (such as primaryKey, unique, etc). See [waterline-schema](https://github.com/balderdashy/waterline-schema) for details.
+
 ## Overview
 
 ### Adapters Concept
@@ -108,6 +110,9 @@ The following attribute types are currently available:
   - binary
   - array
   - json
+  - 
+
+
 
 #### Example Collection
 
