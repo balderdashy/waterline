@@ -37,5 +37,17 @@ describe('instance methods', function() {
       });
     });
 
+    it('should return a promise', function(done) {
+      var person = new model({ id: 1, name: 'foo' });
+
+      person.name = 'foobar';
+
+      person.save().then(function(model) {
+        assert(updateValues.name === 'foobar');
+        assert(model.name === 'foobar');
+        done();
+      });
+    });
+
   });
 });
