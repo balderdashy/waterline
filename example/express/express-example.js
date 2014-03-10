@@ -45,6 +45,10 @@ var config = {
       host: 'localhost',
       database: 'foobar'
     }
+  },
+
+  defaults: {
+    migrate: 'alter'
   }
 
 };
