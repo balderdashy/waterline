@@ -19,7 +19,7 @@
   "dependencies": {
     "underscore": "~1.5.2",
     "async": "~0.2.9",
-    "anchor": "~0.9.7",
+    "anchor": "~0.9.12",
     "q": "~0.9.7"
   },
   "devDependencies": {
