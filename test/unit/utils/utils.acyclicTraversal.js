@@ -37,8 +37,20 @@ describe('utils/acyclicTraversal', function() {
 
     it('should return a .populate() plan', function() {
       var plan = traverse(schema, 'user', 'pets');
-      console.log('User.populateDeep("pets") ::\n', 'User.pets :', plan);
       assert(typeof plan === 'object');
+    });
+
+    it('should include distinct associations (i.e. `formerOwners`)', function () {
+      var plan = traverse(schema, 'user', 'pets');
+      assert(typeof plan.formerOwners === 'object');
+    });
+    it('should NOT include already-traversed back-references (i.e. `owner`)', function () {
+      var plan = traverse(schema, 'user', 'pets');
+      assert(typeof plan.owner === 'undefined');
+    });
+    it('should NOT include already-traversed associations (i.e. `pets`)', function () {
+      var plan = traverse(schema, 'user', 'pets');
+      assert(typeof plan.formerOwners.pets === 'undefined');
     });
   });
 
