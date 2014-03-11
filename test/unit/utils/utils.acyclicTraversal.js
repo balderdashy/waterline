@@ -37,7 +37,7 @@ describe('utils/acyclicTraversal', function() {
 
     it('should return a .populate() plan', function() {
       var plan = traverse(schema, 'user', 'pets');
-      console.log(plan);
+      console.log('User.populateDeep("pets") ::\n', 'User.pets :', plan);
       assert(typeof plan === 'object');
     });
   });
