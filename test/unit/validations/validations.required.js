@@ -13,9 +13,9 @@ describe('validations', function() {
           type: 'string',
           required: true
         },
-        employed: { 
-          type: 'boolean', 
-          required: true 
+        employed: {
+          type: 'boolean',
+          required: true
         },
         age: { type: 'integer' }
       };
@@ -25,14 +25,14 @@ describe('validations', function() {
     });
 
     it('should error if no value is set for required string field', function(done) {
-      validator.validate({ name: ' ', employed: true, age: 27 }, function(errors) {
+      validator.validate({ name: '', employed: true, age: 27 }, function(errors) {
         assert(errors.ValidationError);
         assert(errors.ValidationError.name);
         assert(errors.ValidationError.name[0].rule === 'required');
         done();
       });
     });
-    
+
     it('should error if no value is set for required boolean field', function(done) {
       validator.validate({ name: 'Frederick P. Frederickson', age: 27 }, function(errors) {
         assert(errors.ValidationError);
