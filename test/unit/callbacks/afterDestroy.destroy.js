@@ -15,7 +15,7 @@ describe('.afterDestroy()', function() {
           name: 'string'
         },
 
-        afterDestroy: function(cb) {
+        afterDestroy: function(values, cb) {
           person.create({ test: 'test' }, function(err, result) {
             if(err) return cb(err);
             status = result.status;
@@ -80,13 +80,13 @@ describe('.afterDestroy()', function() {
 
         afterDestroy: [
           // Function 1
-          function(cb) {
+          function(values, cb) {
             status = 'fn1 ';
             cb();
           },
 
           // Function 2
-          function(cb) {
+          function(values, cb) {
             status = status + 'fn2';
             cb();
           }
