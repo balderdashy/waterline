@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.10.0-rc4",
+  "version": "0.10.0-rc6",
   "homepage": "http://github.com/balderdashy/waterline",
   "contributors": [
     {
@@ -23,7 +23,8 @@
     "anchor": "~0.9.12",
     "q": "~0.9.7",
     "waterline-schema": "~0.1.6",
-    "node-switchback": "~0.0.4"
+    "node-switchback": "~0.0.4",
+    "waterline-criteria": "~0.10.3"
   },
   "devDependencies": {
     "mocha": "1.9.x",

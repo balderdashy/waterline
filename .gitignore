@@ -1,6 +1,4 @@
 node_modules
-.jshintrc
-.editorconfig
 *.swp
 *.swo
 .dist

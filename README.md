@@ -164,8 +164,8 @@ var User = Waterline.Collection.extend({
    *
    * Run before and after various stages:
    *
-   * beforeValidation
-   * afterValidation
+   * beforeValidate
+   * afterValidate
    * beforeUpdate
    * afterUpdate
    * beforeCreate
@@ -522,15 +522,15 @@ Lifecycle callbacks are functions you can define to run at certain times in a qu
 
 **Callbacks run on Create**
 
-  - beforeValidation / *fn(values, cb)*
-  - afterValidation / *fn(values, cb)*
+  - beforeValidate / *fn(values, cb)*
+  - afterValidate / *fn(values, cb)*
   - beforeCreate / *fn(values, cb)*
   - afterCreate / *fn(newlyInsertedRecord, cb)*
 
 **Callbacks run on Update**
 
-  - beforeValidation / *fn(valuesToUpdate, cb)*
-  - afterValidation / *fn(valuesToUpdate, cb)*
+  - beforeValidate / *fn(valuesToUpdate, cb)*
+  - afterValidate / *fn(valuesToUpdate, cb)*
   - beforeUpdate / *fn(valuesToUpdate, cb)*
   - afterUpdate / *fn(updatedRecord, cb)*
 
