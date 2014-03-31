@@ -104,11 +104,10 @@ describe('Core Validator', function() {
     it('should validate types', function(done) {
       person._validator.validate({ first_name: 27, last_name: 32 }, function(err) {
         assert(err);
-        assert(err.ValidationError);
-        assert(err.ValidationError.first_name);
-        assert(err.ValidationError.last_name);
-        assert(err.ValidationError.first_name[0].rule === 'string');
-        assert(err.ValidationError.last_name[0].rule === 'string');
+        assert(err.first_name);
+        assert(err.last_name);
+        assert(err.first_name[0].rule === 'string');
+        assert(err.last_name[0].rule === 'string');
         done();
       });
     });
@@ -116,9 +115,9 @@ describe('Core Validator', function() {
     it('should validate required status', function(done) {
       person._validator.validate({ first_name: 'foo' }, function(err) {
         assert(err);
-        assert(err.ValidationError);
-        assert(err.ValidationError.last_name);
-        assert(err.ValidationError.last_name[1].rule === 'required');
+        assert(err);
+        assert(err.last_name);
+        assert(err.last_name[1].rule === 'required');
         done();
       });
     });
