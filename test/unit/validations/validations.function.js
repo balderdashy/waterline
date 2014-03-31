@@ -34,9 +34,9 @@ describe('validations', function() {
 
     it('should error if invalid username is set', function(done) {
       validator.validate({ name: 'Bob', username: 'bobby' }, function(errors) {
-        assert(errors.ValidationError);
-        assert(errors.ValidationError.username);
-        assert(errors.ValidationError.username[0].rule === 'equals');
+        assert(errors);
+        assert(errors.username);
+        assert(errors.username[0].rule === 'equals');
         done();
       });
     });
@@ -50,9 +50,9 @@ describe('validations', function() {
 
     it('should error if invalid website is set', function(done) {
       validator.validate({ website: 'www.google.com' }, function(errors) {
-        assert(errors.ValidationError);
-        assert(errors.ValidationError.website);
-        assert(errors.ValidationError.website[0].rule === 'contains');
+        assert(errors);
+        assert(errors.website);
+        assert(errors.website[0].rule === 'contains');
         done();
       });
     });
