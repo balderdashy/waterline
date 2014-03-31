@@ -33,8 +33,8 @@ describe('validations', function() {
 
     it('should error if string passed to integer type', function(done) {
       validator.validate({ age: 'foo bar' }, function(errors) {
-        assert(errors.ValidationError);
-        assert(errors.ValidationError.age);
+        assert(errors);
+        assert(errors.age);
         done();
       });
     });

@@ -26,29 +26,29 @@ describe('validations', function() {
 
     it('should error if no value is set for required string field', function(done) {
       validator.validate({ name: '', employed: true, age: 27 }, function(errors) {
-        assert(errors.ValidationError);
-        assert(errors.ValidationError.name);
-        assert(errors.ValidationError.name[0].rule === 'required');
+        assert(errors);
+        assert(errors.name);
+        assert(errors.name[0].rule === 'required');
         done();
       });
     });
 
     it('should error if no value is set for required boolean field', function(done) {
       validator.validate({ name: 'Frederick P. Frederickson', age: 27 }, function(errors) {
-        assert(errors.ValidationError);
-        assert(errors.ValidationError.employed);
-        assert(errors.ValidationError.employed[0].rule === 'boolean');
-        assert(errors.ValidationError.employed[1].rule === 'required');
+        assert(errors);
+        assert(errors.employed);
+        assert(errors.employed[0].rule === 'boolean');
+        assert(errors.employed[1].rule === 'required');
         done();
       });
     });
 
     it('should error if no value is set for required boolean field', function(done) {
       validator.validate({ name: 'Frederick P. Frederickson', age: 27 }, function(errors) {
-        assert(errors.ValidationError);
-        assert(errors.ValidationError.employed);
-        assert(errors.ValidationError.employed[0].rule === 'boolean');
-        assert(errors.ValidationError.employed[1].rule === 'required');
+        assert(errors);
+        assert(errors.employed);
+        assert(errors.employed[0].rule === 'boolean');
+        assert(errors.employed[1].rule === 'required');
         done();
       });
     });
