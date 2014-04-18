@@ -26,7 +26,17 @@ describe('Model', function() {
 
       waterline.loadCollection(Collection);
 
-      var adapterDef = { update: function(con, col, criteria, values, cb) { return cb(null, [values]); }};
+      var vals = {};
+
+      var adapterDef = {
+        find: function(con, col, criteria, cb) {
+          return cb(null, vals);
+        },
+        update: function(con, col, criteria, values, cb) {
+          vals = values;
+          return cb(null, [values]);
+        }
+      };
 
       var connections = {
         'my_foo': {

@@ -9,6 +9,8 @@ module.exports = function() {
 
   context.identity = 'foo';
 
+  context.primaryKey = 'id';
+
   context.connections = {
     my_foo: {
       config: {},

@@ -10,6 +10,8 @@ module.exports = function() {
   // Name the collection
   context.identity = 'foo';
 
+  context.primaryKey = 'id';
+
   // Set collection attributes
   context._attributes = {
     id: {

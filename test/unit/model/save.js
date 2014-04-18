@@ -13,6 +13,28 @@ describe('instance methods', function() {
 
     before(function() {
       var fixture = belongsToFixture();
+
+      fixture.findOne = function(criteria, cb) {
+        var parentCriteria = criteria;
+
+        if(cb) {
+          if(criteria.id) return cb(null, criteria);
+          return cb();
+        }
+
+        var obj = function(criteria) {
+          return this;
+        };
+
+        obj.prototype.exec = function(cb) {
+          cb(null, updateValues);
+        };
+
+        obj.prototype.populate = function() { return this; };
+
+        return new obj(criteria);
+      };
+
       fixture.update = function(criteria, values, cb) {
         updateValues = values;
         return cb(null, [new model(values)]);
@@ -42,9 +64,11 @@ describe('instance methods', function() {
 
       person.name = 'foobar';
 
-      person.save().then(function(model) {
+      person.save().then(function(data) {
         assert(updateValues.name === 'foobar');
-        assert(model.name === 'foobar');
+        assert(data);
+        assert(data.name);
+        assert(data.name === 'foobar');
         done();
       });
     });

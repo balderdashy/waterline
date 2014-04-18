@@ -48,10 +48,16 @@ describe('Model', function() {
         ];
 
         var i = 1;
+        var added = false;
 
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            if(col === 'person_preferences__preference_people') return cb();
+            if(col === 'person_preferences__preference_people') {
+              if(!added) return cb();
+              if(criteria === fooValues[0]) return cb(null, fooValues[0]);
+              return cb(null, []);
+            }
+
             return cb(null, _values);
           },
           create: function(con, col, values, cb) {
@@ -61,6 +67,7 @@ describe('Model', function() {
               return cb(null, values);
             }
 
+            added = true;
             fooValues.push(values);
             return cb(null, values);
           },

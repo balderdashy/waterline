@@ -38,8 +38,24 @@ describe('instance methods', function() {
 
         // Mock Find One Method
         var findOneFn = function(criteria, cb) {
-          if(criteria.id) return cb(null, criteria);
-          return cb();
+          var parentCriteria = criteria;
+
+          if(cb) {
+            if(criteria.id) return cb(null, criteria);
+            return cb();
+          }
+
+          var obj = function(criteria) {
+            return this;
+          };
+
+          obj.prototype.exec = function(cb) {
+            cb(null, [parentCriteria]);
+          };
+
+          obj.prototype.populate = function() { return this; };
+
+          return new obj(criteria);
         };
 
         // Add Collection Methods to all fixture collections
