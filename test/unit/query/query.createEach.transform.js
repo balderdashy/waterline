@@ -29,9 +29,9 @@ describe('Collection Query', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        createEach: function(con, col, valuesList, cb) {
-          assert(valuesList[0].login);
-          return cb(null, valuesList);
+        create: function(con, col, values, cb) {
+          assert(values.login);
+          return cb(null, values);
         }
       };
 
@@ -54,9 +54,9 @@ describe('Collection Query', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        createEach: function(con, col, valuesList, cb) {
-          assert(valuesList[0].login);
-          return cb(null, valuesList);
+        create: function(con, col, values, cb) {
+          assert(values.login);
+          return cb(null, values);
         }
       };
 

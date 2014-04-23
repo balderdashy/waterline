@@ -42,7 +42,7 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { createEach: function(con, col, valuesList, cb) { return cb(null, valuesList); }};
+        var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
 
         var connections = {
           'foo': {
@@ -149,7 +149,7 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { createEach: function(con, col, valuesList, cb) { return cb(null, valuesList); }};
+        var adapterDef = { create: function(con, col, valuesList, cb) { return cb(null, valuesList); }};
 
         var connections = {
           'foo': {
