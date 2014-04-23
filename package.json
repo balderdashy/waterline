@@ -22,7 +22,7 @@
     "async": "~0.2.9",
     "anchor": "~0.10.0",
     "q": "~0.9.7",
-    "waterline-schema": "~0.1.8",
+    "waterline-schema": "~0.1.9",
     "node-switchback": "~0.0.4",
     "waterline-criteria": "~0.10.3",
     "prompt": "~0.2.12"
