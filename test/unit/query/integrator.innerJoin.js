@@ -2,16 +2,22 @@
  * Module dependencies
  */
 var innerJoin = require('../../../lib/waterline/query/integrator/innerJoin');
-var fixtures = {
-  cache: require('../../support/fixtures/integrator/cache'),
-  joinResults: require('../../support/fixtures/integrator/joinResults')
-};
 var assert = require('assert');
 var should = require('should');
 var _ = require('lodash');
 
 
 describe('innerJoin', function() {
+
+  // Clear the require cache
+  Object.keys(require.cache).forEach(function (modulePath) {
+    delete require.cache[modulePath];
+  });
+
+  var fixtures = {
+    cache: require('../../support/fixtures/integrator/cache'),
+    joinResults: require('../../support/fixtures/integrator/joinResults')
+  };
 
   describe('with invalid input', function() {
 
