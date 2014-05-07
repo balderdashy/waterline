@@ -10,6 +10,8 @@ It provides a uniform API for accessing stuff from different kinds of databases,
 
 Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
 
+For detailed documentation, go to [Waterline Documentation](https://github.com/balderdashy/waterline-docs) repository.
+
 ## Installation
 
 Install from NPM.
