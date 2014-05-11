@@ -93,7 +93,7 @@ Available options are
   - `autoCreatedAt` and `autoUpdatedAt` Set false to prevent creating `createdAt` and `updatedAt` properties in your model
   - `autoPK` Set false to prevent creating `id`. By default `id` will be created as index with auto increment
   - [lifecyle callbacks](#lifecycle-callbacks)
-  - anyother class method you define!
+  - any other class method you define!
 
 #### Attributes
 
@@ -248,7 +248,7 @@ var user = Waterline.Collection.extend({
 });
 
 // Then on an instantiated user:
-user.find({ id: 1}).exec(function(err, model) {
+user.find({ id: 1 }).exec(function(err, model) {
   return model.toJSON(); // will return only the name
 });
 ```
