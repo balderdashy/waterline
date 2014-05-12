@@ -61,7 +61,7 @@ It also allows an adapter to define it's own methods that don't necessarily fit 
 
 **NOTE:** When using custom adapter methods the features of Waterline are not used. You no longer get the Lifecycle Callbacks and Validations as you would when using a defined Waterline method.
 
-You may also supply an array of adapters and Waterline will map out the methods so they are both mixed in. It works similar to Underscore's [Extend](http://underscorejs.org/#extend) method where the last item in the array will override any methods in adapters before it. This allows you to mixin bothe traditional CRUD adapters such as MySQL with specialized adapters such as Twilio and have both types of methods available.
+You may also supply an array of adapters and Waterline will map out the methods so they are both mixed in. It works similar to Underscore's [Extend](http://underscorejs.org/#extend) method where the last item in the array will override any methods in adapters before it. This allows you to mixin both the traditional CRUD adapters such as MySQL with specialized adapters such as Twilio and have both types of methods available.
 
 #### Community Adapters
 
@@ -388,7 +388,7 @@ User.find()
 
 ## Validations
 
-Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate. For a full list of validations see: [Anchor Validations](https://github.com/balderdashy/anchor/blob/master/lib/rules.js).
+Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate. For a full list of validations see: [Anchor Validations](https://github.com/balderdashy/anchor/blob/master/lib/match/rules.js).
 
 Validations are defined directly in you Collection attributes. In addition you may set the attribute `type` to any supported Anchor type and Waterline will build a validation and set the schema type as a string for that attribute.
 
@@ -516,7 +516,7 @@ Currently Waterline doesn't support multi-column indexes in the attributes defin
 need to build that manually. Also note when adding a `unique` property to an attribute an index will automatically be created for that attribute so there is no
 need to specifiy it.
 
-There is currently an issue with adding indexes to string fields. Because Waterline performs it's queries in a case insensitive manner we are unable to use the index on a string attribute. There are some workarounds being discussed but nothing is implemented so far. This will be updated in the near future to fully support indexes on strings.
+There is currently an issue with adding indexes to string fields. Because Waterline performs its queries in a case insensitive manner we are unable to use the index on a string attribute. There are some workarounds being discussed but nothing is implemented so far. This will be updated in the near future to fully support indexes on strings.
 
 ## Lifecycle Callbacks
 
