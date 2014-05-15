@@ -36,7 +36,20 @@ describe('Collection Query', function() {
         waterline.loadCollection(Nested);
 
         // Fixture Adapter Def
-        var adapterDef = { update: function(con, col, criteria, values, cb) { return cb(null, [values]); }};
+        var _id = 1;
+        var findValues = [];
+
+        var adapterDef = {
+          update: function(con, col, criteria, values, cb) {
+            values.id = _id;
+            findValues.push(values);
+            _id++;
+            return cb(null, values);
+          },
+          find: function(con, col, criteria, cb) {
+            cb(null, findValues[_id - 1]);
+          }
+        };
 
         var connections = {
           'foo': {
@@ -96,10 +109,20 @@ describe('Collection Query', function() {
         waterline.loadCollection(Nested);
 
         // Fixture Adapter Def
+        var _id = 1;
+        var findValues = [];
+
         var adapterDef = {
           update: function(con, col, criteria, values, cb) {
             updatedModels.push(criteria.where);
+            values.id = _id;
+            findValues.push(values);
+            _id++;
             return cb(null, [values]);
+          },
+
+          find: function(con, col, criteria, cb) {
+            cb(null, findValues[_id - 1]);
           }
         };
 
