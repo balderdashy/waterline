@@ -36,7 +36,20 @@ describe('Collection Query', function() {
         waterline.loadCollection(Nested);
 
         // Fixture Adapter Def
-        var adapterDef = { update: function(con, col, criteria, values, cb) { return cb(null, [values]); }};
+        var _id = 1;
+        var findValues = [];
+
+        var adapterDef = {
+          update: function(con, col, criteria, values, cb) {
+            values.id = _id;
+            findValues.push(values);
+            _id++;
+            return cb(null, values);
+          },
+          find: function(con, col, criteria, cb) {
+            cb(null, findValues[_id - 1]);
+          }
+        };
 
         var connections = {
           'foo': {
@@ -53,7 +66,7 @@ describe('Collection Query', function() {
 
       it('should reduce the nested object down to a foreign key', function(done) {
         query.update({}, { name: 'foo', nestedModel: { id: 1337, name: 'joe' }}, function(err, status) {
-          assert(!err);
+          assert(!err, err);
           assert(status[0].nestedModel);
           assert(status[0].nestedModel === 1337);
           done();
@@ -96,10 +109,20 @@ describe('Collection Query', function() {
         waterline.loadCollection(Nested);
 
         // Fixture Adapter Def
+        var _id = 1;
+        var findValues = [];
+
         var adapterDef = {
           update: function(con, col, criteria, values, cb) {
             updatedModels.push(criteria.where);
+            values.id = _id;
+            findValues.push(values);
+            _id++;
             return cb(null, [values]);
+          },
+
+          find: function(con, col, criteria, cb) {
+            cb(null, findValues[_id - 1]);
           }
         };
 
@@ -131,7 +154,7 @@ describe('Collection Query', function() {
         ];
 
         query.update({}, { id: 5, name: 'foo', nestedModels: nestedModels }, function(err, status) {
-          assert(!err);
+          assert(!err, err);
           assert(status[0].nestedModels.length === 0);
           assert(updatedModels.length === 10);
           done();
