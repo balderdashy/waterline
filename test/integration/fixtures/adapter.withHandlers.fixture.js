@@ -23,7 +23,7 @@ module.exports = {
   // which might be `options` or `values`.  If `options`, it's a criteria, so we have to
   // check the `where` since it's being automatically normalized in Waterline core.
   find: function (conn, cid, options, cb) {
-    // console.log('IN FIND::', require('util').inspect(arguments));
+    console.log('IN FIND::', require('util').inspect(arguments));
     return _interpretUsageTest(options.where && options.where._simulate, cb);
   },
   create: function (conn, cid, values, cb) {
@@ -38,7 +38,7 @@ module.exports = {
 
 
   // DDL Methods
-  // 
+  //
   describe: function (conn, cid, cb) {
     cb(null, _colls[cid]);
   },
@@ -53,7 +53,7 @@ module.exports = {
       _colls[cid].definition[attrName] = attrDef;
     }
     catch (e) { return cb(e); }
-    
+
     cb();
   },
 
