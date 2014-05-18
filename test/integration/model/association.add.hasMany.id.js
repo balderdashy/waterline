@@ -76,7 +76,7 @@ describe('Model', function() {
 
       it('should pass foreign key values to update method for each relationship', function(done) {
         collections.person.find().exec(function(err, models) {
-          // if (err) console.log('!ERROR!', err, err.stack);//, err.toString());
+          //if (err) console.log('!ERROR!', err, err.stack);//, err.toString());
 
           if(err) return done(err);
 
