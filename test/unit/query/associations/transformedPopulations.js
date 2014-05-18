@@ -61,7 +61,7 @@ describe('Collection Query', function() {
     it('should transform populated values', function(done) {
       User.find().populate('car').exec(function(err, user) {
         if(err) return done(err);
-        assert(user[0].car);
+        assert(user[0].car, 'Expected user[0].car to exist, what gives?  Check out user[0]:'+require('util').inspect(user[0]));
         assert(user[0].car.driver);
         assert(!user[0].car.foobar);
         done();
