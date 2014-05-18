@@ -76,6 +76,7 @@ describe('Model', function() {
 
       it('should pass foreign key values to update method for each relationship', function(done) {
         collections.person.find().exec(function(err, models) {
+          if (err) console.log('!ERROR!', err.stack);//, err.toString());
           if(err) return done(err);
 
           var person = models[0];
@@ -86,9 +87,9 @@ describe('Model', function() {
           person.save(function(err) {
             if(err) return done(err);
 
-            assert(prefValues.length === 2);
-            assert(prefValues[0].user === 1);
-            assert(prefValues[1].user === 1);
+            assert(prefValues.length === 2, 'prefValues should have a length of 2, not '+prefValues.length+'\nprefValues:\n'+require('util').inspect(prefValues));
+            assert(prefValues[0].user === 1, 'prefValues[0].user should be === 1, not '+require('util').inspect(prefValues[0].user));
+            assert(prefValues[1].user === 1, 'prefValues[1].user should be === 1, not '+require('util').inspect(prefValues[1].user));
 
             done();
           });
