@@ -79,9 +79,15 @@ describe('.beforeCreate()', function() {
 
           waterline.loadCollection(Model);
 
+          // Simulated data
+          var records = [{
+            name: 'test',
+            id: 1
+          }];
+
           // Fixture Adapter Def
           var adapterDef = {
-            find: function(con, col, criteria, cb) { return cb(null, [criteria.where]); },
+            find: function(con, col, criteria, cb) { return cb(null, records); },
             create: function(con, col, values, cb) { return cb(null, values); }
           };
 
@@ -205,9 +211,15 @@ describe('.beforeCreate()', function() {
 
         waterline.loadCollection(Model);
 
+        // Simulated data
+        var records = [{
+          name: 'test',
+          id: 1
+        }];
+
         // Fixture Adapter Def
         var adapterDef = {
-          find: function(con, col, criteria, cb) { return cb(null, [criteria.where]); },
+          find: function(con, col, criteria, cb) { return cb(null, records); },
           create: function(con, col, values, cb) { return cb(null, values); }
         };
 

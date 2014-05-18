@@ -81,9 +81,15 @@ describe('.afterValidate()', function() {
 
           waterline.loadCollection(Model);
 
+          // Simulated data
+          var records = [{
+            name: 'test',
+            id: 1
+          }];
+
           // Fixture Adapter Def
           var adapterDef = {
-            find: function(con, col, criteria, cb) { return cb(null, [criteria.where]); },
+            find: function(con, col, criteria, cb) { return cb(null, records); },
             create: function(con, col, values, cb) { return cb(null, values); }
           };
 
@@ -102,8 +108,9 @@ describe('.afterValidate()', function() {
 
         it('should not run afterValidate and mutate values on find', function(done) {
           person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-            assert(!err);
-            assert(user.name === 'test');
+            if (err) return done(err);
+            assert(user.name === 'test', 'expected `user.name` to be "test", but instead got:'+
+              require('util').inspect(user.name)+'  Also heres whats in `user`: '+require('util').inspect(user));
             done();
           });
         });
@@ -209,9 +216,15 @@ describe('.afterValidate()', function() {
 
         waterline.loadCollection(Model);
 
+        // Simulated data
+        var records = [{
+          name: 'test',
+          id: 1
+        }];
+
         // Fixture Adapter Def
         var adapterDef = {
-          find: function(con, col, criteria, cb) { return cb(null, [criteria.where]); },
+          find: function(con, col, criteria, cb) { return cb(null, records); },
           create: function(con, col, values, cb) { return cb(null, values); }
         };
 
