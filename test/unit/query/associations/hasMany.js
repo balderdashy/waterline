@@ -65,7 +65,8 @@ describe('Collection Query', function() {
     });
 
 
-    it('should build a join query', function(done) {
+    // TODO: replace w/ nested select
+    it.skip('should build a join query', function(done) {
       User.findOne(1)
       .populate('cars')
       .exec(function(err, values) {

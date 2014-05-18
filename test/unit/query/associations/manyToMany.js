@@ -3,7 +3,7 @@ var Waterline = require('../../../../lib/waterline'),
 
 describe('Collection Query', function() {
 
-  describe('many to many association', function() {
+  describe.skip('many to many association', function() {
     var User, generatedCriteria;
 
     before(function(done) {

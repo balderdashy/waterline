@@ -2,7 +2,7 @@ var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
 describe('Model', function() {
-  describe('associations Many To Many', function() {
+  describe.skip('associations Many To Many', function() {
     describe('.add() with an object', function() {
 
       /////////////////////////////////////////////////////

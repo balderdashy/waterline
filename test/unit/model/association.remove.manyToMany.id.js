@@ -4,7 +4,7 @@ var _ = require('lodash'),
     Model = require('../../../lib/waterline/model');
 
 describe('instance methods', function() {
-  describe('many to many association remove', function() {
+  describe.skip('many to many association remove', function() {
 
     describe('with an id', function() {
 

@@ -3,7 +3,9 @@ var Waterline = require('../../../../lib/waterline'),
 
 describe('Collection Query', function() {
   describe('belongs to association', function() {
-    var Car, generatedCriteria = {};
+
+    var Car;
+    var generatedCriteria = {};
 
     before(function(done) {
 
@@ -63,12 +65,13 @@ describe('Collection Query', function() {
       });
     });
 
-
-    it('should build a join query', function(done) {
+    // TODO: replace w/ nested select
+    it.skip('should build a join query', function(done) {
       Car.findOne({ driver: 1 })
       .populate('driver')
       .exec(function(err, values) {
         if(err) return done(err);
+        assert(typeof generatedCriteria.joins === 'object' && generatedCriteria.joins.length, 'expected `generatedCriteria` to be an array, instead got: '+require('util').inspect(generatedCriteria.joins));
         assert(generatedCriteria.joins[0].parent === 'car');
         assert(generatedCriteria.joins[0].parentKey === 'driver');
         assert(generatedCriteria.joins[0].child === 'user');
