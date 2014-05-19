@@ -5,6 +5,8 @@ describe('Collection Query', function() {
 
   describe('.findOne()', function() {
 
+    var criteriaInAdapter;
+
     describe('with autoPK', function() {
       var query;
 
@@ -29,6 +31,7 @@ describe('Collection Query', function() {
         // Fixture Adapter Def
         var adapterDef = {
           find: function(con, col, criteria, cb) {
+            criteriaInAdapter = criteria;
             return cb(null, [{id: 1}]);
           }
         };
@@ -56,11 +59,7 @@ describe('Collection Query', function() {
       it('should allow an integer to be passed in as criteria', function(done) {
         query.findOne(1, function(err, values) {
           assert(!err);
-
-          // NOTE:
-          // commented this out because WL2 query engine calls find() multiple times
-          // ~Mike
-          // assert(values.where.id === 1);
+          assert(criteriaInAdapter.where.id === 1);
           done();
         });
       });
@@ -72,13 +71,9 @@ describe('Collection Query', function() {
         .exec(function(err, results) {
           assert(!err);
           assert(!Array.isArray(results));
-
-          // NOTE:
-          // commented this out because WL2 query engine calls find() multiple times
-          // ~Mike
-          // assert(Object.keys(results.where).length === 2);
-          // assert(results.where.name == 'Foo Bar');
-          // assert(results.where.id['>'] == 1);
+          assert(Object.keys(criteriaInAdapter.where).length === 2);
+          assert(criteriaInAdapter.where.name == 'Foo Bar');
+          assert(criteriaInAdapter.where.id['>'] == 1);
 
           done();
         });
@@ -139,11 +134,7 @@ describe('Collection Query', function() {
         it('should use the custom primary key when a single value is passed in', function(done) {
           query.findOne(1, function(err, values) {
             assert(!err);
-
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(values.where.myPk === 1);
+            assert(values.where.myPk === 1);
             done();
           });
         });
@@ -197,11 +188,7 @@ describe('Collection Query', function() {
         it('should use the custom primary key when a single value is passed in', function(done) {
           query.findOne(1, function(err, values) {
             assert(!err);
-
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(values.where.pkColumn === 1);
+            assert(values.where.pkColumn === 1);
             done();
           });
         });
