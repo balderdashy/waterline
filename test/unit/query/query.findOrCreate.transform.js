@@ -32,17 +32,11 @@ describe('Collection Query', function() {
         // Fixture Adapter Def
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(criteria.where.login);
+            assert(criteria.where.login);
             return cb(null, []);
           },
           create: function(con, col, values, cb) {
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(values.login);
+            assert(values.login);
             return cb(null, values);
           }
         };
@@ -67,17 +61,11 @@ describe('Collection Query', function() {
         // Fixture Adapter Def
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(criteria.where.login);
+            assert(criteria.where.login);
             return cb(null, []);
           },
           create: function(con, col, values, cb) {
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(values.login);
+            assert(values.login);
             return cb(null, values);
           }
         };
@@ -102,17 +90,11 @@ describe('Collection Query', function() {
         // Fixture Adapter Def
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(criteria.where.login);
+            assert(criteria.where.login);
             return cb(null, []);
           },
           create: function(con, col, values, cb) {
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(values.login);
+            assert(values.login);
             return cb(null, values);
           }
         };
@@ -126,11 +108,8 @@ describe('Collection Query', function() {
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
           if(err) return done(err);
           colls.collections.user.findOrCreate({ where: { name: 'foo' }}, { name: 'foo' }, function(err, values) {
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(values.name);
-            // assert(!values.login);
+            assert(values.name);
+            assert(!values.login);
             done();
           });
         });
