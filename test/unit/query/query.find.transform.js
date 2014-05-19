@@ -33,10 +33,7 @@ describe('Collection Query', function() {
         var adapterDef = {
           find: function(con, col, criteria, cb) {
 
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
-            // assert(criteria.where.login, 'expected `criteria.where.login` in adapter, but got criteria==='+require('util').inspect(criteria));
+            assert(criteria.where.login, 'expected `criteria.where.login` in adapter, but got criteria==='+require('util').inspect(criteria));
             return cb(null, [{ login: 'foo' }]);
           }
         };
@@ -61,10 +58,7 @@ describe('Collection Query', function() {
         // Fixture Adapter Def
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            // assert(criteria.where.login);
-            // NOTE:
-            // commented this out because WL2 query engine calls find() multiple times
-            // ~Mike
+            assert(criteria.where.login);
             return cb(null, [{ login: 'foo' }]);
           }
         };

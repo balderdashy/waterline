@@ -82,17 +82,12 @@ describe('Collection Query', function() {
         assert(!err);
         assert(Array.isArray(results));
 
-
-        // This was changed as part of new query engine integration:
-        // (because the engine kicks off multiple queries, it's difficult to isolate the proper criteria)
-        // ~Mike
         assert(Object.keys(lastCriteriaInAdapter.where).length === 2, 'expected 2 items in where clause, got: '+require('util').inspect(lastCriteriaInAdapter.where, false, null));
-        //
-        // assert(lastCriteriaInAdapter.where.name == 'Foo Bar');
-        // assert(lastCriteriaInAdapter.where.id['>'] == 1);
-        // assert(lastCriteriaInAdapter.limit == 1);
-        // assert(lastCriteriaInAdapter.skip == 1);
-        // assert(lastCriteriaInAdapter.sort.name == -1);
+        assert(lastCriteriaInAdapter.where.name == 'Foo Bar');
+        assert(lastCriteriaInAdapter.where.id['>'] == 1);
+        assert(lastCriteriaInAdapter.limit == 1);
+        assert(lastCriteriaInAdapter.skip == 1);
+        assert(lastCriteriaInAdapter.sort.name == -1);
 
         done();
       });
@@ -106,7 +101,7 @@ describe('Collection Query', function() {
           assert(!err);
           assert(Array.isArray(results));
           assert(lastCriteriaInAdapter.skip === 0);
-          // assert(lastCriteriaInAdapter.limit === 10);
+          assert(lastCriteriaInAdapter.limit === 10);
 
           done();
         });
@@ -136,7 +131,7 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 2})
         .exec(function(err, results) {
-          // assert(lastCriteriaInAdapter.skip === 10);
+          assert(lastCriteriaInAdapter.skip === 10);
 
           done();
         });
@@ -146,7 +141,7 @@ describe('Collection Query', function() {
         query.find()
         .paginate({limit: 1})
         .exec(function(err, results) {
-          // assert(lastCriteriaInAdapter.limit === 1);
+          assert(lastCriteriaInAdapter.limit === 1);
 
           done();
         });
@@ -156,8 +151,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 2, limit: 10})
         .exec(function(err, results) {
-          // assert(lastCriteriaInAdapter.skip  === 10);
-          // assert(lastCriteriaInAdapter.limit === 10);
+          assert(lastCriteriaInAdapter.skip  === 10);
+          assert(lastCriteriaInAdapter.limit === 10);
 
           done();
         });
@@ -167,8 +162,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 3, limit: 10})
         .exec(function(err, results) {
-          // assert(lastCriteriaInAdapter.skip  === 20);
-          // assert(lastCriteriaInAdapter.limit === 10);
+          assert(lastCriteriaInAdapter.skip  === 20);
+          assert(lastCriteriaInAdapter.limit === 10);
 
           done();
         });
