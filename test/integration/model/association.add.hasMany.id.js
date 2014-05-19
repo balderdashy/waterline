@@ -84,7 +84,7 @@ describe('Model', function() {
           person.preferences.add(1);
           person.preferences.add(2);
 
-          console.log('made it here');
+          // console.log('made it here');
           person.save(function(err) {
             if(err) return done(err);
 

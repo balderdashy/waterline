@@ -22,7 +22,7 @@ describe('Collection average', function () {
       // Fixture Adapter Def
       var adapterDef = {
         find: function (con, col, criteria, cb) {
-          console.log('---',arguments);
+          // console.log('---',arguments);
           return cb(null, [criteria]);
         }
       };
@@ -46,7 +46,7 @@ describe('Collection average', function () {
       query.find().average('age', 'percent').exec(function (err, obj) {
         if(err) return done(err);
 
-        console.log(obj);
+        // console.log(obj);
         assert(obj[0].average[0] === 'age');
         assert(obj[0].average[1] === 'percent');
         done();
