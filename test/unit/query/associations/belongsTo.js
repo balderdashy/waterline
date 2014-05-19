@@ -5,7 +5,7 @@ describe('Collection Query', function() {
   describe('belongs to association', function() {
 
     var Car;
-    var generatedCriteria = {};
+    var joinCriteria;
 
     before(function(done) {
 
@@ -44,7 +44,7 @@ describe('Collection Query', function() {
       var adapterDef = {
         identity: 'foo',
         join: function(con, col, criteria, cb) {
-          generatedCriteria = criteria;
+          joinCriteria = criteria;
           return cb();
         },
         find: function(con, col, criteria, cb) {
@@ -65,18 +65,18 @@ describe('Collection Query', function() {
       });
     });
 
-    // TODO: replace w/ nested select
-    it.skip('should build a join query', function(done) {
+    it('should include `joins` in criteria and pass it to the join method on the adapter', function(done) {
       Car.findOne({ driver: 1 })
       .populate('driver')
       .exec(function(err, values) {
         if(err) return done(err);
-        assert(typeof generatedCriteria.joins === 'object' && generatedCriteria.joins.length, 'expected `generatedCriteria` to be an array, instead got: '+require('util').inspect(generatedCriteria.joins));
-        assert(generatedCriteria.joins[0].parent === 'car');
-        assert(generatedCriteria.joins[0].parentKey === 'driver');
-        assert(generatedCriteria.joins[0].child === 'user');
-        assert(generatedCriteria.joins[0].childKey === 'uuid');
-        assert(generatedCriteria.joins[0].removeParentKey === true);
+        assert(typeof joinCriteria === 'object', 'should have run join() method in adapter');
+        assert(typeof joinCriteria.joins === 'object' && joinCriteria.joins.length, 'expected `joinCriteria.joins` to be an array, instead got: '+require('util').inspect(joinCriteria.joins));
+        assert(joinCriteria.joins[0].parent === 'car');
+        assert(joinCriteria.joins[0].parentKey === 'driver');
+        assert(joinCriteria.joins[0].child === 'user');
+        assert(joinCriteria.joins[0].childKey === 'uuid');
+        assert(joinCriteria.joins[0].removeParentKey === true);
         done();
       });
     });

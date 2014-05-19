@@ -3,8 +3,9 @@ var Waterline = require('../../../../lib/waterline'),
 
 describe('Collection Query', function() {
 
-  describe('has many association', function() {
-    var User, generatedCriteria;
+  describe.skip('has many association', function() {
+    var User;
+    var joinCriteria;
 
     before(function(done) {
 
@@ -43,7 +44,7 @@ describe('Collection Query', function() {
       var adapterDef = {
         identity: 'foo',
         join: function(con, col, criteria, cb) {
-          generatedCriteria = criteria;
+          joinCriteria = criteria;
           return cb();
         },
         find: function(con, col, criteria, cb) {
@@ -65,18 +66,18 @@ describe('Collection Query', function() {
     });
 
 
-    // TODO: replace w/ nested select
-    it.skip('should build a join query', function(done) {
+    it('should include `joins` in criteria and pass it to the join method on the adapter', function(done) {
       User.findOne(1)
       .populate('cars')
       .exec(function(err, values) {
         if(err) return done(err);
-        assert(generatedCriteria.joins[0].parent === 'user');
-        assert(generatedCriteria.joins[0].parentKey === 'uuid');
-        assert(generatedCriteria.joins[0].child === 'car');
-        assert(generatedCriteria.joins[0].childKey === 'driver');
-        assert(Array.isArray(generatedCriteria.joins[0].select));
-        assert(generatedCriteria.joins[0].removeParentKey === false);
+        assert(typeof joinCriteria === 'object', 'should have run join() method in adapter');
+        assert(joinCriteria.joins[0].parent === 'user');
+        assert(joinCriteria.joins[0].parentKey === 'uuid');
+        assert(joinCriteria.joins[0].child === 'car');
+        assert(joinCriteria.joins[0].childKey === 'driver');
+        assert(Array.isArray(joinCriteria.joins[0].select));
+        assert(joinCriteria.joins[0].removeParentKey === false);
 
         done();
       });

@@ -73,8 +73,8 @@ describe('Collection Query', function() {
     });
 
     it.skip('should create limited dynamic finders for has_one and belongs_to associations', function() {
-      assert(typeof query.findByGroup === 'function');
-      assert(typeof query.findOneByGroup === 'function');
+      assert(typeof query.findByGroup === 'function', 'findBy*() dynamic finders should exist for has_one and/or belongs_to associations');
+      assert(typeof query.findOneByGroup === 'function', 'findOneBy*() dynamic finders should exist for has_one and/or belongs_to associations');
     });
 
   });
