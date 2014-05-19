@@ -30,7 +30,7 @@ describe('Model', function() {
 
       var adapterDef = {
         find: function(con, col, criteria, cb) {
-          return cb(null, vals);
+          return cb(null, [vals]);
         },
         update: function(con, col, criteria, values, cb) {
           vals = values;
@@ -63,7 +63,7 @@ describe('Model', function() {
       person.last_name = 'foobaz';
 
       person.save(function(err, values) {
-        assert(!err);
+        assert(!err, err);
         assert(values.last_name === 'foobaz');
         assert(person.last_name === 'foobaz');
         done();
