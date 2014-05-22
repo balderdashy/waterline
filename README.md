@@ -1,6 +1,4 @@
-![image_squidhome@2x.png](http://i.imgur.com/7rMxw.png)
-
-# Waterline
+# [<img title="waterline-logo" src="http://i.imgur.com/3Xqh6Mz.png" width="810px" alt="Waterline logo"/>](https://github.com/balderdashy/waterline)
 
 [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline) [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) [![Dependency Status](https://gemnasium.com/balderdashy/waterline.png)](https://gemnasium.com/balderdashy/waterline)
 
