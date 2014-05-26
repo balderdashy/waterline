@@ -1,4 +1,5 @@
 var Waterline = require('../../../lib/waterline'),
+    WLTransform = require('waterline-criteria'),
     assert = require('assert');
 
 describe('Model', function() {
@@ -44,7 +45,7 @@ describe('Model', function() {
 
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            if(col === 'person') return cb(null, _values);
+            if(col === 'person') return cb(null, WLTransform(_values, criteria).results);
             cb(null, []);
           },
           update: function(con, col, criteria, values, cb) {
@@ -75,6 +76,8 @@ describe('Model', function() {
       ////////////////////////////////////////////////////
 
       it('should pass foreign key values to update method for each relationship', function(done) {
+
+        // console.log('\n\n\n\n--------------------------------------------------------');
         collections.person.find().exec(function(err, records) {
           if(err) return done(err);
           assert(typeof records === 'object' && records.length && records[0], 'should have returned an array of at least one `person` record, instead got '+require('util').inspect(records));

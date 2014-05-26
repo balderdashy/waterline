@@ -1,5 +1,12 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+/**
+ * Module dependencies
+ */
+
+var Waterline = require('../../../lib/waterline');
+var WLTransform = require('waterline-criteria');
+var assert = require('assert');
+
+
 
 describe('Model', function() {
   describe('associations hasMany', function() {
@@ -46,7 +53,9 @@ describe('Model', function() {
         ];
 
         var adapterDef = {
-          find: function(con, col, criteria, cb) { return cb(null, _values); },
+          find: function(con, col, criteria, cb) {
+            return cb(null, WLTransform(_values, criteria).results);
+          },
           update: function(con, col, criteria, values, cb) {
             if(col === 'preference') {
               prefValues.push({ id: criteria.where.id, values: values });
