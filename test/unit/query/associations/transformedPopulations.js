@@ -1,5 +1,13 @@
-var Waterline = require('../../../../lib/waterline'),
-    assert = require('assert');
+/**
+ * Module dependencies
+ */
+
+var Waterline = require('../../../../lib/waterline');
+var WLTransform = require('waterline-criteria');
+var assert = require('assert');
+
+
+
 
 describe('Collection Query', function() {
   describe('populated associations', function() {
@@ -38,8 +46,14 @@ describe('Collection Query', function() {
       var adapterDef = {
         identity: 'foo',
         find: function(con, col, criteria, cb) {
-          if(col === 'user') return cb(null, [{ id: 1, car: 1 }]);
-          if(col === 'car') return cb(null, [{ id: 1, foobar: 1 }]);
+          if (col === 'user') return cb(null, WLTransform([{
+            id: 1,
+            car: 1
+          }], criteria).results);
+          if (col === 'car') return cb(null, WLTransform([{
+            id: 1,
+            foobar: 1
+          }], criteria).results);
           return cb();
         }
       };
