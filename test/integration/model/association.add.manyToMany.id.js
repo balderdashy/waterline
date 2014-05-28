@@ -99,8 +99,8 @@ describe('Model', function() {
 
             assert(prefValues.length === 2);
 
-            assert(prefValues[0].person_preferences === 1);
-            assert(prefValues[1].person_preferences === 1);
+            assert(prefValues[0].preference_people === 1);
+            assert(prefValues[1].preference_people === 2);
 
             done();
           });
