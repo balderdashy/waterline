@@ -84,9 +84,9 @@ describe('instance methods', function() {
         person.save(function(err) {
           assert(bar.create.length === 2);
 
-          assert(bar.create[0].values.foo_id);
+          assert(bar.create[0].values.foo);
           assert(bar.create[0].values.name);
-          assert(bar.create[1].values.foo_id);
+          assert(bar.create[1].values.foo);
           assert(bar.create[1].values.name);
 
           assert(bar.create[0].values.name === 'foo');

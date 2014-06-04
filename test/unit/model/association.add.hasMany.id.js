@@ -85,9 +85,10 @@ describe('instance methods', function() {
           assert(bar.update.length === 2);
           assert(bar.update.length === 2);
           assert(bar.update[0].criteria.id === 1);
-          assert(bar.update[0].values.foo_id);
+
+          assert(bar.update[0].values.foo);
           assert(bar.update[1].criteria.id === 2);
-          assert(bar.update[1].values.foo_id);
+          assert(bar.update[1].values.foo);
 
           done();
         });

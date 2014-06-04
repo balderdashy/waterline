@@ -37,7 +37,8 @@ module.exports = function() {
         bars: {
           collection: 'bar',
           references: 'bar',
-          on: 'foo_id'
+          on: 'foo_id',
+          onKey: 'foo'
         },
         id: {
           type: 'integer',
@@ -63,7 +64,8 @@ module.exports = function() {
           type: 'integer',
           foreignKey: true,
           references: 'foo',
-          on: 'id'
+          on: 'id',
+          onKey: 'id'
         }
       }
     }
