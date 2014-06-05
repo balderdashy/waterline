@@ -77,7 +77,8 @@ describe('Model', function() {
 
       it('should pass foreign key values to update method for each relationship', function(done) {
 
-        // console.log('\n\n\n\n--------------------------------------------------------');
+        console.log('\n\n\n\n--------------------------------------------------------');
+        // console.log('COLLECTIONS.PERSON', collections.person);
         collections.person.find().exec(function(err, records) {
           if(err) return done(err);
           assert(typeof records === 'object' && records.length && records[0], 'should have returned an array of at least one `person` record, instead got '+require('util').inspect(records));
