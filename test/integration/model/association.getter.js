@@ -39,8 +39,14 @@ describe('Model', function() {
         waterline.loadCollection(Preference);
 
         var _values = [
-          { preferences: [{ foo: 'bar' }, { foo: 'foobar' }] },
-          { preferences: [{ foo: 'a' }, { foo: 'b' }] },
+          {
+            id: 1,
+            preferences: [{ foo: 'bar' }, { foo: 'foobar' }]
+          },
+          {
+            id: 2,
+            preferences: [{ foo: 'a' }, { foo: 'b' }]
+          },
         ];
 
         var adapterDef = {
