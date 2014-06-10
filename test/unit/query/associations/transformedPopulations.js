@@ -54,7 +54,7 @@ describe('Collection Query', function() {
             id: 1,
             foobar: 1
           }], criteria).results);
-          return cb();
+          return cb(null, []);
         }
       };
 
@@ -75,8 +75,8 @@ describe('Collection Query', function() {
     it('should transform populated values', function(done) {
       User.find().populate('car').exec(function(err, user) {
         if(err) return done(err);
-        assert(user[0].car, 'Expected user[0].car to exist, what gives?  Check out user[0]:'+require('util').inspect(user[0]));
-        assert(user[0].car.driver);
+        assert(user[0].car, 'Expected user[0].car to exist, what gives?  Check out the `user`s:'+require('util').inspect(user));
+        assert(user[0].car.driver, 'Expected user[0].car.driver to exist, what gives?  Check out the `user`s:'+require('util').inspect(user));
         assert(!user[0].car.foobar);
         done();
       });
@@ -85,7 +85,7 @@ describe('Collection Query', function() {
     it('should modelize populated values', function(done) {
       User.find().populate('car').exec(function(err, user) {
         if(err) return done(err);
-        assert(user[0].car);
+        assert(user[0].car, 'user[0].car should exist, but instead user[0] ==> '+require('util').inspect(user[0],false, null));
         assert(typeof user[0].car.save === 'function');
         done();
       });

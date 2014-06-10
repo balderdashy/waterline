@@ -1,5 +1,6 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var Waterline = require('../../../lib/waterline');
+var assert = require('assert');
+var WLTransform = require('waterline-criteria');
 
 describe('Model', function() {
   describe('associations Many To Many', function() {
@@ -51,8 +52,12 @@ describe('Model', function() {
 
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            if(col === 'person_preferences__preference_people') return cb(null, []);
-            cb(null, _values);
+            switch (col) {
+              case 'person_preferences__preference_people':
+                return cb(null, []);
+              default:
+                cb(null, WLTransform(_values, criteria).results);
+            }
           },
           update: function(con, col, criteria, values, cb) {
             if(col === 'preference') {
@@ -85,7 +90,7 @@ describe('Model', function() {
       // TEST METHODS
       ////////////////////////////////////////////////////
 
-      it('should pass foreign key values to update method for each relationship', function(done) {
+      it.only('should pass foreign key values to update method for each relationship', function(done) {
         collections.person.find().exec(function(err, models) {
           if(err) return done(err);
 
@@ -94,16 +99,28 @@ describe('Model', function() {
           person.preferences.add(1);
           person.preferences.add(2);
 
-          person.save(function(err) {
-            if(err) return done(err);
+          console.log('\n\n***** -()=PERSON:', person, person.preferences);
+          try {
+            person.save(function(err) {
+              try {
+                console.log('ran SAVE: error?', err);
+                if(err) return done(err);
 
-            assert(prefValues.length === 2);
+                assert(prefValues.length === 2);
 
-            assert(prefValues[0].preference_people === 1);
-            assert(prefValues[1].preference_people === 2);
+                assert(prefValues[0].preference_people === 1);
+                assert(prefValues[1].preference_people === 2);
 
-            done();
-          });
+                done();
+              }
+              catch (e) {
+                return done(e);
+              }
+            });
+          }
+          catch (e) {
+            if (e) return done(e);
+          }
         });
       });
 
