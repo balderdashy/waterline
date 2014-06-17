@@ -1,5 +1,6 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var WLTransform = require('waterline-criteria');
+var Waterline = require('../../../lib/waterline');
 
 describe('Model', function() {
   describe('associations Many To Many', function() {
@@ -42,17 +43,31 @@ describe('Model', function() {
         waterline.loadCollection(User);
         waterline.loadCollection(Preference);
 
-        var _values = [
-          { id: 1, preference: [{ foo: 'bar' }, { foo: 'foobar' }] },
-          { id: 2, preference: [{ foo: 'a' }, { foo: 'b' }] },
-        ];
+        var _data = {
+          person_preferences__preference_people: [
+            { id: 10, preference_people: 1, person_preferences: 1 },
+            { id: 11, preference_people: 1, person_preferences: 2 },
+            { id: 12, preference_people: 2, person_preferences: 4 },
+            { id: 13, preference_people: 2, person_preferences: 3 }
+          ],
+          person: [
+            { id: 1 },
+            { id: 2 },
+          ],
+          preference: [
+            { id: 1, foo: 'bar' },
+            { id: 2, foo: 'foobar' },
+            { id: 3, foo: 'a' },
+            { id: 4, foo: 'b' }
+          ]
+        };
 
         var i = 1;
 
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            if(col === 'person_preference') return cb(null, []);
-            cb(null, _values);
+            // if(col === 'person_preference') return cb(null, []);
+            cb(null, WLTransform(_data[col], criteria).results);
           },
           destroy: function(con, col, criteria, cb) {
             if(col === 'person_preferences__preference_people') {

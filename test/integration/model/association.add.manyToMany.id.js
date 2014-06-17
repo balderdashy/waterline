@@ -1,6 +1,7 @@
-var Waterline = require('../../../lib/waterline');
 var assert = require('assert');
+var _ = require('lodash');
 var WLTransform = require('waterline-criteria');
+var Waterline = require('../../../lib/waterline');
 
 describe('Model', function() {
   describe('associations Many To Many', function() {
@@ -43,31 +44,49 @@ describe('Model', function() {
         waterline.loadCollection(User);
         waterline.loadCollection(Preference);
 
-        var _values = [
-          { id: 1, preference: [{ foo: 'bar' }, { foo: 'foobar' }] },
-          { id: 2, preference: [{ foo: 'a' }, { foo: 'b' }] },
-        ];
+        var _data = {
+          person_preferences__preference_people: [
+            { id: 12, preference_people: 2, person_preferences: 4 },
+            { id: 13, preference_people: 2, person_preferences: 3 }
+          ],
+          person: [
+            { id: 1 },
+            { id: 2 },
+          ],
+          preference: [
+            { id: 1, foo: 'bar' },
+            { id: 2, foo: 'foobar' },
+            { id: 3, foo: 'a' },
+            { id: 4, foo: 'b' }
+          ]
+        };
 
         var i = 1;
 
         var adapterDef = {
           find: function(con, col, criteria, cb) {
-            switch (col) {
-              case 'person_preferences__preference_people':
-                return cb(null, []);
-              default:
-                cb(null, WLTransform(_values, criteria).results);
-            }
+            cb(null, WLTransform(_data[col], criteria).results);
+            // // switch (col) {
+            // //   case 'person_preferences__preference_people':
+            // //     return cb(null, []);
+            // //   default:
+            // }
           },
           update: function(con, col, criteria, values, cb) {
             if(col === 'preference') {
               prefValues.push(values);
             }
 
+            _data[col] = _.map(_data[col],function (record) {
+              _.extend(record, values);
+              return record;
+            });
+
             return cb(null, values);
           },
           create: function(con, col, values, cb) {
             prefValues.push(values);
+            _data[col].push(values);
             return cb(null, values);
           },
         };
@@ -90,11 +109,12 @@ describe('Model', function() {
       // TEST METHODS
       ////////////////////////////////////////////////////
 
-      it.only('should pass foreign key values to update method for each relationship', function(done) {
-        collections.person.find().exec(function(err, models) {
+      it('should pass foreign key values to update method for each relationship', function(done) {
+        collections.person.find().exec(function(err, records) {
           if(err) return done(err);
 
-          var person = models[0];
+          var person = records[0];
+          console.log(person);
 
           person.preferences.add(1);
           person.preferences.add(2);
