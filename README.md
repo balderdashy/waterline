@@ -73,6 +73,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [IRC](https://github.com/balderdashy/sails-irc)
   - [Twitter](https://github.com/balderdashy/sails-twitter)
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
+  - [Neo4j](https://github.com/natgeo/sails-neo4j)
 
 ## Collection
 
