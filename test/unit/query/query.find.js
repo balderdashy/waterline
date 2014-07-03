@@ -159,5 +159,132 @@ describe('Collection Query', function() {
         });
       });
     });
+
+    describe('.pick()', function() {
+      it('should take projection criteria as string arguments', function(done) {
+        query.find()
+        .pick('foo', 'bar')
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].pick.foo === 1);
+          assert(results[0].pick.bar === 1);
+
+          done();
+        });
+
+      });
+
+      it('should take projection criteria as an array', function(done) {
+        query.find()
+        .pick(['foo', 'bar'])
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].pick.foo === 1);
+          assert(results[0].pick.bar === 1);
+
+          done();
+        });
+      });
+
+      it('should take projection criteria as an object', function(done) {
+        query.find()
+        .pick({foo: 1, bar: 1})
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].pick.foo === 1);
+          assert(results[0].pick.bar === 1);
+
+          done();
+        });
+      });
+
+      it('should change all object keys to 1', function(done) {
+        query.find()
+        .pick({foo: 0, bar: 'foobar'})
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].pick.foo === 1);
+          assert(results[0].pick.bar === 1);
+
+          done();
+        });
+      });
+
+      it('should be chainable', function(done) {
+        query.find()
+        .pick('foo')
+        .pick('bar')
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].pick.foo === 1);
+          assert(results[0].pick.bar === 1);
+
+          done();
+        });
+      });
+    });
+
+    describe('.omit()', function() {
+      it('should take projection criteria as string arguments', function(done) {
+        query.find()
+        .omit('foo', 'bar')
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].omit.foo === 0);
+          assert(results[0].omit.bar === 0);
+
+          done();
+        });
+      });
+
+      it('should take projection criteria as an array', function(done) {
+        query.find()
+        .omit(['foo', 'bar'])
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].omit.foo === 0);
+          assert(results[0].omit.bar === 0);
+
+          done();
+        });
+      });
+
+      it('should take projection criteria as an object', function(done) {
+        query.find()
+        .omit({foo: 1, bar: 1})
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].omit.foo === 0);
+          assert(results[0].omit.bar === 0);
+
+          done();
+        });
+      });
+
+      it('should change all object keys to 0', function(done) {
+        query.find()
+        .omit({foo: 1, bar: 'foobar'})
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].omit.foo === 0);
+          assert(results[0].omit.bar === 0);
+
+          done();
+        });
+      });
+
+      it('should be chainable', function(done) {
+        query.find()
+        .omit('foo')
+        .omit('bar')
+        .exec(function(err, results) {
+          assert(!err);
+          assert(results[0].omit.foo === 0);
+          assert(results[0].omit.bar === 0);
+
+          done();
+        });
+      });
+    });
   });
 });
