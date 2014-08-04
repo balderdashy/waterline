@@ -74,5 +74,21 @@ describe('Collection Promise', function () {
         done();
       });
     });
+
+    it('should only resolve once', function(done){
+      var promise = query.find({});
+      var prevResult;
+      promise
+        .then(function(result){
+          prevResult = result;
+          return promise;
+        }).then(function(result){
+          assert.strictEqual(result, prevResult, "Previous and current result should be equal");
+          done();
+        })
+        .fail(function(err){
+          done(err);
+        });
+    });
   });
 });
