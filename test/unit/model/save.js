@@ -9,10 +9,10 @@ describe('instance methods', function() {
     // TEST SETUP
     ////////////////////////////////////////////////////
 
-    var model, updateValues;
+    var fixture, model, updateValues;
 
     before(function() {
-      var fixture = belongsToFixture();
+      fixture = belongsToFixture();
 
       fixture.findOne = function(criteria, cb) {
         var parentCriteria = criteria;
@@ -73,5 +73,80 @@ describe('instance methods', function() {
       });
     });
 
+    describe('promise with 0 updated rows', function(){
+      var originalUpdate;
+      before(function(){
+        originalUpdate = fixture.update;
+        fixture.update = function(criteria, values, cb) {
+          return cb(null, []);
+        };
+      });
+
+      after(function(){
+        fixture.update = originalUpdate;
+      });
+
+      it('should reject', function(done){
+        var person = new model({ id: 1, name: 'foo' });
+
+        person.name = 'foobar';
+
+        person.save().then(function(data) {
+          assert(!data);
+          done("promise should be rejected, not resolved");
+        })
+        .fail(function(err){
+          assert(err);
+          done();
+        });
+      })
+    });
+
+    describe('promise with object that can\'t be found', function(){
+      var originalFind;
+      before(function(){
+        originalFind = fixture.findOne;
+        fixture.findOne = function(criteria, cb) {
+          var parentCriteria = criteria;
+
+          if(cb) {
+            if(criteria.id) return cb(null, criteria);
+            return cb();
+          }
+
+          var obj = function(criteria) {
+            return this;
+          };
+
+          obj.prototype.exec = function(cb) {
+            cb("Forced error");
+          };
+
+          obj.prototype.populate = function() { return this; };
+
+          return new obj(criteria);
+        };
+      });
+
+      after(function(){
+        fixture.findOne = originalFind;
+      });
+
+      it('should reject', function(done){
+        var person = new model({ id: 1, name: 'foo' });
+
+        person.name = 'foobar';
+
+        person.save().then(function(data) {
+          assert(!data);
+          done("promise should be rejected, not resolved");
+        })
+        .fail(function(err){
+          assert(err);
+          done();
+        });
+      })
+    })
+    
   });
 });
