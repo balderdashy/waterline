@@ -42,10 +42,11 @@ describe('Core Transformations', function() {
        */
 
       before(function() {
-        var collections = {},
+        var collections = [],
             waterline = new Waterline();
 
-        collections.customer = Waterline.Collection.extend({
+        collections.push(Waterline.Collection.extend({
+          identity: 'customer',
           tableName: 'customer',
           attributes: {
             uuid: {
@@ -53,16 +54,17 @@ describe('Core Transformations', function() {
               primaryKey: true
             }
           }
-        });
+        }));
 
-        collections.foo = Waterline.Collection.extend({
+        collections.push(Waterline.Collection.extend({
+          identity: 'foo',
           tableName: 'foo',
           attributes: {
             customer: {
               model: 'customer'
             }
           }
-        });
+        }));
 
         var schema = new Schema(collections);
         transformer = new Transformer(schema.foo.attributes, schema.schema);
