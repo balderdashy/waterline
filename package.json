@@ -18,15 +18,15 @@
     }
   ],
   "dependencies": {
-    "lodash": "~2.4.1",
+    "anchor": "^0.10.0-rc2",
     "async": "~0.9.0",
-    "anchor": "~0.10.0",
-    "q": "~1.0.1",
-    "waterline-schema": "~0.1.15",
+    "deep-diff": "^0.1.7",
+    "lodash": "~2.4.1",
     "node-switchback": "~0.1.0",
-    "waterline-criteria": "~0.10.7",
     "prompt": "~0.2.12",
-    "deep-diff": "~0.1.6"
+    "q": "~1.0.1",
+    "waterline-criteria": "~0.10.7",
+    "waterline-schema": "~0.1.15"
   },
   "devDependencies": {
     "mocha": "1.9.x",
