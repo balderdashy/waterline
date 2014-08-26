@@ -16,6 +16,7 @@ describe('.beforeCreate()', function() {
         },
 
         beforeCreate: function(values, cb) {
+          assert(this.identity === 'user');
           values.name = values.name + ' updated';
           cb();
         }
