@@ -23,10 +23,11 @@ describe('model fill', function() {
   it('should fill values correctly', function(done) {
     var person = new model();
     person.seekrit = 'ok';
-    person.fill({ name: 'Joe', seekrit: 'this should not be set' });
+    person.fill({ name: 'Joe', seekrit: 'this should not be set', extra: 'blarg' });
 
     assert(person.name === 'Joe');
     assert(person.seekrit === 'ok');
+    assert(typeof person.extra === 'undefined');
     done();
   });
 });
