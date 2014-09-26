@@ -68,13 +68,13 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [MongoDB](https://github.com/balderdashy/sails-mongo) - *0.9+ compatible*
   - [Memory](https://github.com/balderdashy/sails-memory) - *0.9+ compatible*
   - [Disk](https://github.com/balderdashy/sails-disk) - *0.9+ compatible*
-  - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails) - *0.9+ compatible*
   - [Redis](https://github.com/balderdashy/sails-redis)
   - [Riak](https://github.com/balderdashy/sails-riak)
   - [IRC](https://github.com/balderdashy/sails-irc)
   - [Twitter](https://github.com/balderdashy/sails-twitter)
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
   - [Neo4j](https://github.com/natgeo/sails-neo4j)
+  - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails)
 
 ## Collection
 
