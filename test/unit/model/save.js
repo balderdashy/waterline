@@ -95,7 +95,7 @@ describe('instance methods', function() {
           assert(!data);
           done("promise should be rejected, not resolved");
         })
-        .fail(function(err){
+        .catch(function(err){
           assert(err);
           done();
         });
@@ -141,12 +141,12 @@ describe('instance methods', function() {
           assert(!data);
           done("promise should be rejected, not resolved");
         })
-        .fail(function(err){
+        .catch(function(err){
           assert(err);
           done();
         });
       })
     })
-    
+
   });
 });
