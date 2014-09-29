@@ -53,7 +53,7 @@ describe('Collection Query', function() {
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
         User = colls.collections.user;
-		Car = colls.collections.car;
+        Car = colls.collections.car;
         done();
       });
     });
@@ -77,13 +77,13 @@ describe('Collection Query', function() {
         done();
       });
     });
-	
-	it('should transform populated values with custom column name', function(done) {
+    
+    it('should transform populated values with custom column name', function(done) {
       Car.find().populate('driver').exec(function(err, cars) {
         if(err) return done(err);
-		assert(cars[0].driver);
-		assert(cars[0].driver.car);
-		assert(!cars[0].foobar);
+        assert(cars[0].driver);
+        assert(cars[0].driver.car);
+        assert(!cars[0].foobar);
         done();
       });
     });
