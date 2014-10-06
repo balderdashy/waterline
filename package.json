@@ -25,7 +25,7 @@
     "node-switchback": "~0.1.0",
     "prompt": "~0.2.12",
     "q": "~1.0.1",
-    "redis-fantastico": "git+https://github.com/MCProHosting/redis-fantastico#develop",
+    "redis-fantastico": "git+https://github.com/MCProHosting/redis-fantastico",
     "waterline-criteria": "~0.10.7",
     "waterline-schema": "~0.1.16"
   },
