@@ -12,6 +12,8 @@ module.exports = function() {
 
   context.primaryKey = 'id';
 
+  context.guarded = ['seekrit'];
+
   // Set collection attributes
   context._attributes = {
     id: {
@@ -25,7 +27,8 @@ module.exports = function() {
     bars: {
       collection: 'bar',
       via: 'foo'
-    }
+    },
+    seekrit: { type: 'string' }
   };
 
   // Build a mock global schema object
@@ -34,6 +37,7 @@ module.exports = function() {
       identity: 'foo',
       attributes: {
         name: 'string',
+        seekrit: 'string',
         bars: {
           collection: 'bar',
           references: 'bar',

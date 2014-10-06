@@ -49,7 +49,7 @@ describe('Collection Query', function() {
       query.find()
       .exec(function(err, results0) {
         assert(!err);
-
+        
         // callback usage
         query.find(function (err, results1) {
           assert(!err);
