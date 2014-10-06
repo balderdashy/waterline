@@ -50,26 +50,28 @@ describe('Query Caches Correctly', function() {
       var location = null,
           setCalled = false;
 
-      fantastico.getSlave = function () {
-        return {
-          GET: function (key, callback) {
-            location = key;
-            setTimeout(function () {
-              callback(null, null);
-            }, 0);
+      fantastico.instance = {
+        getSlave: function () {
+          return {
+            GET: function (key, callback) {
+              location = key;
+              setTimeout(function () {
+                callback(null, null);
+              }, 0);
+            }
           }
-        };
-      };
-      fantastico.getMaster = function () {
-        return {
-          SETEX: function (parts, callback) {
-            setCalled = true;
+        },
+        getMaster: function () {
+          return {
+            SETEX: function (parts, callback) {
+              setCalled = true;
 
-            assert(parts[0] === location);
-            assert(parts[1] === 100);
-            assert(parts[2] === '[{"where":null}]');
-          }
-        };
+              assert(parts[0] === location);
+              assert(parts[1] === 100);
+              assert(parts[2] === '[{"where":null}]');
+            }
+          };
+        }
       };
 
       // .exec() usage
@@ -86,21 +88,23 @@ describe('Query Caches Correctly', function() {
     it('should return existing data if already there', function(done) {
       var setCalled = false;
 
-      fantastico.getSlave = function () {
-        return {
-          GET: function (key, callback) {
-            setTimeout(function () {
-              callback(null, JSON.stringify({foo: 'bar'}));
-            }, 0);
-          }
-        };
-      };
-      fantastico.getMaster = function () {
-        return {
-          SETEX: function () {
-            setCalled = true;
-          }
-        };
+      fantastico.instance = {
+        getSlave: function () {
+          return {
+            GET: function (key, callback) {
+              setTimeout(function () {
+                callback(null, JSON.stringify({foo: 'bar'}));
+              }, 0);
+            }
+          };
+        },
+        getMaster: function () {
+          return {
+            SETEX: function () {
+              setCalled = true;
+            }
+          };
+        }
       };
 
       // .exec() usage
