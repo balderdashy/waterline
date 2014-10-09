@@ -99,7 +99,7 @@ app.use(express.methodOverride());
 // Build Express Routes (CRUD routes for /users)
 
 app.get('/users', function(req, res) {
-  app.models.user.find().done(function(err, models) {
+  app.models.user.find().exec(function(err, models) {
     if(err) return res.json({ err: err }, 500);
     res.json(models);
   });
