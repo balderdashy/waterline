@@ -61,5 +61,18 @@ describe('Model', function() {
       });
     });
 
+    it('should also work with promises', function(done) {
+      var person = new collection._model({ email: 'none' });
+
+      // Update a value
+      person.last_name = 'foobaz';
+
+      person.validate()
+        .catch(function(err) {
+          assert(err);
+          done();
+        });
+    });
+
   });
 });
