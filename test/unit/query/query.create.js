@@ -239,6 +239,14 @@ describe('Collection Query', function() {
           done();
         });
       });
+
+      it('should not be detructive to passed-in arrays', function(done) {
+        var myPreciousArray = [{ name: 'foo', age: '27' }];
+        query.createEach(myPreciousArray, function(err, values) {
+          assert(myPreciousArray.length === 1);
+          done();
+        });
+      });
     });
 
   });
