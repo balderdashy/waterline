@@ -26,7 +26,7 @@
     "node-switchback": "~0.1.0",
     "prompt": "~0.2.12",
     "waterline-criteria": "~0.11.0",
-    "waterline-schema": "~0.1.16"
+    "waterline-schema": "~0.1.17"
   },
   "devDependencies": {
     "mocha": "1.9.x",
