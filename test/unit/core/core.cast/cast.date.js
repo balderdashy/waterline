@@ -38,5 +38,15 @@ describe('Core Type Casting', function() {
       assert(values.name.toUTCString() === 'Wed, 18 Sep 2013 00:00:00 GMT');
     });
 
+    it('should objects that implement toDate()', function() {
+      function Foo() {}
+      Foo.prototype.toDate = function () { return new Date(1379462400000); };
+      var values = person._cast.run({
+        name: new Foo()
+      });
+      assert(values.name.constructor.name === 'Date');
+      assert(values.name.toUTCString() === 'Wed, 18 Sep 2013 00:00:00 GMT');
+    });
+
   });
 });
