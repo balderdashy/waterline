@@ -1,63 +1,121 @@
 var Waterline = require('../../lib/waterline'),
-  assert = require('assert');
-  var _ = require('lodash');
+  assert = require('assert'),
+  _ = require('lodash');
 
 describe('Waterline Collection', function() {
   var Collection, status = 0;
 
   var db = {
+    'tenant-1': {
+      'tests': [{
+        'message': 'it worked1!'
+      }]
+    },
+    'tenant-2': {
+      'tests': [{
+        'message': 'it worked2!'
+      }]
+    }
+  };
+
+  beforeEach(function(done) {
+
+    db = {
       'tenant-1': {
-          'tests': [{'message':'it worked1!'}]
+        'tests': [{
+          'message': 'it worked1!'
+        }]
       },
       'tenant-2': {
-          'tests': [{'message':'it worked1!'}]
+        'tests': [{
+          'message': 'it worked2!'
+        }]
       }
-  }
+    };
+    done();
+
+  });
 
   before(function(done) {
 
     var adapter_1 = (function() {
-        var connections = {};
+      var connections = {};
 
-        var adapter = {
-          identity: 'foo',
-          registerConnection: function(connection, collections, cb) {
-            // console.log('registerConnection1', connection, connections);
+      var adapter = {
+        identity: 'foo',
+        registerConnection: function(connection, collections, cb) {
+          // console.log('registerConnection1', connection, connections);
 
-            // Validate arguments
-            if(!connection.identity) return cb(new Error("Missing identity"));
-            if(connections[connection.identity]) return cb(new Error("Duplicate Identity "+connection.identity));
+          // Validate arguments
+          if (!connection.identity) return cb(new Error(
+            "Missing identity"));
+          if (connections[connection.identity]) return cb(new Error(
+            "Duplicate Identity " + connection.identity));
 
-            // Always ensure the schema key is set to something. This should be remapped in the
-            // .describe() method later on.
-            Object.keys(collections).forEach(function(coll) {
-                collections[coll].schema = collections[coll].definition;
-            });
+          // Always ensure the schema key is set to something. This should be remapped in the
+          // .describe() method later on.
+          Object.keys(collections).forEach(function(coll) {
+            collections[coll].schema = collections[coll].definition;
+          });
 
-            // Store the connection
-            connections[connection.identity] = {
-                config: connection,
-                collections: collections,
-                connection: {}
-            };
+          // Store the connection
+          connections[connection.identity] = {
+            config: connection,
+            collections: collections,
+            connection: {}
+          };
 
-            status++;
-            cb();
-          },
-          find: function(connectionName, collectionName, options, cb) {
+          status++;
+          cb();
+        },
+        find: function(connectionName, collectionName, options,
+          cb) {
+          // Force to be async
+          process.nextTick(function() {
+
             //   console.log('Find1', connectionName, collectionName, options, this);
             //   console.log(connections);
-              var connectionObject = connections[connectionName];
-              var collection = connectionObject.collections[collectionName];
-              var config = connectionObject.config;
+            var connectionObject = connections[
+              connectionName];
+            var collection = connectionObject.collections[
+              collectionName];
+            var config = connectionObject.config;
             //   console.log('find1 connection', connectionObject);
             //   console.log('find1 config', config);
             //   console.log('find1 collection', collection);
             //   console.log('find1 collection.tableName', collection.tableName);
-              var records = db[config.database][collection.tableName];
+            var c = db[config.database];
+            //   console.log('col', c);
+            var records = c[collection.tableName];
             //   console.log('find1 records', records);
-              return cb(null, records);
-          }
+            return cb(null, records);
+
+          });
+        },
+        create: function(connectionName, collectionName, options,
+          cb) {
+          // Force to be async
+          process.nextTick(function() {
+
+            //   console.log('create1', connectionName, collectionName, options, this);
+            //   console.log(connections);
+            var connectionObject = connections[
+              connectionName];
+            var collection = connectionObject.collections[
+              collectionName];
+            var config = connectionObject.config;
+            //   console.log('create1 connection', connectionObject);
+            //   console.log('create1 config', config);
+            //   console.log('create1 collection', collection);
+            //   console.log('create1 collection.tableName', collection.tableName);
+            var c = db[config.database];
+            //   console.log('col', c);
+            var records = c[collection.tableName];
+            records.push(options);
+            //   console.log('create1 records', records);
+            return cb(null, options);
+          });
+        }
       };
       return adapter;
     })();
@@ -66,21 +124,22 @@ describe('Waterline Collection', function() {
       identity: 'bar',
       registerConnection: function(connection, collections, cb) {
         //   console.log('registerConnection2', connection, collections);
-          status++;
-          cb();
+        status++;
+        cb();
       },
       find: function(connectionName, collectionName, options, cb) {
         //   console.log('Find2', connectionName, collectionName, options, this);
-          var connectionObject = connections[connectionName];
-          var collection = connectionObject.collections[collectionName];
+        var connectionObject = connections[connectionName];
+        var collection = connectionObject.collections[
+          collectionName];
         //   console.log('find2 connection', connection);
-          return cb(null, [options]);
+        return cb(null, [options]);
       }
     };
 
     var Model = Waterline.Collection.extend({
       attributes: {
-          message: 'string'
+        message: 'string'
       },
       connection: ['my_foo'],
       tableName: 'tests'
@@ -101,7 +160,7 @@ describe('Waterline Collection', function() {
           return cb(req.params.tenant);
         },
         configForTenant: function(tenantId, config, cb) {
-        //   console.log('getTenantConfig', tenantId, config);
+          //   console.log('getTenantConfig', tenantId, config);
           // Validate Tenant
           tenantId = parseInt(tenantId);
           if (tenantId >= 1 && tenantId < 10) {
@@ -111,8 +170,8 @@ describe('Waterline Collection', function() {
             return cb(new Error("Invalid tenant " + tenantId + "!"));
           }
         }
-      }
-      ,'my_bar': {
+      },
+      'my_bar': {
         adapter: 'bar',
         database: 'default_database',
         isMultiTenant: false // Optional: default is falsy
@@ -139,18 +198,18 @@ describe('Waterline Collection', function() {
       assert(status == 2);
     });
 
-    // it('should error complaining no specified tenant', function(done) {
-    //
-    //   Collection
-    //   .find({})
-    //   .exec(function(err, result) {
-    //     //   console.log('find result', err.details, result);
-    //       assert(err instanceof Error);
-    //     //   assert(err.toString(), 'Tenant is required to be specified in operation.', 'tenant is missing as expected');
-    //       done();
-    //   });
-    //
-    // });
+    it('should error complaining no specified tenant', function(done) {
+
+      Collection
+        .find({})
+        .exec(function(err, result) {
+          //   console.log('find result', err.details, result);
+          assert(err instanceof Error);
+          //   assert(err.toString(), 'Tenant is required to be specified in operation.', 'tenant is missing as expected');
+          done();
+        });
+
+    });
 
     it('should find records for specified tenant-1', function(done) {
 
@@ -160,8 +219,13 @@ describe('Waterline Collection', function() {
           TenantCollection
             .find({})
             .exec(function(err, results) {
-              assert(results.length === 1, 'tenant-1 has 1 record');
-              assert(results[0].message === db['tenant-1']['tests'][0].message, 'records are from the tenant-1 database');
+              assert(!err, 'no error');
+              assert(results.length === 1,
+                'tenant-1 has 1 record');
+              assert(results[0].message === db['tenant-1'][
+                  'tests'
+                ][0].message,
+                'records are from the tenant-1 database');
               done();
             });
         });
@@ -170,46 +234,110 @@ describe('Waterline Collection', function() {
 
     it('should find records for specified tenant-2', function(done) {
 
-        Collection
+      Collection
         .tenant("2", function(err, TenantCollection) {
-            // Now you have a Tenant-specific Collection!
-            TenantCollection
+          // Now you have a Tenant-specific Collection!
+          TenantCollection
             .find({})
             .exec(function(err, results) {
-                assert(results.length === 1, 'tenant-2 has 1 record');
-                assert(results[0].message === db['tenant-2']['tests'][0].message, 'records are from the tenant-2 database');
-                done();
+              assert(!err, 'no error');
+              assert(results.length === 1,
+                'tenant-2 has 1 record');
+              assert(results[0].message === db['tenant-2'][
+                  'tests'
+                ][0].message,
+                'records are from the tenant-2 database');
+              done();
             });
         });
 
     });
 
-    // it('should create a record for specified tenant-1', function(done) {
-    //     var tenant = "1";
-    //     Collection
-    //     .tenant(tenant, function(err, TenantCollection) {
-    //         // Now you have a Tenant-specific Collection!
-    //         TenantCollection
-    //         .create({})
-    //         .exec(function(err, results) {
-    //             assert(results.length === 1, 'tenant-'+tenant+' has 1 record');
-    //             assert(results[0].message === db['tenant-'+tenant]['tests'][0].message, 'records are from the tenant-2 database');
-    //             done();
-    //         });
-    //     });
-    //
-    // });
+    it('should create a record for specified tenant-1', function(done) {
+      var tenant = "1";
+      Collection
+        .tenant(tenant, function(err, TenantCollection) {
+          // Now you have a Tenant-specific Collection!
+          var newRecord = {
+            'message': 'new record!'
+          }
+          TenantCollection
+            .create(newRecord)
+            .exec(function(err, result) {
+              assert(!err, 'no error');
+              TenantCollection.find({}, function(err, results) {
+                assert(!err, 'no error');
+                assert(results.length === 2, 'tenant-' +
+                  tenant + ' has 2 records');
+                assert(results[1].message === db['tenant-' +
+                    tenant]['tests'][1].message,
+                  'records are from the tenant-2 database'
+                );
+                assert(results[1].message === newRecord.message,
+                  'new record has same message');
+                done();
+              });
+            });
+        });
 
-    // it('should find records for specified tenant', function(done) {
-    //
-    //   Collection
-    //     .tenant("1")
-    //     .find({})
-    //     .exec(function(err, result) {
-    //       console.log(err, result);
-    //       done();
-    //     });
-    // });
+    });
+
+    it('should find records for specified tenant', function(done) {
+
+      Collection
+        .tenant("2")
+        .find({})
+        .exec(function(err, results) {
+          assert(!err, 'no error');
+          assert(results.length === 1, 'tenant-2 has 1 record');
+          assert(results[0].message === db['tenant-2']['tests'][0]
+            .message, 'records are from the tenant-2 database');
+          done();
+        });
+
+    });
+
+    it('should find records for multiple tenant requests', function(
+      done) {
+
+      var pending = 0;
+      var completionCallback = function() {
+        pending--;
+        if (pending === 0) {
+          done();
+        }
+      }
+      pending = 2;
+
+      // 1
+      Collection
+        .tenant(1)
+        .find({})
+        .exec(function(err, results) {
+          assert(!err, 'no error');
+          assert(results.length === 1,
+            'tenant-1 has 1 record');
+          assert(results[0].message === db['tenant-1'][
+              'tests'
+            ][0].message,
+            'records are from the tenant-1 database');
+          completionCallback();
+        });
+
+      // 2
+      Collection
+        .tenant("2")
+        .find({})
+        .exec(function(err, results) {
+          assert(!err, 'no error');
+          assert(results.length === 1, 'tenant-2 has 1 record');
+          assert(results[0].message === db['tenant-2']['tests'][0]
+            .message, 'records are from the tenant-2 database');
+          completionCallback();
+        });
+
+
+    });
 
   });
 });
