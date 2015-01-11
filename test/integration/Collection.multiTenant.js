@@ -68,25 +68,33 @@ describe('Waterline Collection', function() {
           status++;
           cb();
         },
+        getRecords: function(connectionName, collectionName) {
+          //   console.log('Find1', connectionName, collectionName, options, this);
+          //   console.log(connections);
+          var connectionObject = connections[
+            connectionName];
+          var collection = connectionObject.collections[
+            collectionName];
+          var config = connectionObject.config;
+          //   console.log('find1 connection', connectionObject);
+          //   console.log('find1 config', config);
+          //   console.log('find1 collection', collection);
+          //   console.log('find1 collection.tableName', collection.tableName);
+          db[config.database] = db[config.database] || []
+          var c = db[config.database];
+          //   console.log('col', c);
+          c[collection.tableName] = c[collection.tableName] || [];
+          var records = c[collection.tableName];
+          return records;
+        },
         find: function(connectionName, collectionName, options,
           cb) {
+          var self = this;
+
           // Force to be async
           process.nextTick(function() {
-
-            //   console.log('Find1', connectionName, collectionName, options, this);
-            //   console.log(connections);
-            var connectionObject = connections[
-              connectionName];
-            var collection = connectionObject.collections[
-              collectionName];
-            var config = connectionObject.config;
-            //   console.log('find1 connection', connectionObject);
-            //   console.log('find1 config', config);
-            //   console.log('find1 collection', collection);
-            //   console.log('find1 collection.tableName', collection.tableName);
-            var c = db[config.database];
-            //   console.log('col', c);
-            var records = c[collection.tableName];
+            var records = self.getRecords(connectionName,
+              collectionName);
             //   console.log('find1 records', records);
             return cb(null, records);
 
@@ -94,23 +102,11 @@ describe('Waterline Collection', function() {
         },
         create: function(connectionName, collectionName, options,
           cb) {
+          var self = this;
           // Force to be async
           process.nextTick(function() {
-
-            //   console.log('create1', connectionName, collectionName, options, this);
-            //   console.log(connections);
-            var connectionObject = connections[
-              connectionName];
-            var collection = connectionObject.collections[
-              collectionName];
-            var config = connectionObject.config;
-            //   console.log('create1 connection', connectionObject);
-            //   console.log('create1 config', config);
-            //   console.log('create1 collection', collection);
-            //   console.log('create1 collection.tableName', collection.tableName);
-            var c = db[config.database];
-            //   console.log('col', c);
-            var records = c[collection.tableName];
+            var records = self.getRecords(connectionName,
+              collectionName);
             records.push(options);
             //   console.log('create1 records', records);
             return cb(null, options);
@@ -153,9 +149,9 @@ describe('Waterline Collection', function() {
         adapter: 'foo',
         host: 'localhost',
         port: 12345,
-        database: 'default_database',
+        // database: 'default_database',
         isMultiTenant: true,
-        defaultTenant: false, // false, <string>, or <number>
+        // defaultTenant: false, // false, <string>, or <number>
         getTenant: function(req, cb) {
           return cb(req.params.tenant);
         },
@@ -211,6 +207,20 @@ describe('Waterline Collection', function() {
 
     });
 
+    it('should error complaining no specified tenant', function(done) {
+
+      Collection
+        .tenant(null)
+        .find({})
+        .exec(function(err, result) {
+          //   console.log('find result', err.details, result);
+          assert(err instanceof Error);
+          //   assert(err.toString(), 'Tenant is required to be specified in operation.', 'tenant is missing as expected');
+          done();
+        });
+
+    });
+
     it('should find records for specified tenant-1', function(done) {
 
       Collection
@@ -253,34 +263,72 @@ describe('Waterline Collection', function() {
 
     });
 
-    it('should create a record for specified tenant-1', function(done) {
-      var tenant = "1";
-      Collection
-        .tenant(tenant, function(err, TenantCollection) {
-          // Now you have a Tenant-specific Collection!
-          var newRecord = {
-            'message': 'new record!'
-          }
-          TenantCollection
-            .create(newRecord)
-            .exec(function(err, result) {
-              assert(!err, 'no error');
-              TenantCollection.find({}, function(err, results) {
+    it(
+      'should create a record using callback-style API for specified tenant-1',
+      function(done) {
+        var tenant = "1";
+        Collection
+          .tenant(tenant, function(err, TenantCollection) {
+            // Now you have a Tenant-specific Collection!
+            var newRecord = {
+              'message': 'new record!'
+            }
+            TenantCollection
+              .create(newRecord)
+              .exec(function(err, result) {
+                // console.log(err, result);
                 assert(!err, 'no error');
-                assert(results.length === 2, 'tenant-' +
-                  tenant + ' has 2 records');
-                assert(results[1].message === db['tenant-' +
-                    tenant]['tests'][1].message,
-                  'records are from the tenant-2 database'
-                );
-                assert(results[1].message === newRecord.message,
-                  'new record has same message');
-                done();
+                TenantCollection.find({}, function(err, results) {
+                  assert(!err, 'no error');
+                  assert(results.length === 2, 'tenant-' +
+                    tenant + ' has 2 records');
+                  assert(results[1].message === db['tenant-' +
+                      tenant]['tests'][1].message,
+                    'records are from the tenant-2 database'
+                  );
+                  assert(results[1].message === newRecord.message,
+                    'new record has same message');
+                  done();
+                });
               });
-            });
-        });
+          });
 
-    });
+      });
+
+    // it(
+    //   'should create a record using promise-style API for specified tenant-1',
+    //   function(done) {
+    //     var tenant = "1";
+    //     var newRecord = {
+    //       'message': 'new record!'
+    //     }
+    //     Collection
+    //       .tenant(tenant)
+    //       .create(newRecord)
+    //       .exec(function(err, result) {
+    //         console.log(err, result);
+    //         assert(!err, 'no error');
+    //
+    //         Collection
+    //           .tenant(tenant)
+    //           .find({}, function(err, results) {
+    //             assert(!err, 'no error');
+    //             assert(results.length === 2, 'tenant-' +
+    //               tenant + ' has 2 records');
+    //             assert(results[1].message === result.message,
+    //               'message of record[1] is same as result from created record'
+    //             );
+    //             assert(results[1].message === db['tenant-' +
+    //                 tenant]['tests'][1].message,
+    //               'records are from the tenant-2 database'
+    //             );
+    //             assert(results[1].message === newRecord.message,
+    //               'new record has same message');
+    //             done();
+    //           });
+    //       });
+    //
+    //   });
 
     it('should find records for specified tenant', function(done) {
 
@@ -336,6 +384,66 @@ describe('Waterline Collection', function() {
           completionCallback();
         });
 
+
+    });
+
+    it('should error from improper usage', function(done) {
+
+      // Setup test
+      var pending = 0;
+      var completionCallback = function() {
+        pending--;
+        if (pending === 0) {
+          done();
+        }
+      }
+      pending = 2;
+
+      // Create promise and do not execute it immediately
+      // This can be okay, however you should *always*
+      // be sure to `exec` the deferred function before
+      // calling an async function and giving the opportunity
+      // for other code to execute before this resolves
+      // the proper TenantCollection.
+      var promise1 = Collection
+        .tenant("1")
+        .find({});
+
+      // BAD: Async call
+      // Give control back to Node.js and allow it to run other code first,
+      // before this `exec` is called
+      process.nextTick(function() {
+        // This is executed after Tenant="2" code was executed
+        promise1.exec(function(err, results) {
+          // This executed after the code below
+          // So this Collection is now a TenantCollection for Tenant="2"
+          //   console.log(err, results);
+          assert(err instanceof Error);
+          //   assert(!err, 'no error');
+          //   assert(results.length === 1,
+          //     'tenant-1 has 1 record');
+          //   assert(results[0].message === db['tenant-1'][
+          //       'tests'
+          //     ][0].message,
+          //     'records are from the tenant-1 database');
+          completionCallback();
+        });
+      });
+
+      // Proper usage
+      Collection
+        .tenant("2")
+        .find({})
+        .exec(function(err, results) {
+          // Tenant is 2
+          // Same as callback-style, the Colllection is now a `TenantCollection` and will remain correctly scoped to the tenant
+          //   console.log(err, results);
+          assert(!err, 'no error');
+          assert(results.length === 1, 'tenant-2 has 1 record');
+          assert(results[0].message === db['tenant-2']['tests'][0]
+            .message, 'records are from the tenant-2 database');
+          completionCallback();
+        });
 
     });
 
