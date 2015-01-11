@@ -23,7 +23,7 @@
     "bluebird": "~2.3.4",
     "deep-diff": "~0.3.0",
     "lodash": "~2.4.1",
-    "node-switchback": "~0.1.0",
+    "switchback": "~1.1.0",
     "prompt": "~0.2.12",
     "waterline-criteria": "~0.11.0",
     "waterline-schema": "~0.1.17"
