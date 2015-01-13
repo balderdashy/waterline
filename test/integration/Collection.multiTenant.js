@@ -252,9 +252,6 @@ describe('Waterline Collection', function() {
         // database: 'default_database',
         isMultiTenant: true,
         // defaultTenant: false, // false, <string>, or <number>
-        getTenant: function(req, cb) {
-          return cb(req.params.tenant);
-        },
         configForTenant: function(tenantId, config, cb) {
           //   console.log('getTenantConfig', tenantId, config);
           // Validate Tenant
