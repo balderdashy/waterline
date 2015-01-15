@@ -8,7 +8,7 @@ The current build status, immediate-term plans, and future goals of this reposit
 >
 > Before editing this file, please check out [How To Contribute to ROADMAP.md](https://gist.github.com/mikermcneil/bdad2108f3d9a9a5c5ed)- it's a quick read :)
 >
-> Also take a second to check that your feature request is relevant to Waterlin core and not one of its dependencies (e.g. waterline-schema, one of its adapters, etc.)  If you aren't sure, feel free to send the PR here and someone will make sure it finds its way to the right place.
+> Also take a second to check that your feature request is relevant to Waterline core and not one of its dependencies (e.g. waterline-schema, one of its adapters, etc.)  If you aren't sure, feel free to send the PR here and someone will make sure it finds its way to the right place.
 
 
 
