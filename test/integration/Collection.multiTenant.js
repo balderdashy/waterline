@@ -342,6 +342,17 @@ describe('Waterline Collection', function() {
 
       });
 
+      it(
+        'should error trying to find records for specified invalid tenant-100',
+        function(
+          done) {
+          Collection
+            .tenant("100", function(err, TenantCollection) {
+              assert(err instanceof Error);
+              done();
+            });
+        });
+
       it('should count records for specified tenant-1', function(
         done) {
 
@@ -496,6 +507,17 @@ describe('Waterline Collection', function() {
 
       });
 
+      it(
+        'should error trying to find records for specified invalid tenant-100',
+        function(
+          done) {
+          Collection
+            .tenant("100")
+            .find(function(err, TenantCollection) {
+              assert(err instanceof Error);
+              done();
+            });
+        });
 
       it('should find records for specified tenant', function(done) {
 
@@ -602,13 +624,13 @@ describe('Waterline Collection', function() {
             .tenant(tenant)
             .create(newRecord)
             .exec(function(err, result) {
-            //   console.log(err, result);
+              //   console.log(err, result);
               assert(!err, 'no error');
-            //   console.log(JSON.stringify(db));
+              //   console.log(JSON.stringify(db));
               Collection
                 .tenant(tenant)
                 .find({}, function(err, results) {
-                //   console.log(err, results);
+                  //   console.log(err, results);
                   assert(!err, 'no error');
                   assert(results.length === 2, 'tenant-' +
                     tenant + ' has 2 records');
