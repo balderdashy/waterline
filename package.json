@@ -44,7 +44,7 @@
     "sails",
     "sails.js"
   ],
-  "repository": "git://github.com/balderdashy/waterline.git",
+  "repository": "git://github.com/restricted/waterline.git",
   "main": "./lib/waterline",
   "scripts": {
     "test": "mocha test --recursive",
