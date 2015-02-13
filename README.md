@@ -68,6 +68,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [MongoDB](https://github.com/balderdashy/sails-mongo) - *0.9+ compatible*
   - [Memory](https://github.com/balderdashy/sails-memory) - *0.9+ compatible*
   - [Disk](https://github.com/balderdashy/sails-disk) - *0.9+ compatible*
+  - [Microsoft SQL Server](https://github.com/cnect/sails-sqlserver-adapter)
   - [Redis](https://github.com/balderdashy/sails-redis)
   - [Riak](https://github.com/balderdashy/sails-riak)
   - [IRC](https://github.com/balderdashy/sails-irc)
