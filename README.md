@@ -310,7 +310,7 @@ Each of the following basic methods are available by default on a Collection ins
 In addition you also have the following helper methods:
 
   - createEach
-  - findOrCreateEach
+  - findOrCreateEach (*DEPRECATED*)
   - findOrCreate
   - findOneLike
   - findLike
