@@ -51,6 +51,21 @@ describe('Collection Query', function() {
         });
       });
 
+      it('should set default values with exec', function(done) {
+        query.findOrCreate({ name: 'Foo Bar' }).exec(function(err, status) {
+          assert(status.name === 'Foo Bar');
+          done();
+        });
+      });
+
+      it('should work with multiple objects', function(done) {
+        query.findOrCreate([{ name: 'Foo Bar' }, { name: 'Makis'}]).exec(function(err, status) {
+          assert(status[0].name === 'Foo Bar');
+          assert(status[1].name === 'Makis');
+          done();
+        });
+      });
+
       it('should add timestamps', function(done) {
         query.findOrCreate({ name: 'Foo Bar' }, {}, function(err, status) {
           assert(status.createdAt);
