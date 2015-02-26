@@ -89,13 +89,16 @@ describe('Collection Query', function() {
               defaultsTo: 'Foo Bar'
             },
             nestedModels: {
-              collection: 'nested',
+              collection: 'nested_multi',
               via: 'model'
+            },
+            nestedSingleModel: {
+              model: 'nested_single'
             }
           }
         });
-        var Nested = Waterline.Collection.extend({
-          identity: 'nested',
+        var NestedMulti = Waterline.Collection.extend({
+          identity: 'nested_multi',
           connection: 'foo',
           attributes: {
             name: 'string',
@@ -104,9 +107,17 @@ describe('Collection Query', function() {
             }
           }
         });
-
+        var NestedSingle = Waterline.Collection.extend({
+          identity: 'nested_single',
+          connection: 'foo',
+          attributes: {
+            age: 'integer'
+          }
+        });
+        
         waterline.loadCollection(Model);
-        waterline.loadCollection(Nested);
+        waterline.loadCollection(NestedMulti);
+        waterline.loadCollection(NestedSingle);
 
         // Fixture Adapter Def
         var _id = 1;
@@ -114,7 +125,7 @@ describe('Collection Query', function() {
 
         var adapterDef = {
           update: function(con, col, criteria, values, cb) {
-            updatedModels.push(criteria.where);
+            updatedModels.push([criteria.where, values]);
             values.id = _id;
             findValues.push(values);
             _id++;
@@ -142,11 +153,13 @@ describe('Collection Query', function() {
 
       //
       // TO-DO:
-      // Make this not use a shit load of queries. (currently 10)!
+      // Make this not use a shit load of queries. (currently 4)!
       //
 
-      it('should attempt to update each nested model', function(done) {
+      it('should attempt to update each nested model in a x:N relationship', function(done) {
 
+        updatedModels = [];
+        
         var nestedModels = [
           { id: 1337, name: 'joe', model: 2 },
           { id: 1338, name: 'moe', model: 3 },
@@ -155,11 +168,26 @@ describe('Collection Query', function() {
 
         query.update({}, { id: 5, name: 'foo', nestedModels: nestedModels }, function(err, status) {
           assert(!err, err);
-          assert(status[0].nestedModels.length === 0);
-          assert(updatedModels.length === 10);
+          assert.strictEqual(status[0].nestedModels.length, 0);
+          assert.strictEqual(updatedModels.length, 4);
           done();
         });
       });
+      
+      it('should attempt to update a single nested model in a x:1 relationship', function(done) {
+        
+        updatedModels = [];
+        
+        var nestedSingleModel = { id: 1337, age: 25 };
+
+        query.update({}, { id: 5, name: 'foo', nestedSingleModel: nestedSingleModel }, function(err, status) {
+          assert(!err, err);
+          assert.strictEqual(status[0].nestedModels.length, 0);
+          assert.strictEqual(updatedModels.length, 2);
+          done();
+        });
+      });
+      
     });
 
   });
