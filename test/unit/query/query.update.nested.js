@@ -167,6 +167,7 @@ describe('Collection Query', function() {
         ];
 
         query.update({}, { id: 5, name: 'foo', nestedModels: nestedModels }, function(err, status) {
+          
           assert(!err, err);
           assert.strictEqual(status[0].nestedModels.length, 0);
           assert.strictEqual(updatedModels.length, 4);
@@ -178,11 +179,12 @@ describe('Collection Query', function() {
         
         updatedModels = [];
         
-        var nestedSingleModel = { id: 1337, age: 25 };
+        var nestedSingleModel = { id: 666, age: 25 };
 
         query.update({}, { id: 5, name: 'foo', nestedSingleModel: nestedSingleModel }, function(err, status) {
+          
           assert(!err, err);
-          assert.strictEqual(status[0].nestedModels.length, 0);
+          assert.strictEqual(status[0].nestedSingleModel, 666);
           assert.strictEqual(updatedModels.length, 2);
           done();
         });
