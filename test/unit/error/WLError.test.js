@@ -47,6 +47,17 @@ describe('lib/error', function () {
       var err = errorify();
       assert(err instanceof WLError);
     });
-
   });
+
+  describe('lib/error/WLError.js', function() {
+    it('should have a stack property, like Error', function() {
+      var err = errorify();
+      assert(err.stack)
+    });
+    it('should have a message property, like Error', function() {
+      var err = errorify();
+      assert(err.message)
+    })
+  })
+
 });
