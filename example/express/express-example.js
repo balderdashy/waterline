@@ -5,7 +5,9 @@
 var express = require('express'),
     _ = require('lodash'),
     app = express(),
-    Waterline = require('waterline');
+    Waterline = require('waterline'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override');
 
 
 
@@ -93,8 +95,9 @@ orm.loadCollection(Pet);
 
 
 // Setup Express Application
-app.use(express.bodyParser());
-app.use(express.methodOverride());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(methodOverride());
 
 // Build Express Routes (CRUD routes for /users)
 
@@ -119,7 +122,7 @@ app.get('/users/:id', function(req, res) {
   });
 });
 
-app.del('/users/:id', function(req, res) {
+app.delete('/users/:id', function(req, res) {
   app.models.user.destroy({ id: req.params.id }, function(err) {
     if(err) return res.json({ err: err }, 500);
     res.json({ status: 'ok' });
@@ -151,4 +154,6 @@ orm.initialize(config, function(err, models) {
 
   // Start Server
   app.listen(3000);
+  
+  console.log("To see saved users, visit http://localhost:3000/users");
 });
