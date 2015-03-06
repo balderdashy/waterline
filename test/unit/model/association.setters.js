@@ -27,6 +27,14 @@ describe('instance methods', function() {
       assert(person.associations.bars.addModels.length === 1);
     });
 
+    it('should allow new associations to be added using the add function and an array', function() {
+      var person = new model({ name: 'foobar' });
+
+      person.bars.add( [ 1, 2, 3 ] );
+      assert(person.associations.bars.addModels.length === 3);
+    });
+    
+
     it('should allow new associations to be removed using the remove function', function() {
       var person = new model({ name: 'foobar' });
 
@@ -34,5 +42,11 @@ describe('instance methods', function() {
       assert(person.associations.bars.removeModels.length === 1);
     });
 
+    it('should allow new associations to be removed using the remove function and an array', function() {
+      var person = new model({ name: 'foobar' });
+
+      person.bars.remove( [ 1, 2, 3 ] );
+      assert(person.associations.bars.removeModels.length === 3);
+    });
   });
 });
