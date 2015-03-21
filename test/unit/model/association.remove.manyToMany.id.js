@@ -57,7 +57,7 @@ describe('instance methods', function() {
         person.bars.remove(2);
 
         person.save(function(err) {
-
+          
           assert(results.length === 2);
           assert(results[0].criteria.foo_bars === 1);
           assert(results[0].criteria.bar_foos === 1);
