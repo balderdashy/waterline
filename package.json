@@ -30,9 +30,9 @@
   },
   "devDependencies": {
     "mocha": "~2.2.1",
-    "sails-memory": "^0.10.3",
+    "sails-memory": "balderdashy/sails-memory",
     "should": "~5.2.0",
-    "waterline-adapter-tests": "^0.10.8"
+    "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
   "keywords": [
     "mvc",
