@@ -62,6 +62,7 @@ describe('Collection Query', function() {
 
     it('should allow a query to be built using deferreds', function(done) {
       query.find()
+      .select('id', 'name')
       .where({ name: 'Foo Bar' })
       .where({ id: { '>': 1 } })
       .limit(1)
