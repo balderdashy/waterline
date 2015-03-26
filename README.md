@@ -75,7 +75,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [Twitter](https://github.com/balderdashy/sails-twitter)
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
   - [Neo4j](https://github.com/natgeo/sails-neo4j)
-  - [OrientDB](https://github.com/search?utf8=✓&q=sails+orientdb+OR+waterline+orientdb&type=Repositories&ref=searchresults)
+  - [OrientDB](https://github.com/appscot/sails-orientdb)
   - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails)
   - [ArangoDB](https://github.com/rosmo/sails-arangodb)
 
