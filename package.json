@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "mocha": "~2.2.1",
+    "istanbul": "~0.3.11",
     "sails-memory": "balderdashy/sails-memory",
     "should": "~5.2.0",
     "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
@@ -51,7 +52,8 @@
   "scripts": {
     "test": "mocha test/integration test/structure test/support test/unit --recursive; node test/adapter/runner.js",
     "prepublish": "npm prune",
-    "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js"
+    "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
+    "coverage": "make coverage"
   },
   "engines": {
     "node": "*"
