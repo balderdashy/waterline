@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "mocha": "~2.1.0",
-    "should": "~4.4.0"
+    "sails-memory": "balderdashy/sails-memory",
+    "should": "~4.4.0",
+    "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
   "keywords": [
     "mvc",
@@ -47,7 +49,7 @@
   "repository": "git://github.com/balderdashy/waterline.git",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "mocha test --recursive",
+    "test": "mocha test/integration test/structure test/support test/unit --recursive; node test/adapter/runner.js",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js"
   },
