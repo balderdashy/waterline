@@ -553,3 +553,12 @@ All tests are written with [mocha](http://visionmedia.github.com/mocha/) and sho
 ``` bash
   $ npm test
 ```
+
+## Coverage
+
+To generate the code coverage report, run:
+
+``` bash
+  $ npm run coverage
+```
+And have a look at `coverage/lcov-report/index.html`.
