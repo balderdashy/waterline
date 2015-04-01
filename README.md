@@ -78,6 +78,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [OrientDB](https://github.com/appscot/sails-orientdb)
   - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails)
   - [ArangoDB](https://github.com/rosmo/sails-arangodb)
+  - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
 
 ## Collection
 
