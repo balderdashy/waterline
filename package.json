@@ -29,8 +29,10 @@
     "waterline-schema": "~0.1.17"
   },
   "devDependencies": {
+    "glob": "^5.0.3",
     "istanbul": "^0.3.11",
-    "mocha": "~2.1.0",
+    "mocha": "^2.2.1",
+    "mocha-eslint": "^0.1.4",
     "sails-memory": "balderdashy/sails-memory",
     "should": "~4.4.0",
     "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
