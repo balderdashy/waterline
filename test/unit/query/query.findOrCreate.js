@@ -59,7 +59,9 @@ describe('Collection Query', function() {
       });
 
       it('should work with multiple objects', function(done) {
-        query.findOrCreate([{ name: 'Foo Bar' }, { name: 'Makis'}]).exec(function(err, status) {
+        query.findOrCreate([{ name: 'Foo Bar New' }, { name: 'Makis'}]).exec(function(err, status) {
+          console.log('err', err);
+          console.log('status', status);
           assert(status[0].name === 'Foo Bar');
           assert(status[1].name === 'Makis');
           done();
