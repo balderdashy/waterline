@@ -109,7 +109,7 @@ describe('Collection Query', function() {
         var findValues = [];
 
         var adapterDef = {
-	      create: function(con, col, values, cb) {
+          create: function(con, col, values, cb) {
             values.id = _id;
             findValues.push(values);
             _id++;
