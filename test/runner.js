@@ -7,7 +7,7 @@
 process.env.NODE_ENV = 'test';
 
 if (process.argv.length === 2) {
-  process.argv.push('unit', 'integration');
+  process.argv.push('unit', 'adapter');
 }
 
 // Determine which tests to run based on argument passed to runner
@@ -23,7 +23,7 @@ if (args[0] === 'lint') {
 }
 
 if (args.indexOf('unit') > -1) {
-  root = 'test/unit';
+  root = 'test/{unit,integration,structure,support}';
   files = '/**/*.js';
   runUnitTests = true;
 }
@@ -57,7 +57,7 @@ if (runUnitTests) {
 
 
 //Run integration tests
-if (args.indexOf('integration') > -1) {
+if (args.indexOf('adapter') > -1) {
   var ln = require('shelljs').ln;
   var rm = require('shelljs').rm;
   var adapterRunner = require('./adapter/runner');
