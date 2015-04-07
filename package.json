@@ -29,9 +29,13 @@
     "waterline-schema": "~0.1.17"
   },
   "devDependencies": {
+    "chalk": "^1.0.0",
+    "glob": "^5.0.3",
     "istanbul": "^0.3.11",
-    "mocha": "~2.1.0",
+    "mocha": "^2.2.1",
+    "mocha-eslint": "^0.1.4",
     "sails-memory": "balderdashy/sails-memory",
+    "shelljs": "^0.4.0",
     "should": "~4.4.0",
     "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
@@ -50,10 +54,10 @@
   "repository": "git://github.com/balderdashy/waterline.git",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "make test",
+    "test": "node test/runner.js",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
-    "coverage": "make coverage"
+    "coverage": "node test/coverage.js"
   },
   "engines": {
     "node": "*"
