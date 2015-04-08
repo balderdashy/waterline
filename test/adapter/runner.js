@@ -68,6 +68,11 @@ new TestRunner({
       reporter: 'spec'
     },
     
+    mochaChainableMethods: {},
+    
+    // Return code 1 if any test failed
+    failOnError: true
+    
     // Most databases implement 'semantic' and 'queryable'.
     // 
     // As of Sails/Waterline v0.10, the 'associations' interface
