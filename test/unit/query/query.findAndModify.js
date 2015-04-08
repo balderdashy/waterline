@@ -44,7 +44,7 @@ describe('Collection Query', function() {
         });
       });
 
-      it('should get empty array without new and upsert flag', function(done) {
+      it('should get empty array without upsert flag', function(done) {
         query.findAndModify({ }, { name: 'Foo Bar' }, function(err, status) {
           assert(status.length === 0);
           done();
@@ -58,15 +58,15 @@ describe('Collection Query', function() {
         });
       });
 
-      it('should get an empty array if model does not exist and without upsert flag', function(done) {
-        query.findAndModify({ }, { name: 'Bar Foo'}, { new: true }).exec(function(err, status) {
+      it('should return empty model, before it got created, with new: false', function(done) {
+        query.findAndModify({ }, { name: 'Bar Foo'}, { upsert: true, new: false }).exec(function(err, status) {
           assert(status.length === 0);
           done();
         });
       });
 
-      it('should work with upsert and new options', function(done) {
-        query.findAndModify({ }, { name: 'Bar Foo'}, { upsert: true, new: true }).exec(function(err, status) {
+      it('should return created model with upsert: true option', function(done) {
+        query.findAndModify({ }, { name: 'Bar Foo'}, { upsert: true }).exec(function(err, status) {
           assert(status.name === 'Bar Foo');
           done();
         });
