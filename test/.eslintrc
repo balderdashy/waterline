@@ -1,4 +1,24 @@
 {
+  "rules" : {
+    "consistent-return"                : 1,
+    "no-use-before-define"             : 1,
+    "new-parens"                       : 1,
+    "no-cond-assign"                   : 1,
+    "space-after-keywords"             : 1,
+    "space-infix-ops"                  : 1,
+    "comma-dangle"                     : [1, "never"],
+    "no-multiple-empty-lines"          : [1, {"max": 2}],
+    "quotes"                           : [1, "single"],
+    "eqeqeq"                           : [1, "smart"],
+    "wrap-iife"                        : [1, "inside"],
+    "indent"                           : [1, 2],
+    "brace-style"                      : [1, "1tbs"],
+    "spaced-line-comment"              : [1, "always", {"exceptions":["-","+"]}],
+    "space-before-function-parentheses": [1, {
+                                            "anonymous" : "always",
+                                            "named" : "never"
+                                          }]
+  },
   "env": {
     "mocha": true
   }
