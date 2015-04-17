@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.10.19",
+  "version": "0.10.21",
   "homepage": "http://github.com/balderdashy/waterline",
   "contributors": [
     {
@@ -29,8 +29,11 @@
     "waterline-schema": "~0.1.17"
   },
   "devDependencies": {
+    "istanbul": "^0.3.11",
     "mocha": "~2.1.0",
-    "should": "~4.4.0"
+    "sails-memory": "balderdashy/sails-memory",
+    "should": "~4.4.0",
+    "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
   "keywords": [
     "mvc",
@@ -47,9 +50,10 @@
   "repository": "git://github.com/balderdashy/waterline.git",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "mocha test --recursive",
+    "test": "make test",
     "prepublish": "npm prune",
-    "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js"
+    "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
+    "coverage": "make coverage"
   },
   "engines": {
     "node": "*"

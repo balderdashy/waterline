@@ -75,9 +75,10 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [Twitter](https://github.com/balderdashy/sails-twitter)
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
   - [Neo4j](https://github.com/natgeo/sails-neo4j)
-  - [OrientDB](https://github.com/search?utf8=✓&q=sails+orientdb+OR+waterline+orientdb&type=Repositories&ref=searchresults)
+  - [OrientDB](https://github.com/appscot/sails-orientdb)
   - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails)
   - [ArangoDB](https://github.com/rosmo/sails-arangodb)
+  - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
 
 ## Collection
 
@@ -553,3 +554,12 @@ All tests are written with [mocha](http://visionmedia.github.com/mocha/) and sho
 ``` bash
   $ npm test
 ```
+
+## Coverage
+
+To generate the code coverage report, run:
+
+``` bash
+  $ npm run coverage
+```
+And have a look at `coverage/lcov-report/index.html`.
