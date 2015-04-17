@@ -29,6 +29,36 @@ describe("Normalize utility", function() {
 
         assert(criteria.sort.name === -1);
       });
+      
+      it("should properly normalize valid sort with upper case", function() {
+        var criteria = normalize.criteria({ sort: "name DESC" });
+
+        assert(criteria.sort.name === -1);
+      });
+    });
+    
+    describe("sort object", function() {
+      it("should throw error on invalid order", function() {
+        var error;
+
+        try {
+          normalize.criteria({ sort: { name: "up" } });
+        } catch(e) {
+          error = e;
+        }
+
+        assert(typeof error !== 'undefined');
+      });
+      
+      it("should properly normalize valid sort", function() {
+        var criteria = normalize.criteria({ sort: { name: "asc" } });
+        assert(criteria.sort.name === 1);
+      });
+      
+      it("should properly normalize valid sort with upper case", function() {
+        var criteria = normalize.criteria({ sort: { name: "DESC" } });
+        assert(criteria.sort.name === -1);
+      });
     });
 
   });

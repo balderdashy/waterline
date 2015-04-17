@@ -68,12 +68,17 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [MongoDB](https://github.com/balderdashy/sails-mongo) - *0.9+ compatible*
   - [Memory](https://github.com/balderdashy/sails-memory) - *0.9+ compatible*
   - [Disk](https://github.com/balderdashy/sails-disk) - *0.9+ compatible*
+  - [Microsoft SQL Server](https://github.com/cnect/sails-sqlserver-adapter)
   - [Redis](https://github.com/balderdashy/sails-redis)
   - [Riak](https://github.com/balderdashy/sails-riak)
   - [IRC](https://github.com/balderdashy/sails-irc)
   - [Twitter](https://github.com/balderdashy/sails-twitter)
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
   - [Neo4j](https://github.com/natgeo/sails-neo4j)
+  - [OrientDB](https://github.com/appscot/sails-orientdb)
+  - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails)
+  - [ArangoDB](https://github.com/rosmo/sails-arangodb)
+  - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
 
 ## Collection
 
@@ -83,7 +88,7 @@ To create a new collection you extend `Waterline.Collection` and add in any prop
 
 #### options
 
-Available options are
+Available options are:
 
   - `tableName` Define a custom table name to store the models
   - `adapter` the name of the adapter you would like to use for this collection
@@ -177,7 +182,7 @@ var User = Waterline.Collection.extend({
 
   beforeCreate: function(values, cb) {
 
-    // an example encrypt function defined somewhere
+    // An example encrypt function defined somewhere
     encrypt(values.password, function(err, password) {
       if(err) return cb(err);
 
@@ -188,7 +193,7 @@ var User = Waterline.Collection.extend({
 
   // Class Method
   doSomething: function() {
-    // do something here
+    // Do something here
   }
 
 });
@@ -248,13 +253,13 @@ var user = Waterline.Collection.extend({
 
 // Then on an instantiated user:
 user.find({ id: 1 }).exec(function(err, model) {
-  return model.toJSON(); // will return only the name
+  return model.toJSON(); // Will return only the name
 });
 ```
 
 ## Query Methods
 
-Queries can be run with either a callback interface or with a deferred object. For building complicated queries the deferred object method is the best choice. For convenience, promises are supported by default.
+Queries can be run with either a callback interface or with a deferred object. For building complicated queries, the deferred object method is the best choice. For convenience, promises are supported by default.
 
 **Callback Method**
 
@@ -289,13 +294,13 @@ User.findOne()
     return [user.id, user.friendsList, comments];
 }).spread(function(userId, friendsList, comments){
     // Promises are awesome!
-}).fail(function(err){
-    // An error occured
+}).catch(function(err){
+    // An error occurred
 })
 ```
-Promises use the [Q library](https://github.com/kriskowal/q), so anything you do after the first `then` call (or `spread`, or `fail`), will be a complete Q promise object. Remember, you must end the query somehow (by calling `then` or one of the other functions) in order to complete the database request.
+Promises use the [Bluebird library](https://github.com/petkaantonov/bluebird), so anything you do after the first `then` call (or `spread`, or `catch`), will be a complete Bluebird promise object. Remember, you must end the query somehow (by calling `then` or one of the other functions) in order to complete the database request.
 
-Each of the following basic methods are available by default on a Collection instance.
+Each of the following basic methods are available by default on a Collection instance:
 
   - findOne
   - find
@@ -307,7 +312,7 @@ Each of the following basic methods are available by default on a Collection ins
 In addition you also have the following helper methods:
 
   - createEach
-  - findOrCreateEach
+  - findOrCreateEach (*DEPRECATED*)
   - findOrCreate
   - findOneLike
   - findLike
@@ -373,7 +378,8 @@ It returns a deferred object so that you can continue to chain your helpers.
 
 ## Sorting
 
-Sorting can be performed in the deferred object query method `sort` or by adding the sort key into the criteria object. Simply specify an attribute name for natural (ascending) sort, or specify an `asc` or `desc` flag for ascending or descending orders respectively.
+Sorting can be performed in the deferred object query method `sort` or by adding the sort key into the criteria object.
+Simply specify an attribute name for natural (ascending) sort, or specify an `asc` or `desc` flag for ascending or descending orders respectively.
 
 ```javascript
 User.find()
@@ -387,7 +393,8 @@ User.find()
 
 ## Validations
 
-Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate. For a full list of validations see: [Anchor Validations](https://github.com/balderdashy/anchor/blob/master/lib/match/rules.js).
+Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate.
+For a full list of validations see: [Anchor Validations](https://github.com/balderdashy/anchor/blob/master/lib/match/rules.js).
 
 Validations are defined directly in you Collection attributes. In addition you may set the attribute `type` to any supported Anchor type and Waterline will build a validation and set the schema type as a string for that attribute.
 
@@ -476,7 +483,7 @@ var User = Waterline.Collection.extend({
     },
 
     location: {
-      //note, that the base type (json) still has to be define
+      // Note, that the base type (json) still has to be defined
       type: 'json',
       point: true
     },
@@ -512,10 +519,10 @@ var User = Waterline.Collection.extend({
 ```
 
 Currently Waterline doesn't support multi-column indexes in the attributes definition. If you would like to build any sort of special index you will still
-need to build that manually. Also note when adding a `unique` property to an attribute an index will automatically be created for that attribute so there is no
-need to specifiy it.
+need to build that manually. Also note that when adding a `unique` property to an attribute, an index will automatically be created for that attribute.
 
-There is currently an issue with adding indexes to string fields. Because Waterline performs its queries in a case insensitive manner we are unable to use the index on a string attribute. There are some workarounds being discussed but nothing is implemented so far. This will be updated in the near future to fully support indexes on strings.
+There is currently an issue with adding indexes to string fields. Because Waterline performs its queries in a case insensitive manner, we are unable to use the index on a string attribute.
+There are some workarounds being discussed but nothing is implemented so far. This will be updated in the near future to fully support indexes on strings.
 
 ## Lifecycle Callbacks
 
@@ -547,3 +554,12 @@ All tests are written with [mocha](http://visionmedia.github.com/mocha/) and sho
 ``` bash
   $ npm test
 ```
+
+## Coverage
+
+To generate the code coverage report, run:
+
+``` bash
+  $ npm run coverage
+```
+And have a look at `coverage/lcov-report/index.html`.

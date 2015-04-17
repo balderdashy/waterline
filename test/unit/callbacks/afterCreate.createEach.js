@@ -17,7 +17,7 @@ describe('.afterCreate()', function() {
 
         afterCreate: function(values, cb) {
           values.name = values.name + ' updated';
-          cb();
+          cb(null, values);
         }
       });
 
