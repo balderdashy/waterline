@@ -29,6 +29,7 @@
     "waterline-schema": "~0.1.17"
   },
   "devDependencies": {
+    "codeclimate-test-reporter": "0.0.4",
     "istanbul": "^0.3.11",
     "mocha": "~2.1.0",
     "sails-memory": "balderdashy/sails-memory",
