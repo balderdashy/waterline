@@ -14,6 +14,7 @@ describe('calling describe', function() {
 		bootstrapCollection({
 			adapter: Adapter,
 			properties: {
+			  migrate: 'alter',
 				attributes: {
 					name: 'string',
 					age: 'integer'
