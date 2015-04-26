@@ -42,6 +42,10 @@ describe('Waterline Collection', function() {
 
           password: {
             type: 'password'
+          },
+          
+          age: {
+            type: 'age'
           }
         }
       });
@@ -55,7 +59,10 @@ describe('Waterline Collection', function() {
       };
 
       // Fixture Adapter Def
-      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+      var adapterDef = { 
+        create: function(con, col, values, cb) { return cb(null, values); },
+        types: { age: function(val){ return !isNaN(val) && val > 0; } }
+      };
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
         User = colls.collections.user;
@@ -124,6 +131,22 @@ describe('Waterline Collection', function() {
         assert(!user);
         assert(err.ValidationError);
         assert(err.ValidationError.password[0].rule === 'password');
+        done();
+      });
+    });
+    
+    it('should support adapter custom type with valid age', function(done) {
+      User.create({ name: 'foo', sex: 'male', age: 10 }, function(err, user) {
+        assert(!err, err);
+        done();
+      });
+    });
+
+    it('should error with invalid input for adapter custom type', function(done) {
+      User.create({ name: 'foo', sex: 'male', age: 'ten' }, function(err, user) {
+        assert(!user);
+        assert(err.ValidationError);
+        assert(err.ValidationError.age[0].rule === 'age');
         done();
       });
     });
