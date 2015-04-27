@@ -550,6 +550,14 @@ Lifecycle callbacks are functions you can define to run at certain times in a qu
   - beforeDestroy / *fn(criteria, cb)*
   - afterDestroy / *fn(cb)*
 
+## Associations
+
+With Waterline you can associate models with other models across all data stores. This means that
+your users can live in PostgreSQL and their photos can live in MongoDB and you can interact with
+the data as if they lived together on the same database. You can also have associations that
+live on seperate connections or in different databases within the same adapter. Read more about
+associations [here](https://github.com/balderdashy/waterline-docs/blob/master/associations.md).
+
 ## Tests
 
 All tests are written with [mocha](http://visionmedia.github.com/mocha/) and should be run with [npm](http://npmjs.org):
