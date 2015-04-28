@@ -18,6 +18,10 @@ describe('Core Schema', function() {
           phone: {
             type: 'STRING',
             defaultsTo: '555-555-5555'
+          },
+          address: {
+            type: 'STRING',
+            dbType: 'geoString'
           }
         }
       });
@@ -40,6 +44,7 @@ describe('Core Schema', function() {
     it('should set internal schema attributes', function() {
       assert(person._schema.schema.first_name);
       assert(person._schema.schema.last_name);
+      assert(person._schema.schema.address);
     });
 
     it('should lowercase attribute types', function() {
@@ -48,6 +53,10 @@ describe('Core Schema', function() {
 
     it('should set defaultsTo value', function() {
       assert(person._schema.schema.phone.defaultsTo === '555-555-5555');
+    });
+    
+    it('should lowercase attribute dbType', function() {
+      assert.equal(person._schema.schema.address.dbType, 'geostring');
     });
   });
 

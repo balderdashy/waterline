@@ -45,7 +45,13 @@ describe('Waterline Collection', function() {
           },
           
           age: {
-            type: 'age'
+            type: 'integer',
+            dbType: 'customDbType'
+          },
+          
+          address: {
+            type: 'string',
+            dbType: 'geoString'
           }
         }
       });
@@ -61,7 +67,7 @@ describe('Waterline Collection', function() {
       // Fixture Adapter Def
       var adapterDef = { 
         create: function(con, col, values, cb) { return cb(null, values); },
-        types: { age: function(val){ return !isNaN(val) && val > 0; } }
+        types: { customdbtype: function(val){ return !isNaN(val) && val > 0; } }
       };
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
@@ -143,10 +149,17 @@ describe('Waterline Collection', function() {
     });
 
     it('should error with invalid input for adapter custom type', function(done) {
-      User.create({ name: 'foo', sex: 'male', age: 'ten' }, function(err, user) {
+      User.create({ name: 'foo', sex: 'male', age: -5 }, function(err, user) {
         assert(!user);
         assert(err.ValidationError);
-        assert(err.ValidationError.age[0].rule === 'age');
+        assert.equal(err.ValidationError.age[0].rule, 'customdbtype');
+        done();
+      });
+    });
+    
+    it('should support dbType even if adapter doesn\'t have a validation rule for it', function(done) {
+      User.create({ name: 'foo', sex: 'male', address: 'N 30° 19\' 7.14"' }, function(err, user) {
+        assert(!err, err);
         done();
       });
     });
