@@ -17,7 +17,11 @@ describe('validations', function() {
           type: 'boolean',
           required: true
         },
-        age: { type: 'integer' }
+        age: { type: 'integer' },
+        email: {
+          type: 'email',
+          required: false
+        }
       };
 
       validator = new Validator();
@@ -56,6 +60,29 @@ describe('validations', function() {
     it('should NOT error if all required values are set', function(done) {
       validator.validate({ name: 'Foo Bar', employed: true, age: 27 }, function(errors) {
         assert(!errors);
+        done();
+      });
+    });
+
+    it('should NOT error if required is false and values are valid', function(done) {
+      validator.validate({ name: 'Foo Bar', employed: true, email: 'email@example.com' }, function(errors) {
+        assert(!errors);
+        done();
+      });
+    });
+    
+    it('should NOT error if required is false and value is not present', function(done) {
+      validator.validate({ name: 'Foo Bar', employed: true }, function(errors) {
+        assert(!errors);
+        done();
+      });
+    });
+    
+    it('should error if required is false and value is invalid', function(done) {
+      validator.validate({ name: 'Frederick P. Frederickson', employed: true, email: 'not email' }, function(errors) {
+        assert(errors);
+        assert(errors.email);
+        assert.equal(errors.email[0].rule, 'email');
         done();
       });
     });
