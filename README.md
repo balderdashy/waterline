@@ -4,6 +4,7 @@
 [![NPM version](https://badge.fury.io/js/waterline.svg)](http://badge.fury.io/js/waterline)
 [![Dependency Status](https://gemnasium.com/balderdashy/waterline.svg)](https://gemnasium.com/balderdashy/waterline)
 [![Test Coverage](https://codeclimate.com/github/balderdashy/waterline/badges/coverage.svg)](https://codeclimate.com/github/balderdashy/waterline)
+[![StackOverflow](http://img.shields.io/badge/stackoverflow-waterline-blue.svg)]( http://stackoverflow.com/questions/tagged/waterline)
 
 Waterline is a brand new kind of storage and retrieval engine.
 
