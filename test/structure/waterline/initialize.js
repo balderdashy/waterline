@@ -1,6 +1,6 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
-    disk = require('sails-disk');
+
 describe('Waterline', function() {
 
   describe('loader', function() {
@@ -118,6 +118,6 @@ describe('Waterline', function() {
         });
       });
     });
-       
+
   });
 });
