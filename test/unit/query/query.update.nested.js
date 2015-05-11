@@ -90,6 +90,9 @@ describe('Collection Query', function() {
             },
             nestedModel: {
               model: 'nested'
+            },
+            nestedModel2: {
+              model: 'nested'
             }
           }
         });
@@ -139,11 +142,100 @@ describe('Collection Query', function() {
         });
       });
 
-      it('should reduce the newly created nested object down to a foreign key', function(done) {
-        query.update({}, { name: 'foo', nestedModel: { name: 'joe' }}, function(err, status) {
+      it('should reduce the newly created nested object down to two foreign keys', function(done) {
+        query.update({}, { name: 'foo', nestedModel: { name: 'joe' }, nestedModel2: { name: 'jane' } }, function(err, status) {
           assert(!err, err);
           assert(status[0].nestedModel);
           assert(status[0].nestedModel === 1);
+          assert(status[0].nestedModel2);
+          assert(status[0].nestedModel2 === 2);
+          done();
+        });
+      });
+    });
+
+    describe('with nested model values (create, asynchronous adapter)', function() {
+      var query;
+
+      before(function(done) {
+
+        var waterline = new Waterline();
+        var Model = Waterline.Collection.extend({
+          identity: 'user',
+          connection: 'foo',
+          attributes: {
+            name: {
+              type: 'string',
+              defaultsTo: 'Foo Bar'
+            },
+            nestedModel: {
+              model: 'nested'
+            },
+            nestedModel2: {
+              model: 'nested'
+            }
+          }
+        });
+        var Nested = Waterline.Collection.extend({
+          identity: 'nested',
+          connection: 'foo',
+          attributes: {
+            name: 'string'
+          }
+        });
+
+        waterline.loadCollection(Model);
+        waterline.loadCollection(Nested);
+
+        // Fixture Adapter Def
+        var _id = 1;
+        var findValues = [];
+
+        var adapterDef = {
+          create: function(con, col, values, cb) {
+            process.nextTick(function() {
+              values.id = _id;
+              findValues.push(values);
+              _id++;
+              return cb(null, values);
+            });
+          },
+          update: function(con, col, criteria, values, cb) {
+            process.nextTick(function() {
+              values.id = _id;
+              findValues.push(values);
+              _id++;
+              return cb(null, values);
+            });
+          },
+          find: function(con, col, criteria, cb) {
+            process.nextTick(function() {
+              cb(null, findValues[_id - 1]);
+            });
+          }
+        };
+
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
+          if(err) return done(err);
+          query = colls.collections.user;
+          done();
+        });
+      });
+
+      it('should call back only once and reduce the newly created nested object down to two foreign keys', function(done) {
+        var count = 0;
+        query.update({}, { name: 'foo', nestedModel: { name: 'joe' }, nestedModel2: { name: 'jane' } }, function(err, status) {
+          assert(++count === 1);
+          assert(!err, err);
+          assert(status[0].nestedModel);
+          assert(status[0].nestedModel2);
+          assert.deepEqual([status[0].nestedModel, status[0].nestedModel2].sort(), [1, 2]);
           done();
         });
       });
