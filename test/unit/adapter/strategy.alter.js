@@ -24,7 +24,6 @@ describe('Alter Mode Recovery', function () {
                 cb(null, null);
             },
             define: function (connectionName, collectionName, definition, cb) {
-                console.log('#define'); 
                 this.describe(connectionName, collectionName,function(err,schema){
                    cb(null, schema); 
                 });
@@ -45,12 +44,10 @@ describe('Alter Mode Recovery', function () {
                 cb(null,(persistentData.length === 1)?schema:undefined);
             },
             find: function(connectionName, collectionName, options, cb, connection){
-                console.log('#find',persistentData);
                 if(!options.where) return cb(null,persistentData);
                 cb(null,_.find(persistentData,options.where));
             },
             create: function(connectionName, collectionName, data, cb, connection){
-                console.log('#create');
                 persistentData.push(data);
                 cb(null,data);
             },
