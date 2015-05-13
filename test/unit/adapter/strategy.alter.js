@@ -49,18 +49,18 @@
             });
             it('should recover data', function (done) {
                 waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
-                    assert(!err, 'First initialization error ' + err);
+                    if(err) throw 'First initialization error ' + err;
                     person = data.collections.person;
                     person.create(inserted, function (err, created) {
-                        assert(!err, 'Record creation error ' + err);
+                        if(err) throw 'Record creation error ' + err;
                         waterline.teardown(function (err) {
-                            assert(!err, 'TearDown connection error ' + err);
+                            if(err) throw 'TearDown connection error ' + err;
                             var PersonCollection = Waterline.Collection.extend(PersonModel);
                             waterline.loadCollection(PersonCollection);
                             waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
-                                assert(!err, 'Second initialization error ' + err);
+                                if(err) throw 'Second initialization error ' + err;
                                 data.collections.person.findOne({id: created.id}, function (err, found) {
-                                    assert(!err, 'FindOne error ' + err);
+                                    if(err) throw 'FindOne error ' + err;
                                     assert(found, 'Alter mode should backup data, but records found === ' + found);
                                     var record = found;
                                     assert(inserted.label === record.label,
@@ -98,7 +98,7 @@
                                                         + ') !== (found obj.' + key + ' === ' + record.obj[key] + ')');
                                     });
                                     data.collections.person.drop(function (err) {
-                                        assert(!err, 'Drop error ' + err);
+                                        if(err) throw 'Drop error ' + err;
                                         done();
                                     });
                                 });
