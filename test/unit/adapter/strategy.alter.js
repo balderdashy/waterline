@@ -49,18 +49,18 @@
             });
             it('should recover data', function (done) {
                 waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
-                    if(err) throw 'First initialization error ' + err;
+                    if(err) return done(err);
                     person = data.collections.person;
                     person.create(inserted, function (err, created) {
-                        if(err) throw 'Record creation error ' + err;
+                        if(err) return done(err);
                         waterline.teardown(function (err) {
-                            if(err) throw 'TearDown connection error ' + err;
+                            if(err) return done(err);
                             var PersonCollection = Waterline.Collection.extend(PersonModel);
                             waterline.loadCollection(PersonCollection);
                             waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
-                                if(err) throw 'Second initialization error ' + err;
+                                if(err) return done(err);
                                 data.collections.person.findOne({id: created.id}, function (err, found) {
-                                    if(err) throw 'FindOne error ' + err;
+                                    if(err) return done(err);
                                     assert(found, 'Alter mode should backup data, but records found === ' + found);
                                     var record = found;
                                     assert(inserted.label === record.label,
@@ -98,7 +98,7 @@
                                                         + ') !== (found obj.' + key + ' === ' + record.obj[key] + ')');
                                     });
                                     data.collections.person.drop(function (err) {
-                                        if(err) throw 'Drop error ' + err;
+                                        if(err) return done(err);
                                         done();
                                     });
                                 });
