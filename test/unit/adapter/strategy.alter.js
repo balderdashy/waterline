@@ -1,6 +1,6 @@
 var Waterline = require('../../../lib/waterline'),
-        assert = require('assert'),
-        _ = require('lodash');
+    assert = require('assert'),
+    _ = require('lodash');
 describe('Alter Mode Recovery', function () {
   var waterline, adapters, connections, inserted, person, PersonModel, persistentData;
   before(function () {
@@ -92,41 +92,55 @@ describe('Alter Mode Recovery', function () {
       data.collections.person.findOne({id: 12}, function (err, found) {
         if (err)
           return done(err);
+        
         assert(found, 'Alter mode should backup data, but records found === ' + found);
+        
         var record = found;
+        
         assert(inserted.label === record.label,
-                'Alter mode should recover string type, but (expected string === "' + inserted.label
-                + '") !== (found string === "' + record.label + '")');
+            'Alter mode should recover string type, but (expected string === "' + inserted.label
+            + '") !== (found string === "' + record.label + '")');
+        
         assert(inserted.num === record.num,
-                'Alter mode should recover integer type, but (expected integer === ' + inserted.num
-                + ') !== (found integer === ' + record.num + ')');
+            'Alter mode should recover integer type, but (expected integer === ' + inserted.num
+            + ') !== (found integer === ' + record.num + ')');
+        
         assert(inserted.average === record.average,
-                'Alter mode should recover float type, but (expected float === ' + inserted.average
-                + ') !== (found float === ' + record.average + ')');
+            'Alter mode should recover float type, but (expected float === ' + inserted.average
+            + ') !== (found float === ' + record.average + ')');
+        
         assert(Array.isArray(record.ids),
-                'Alter mode should recover array type, but found object is not an array');
+            'Alter mode should recover array type, but found object is not an array');
+                
         assert(inserted.ids.length === record.ids.length,
-                'Alter mode should recover array type, expected array length === ' + inserted.ids.length + ', but found array length === ' + record.ids.length);
+            'Alter mode should recover array type, expected array length === ' + inserted.ids.length 
+            + ', but found array length === ' + record.ids.length);
+        
         for (var i = 0; i < inserted.ids.length; i++) {
           assert(inserted.ids[i] === record.ids[i],
-                  'Alter mode should recover array data, but (expected array[' + i + '] === '
-                  + inserted.ids[i] + ') !== (found array[' + i + '] === ' + record.ids[i] + ')');
-        }
-        ;
-        assert(inserted.avatar.toString('utf8') === record.avatar.toString('utf8'), 'Alter mode should recover binary type, but (expected binary === "'
-                + inserted.avatar.toString('utf8') + '") !== (found binary === ' + record.avatar.toString('utf8') + ')');
+              'Alter mode should recover array data, but (expected array[' + i + '] === '
+              + inserted.ids[i] + ') !== (found array[' + i + '] === ' + record.ids[i] + ')');
+        };
+        
+        assert(inserted.avatar.toString('utf8') === record.avatar.toString('utf8'),
+            'Alter mode should recover binary type, but (expected binary === "'
+            + inserted.avatar.toString('utf8') + '") !== (found binary === ' + record.avatar.toString('utf8') + ')');
+        
         assert(inserted.status === record.status,
-                'Alter mode should recover boolean type, but (expected boolean === '
-                + inserted.status + ') !== (found boolean === ' + record.status + ')');
+            'Alter mode should recover boolean type, but (expected boolean === '
+            + inserted.status + ') !== (found boolean === ' + record.status + ')');
+        
         assert(Date.parse(inserted.date) === Date.parse(new Date(record.date)),
-                'Alter mode should recover date type, but ' + new Date(Date.parse(inserted.date))
-                + ' !== ' + new Date(Date.parse(new Date(record.date))));
+            'Alter mode should recover date type, but ' + new Date(Date.parse(inserted.date))
+            + ' !== ' + new Date(Date.parse(new Date(record.date))));
+        
         _.keys(inserted.obj).forEach(function (key) {
           assert(record.obj[key],
-                  'Alter mode should recover json type structure, but property found obj.' + key + ' does not exist');
+              'Alter mode should recover json type structure, but property found obj.' + key + ' does not exist');
+                  
           assert(inserted.obj[key] === record.obj[key],
-                  'Alter mode should recover json type data, but property (expected obj.' + key + ' === ' + inserted.obj[key]
-                  + ') !== (found obj.' + key + ' === ' + record.obj[key] + ')');
+              'Alter mode should recover json type data, but property (expected obj.' + key + ' === ' + inserted.obj[key]
+              + ') !== (found obj.' + key + ' === ' + record.obj[key] + ')');
         });
         data.collections.person.drop(function (err) {
           if (err)
