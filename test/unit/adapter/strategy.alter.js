@@ -28,7 +28,7 @@ describe('Alter Mode Recovery', function () {
                    cb(null, schema); 
                 });
             },
-            describe: function(connectionName, collectionName, cb, connection){console.log('#describe'); 
+            describe: function(connectionName, collectionName, cb, connection){
                 var schema = {
                     label : {type :'VARCHAR2'},
                     num : {type :'NUMBER'},
@@ -81,8 +81,6 @@ describe('Alter Mode Recovery', function () {
             }
         };
         adapters = {fake: adapter};
-        var PersonCollection = Waterline.Collection.extend(PersonModel);
-        waterline.loadCollection(PersonCollection);
     });
     it('should recover data', function (done) {this.timeout(10000);
         var PersonCollection = Waterline.Collection.extend(PersonModel);
