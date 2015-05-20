@@ -11,19 +11,11 @@ module.exports = {
         body: 'A test message.',
         from: 1,
         to: [{
-            id: 10,
             '.message_id': 10,
-            subject: 'msgA',
-            body: 'A test message.',
-            from: 1,
             '.user_id': 2,
             '.id': 1
         }, {
-            id: 10,
             '.message_id': 10,
-            subject: 'msgA',
-            body: 'A test message.',
-            from: 1,
             '.user_id': 3,
             '.id': 2
         }]
@@ -51,24 +43,10 @@ module.exports = {
         from: 1,
         to: [{
             '..email': 'a@recipient.com',
-            '.id': 1,
             '..id': 2,
-            id: 10,
-            '.message_id': 10,
-            '.user_id': 2,
-            subject: 'msgA',
-            body: 'A test message.',
-            from: 1
         }, {
             '..email': 'b@recipient.com',
-            '.id': 2,
             '..id': 3,
-            id: 10,
-            '.user_id': 3,
-            '.message_id': 10,
-            subject: 'msgA',
-            body: 'A test message.',
-            from: 1
         }]
     }, {
         id: 20,
