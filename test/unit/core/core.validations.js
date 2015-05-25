@@ -126,7 +126,28 @@ describe('Core Validator', function() {
       });
     });
 
-    it('should validate present values only, thus not need required last_name', function(done) {
+    it('should validate all fields with presentOnly omitted or set to false', function(done) {
+      person._validator.validate({ city: 'Washington' }, function(err) {
+        assert(err);
+        assert(!err.first_name);
+        assert(err.last_name);
+        assert(err.last_name[0].rule === 'string');
+        assert(err.city);
+        assert(err.city[0].rule === 'maxLength');
+
+        person._validator.validate({ city: 'Washington' }, false, function(err) {
+          assert(err);
+          assert(!err.first_name);
+          assert(err.last_name);
+          assert(err.last_name[0].rule === 'string');
+          assert(err.city);
+          assert(err.city[0].rule === 'maxLength');
+          done();
+        });
+      });
+    });
+
+    it('should, for presentOnly === true, validate present values only, thus not need the required last_name', function(done) {
       person._validator.validate({ first_name: 'foo' }, true, function(err) {
         assert(!err);
         done();
