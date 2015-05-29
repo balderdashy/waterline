@@ -42,7 +42,10 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { createEach: function(con, col, values, cb) { return cb(null, values); }};
+        var adapterDef = { 
+          create: function(con, col, values, cb) { values.name = 'no name'; return cb(null, values); },
+          createEach: function(con, col, values, cb) { return cb(null, values); }
+        };
 
         var connections = {
           'foo': {
@@ -59,8 +62,11 @@ describe('Collection Query', function() {
 
 
       it('should call adapters createEach method', function(done) {
-        query.createEach([{},{}], function(err, values) {
-          assert(Array.isArray(values));
+        query.createEach([{ name: 'bob' }, { name: 'foo'}], function(err, values) {
+          assert(!err);
+          assert(values);
+          assert.equal(values[0].name, 'bob');
+          assert.equal(values[1].name, 'foo');
           done();
         });
       });
