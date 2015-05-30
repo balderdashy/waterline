@@ -62,7 +62,7 @@ describe('Collection Query', function() {
 
 
       it('should call adapters createEach method', function(done) {
-        query.createEach([{ name: 'bob' }, { name: 'foo'}], function(err, values) {
+        query.create([{ name: 'bob' }, { name: 'foo'}], function(err, values) {
           assert(!err);
           assert(values);
           assert.equal(values[0].name, 'bob');
