@@ -323,10 +323,11 @@ describe('Populate Deep', function () {
     });
 
   });
-
+  /* no hypothesis can be made on the find result order, so adding sorts in each test */
   it('should deeply populate a branch', function (done) {
-    companyModel.find()
-            .populate('drivers.taxis.constructor.departments')
+    companyModel.find().sort('companyId asc')
+            .populate('drivers.taxis',{sort : {taxiId : 1}})
+            .populate('drivers.taxis.constructor.departments',{sort : {departmentId : 1}})
             .exec(function (err, companies) {
               if (err)
                 return done(err);
@@ -360,6 +361,7 @@ describe('Populate Deep', function () {
 
   it('should populate multiple branchs', function (done) {
     companyModel.find().where({companyName: 'company 2'})
+            .populate('drivers.taxis',{sort : {taxiId : 1}})
             .populate('drivers.taxis.constructor')
             .populate('drivers.address')
             .exec(function (err, companies) {
@@ -385,7 +387,7 @@ describe('Populate Deep', function () {
     companyModel.find().where({companyName: 'company 1'})
             .populate('drivers', {driverName: 'driver 3'})
             .populate('drivers.taxis', {taxiMatricule: 'taxi_3'})
-            .populate('drivers.taxis.breakdowns', {breakDownLevel: {'>': 2}})
+            .populate('drivers.taxis.breakdowns', {where : {breakDownLevel: {'>': 2}}, sort : {breakDownLevel : 1}})
             .exec(function (err, companies) {
               if (err)
                 return done(err);
