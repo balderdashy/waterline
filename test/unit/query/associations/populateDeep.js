@@ -1,9 +1,45 @@
+/*****************************************************************************************************************************************************
+*                                                                                                                                                    *
+*                                                 1 +-------------------+ 1                                                                          *
+*                                     +-------------+     Company       +---------------+           1 +---------------+ 1        * +----------------+*
+*                                     |             |                   |               |      +------+   Constructor +------------+   Department   |*
+*                                     |             +-------------------+               |      |      |               |            |                |*
+*                                     |                                                 |      |      +---------------+            +----------------+*
+*                                     |                                                 |      |                                                     *
+*                                     |                                                 |      |                                                     *
+*                                   * |                                                 | *  * |                                                     *
+* +---------------+          +--------+-------+                                 +-------+------+--+                  +-----------------+             *
+* |    Address    |1        1|    Driver      |                                 |     Taxi        | 1              * |   BreakDown     |             * 
+* |               +----------+                |                                 |                 +------------------+                 |             * 
+* +---------------+          +--------+-------+                                 +-------+---------+                  +-----------------+             * 
+*                                   1 |                                                 | 1                                                          *
+*                                     |                                                 |                                                            *
+*                                     |                                                 |                                                            *
+*                                     |                                                 |                                                            *
+*                                     |             +--------------------+              |                                                            *
+*                                     |           * |        Ride        | *            |                                                            *
+*                                     +-------------+                    +--------------+                                                            *
+*                                                   +--------------------+                                                                           *
+*                                                                                                                                                    *
+*                                                                                                                                                    *
+*                                                                                                                                                    *
+*                                                                                                                                                    *
+*                                                                                                                                                    *
+*  1. A company may have many taxis and many drivers (OnToMany).                                                                                     *
+*  2. A driver may drive many taxis and a taxi may be driven by many drivers (ManyToMany through Ride).                                              *
+*  3. A taxi may pass through many breakdowns (OneToMany) and may have only one constructor (ManyToOne).                                             *
+*  4. A constructor may have many departments (OneToMany).                                                                                           *
+*  5. A driver may have only one address (OneToOne).                                                                                                 *
+*                                                                                                                                                    * 
+******************************************************************************************************************************************************/
+
+
 var Waterline = require('../../../../lib/waterline'),
         assert = require('assert'),
         async = require('async');
 
 var waterline = new Waterline();
-var migrate = 'alter';
+var migrate = 'drop';
 
 describe('Populate Deep', function () {
   var companyModel, taxiModel, driverModel, rideModel, constructorModel, addressModel, breakDownModel, departmentModel;
@@ -14,9 +50,12 @@ describe('Populate Deep', function () {
       tableName: 'company_table',
       migrate: migrate,
       attributes: {
-        "name": {
-          "type": "string",
+        "companyId": {
+          "type": "integer",
           "primaryKey": true
+        },
+        "companyName": {
+          "type": "string"
         },
         "taxis": {
           "collection": "Taxi",
@@ -35,9 +74,12 @@ describe('Populate Deep', function () {
       tableName: 'driver_table',
       migrate: migrate,
       attributes: {
-        "name": {
-          "type": "string",
+        "driverId": {
+          "type": "integer",
           "primaryKey": true
+        },
+        "driverName": {
+          "type": "string"
         },
         "taxis": {
           "collection": "Taxi",
@@ -59,9 +101,12 @@ describe('Populate Deep', function () {
       tableName: 'taxi_table',
       migrate: migrate,
       attributes: {
-        "matricule": {
-          "type": "string",
+        "taxiId": {
+          "type": "integer",
           "primaryKey": true
+        },
+        "taxiMatricule": {
+          "type": "string"
         },
         "drivers": {
           "collection": "Driver",
@@ -102,9 +147,12 @@ describe('Populate Deep', function () {
       tableName: 'address_table',
       migrate: migrate,
       attributes: {
-        "city": {
-          "type": "string",
+        "addressId": {
+          "type": "integer",
           "primaryKey": true
+        },
+        "addressCity": {
+          "type": "string"
         }
       }
     });
@@ -115,9 +163,12 @@ describe('Populate Deep', function () {
       tableName: 'constructor_table',
       migrate: migrate,
       attributes: {
-        "name": {
-          "type": "string",
+        "constructorId": {
+          "type": "integer",
           "primaryKey": true
+        },
+        "constructorName": {
+          "type": "string"
         },
         "taxis": {
           "collection": "Taxi",
@@ -136,11 +187,11 @@ describe('Populate Deep', function () {
       tableName: 'breakdown_table',
       migrate: migrate,
       attributes: {
-        "id": {
+        "breakDownId": {
           "type": "integer",
           "primaryKey": true
         },
-        "level": {
+        "breakDownLevel": {
           "type": "integer"
         },
         "taxi": {
@@ -155,9 +206,12 @@ describe('Populate Deep', function () {
       tableName: 'department_table',
       migrate: migrate,
       attributes: {
-        "label": {
-          "type": "string",
+        "departmentId": {
+          "type": "integer",
           "primaryKey": true
+        },
+        "departmentLabel": {
+          "type": "string"
         },
         "constructor": {
           "model": "Constructor"
@@ -166,47 +220,48 @@ describe('Populate Deep', function () {
     });
 
     var companies = [
-      {name: 'company 1'},
-      {name: 'company 2'}
+      {companyId : 1, companyName: 'company 1'},
+      {companyId : 2, companyName: 'company 2'}
     ];
     var drivers = [
-      {name: 'driver 1', company: 'company 1', address: 'city 1'},
-      {name: 'driver 2', company: 'company 2', address: 'city 2'},
-      {name: 'driver 3', company: 'company 1', address: 'city 3'}
+      {driverId : 1, driverName: 'driver 1', company: 1, address: 1},
+      {driverId : 2, driverName: 'driver 2', company: 2, address: 2},
+      {driverId : 3, driverName: 'driver 3', company: 1, address: 3}
     ];
     var taxis = [
-      {matricule: 'taxi_1', company: 'company 1', constructor: 'constructor 1'},
-      {matricule: 'taxi_2', company: 'company 2', constructor: 'constructor 2'},
-      {matricule: 'taxi_3', company: 'company 2', constructor: 'constructor 2'}
+      {taxiId : 1, taxiMatricule: 'taxi_1', company: 1, constructor: 1},
+      {taxiId : 2, taxiMatricule: 'taxi_2', company: 2, constructor: 2},
+      {taxiId : 3, taxiMatricule: 'taxi_3', company: 2, constructor: 2}
     ];
     var rides = [
-      {taxi: 'taxi_1', driver: 'driver 1'},
-      {taxi: 'taxi_1', driver: 'driver 2'},
-      {taxi: 'taxi_2', driver: 'driver 2'},
-      {taxi: 'taxi_3', driver: 'driver 3'},
-      {taxi: 'taxi_2', driver: 'driver 3'}
+      {taxi: 1, driver: 1},
+      {taxi: 1, driver: 2},
+      {taxi: 2, driver: 2},
+      {taxi: 3, driver: 3},
+      {taxi: 2, driver: 3}
     ];
+    
     var addresses = [
-      {city: 'city 1'},
-      {city: 'city 2'},
-      {city: 'city 3'}
+      {addressId : 1, addressCity: 'city 1'},
+      {addressId : 2, addressCity: 'city 2'},
+      {addressId : 3, addressCity: 'city 3'}
     ];
     var constructors = [
-      {name: 'constructor 1'},
-      {name: 'constructor 2'}
+      {constructorId : 1, constructorName: 'constructor 1'},
+      {constructorId : 2, constructorName: 'constructor 2'}
     ];
 
     var breakDowns = [
-      {id: 1, level: '5', taxi: 'taxi_3'},
-      {id: 2, level: '7', taxi: 'taxi_2'},
-      {id: 3, level: '1', taxi: 'taxi_3'},
-      {id: 4, level: '8', taxi: 'taxi_3'}
+      {breakDownId: 1, breakDownLevel: '5', taxi: 3},
+      {breakDownId: 2, breakDownLevel: '7', taxi: 2},
+      {breakDownId: 3, breakDownLevel: '1', taxi: 3},
+      {breakDownId: 4, breakDownLevel: '8', taxi: 3}
     ];
     
     var departments = [
-      {label : 'dep 1', constructor : 'constructor 1'},
-      {label : 'dep 2', constructor : 'constructor 1'},
-      {label : 'dep 3', constructor : 'constructor 2'}
+      {departmentId : 1, departmentLabel : 'dep 1', constructor : 1},
+      {departmentId : 2, departmentLabel : 'dep 2', constructor : 1},
+      {departmentId : 3, departmentLabel : 'dep 3', constructor : 2}
     ];
 
 
@@ -270,105 +325,83 @@ describe('Populate Deep', function () {
   });
 
   it('should deeply populate a branch', function (done) {
-    companyModel.find().where()
+    companyModel.find()
             .populate('drivers.taxis.constructor.departments')
             .exec(function (err, companies) {
               if (err)
                 return done(err);
-              assert(companies.length === 2, 'Number of companies found '+companies.length+' instead of 2');
-              var company = companies[1];
-              assert(company,'Company object not retrieved');
-              assert(company.name === 'company 2','Company name found "'+company.name+'" instead of "company 2"');
-              assert(company.drivers, 'Drivers list is not retrieved (One To Many)');
-              assert(company.drivers.length === 1,'Drivers number found '+company.drivers.lengh+' instead of 1');
-              var driver = company.drivers[0];
-              assert(driver.name = 'driver 2', 'The retrieved driver is not correct, name = "'+driver.name+'" instead of "driver 2"');
-              assert(driver.taxis, 'Taxis list is not retrieved (Many To Many)');
-              assert(driver.taxis.length === 2,'Taxis number found '+driver.taxis.lengh+' instead of 2');
-              var taxi1 = driver.taxis[0];
-              var taxi2 = driver.taxis[1];
-              assert(taxi1.matricule === 'taxi_1', 'The retrieved taxi is not correct, matricule = "'+taxi1.matricule+'" instead of "taxi_1"');
-              assert(taxi2.matricule === 'taxi_2', 'The retrieved taxi is not correct, matricule = "'+taxi2.matricule+'" instead of "taxi_2"');
-              assert(taxi1.constructor, 'Constructor object is not retrieved (Many To One)');
-              assert(taxi2.constructor, 'Constructor object is not retrieved (Many To One)');
-              assert(taxi1.constructor.name === 'constructor 1',
-                      'The retrieved constructor is not correct, name = "'+taxi1.constructor.name+'" instead of "constructor 1"');
-              assert(taxi2.constructor.name === 'constructor 2',
-                      'The retrieved constructor is not correct, name = "'+taxi2.constructor.name+'" instead of "construcotr 2"');
+              // Root Level
+              assert(companies.length === 2 && companies[1].companyName === 'company 2', 'Root criteria not applied.');
+              //Level 1
+              assert(companies[1].drivers.length === 1, 'Could not populate first level oneToMany collection.');
+              assert(companies[1].drivers[0].driverName === 'driver 2', 'First level not correctly populated.');
+              
+              //Level 2
+              assert(companies[1].drivers[0].taxis.length === 2, 'Could not populate second level manyToMany collection.');
+              var taxi1 = companies[1].drivers[0].taxis[0];
+              var taxi2 = companies[1].drivers[0].taxis[1];
+              assert(taxi1.taxiMatricule === 'taxi_1' && taxi2.taxiMatricule === 'taxi_2', 'Second level not correctly populated.');
+              //Level 3
+              assert(taxi1.constructor, 'Could not populate third level manyToOne model.');
               var constructor1 = taxi1.constructor;
               var constructor2 = taxi2.constructor;
-              assert(constructor1.departments, 'Derpatments list is not retrieved');
-              assert(constructor1.departments.length === 2,'Departments number found '+constructor1.departments.length+' instead of 2');
-              assert(constructor1.departments[0].label = 'dep 1',
-                      'The retrieved department is not correct, label = "'+constructor1.departments[0].label+'" instead of "dep 1"');
-              assert(constructor1.departments[1].label = 'dep 2',
-                      'The retrieved department is not correct, label = "'+constructor1.departments[1].label+'" instead of "dep 2');
-              assert(constructor2.departments, 'Derpatments list is not retrieved');
-              assert(constructor2.departments.length === 1,'Departments number found '+constructor2.departments.length+' instead of 1');
-              assert(constructor2.departments[0].label = 'dep 3',
-                      'The retrieved department is not correct, label = "'+constructor2.departments[0].label+'" instead of "dep 3');
+              assert(constructor1.constructorName === 'constructor 1' && constructor2.constructorName === 'constructor 2',
+                      'Third level not correctly populated.');
+              //Level 4
+              assert(constructor1.departments.length === 2,'Could not populate forth level oneToMany collection.');
+              assert(constructor1.departments[0].departmentLabel === 'dep 1' && constructor1.departments[1].departmentLabel === 'dep 2',
+                      'Forth level not correctly populated.');
+              assert(constructor2.departments.length === 1,'Could not populate forth level oneToMany collection.');
+              assert(constructor2.departments[0].departmentLabel === 'dep 3',
+                      'Forth level not correctly populated.');
               done();
             });
   });
 
   it('should populate multiple branchs', function (done) {
-    companyModel.find().where({name: 'company 2'})
-            .populate('drivers.taxis')
+    companyModel.find().where({companyName: 'company 2'})
+            .populate('drivers.taxis.constructor')
             .populate('drivers.address')
             .exec(function (err, companies) {
               if (err)
                 return done(err);
-              assert(companies.length === 1, 'Number of companies found '+companies.length+' instead of 1');
-              var company = companies[0];
-              assert(company,'Company object not retrieved');
-              assert(company.name = 'company 2','Company name found "'+company.name+'" instead of "company 2"');
-              assert(company.drivers, 'Drivers list is not retrieved (One To Many)');
-              assert(company.drivers.length === 1,'Drivers number found '+company.drivers.length+' instead of 1');
-              var driver = company.drivers[0];
-              assert(driver.name = 'driver 2', 'The retrieved driver is not correct, name = "'+driver.name+'" instead of "driver 2"');
-              assert(driver.taxis, 'Taxis list is not retrieved (Many To Many)');
-              assert(driver.taxis.length === 2, 'Taxis number found '+driver.taxis.lengh+' instead of 2');
-              var taxi1 = driver.taxis[0];
-              var taxi2 = driver.taxis[1];
-              assert(taxi1.matricule === 'taxi_1',
-                    'The retrieved taxi is not correct, matricule = "'+taxi1.matricule+'" instead of "taxi_1"');
-              assert(taxi2.matricule === 'taxi_2',
-                    'The retrieved taxi is not correct, matricule = "'+taxi2.matricule+'" instead of "taxi_2"');
-              assert(driver.address,'Address object not retrieved (Many To One)');
-              assert(driver.address.city = 'city 2', 'The retrieved address is not correct, city = "'+driver.address.city+'" instead of "city 2"');
+              // Root Level
+              assert(companies.length === 1 && companies[0].companyName === 'company 2', 'Root criteria not applied.');
+              //Level 1
+              assert(companies[0].drivers.length === 1, 'Could not populate first level oneToMany collection.');
+              assert(companies[0].drivers[0].driverName === 'driver 2', 'First level not correctly populated.');
+              //Level 2 A
+              assert(companies[0].drivers[0].taxis.length === 2, 'Could not populate second level manyToMany collection.');
+              var taxi1 = companies[0].drivers[0].taxis[0];
+              var taxi2 = companies[0].drivers[0].taxis[1];
+              assert(taxi1.taxiMatricule === 'taxi_1' && taxi2.taxiMatricule === 'taxi_2', 'Second level (A) not correctly populated.');
+              //Level 2 B
+              assert(companies[0].drivers[0].address.addressCity === 'city 2', 'Second level (B) criteria not populated.');
               done();
             });
   });
 
-  it('should apply criteria to the last attribute of the path', function (done) {
-    companyModel.find().where({name: 'company 1'})
-            .populate('drivers', {name: 'driver 3'})
-            .populate('drivers.taxis', {matricule: 'taxi_3'})
-            .populate('drivers.taxis.breakdowns', {level: {'>': 2}})
+  it('should apply criteria to current populate path last alias', function (done) {
+    companyModel.find().where({companyName: 'company 1'})
+            .populate('drivers', {driverName: 'driver 3'})
+            .populate('drivers.taxis', {taxiMatricule: 'taxi_3'})
+            .populate('drivers.taxis.breakdowns', {breakDownLevel: {'>': 2}})
             .exec(function (err, companies) {
               if (err)
                 return done(err);
-              assert(companies.length === 1, 'Number of companies found '+companies.length+' instead of 1');
-              var company = companies[0];
-              assert(company,'Company object not retrieved');
-              assert(company.name = 'company 1','Company name found "'+company.name+'" instead of "company 1"');
-              assert(company.drivers, 'Drivers list is not retrieved (One To Many)');
-              assert(company.drivers.length === 1,'Drivers number found '+company.drivers.length+' instead of 1');
-              var driver = company.drivers[0];
-              assert(driver.name = 'driver 3', 'The retrieved driver is not correct, name = "'+driver.name+'" instead of "driver 3"');
-              assert(driver.taxis, 'Taxis list is not retrieved (Many To Many)');
-              assert(driver.taxis.length === 1, 'Taxis number found '+driver.taxis.lengh+' instead of 1');
-              var taxi = driver.taxis[0];
-              assert(taxi.matricule === 'taxi_3',
-                    'The retrieved taxi is not correct, matricule = "'+taxi.matricule+'" instead of "taxi_3"');
-              assert(taxi.breakdowns, 'BreakDowns list is not retrieved (One To Many)');
-              assert(taxi.breakdowns.length === 2,'Breakdowns number found '+taxi.breakdowns.lengh+' instead of 2');
-              var breakDown1 = taxi.breakdowns[0];
-              var breakDown2 = taxi.breakdowns[1];
-              assert(breakDown1.id === 1 && breakDown1.level === 5,
-                    'The retrieved breakdown is not correct, id = '+breakDown1.id+'instead of 1 and level = '+breakDown1.level+' instead of 5');
-              assert(breakDown2.id === 4 && breakDown2.level === 8,
-                    'The retrieved breakdown is not correct, id = '+breakDown1.id+'instead of 4 and level = '+breakDown1.level+' instead of 8');
+              // Root Level
+              assert(companies.length === 1 && companies[0].companyName === 'company 1', 'Root criteria not applied.');
+              //Level 1
+              assert(companies[0].drivers.length === 1, 'Could not populate first level oneToMany collection.');
+              assert(companies[0].drivers[0].driverName === 'driver 3', 'First level criteria not applied.');
+              //Level 2
+              assert(companies[0].drivers[0].taxis.length === 1, 'Could not populate second level manyToMany collection.');
+              var taxi = companies[0].drivers[0].taxis[0];
+              assert(taxi.taxiMatricule === 'taxi_3', 'Second level criteria not applied.');
+              //Level 3
+              assert(taxi.breakdowns.length === 2, 'Could not populate third level oneToMany collection.');
+              assert(taxi.breakdowns[0].breakDownLevel === 5 && taxi.breakdowns[1].breakDownLevel  === 8, 'Third level criteria not applied.');
+                    
               done();
             });
   });
