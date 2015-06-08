@@ -362,7 +362,6 @@ describe('Populate Deep', function () {
   it('should populate multiple branchs', function (done) {
     companyModel.find().where({companyName: 'company 2'})
             .populate('drivers.taxis',{sort : {taxiId : 1}})
-            .populate('drivers.taxis.constructor')
             .populate('drivers.address')
             .exec(function (err, companies) {
               if (err)
