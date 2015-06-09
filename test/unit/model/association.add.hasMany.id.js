@@ -28,7 +28,7 @@ describe('instance methods', function() {
           };
 
           obj.prototype.exec = function(cb) {
-            cb(null, [new model(container.update[0].values)]);
+            cb(null); // Just return nothing, so we can function as a mock only.
           };
 
           obj.prototype.populate = function() { return this; };
@@ -81,14 +81,14 @@ describe('instance methods', function() {
         person.bars.add(1);
         person.bars.add(2);
 
+        /**
+         * We've added two new children. This means two creates will be triggered. No updates needed.
+         */
         person.save(function(err) {
-          assert(bar.update.length === 2);
-          assert(bar.update.length === 2);
-          assert(bar.update[0].criteria.id === 1);
 
-          assert(bar.update[0].values.foo);
-          assert(bar.update[1].criteria.id === 2);
-          assert(bar.update[1].values.foo);
+          assert.equal(bar.update.length, 2, 'We did not get two updates.');
+          assert.deepEqual(bar.update[0].values, {foo: 1}, 'Update did not go as planned.');
+          assert.deepEqual(bar.update[1].values, {foo: 1}, 'Create did not go as planned.');
 
           done();
         });
