@@ -1,37 +1,28 @@
-/*****************************************************************************************************************************************************
-*                                                                                                                                                    *
-*                                                 1 +-------------------+ 1                                                                          *
-*                                     +-------------+     Company       +---------------+           1 +---------------+ 1        * +----------------+*
-*                                     |             |                   |               |      +------+   Constructor +------------+   Department   |*
-*                                     |             +-------------------+               |      |      |               |            |                |*
-*                                     |                                                 |      |      +---------------+            +----------------+*
-*                                     |                                                 |      |                                                     *
-*                                     |                                                 |      |                                                     *
-*                                   * |                                                 | *  * |                                                     *
-* +---------------+          +--------+-------+                                 +-------+------+--+                  +-----------------+             *
-* |    Address    |1        1|    Driver      |                                 |     Taxi        | 1              * |   BreakDown     |             * 
-* |               +----------+                |                                 |                 +------------------+                 |             * 
-* +---------------+          +--------+-------+                                 +-------+---------+                  +-----------------+             * 
-*                                   1 |                                                 | 1                                                          *
-*                                     |                                                 |                                                            *
-*                                     |                                                 |                                                            *
-*                                     |                                                 |                                                            *
-*                                     |             +--------------------+              |                                                            *
-*                                     |           * |        Ride        | *            |                                                            *
-*                                     +-------------+                    +--------------+                                                            *
-*                                                   +--------------------+                                                                           *
-*                                                                                                                                                    *
-*                                                                                                                                                    *
-*                                                                                                                                                    *
-*                                                                                                                                                    *
-*                                                                                                                                                    *
-*  1. A company may have many taxis and many drivers (OnToMany).                                                                                     *
-*  2. A driver may drive many taxis and a taxi may be driven by many drivers (ManyToMany through Ride).                                              *
-*  3. A taxi may pass through many breakdowns (OneToMany) and may have only one constructor (ManyToOne).                                             *
-*  4. A constructor may have many departments (OneToMany).                                                                                           *
-*  5. A driver may have only one address (OneToOne).                                                                                                 *
-*                                                                                                                                                    * 
-******************************************************************************************************************************************************/
+ /************************************************************************ 
+*                                                                       * 
+*               1+-------------------+1                                 * 
+*       +--------+     Company       +--------+                         * 
+*      *|        +-------------------+        |*                        * 
+*  +----------+      +----------+       +---------+ +   +-----------+   * 
+*  |  Driver  +------+   Ride   +-------+   Taxi    +---+ BreakDown |   * 
+*  +----------+1    *+----------+*     1+---------+ +1 *+-----------+   * 
+*      1|                                    1|                         * 
+*      1|                                    1|                         * 
+*  +----------+      +----------+       +-----------+                   * 
+*  | Address  |      |Department+-------+Constructor|                   * 
+*  +----------+      +----------+*     1+-----------+                   * 
+*                                                                       * 
+*                                                                       * 
+*  1. A company may have many taxis and many drivers (OneToMany).       *
+*  2. A driver may have only one address (OneToOne).                    * 
+*  3. A driver may drive many taxis and                                 *
+*     a taxi may be driven by many drivers (ManyToMany through Ride).   * 
+*  4. A taxi may pass through many breakdowns (OneToMany)               *
+*     and may have only one constructor (ManyToOne).                    * 
+*  5. A constructor may have many departments (OneToMany).              * 
+*                                                                       * 
+*                                                                       * 
+*************************************************************************/
 
 
 var Waterline = require('../../../../lib/waterline'),
@@ -349,12 +340,12 @@ describe('Populate Deep', function () {
               assert(constructor1.constructorName === 'constructor 1' && constructor2.constructorName === 'constructor 2',
                       'Third level not correctly populated.');
               //Level 4
-              assert(constructor1.departments.length === 2,'Could not populate forth level oneToMany collection.');
+              assert(constructor1.departments.length === 2,'Could not populate fourth level oneToMany collection.');
               assert(constructor1.departments[0].departmentLabel === 'dep 1' && constructor1.departments[1].departmentLabel === 'dep 2',
-                      'Forth level not correctly populated.');
-              assert(constructor2.departments.length === 1,'Could not populate forth level oneToMany collection.');
+                      'Fourth level not correctly populated.');
+              assert(constructor2.departments.length === 1,'Could not populate fourth level oneToMany collection.');
               assert(constructor2.departments[0].departmentLabel === 'dep 3',
-                      'Forth level not correctly populated.');
+                      'Fourth level not correctly populated.');
               done();
             });
   });
