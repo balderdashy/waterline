@@ -1,4 +1,4 @@
-var assert            = require('chai').assert,
+var assert            = require('assert'),
     _                 = require('lodash'),
     belongsToFixture  = require('../../support/fixtures/model/context.belongsTo.fixture'),
     manyToManyFixture = require('../../support/fixtures/model/context.manyToMany.fixture'),
