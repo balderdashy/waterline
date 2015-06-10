@@ -16,7 +16,7 @@ describe('Core Transformations', function() {
           }
         };
 
-        transformer = new Transformer(attributes, { models: {}, collections: {} });
+        transformer = new Transformer(attributes, {});
       });
 
       it('should set a username transformation', function() {
@@ -39,7 +39,7 @@ describe('Core Transformations', function() {
       it('should NOT set a username transformation', function() {
         var msg = (function() {
           try {
-            new Transformer(attributes, { models: {}, collections: {} });
+            new Transformer(attributes, {});
           } catch(e) {
             return e.message;
           }
