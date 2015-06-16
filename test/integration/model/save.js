@@ -11,6 +11,7 @@ describe('Model', function() {
 
     var collection;
     var updatedThroughCollection;
+    var populates;
     
     before(function(done) {
       var waterline = new Waterline();
@@ -26,6 +27,10 @@ describe('Model', function() {
           pets: {
             collection: 'pet',
             via: 'owner'
+          },
+          cars: {
+            collection: 'car',
+            via: 'owner'
           }
         }
       });
@@ -40,14 +45,27 @@ describe('Model', function() {
           }
         }
       });
+
+      var Car = Waterline.Collection.extend({
+        connection: 'my_foo',
+        tableName: 'car',
+        attributes: {
+          type: 'string',
+          owner: {
+            model: 'person'
+          }
+        }
+      });
       
       waterline.loadCollection(Person);
       waterline.loadCollection(Pet);
+      waterline.loadCollection(Car);
 
       var vals = {};
 
       var adapterDef = {
         find: function(con, col, criteria, cb) {
+          populates.push(col);
           return cb(null, [vals]);
         },
         update: function(con, col, criteria, values, cb) {
@@ -89,6 +107,10 @@ describe('Model', function() {
       });
     });
 
+    beforeEach(function(){
+      populates = [];
+    });
+
 
     /////////////////////////////////////////////////////
     // TEST METHODS
@@ -126,6 +148,89 @@ describe('Model', function() {
         assert.equal(person.pets.length, 3);
         assert.equal(typeof updatedThroughCollection, 'object');
         assert.equal(typeof updatedThroughCollection.pets, 'undefined');
+        done();
+      });
+    });
+
+    it('should populate all associations by default', function(done){
+      var person = new collection._model({ id: 3, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
+
+      // Update collection      
+      person.pets.push({type: 'dog'});
+      person.pets.push({type: 'frog'});
+      person.pets.push({type: 'log'});
+
+      person.cars.push({type: 'truck'});
+      person.cars.push({type: 'bike'});
+
+      person.save(function(err, values) {
+        assert(!err);
+
+        populates.sort();
+
+        assert.equal(populates.length, 3);
+        assert.deepEqual(populates, ['car', 'person', 'pet']);
+
+        done();
+      });
+    });
+
+    it('should not populate any associations if options.populate = false', function(done){
+      var options;
+      var person = new collection._model({ id: 4, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
+
+      // Update collection      
+      person.pets.push({type: 'dog'});
+      person.pets.push({type: 'frog'});
+      person.pets.push({type: 'log'});
+
+      person.cars.push({type: 'truck'});
+      person.cars.push({type: 'bike'});
+
+      options = {
+        populate: false
+      };
+
+      person.save(options, function(err, values) {
+        assert(!err);
+
+        populates.sort();
+
+        assert.equal(populates.length, 1);
+        assert.deepEqual(populates, ['person']);
+
+        done();
+      });
+    });
+
+    it('should populate only the specified associations', function(done){
+      var options;
+      var person = new collection._model({ id: 5, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
+
+      // Update collection      
+      person.pets.push({type: 'dog'});
+      person.pets.push({type: 'frog'});
+      person.pets.push({type: 'log'});
+
+      person.cars.push({type: 'truck'});
+      person.cars.push({type: 'bike'});
+
+      options = {
+        populate: [
+        {
+          key: 'cars'
+        }
+        ]
+      };
+
+      person.save(options, function(err, values) {
+        assert(!err);
+
+        populates.sort();
+
+        assert.equal(populates.length, 2);
+        assert.deepEqual(populates, ['car', 'person']);
+
         done();
       });
     });
