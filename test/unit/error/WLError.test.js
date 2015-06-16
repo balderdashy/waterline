@@ -54,6 +54,11 @@ describe('lib/error', function () {
       var err = errorify();
       assert(err.stack)
     });
+    it('should allow changing the stack property', function() {
+      var err = errorify();
+      err.stack = 'new stack';
+      assert(err.stack.indexOf('new stack') >= 0, 'err.stack was not set properly');
+    });
     it('should have a message property, like Error', function() {
       var err = errorify();
       assert(err.message)
