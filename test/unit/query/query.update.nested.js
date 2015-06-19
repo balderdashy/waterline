@@ -73,7 +73,7 @@ describe('Collection Query', function() {
         });
       });
     });
-    
+
     describe('with nested model values (create)', function() {
       var query;
 
@@ -323,7 +323,7 @@ describe('Collection Query', function() {
         query.update({}, { id: 5, name: 'foo', nestedModels: nestedModels }, function(err, status) {
           assert(!err, err);
           assert(status[0].nestedModels.length === 0);
-          assert(updatedModels.length === 10);
+          assert(updatedModels.length === 9);
           done();
         });
       });

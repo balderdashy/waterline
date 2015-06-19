@@ -30,10 +30,10 @@
   },
   "devDependencies": {
     "codeclimate-test-reporter": "0.0.4",
-    "mocha": "~2.2.5",
     "istanbul": "~0.3.14",
-    "should": "~6.0.3",
+    "mocha": "~2.2.5",
     "sails-memory": "balderdashy/sails-memory",
+    "should": "~6.0.3",
     "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
   "keywords": [

@@ -5,7 +5,6 @@ var _ = require('lodash'),
 
 describe('instance methods', function() {
   describe('hasMany association add', function() {
-
     describe('with an object', function() {
 
       /////////////////////////////////////////////////////
@@ -28,7 +27,7 @@ describe('instance methods', function() {
           };
 
           obj.prototype.exec = function(cb) {
-            cb(null, [new model(container.update[0].values)]);
+            cb(null); // Just return nothing, so we can function as a mock only.
           };
 
           obj.prototype.populate = function() { return this; };
@@ -50,8 +49,9 @@ describe('instance methods', function() {
         };
 
         // Mock Collection Create Method
-        var createFn = function(container) {
+        var createFn = function(container, d) {
           return function(values, cb) {
+
             var obj = { values: values };
             values.id = i;
             i++;
@@ -63,8 +63,6 @@ describe('instance methods', function() {
         // Add Collection Methods to all fixture collections
         fixture.update = updateFn(foo);
         fixture.findOne = findOneFn(foo);
-        fixture.waterline.collections.foo.update = updateFn(foo);
-        fixture.waterline.collections.bar.update = updateFn(bar);
         fixture.waterline.collections.bar.create = createFn(bar);
 
         model = new Model(fixture, {});
@@ -81,16 +79,14 @@ describe('instance methods', function() {
         person.bars.add({ name: 'foo' });
         person.bars.add({ name: 'bar' });
 
+        /**
+         * We've added two new children. This means two creates will be triggered. No updates needed.
+         */
         person.save(function(err) {
-          assert(bar.create.length === 2);
 
-          assert(bar.create[0].values.foo);
-          assert(bar.create[0].values.name);
-          assert(bar.create[1].values.foo);
-          assert(bar.create[1].values.name);
-
-          assert(bar.create[0].values.name === 'foo');
-          assert(bar.create[1].values.name === 'bar');
+          assert.equal(bar.create.length, 2, 'We did not get two creates');
+          assert.deepEqual(bar.create[0].values, {id : 1, foo: 1, name: 'foo'}, 'Create did not go as planned.');
+          assert.deepEqual(bar.create[1].values, {id : 2, foo: 1, name: 'bar'}, 'Create did not go as planned.');
 
           done();
         });
