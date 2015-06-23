@@ -9,7 +9,8 @@ describe('Model', function() {
     // TEST SETUP
     ////////////////////////////////////////////////////
 
-    var collection;
+    var personCollection;
+    var petCollection;
     var updatedThroughCollection;
     var populates;
     
@@ -61,19 +62,29 @@ describe('Model', function() {
       waterline.loadCollection(Pet);
       waterline.loadCollection(Car);
 
-      var vals = {};
+      var vals = {
+        person: { pets: [] , cars: []},
+        pet: {},
+        car: {}
+      };
 
       var adapterDef = {
         find: function(con, col, criteria, cb) {
           populates.push(col);
-          return cb(null, [vals]);
+          return cb(null, [vals[col]]);
         },
         update: function(con, col, criteria, values, cb) {
-          vals = values;
+          vals[col] = values;
           return cb(null, [values]);
         },
         create: function(con, col, values, cb) {
-          vals.pets.push(values);
+          
+          if (col == 'pet') {
+            
+            vals.person.pets.push(values);
+          }
+          
+          vals[col] = values;
           return cb(null, values);
         }
       };
@@ -86,10 +97,15 @@ describe('Model', function() {
 
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if(err) done(err);
-        collection = colls.collections.person;
         
-        // Setup value catching through collection.update
-        collection.update = (function(_super) {
+        // Setup pet collection
+        petCollection = colls.collections.pet;
+        
+        // Setup person collection
+        personCollection = colls.collections.person;
+        
+        // Setup value catching through personCollection.update
+        personCollection.update = (function(_super) {
           
           return function() {
             
@@ -98,10 +114,10 @@ describe('Model', function() {
               updatedThroughCollection = _.cloneDeep(arguments[1]);
             }
             
-            return _super.apply(collection, arguments);
+            return _super.apply(personCollection, arguments);
           }
           
-        })(collection.update)
+        })(personCollection.update)
         
         done();
       });
@@ -117,7 +133,7 @@ describe('Model', function() {
     ////////////////////////////////////////////////////
 
     it('should pass model values to adapter update method.', function(done) {
-      var person = new collection._model({ id: 1, first_name: 'foo', last_name: 'bar' });
+      var person = new personCollection._model({ id: 1, first_name: 'foo', last_name: 'bar' });
 
       // Update a value
       person.last_name = 'foobaz';
@@ -131,7 +147,7 @@ describe('Model', function() {
     });
 
     it('should not pass *-to-many associations through update.', function(done) {
-      var person = new collection._model({ id: 2, first_name: 'don', last_name: 'moe' }, {showJoins: true});
+      var person = new personCollection._model({ id: 2, first_name: 'don', last_name: 'moe' }, {showJoins: true});
 
       // Update collection      
       person.pets.push({type: 'dog'});
@@ -153,7 +169,7 @@ describe('Model', function() {
     });
 
     it('should populate all associations by default', function(done){
-      var person = new collection._model({ id: 3, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
+      var person = new personCollection._model({ id: 3, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
 
       // Update collection      
       person.pets.push({type: 'dog'});
@@ -177,7 +193,7 @@ describe('Model', function() {
 
     it('should not populate any associations if options.populate = false', function(done){
       var options;
-      var person = new collection._model({ id: 4, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
+      var person = new personCollection._model({ id: 4, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
 
       // Update collection      
       person.pets.push({type: 'dog'});
@@ -205,7 +221,7 @@ describe('Model', function() {
 
     it('should populate only the specified associations', function(done){
       var options;
-      var person = new collection._model({ id: 5, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
+      var person = new personCollection._model({ id: 5, first_name: 'jane', last_name: 'doe' }, {showJoins: true});
 
       // Update collection      
       person.pets.push({type: 'dog'});
@@ -230,7 +246,20 @@ describe('Model', function() {
 
         assert.equal(populates.length, 2);
         assert.deepEqual(populates, ['car', 'person']);
+        done();
+      });
+    });
 
+
+    it('should succeed when saving an unmodified nested model instance.', function(done) {
+      
+      // Person nested in pet as owner.
+      var pet = new petCollection._model({ id: 1, type: 'dog', owner: {id: 1} });
+      
+      pet.save(function(err, values) {
+        assert(!err);
+        assert.equal(values.id, 1);
+        assert.equal(values.type, 'dog');
         done();
       });
     });

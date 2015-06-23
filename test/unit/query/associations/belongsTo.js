@@ -77,6 +77,16 @@ describe('Collection Query', function() {
         done();
       });
     });
+    
+    
+    it('should return error if criteria is undefined', function(done) {
+      Car.findOne()
+      .populate('driver')
+      .exec(function(err, values) {
+        assert(err, 'An Error is expected');
+        done();
+      });
+    });
 
   });
 });
