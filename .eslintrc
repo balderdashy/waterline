@@ -1,0 +1,11 @@
+{
+  "extends": "standard-warn",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "space-before-function-paren":  [1, "never"],
+    "space-after-keywords":         [1, "never"],
+    "semi":                         [1, "always"]
+  }
+}
