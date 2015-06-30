@@ -6,6 +6,7 @@
   "rules": {
     "space-before-function-paren":  [1, "never"],
     "space-after-keywords":         [1, "never"],
-    "semi":                         [1, "always"]
+    "semi":                         [1, "always"],
+    "spaced-comment":               [1, "always", {"exceptions": ["/"]}]
   }
 }
