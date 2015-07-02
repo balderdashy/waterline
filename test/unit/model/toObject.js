@@ -1,10 +1,41 @@
-var assert = require('assert'),
-    belongsToFixture = require('../../support/fixtures/model/context.belongsTo.fixture'),
-    manyToManyFixture = require('../../support/fixtures/model/context.manyToMany.fixture'),
-    Model = require('../../../lib/waterline/model');
+var assert = require('assert');
+var belongsToFixture = require('../../support/fixtures/model/context.belongsTo.fixture');
+var manyToManyFixture = require('../../support/fixtures/model/context.manyToMany.fixture');
+var simpleFixture = require('../../support/fixtures/model/context.simple.fixture');
+var _ = require('lodash');
+var Model = require('../../../lib/waterline/model');
 
 describe('instance methods', function() {
   describe('toObject', function() {
+
+    describe('without associations', function() {
+
+      /////////////////////////////////////////////////////
+      // TEST SETUP
+      ////////////////////////////////////////////////////
+
+      var model;
+
+      before(function() {
+        model = new Model(simpleFixture(), {});
+      });
+
+
+      /////////////////////////////////////////////////////
+      // TEST METHODS
+      ////////////////////////////////////////////////////
+
+      it('should return a POJO', function() {
+        var person = new model({ name: 'foo' });
+        var obj = person.toObject();
+
+        assert(obj === Object(obj));
+        assert(_.isPlainObject(obj));
+        assert(obj.name === 'foo');
+        assert(!obj.full_name);
+      });
+
+    });
 
     describe('belongsTo', function() {
 
