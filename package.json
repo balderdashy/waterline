@@ -30,10 +30,14 @@
   },
   "devDependencies": {
     "codeclimate-test-reporter": "0.0.4",
-    "mocha": "~2.2.5",
+    "eslint": "^0.24.0",
+    "eslint-config-standard": "^3.4.0",
+    "eslint-config-standard-warn": "0.0.1",
+    "eslint-nibble": "0.0.6",
     "istanbul": "~0.3.14",
-    "should": "~6.0.3",
+    "mocha": "~2.2.5",
     "sails-memory": "balderdashy/sails-memory",
+    "should": "~6.0.3",
     "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
   "keywords": [
@@ -52,9 +56,12 @@
   "main": "./lib/waterline",
   "scripts": {
     "test": "make test",
+    "pretest": "npm run lint",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
-    "coverage": "make coverage"
+    "coverage": "make coverage",
+    "lint": "eslint lib --reset",
+    "nibble": "eslint-nibble lib"
   },
   "engines": {
     "node": "*"
