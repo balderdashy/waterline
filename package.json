@@ -33,7 +33,7 @@
     "eslint": "^0.24.0",
     "eslint-config-standard": "^3.4.0",
     "eslint-config-standard-warn": "0.0.1",
-    "eslint-nibble": "0.0.6",
+    "eslint-nibble": "^0.1.1",
     "istanbul": "~0.3.14",
     "mocha": "~2.2.5",
     "sails-memory": "balderdashy/sails-memory",
