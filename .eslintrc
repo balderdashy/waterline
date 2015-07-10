@@ -7,6 +7,7 @@
     "space-before-function-paren":  [1, "never"],
     "space-after-keywords":         [1, "never"],
     "semi":                         [1, "always"],
+    "no-multiple-empty-lines":      [1, {"max": 2}],
     "spaced-comment":               [1, "always", {"exceptions": ["/"]}]
   }
 }
