@@ -67,6 +67,14 @@ describe('Collection Query', function() {
         });
       });
 
+      it('should set default values when the value is undefined', function(done) {
+        query.create({ first: undefined }, function(err, status) {
+          assert(status.first = 'Foo');
+          assert(status.full === 'Foo Bar');
+          done();
+        });
+      });
+
       it('should add timestamps', function(done) {
         query.create({}, function(err, status) {
           assert(status.createdAt);
