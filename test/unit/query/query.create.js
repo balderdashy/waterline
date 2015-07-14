@@ -207,7 +207,6 @@ describe('Collection Query', function() {
 
       it('should add timestamps with a custom name', function(done) {
         query.create({}, function(err, status) {
-          console.log(err,status);
           assert(!status.createdAt);
           assert(!status.updatedAt);
           assert(status.customCreatedAt);
