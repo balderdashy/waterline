@@ -4,9 +4,10 @@
     "node": true
   },
   "rules": {
-    "space-before-function-paren":  [1, "never"],
-    "space-after-keywords":         [1, "never"],
+    "eqeqeq":                       [1, "smart"],
+    "no-multiple-empty-lines":      [1, {"max": 2}],
     "semi":                         [1, "always"],
+    "space-before-function-paren":  [1, "never"],
     "spaced-comment":               [1, "always", {"exceptions": ["/"]}]
   }
 }
