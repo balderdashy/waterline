@@ -47,7 +47,7 @@ var User = Waterline.Collection.extend({
 
     lastName: {
       type: 'string',
-      required: true,
+      required: true
     }
   }
 });
