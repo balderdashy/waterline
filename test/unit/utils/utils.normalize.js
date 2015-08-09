@@ -1,6 +1,7 @@
 var assert = require('assert'),
     normalize = require('../../../lib/waterline/utils/normalize'),
     units = normalize.NotExposed;
+var stform = require('../../../lib/waterline/utils/normalize').NotExposed;
 
 describe("Normalize utility", function() {
 
@@ -41,14 +42,27 @@ describe("Normalize utility", function() {
       });
     });
 
-    // describe("Where Clause Attribute Transformation", function() {
+    describe("Where Clause Attribute Transformation", function() {
+      var process = units.ProcessWhereClauseAttributes;
 
-    // })
+      it("should recognize a sort clause", function() {
+        var criteria = {where: {id: 3, sort: "ASC"}};
+        var expected = {where: {id: 3}, sort: "ASC"};
+        process(criteria);
+        assert.deepEqual(expected, criteria);
+      });
+
+      it('should handle multiple clauses in the where clause', function() {
+        var criteria = {where: {skip: 5, sort: "ASC", limit: 7}};
+        var expected = {where: {}, skip: 5, sort: "ASC", limit: 7};
+        process(criteria);
+        assert.deepEqual(expected, criteria);
+      });
+    });
 
     describe("sort", function() {
       it("should default to asc", function() {
         var criteria = normalize.criteria({ sort: "name" });
-        console.log(criteria);
 
         assert(criteria.sort.name === 1);
       });
@@ -67,14 +81,13 @@ describe("Normalize utility", function() {
 
       it("should properly normalize valid sort", function() {
         var criteria = normalize.criteria({ sort: "name desc" });
-        console.log(criteria);
 
         assert(criteria.sort.name === -1);
       });
 
       it("should properly normalize valid sort with upper case", function() {
         var criteria = normalize.criteria({ sort: "name DESC" });
-        console.log(criteria);
+
         assert(criteria.sort.name === -1);
       });
     });
@@ -94,7 +107,7 @@ describe("Normalize utility", function() {
 
       it("should properly normalize valid sort", function() {
         var criteria = normalize.criteria({ sort: { name: "asc" } });
-        console.log(criteria);
+
         assert(criteria.sort.name === 1);
       });
 
