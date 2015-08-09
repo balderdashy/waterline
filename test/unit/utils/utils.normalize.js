@@ -155,4 +155,50 @@ describe('Normalize utility', function() {
     });
   });
 
+  describe('expandPK', function() {
+    describe('primary key finding', function() {
+      it('should default to id', function() {
+        var options = 4;
+        var result = normalize.expandPK({attributes: {id: {type: 'integer'}}}, options);
+        assert.equal(result.id, options);
+      });
+
+      it('should find the primary key', function() {
+        var options = 4;
+        var context = {attributes: {key: {type: 'integer', primaryKey: true}}};
+        var result = normalize.expandPK(context, options);
+        assert.equal(result.key, options);
+      });
+    });
+
+    describe('return primary key coercion function', function() {
+      it('should build an integer coercion function for integer type', function() {
+        var options = "4";
+        var context = {attributes: {key: {type: 'integer', primaryKey: true}}};
+        var processed = normalize.expandPK(context, options);
+        var expectedType = 'number';
+        var foundType = typeof(processed.key);
+        assert.equal(foundType, expectedType);
+      });
+
+      it('should build an string coercion function for string type', function() {
+        var options = "4";
+        var context = {attributes: {key: {type: 'STRING', primaryKey: true}}};
+        var processed = normalize.expandPK(context, options);
+        var expectedType = 'string';
+        var foundType = typeof(processed.key);
+        assert.equal(foundType, expectedType);
+      });
+
+      it('should coerce all elements of an array if given an array', function() {
+        var options = [1, 2, 3];
+        var context = {attributes: {key: {type: 'STRING', primaryKey: true}}};
+        var processed = normalize.expandPK(context, options);
+        var expectedType = 'string';
+        console.log(processed);
+        var foundType = typeof(processed.key[0]);
+        assert.equal(foundType, expectedType);
+      });
+    });
+  });
 });
