@@ -53,9 +53,48 @@ describe("Normalize utility", function() {
       });
 
       it('should handle multiple clauses in the where clause', function() {
-        var criteria = {where: {skip: 5, sort: "ASC", limit: 7}};
-        var expected = {where: null, skip: 5, sort: "ASC", limit: 7};
+        var criteria = {where: {skip: 5, sort: "ASC", limit: 7, id:4}};
+        var expected = {where: {id: 4}, skip: 5, sort: "ASC", limit: 7};
         process(criteria);
+        assert.deepEqual(expected, criteria);
+      });
+
+      it('should make empty where clauses null', function() {
+        var criteria = {where: {skip: 5, sort: "ASC"}};
+        var expected = {where: null, skip: 5, sort: "ASC"};
+        process(criteria);
+        assert.deepEqual(expected, criteria);
+      });
+    });
+
+    describe("Skip and Limit Attribute Validator", function() {
+      var validate = units.ValidateLimitAndSkipParameters;
+
+      it("skip should turn negative numbers to zero", function() {
+        var criteria = {skip: -4};
+        var expected = {skip: 0};
+        validate(criteria);
+        assert.deepEqual(expected, criteria);
+      });
+
+      it("limit should turn negative numbers to zero", function() {
+        var criteria = {limit: -63823};
+        var expected = {limit: 0};
+        validate(criteria);
+        assert.deepEqual(expected, criteria);
+      });
+
+      it("skip should parse strings", function() {
+        var criteria = {skip: "4"};
+        var expected = {skip: 4};
+        validate(criteria);
+        assert.deepEqual(expected, criteria);
+      });
+
+      it("limit should parse strings", function() {
+        var criteria = {limit: "42"};
+        var expected = {limit: 42};
+        validate(criteria);
         assert.deepEqual(expected, criteria);
       });
     });
