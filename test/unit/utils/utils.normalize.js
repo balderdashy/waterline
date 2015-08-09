@@ -54,7 +54,7 @@ describe("Normalize utility", function() {
 
       it('should handle multiple clauses in the where clause', function() {
         var criteria = {where: {skip: 5, sort: "ASC", limit: 7}};
-        var expected = {where: {}, skip: 5, sort: "ASC", limit: 7};
+        var expected = {where: null, skip: 5, sort: "ASC", limit: 7};
         process(criteria);
         assert.deepEqual(expected, criteria);
       });
