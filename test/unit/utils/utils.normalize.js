@@ -1,7 +1,7 @@
-var assert = require('assert'),
-    normalize = require('../../../lib/waterline/utils/normalize'),
-    units = normalize.NotExposed;
-var stform = require('../../../lib/waterline/utils/normalize').NotExposed;
+var assert = require('assert');
+var normalize = require('../../../lib/waterline/utils/normalize');
+var units = normalize.NotExposed;
+
 
 describe('Normalize utility', function() {
 
@@ -14,7 +14,7 @@ describe('Normalize utility', function() {
       });
 
       it('should return arrays to the calling method', function() {
-        var criteria = [1,2,3];
+        var criteria = [1, 2, 3];
         var result = normalize.criteria(criteria);
         assert.deepEqual(criteria, result);
       });
@@ -23,11 +23,11 @@ describe('Normalize utility', function() {
         var undefinedValue;
         var criteria = {id: undefinedValue};
         var result = normalize.criteria(criteria);
-        assert.deepEqual({where: {id:null}}, result);
+        assert.deepEqual({where: {id: null}}, result);
       });
 
       it('should wrap primitives with an id tag', function() {
-        var primitives = [1,-17,'idtag'];
+        var primitives = [1, -17, 'idtag'];
         for (var i = 0; i < primitives.length; i++) {
           var prop = primitives[i];
           var result = normalize.criteria(prop);
@@ -53,7 +53,7 @@ describe('Normalize utility', function() {
       });
 
       it('should handle multiple clauses in the where clause', function() {
-        var criteria = {where: {skip: 5, sort: 'ASC', limit: 7, id:4}};
+        var criteria = {where: {skip: 5, sort: 'ASC', limit: 7, id: 4}};
         var expected = {where: {id: 4}, skip: 5, sort: 'ASC', limit: 7};
         process(criteria);
         assert.deepEqual(expected, criteria);
