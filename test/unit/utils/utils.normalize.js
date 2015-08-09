@@ -1,6 +1,9 @@
 var assert = require('assert');
 var normalize = require('../../../lib/waterline/utils/normalize');
 var units = normalize.NotExposed;
+var WLUsageError = require('../../../lib/waterline/error/WLUsageError');
+
+
 
 
 describe('Normalize utility', function() {
@@ -129,33 +132,27 @@ describe('Normalize utility', function() {
 
         assert(criteria.sort.name === -1);
       });
-    });
 
-    describe('sort object', function() {
-      it('should throw error on invalid order', function() {
-        var error;
-
-        try {
-          normalize.criteria({ sort: { name: 'up' } });
-        } catch(e) {
-          error = e;
-        }
-
-        assert(typeof error !== 'undefined');
+      var sort = units.NormalizeSortOptions;
+      it('should handle the binary format properly when given a 1', function() {
+        var criteria = {sort: {column: 1}};
+        var expected = {sort: {column: 1}};
+        sort(criteria);
+        assert.deepEqual(expected, criteria);
       });
 
-      it('should properly normalize valid sort', function() {
-        var criteria = normalize.criteria({ sort: { name: 'asc' } });
-
-        assert(criteria.sort.name === 1);
+      it('should handle the binary format properly when given a 0', function() {
+        var criteria = {sort: {column: 0}};
+        var expected = {sort: {column: -1}};
+        sort(criteria);
+        assert.deepEqual(expected, criteria);
       });
 
-      it('should properly normalize valid sort with upper case', function() {
-        var criteria = normalize.criteria({ sort: { name: 'DESC' } });
-        assert(criteria.sort.name === -1);
+      it('should throw an error and description on nonrecognized input', function() {
+        var criteria = {sort: [1, 2, 3]};
+        assert.throws(function() { sort(criteria); }, WLUsageError);
       });
     });
-
   });
 
 });
