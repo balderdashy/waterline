@@ -195,10 +195,43 @@ describe('Normalize utility', function() {
         var context = {attributes: {key: {type: 'STRING', primaryKey: true}}};
         var processed = normalize.expandPK(context, options);
         var expectedType = 'string';
-        console.log(processed);
         var foundType = typeof(processed.key[0]);
         assert.equal(foundType, expectedType);
       });
+    });
+  });
+
+  describe('likeCriteria', function() {
+    var like = normalize.likeCriteria;
+    it('should return false if not given an object', function() {
+      var criteria = 3;
+      var result = like(criteria);
+      var expected = false;
+      assert.equal(result, expected);
+    });
+
+    it('should add a where clause', function() {
+      var criteria = {id: 4};
+      var expected = {where: {like: {id: 4}}};
+      var result = like(criteria);
+      assert.deepEqual(result, expected);
+    });
+
+    it('should not add an extra where clause', function() {
+      var criteria = {where: {id: 4}};
+      var expected = {where: {like: {id: 4}}};
+      var result = like(criteria);
+      assert.deepEqual(result, expected);
+    });
+
+    it('should apply the enhancer funciton', function() {
+      var enhancer = function applyStartsWith(criteria) {
+        return criteria + '%';
+      };
+      var criteria = {where: {name: "Bob"}};
+      var expected = {where: {like: {name: "Bob%"}}};
+      var result = like(criteria, {}, enhancer);
+      assert.deepEqual(result, expected);
     });
   });
 });
