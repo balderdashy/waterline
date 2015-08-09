@@ -67,7 +67,6 @@ describe('Collection Query', function() {
       .limit(1)
       .skip(1)
       .sort({ name: 'desc' })
-      .sort("name desc")
       .exec(function(err, results) {
         assert(!err);
         assert(Array.isArray(results));
