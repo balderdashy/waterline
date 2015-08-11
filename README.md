@@ -100,7 +100,7 @@ Available options are:
   - `attributes` A hash of attributes to be defined for a model
   - `autoCreatedAt` and `autoUpdatedAt` Set false to prevent creating `createdAt` and `updatedAt` properties in your model
   - `autoPK` Set false to prevent creating `id`. By default `id` will be created as index with auto increment
-  - `encoding` Set default encoding for this model. Expects an object with `charset` and/or `collation` keys.
+  - `encoding` Set default encoding for this model. Expects an object with `charset` and/or `collation` properties.
   - [lifecyle callbacks](#lifecycle-callbacks)
   - any other class method you define!
 
