@@ -134,6 +134,9 @@ var User = Waterline.Collection.extend({
   // Define an adapter to use
   adapter: 'postgresql',
 
+  // Define default encoding
+  encoding: {charset: 'utf8', collation: 'utf8_general_ci'},
+
   // Define attributes for this collection
   attributes: {
 
