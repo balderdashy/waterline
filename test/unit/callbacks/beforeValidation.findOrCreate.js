@@ -24,7 +24,7 @@ describe('.beforeValidate()', function() {
               name: 'string'
             },
 
-            beforeValidate: function(values, cb) {
+            beforeValidate: function(values, criteria, cb) {
               values.name = values.name + ' updated';
               cb();
             }
@@ -135,13 +135,13 @@ describe('.beforeValidate()', function() {
 
           beforeValidate: [
             // Function 1
-            function(values, cb) {
+            function(values, criteria, cb) {
               values.name = values.name + ' fn1';
               cb();
             },
 
             // Function 1
-            function(values, cb) {
+            function(values, criteria, cb) {
               values.name = values.name + ' fn2';
               cb();
             }
