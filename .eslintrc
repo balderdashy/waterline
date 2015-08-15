@@ -1,0 +1,13 @@
+{
+  "extends": "standard-warn",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "eqeqeq":                       [1, "smart"],
+    "no-multiple-empty-lines":      [1, {"max": 2}],
+    "semi":                         [1, "always"],
+    "space-before-function-paren":  [1, "never"],
+    "spaced-comment":               [1, "always", {"exceptions": ["/"]}]
+  }
+}

@@ -67,6 +67,14 @@ describe('Collection Query', function() {
         });
       });
 
+      it('should set default values when the value is undefined', function(done) {
+        query.create({ first: undefined }, function(err, status) {
+          assert(status.first = 'Foo');
+          assert(status.full === 'Foo Bar');
+          done();
+        });
+      });
+
       it('should add timestamps', function(done) {
         query.create({}, function(err, status) {
           assert(status.createdAt);
@@ -108,7 +116,7 @@ describe('Collection Query', function() {
 
     });
 
-    describe('override auto values', function() {
+    describe('override and disable auto values', function() {
       var query;
 
       before(function(done) {
@@ -152,6 +160,57 @@ describe('Collection Query', function() {
         query.create({}, function(err, status) {
           assert(!status.createdAt);
           assert(!status.updatedAt);
+          done();
+        });
+      });
+    });
+
+    describe('override auto values with custom names', function() {
+      var query;
+
+      before(function(done) {
+
+        var waterline = new Waterline();
+        var Model = Waterline.Collection.extend({
+          identity: 'user',
+          connection: 'foo',
+
+          autoCreatedAt: "customCreatedAt",
+          autoUpdatedAt: "customUpdatedAt",
+
+          attributes: {
+            name: {
+              type: 'string',
+              defaultsTo: 'Foo Bar'
+            },
+            doSomething: function() {}
+          }
+        });
+
+        waterline.loadCollection(Model);
+
+        // Fixture Adapter Def
+        var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+
+        var connections = {
+          'foo': {
+            adapter: 'foobar'
+          }
+        };
+
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
+          if(err) return done(err);
+          query = colls.collections.user;
+          done();
+        });
+      });
+
+      it('should add timestamps with a custom name', function(done) {
+        query.create({}, function(err, status) {
+          assert(!status.createdAt);
+          assert(!status.updatedAt);
+          assert(status.customCreatedAt);
+          assert(status.customUpdatedAt);
           done();
         });
       });
