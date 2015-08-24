@@ -397,4 +397,30 @@ describe('Populate Deep', function () {
               done();
             });
   });
+
+  it('should populate nested collections', function (done) {
+    companyModel.find().where({companyId: 2})
+            .populate('taxis')
+            .populate('taxis.breakdowns')
+            .exec(function (err, company) {
+              if (err)
+                return done(err);
+              assert(company[0].taxis[0].breakdowns.length === 1);
+              assert(company[0].taxis[1].breakdowns.length === 3);
+              done();
+            });
+  });
+
+  it('findOne should return undefined if there is no results', function (done) {
+    companyModel.findOne().where({companyId: 999})
+            .populate('taxis')
+            .populate('taxis.breakdowns')
+            .exec(function (err, company) {
+              if (err)
+                return done(err);
+              assert( company === void(0) );
+              done();
+            });
+  });
+
 });
