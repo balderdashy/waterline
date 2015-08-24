@@ -81,6 +81,10 @@ describe('Core Validator', function() {
             type: 'string',
             required: true,
             defaultsTo: 'Smith'
+          },
+          city: {
+            type: 'string',
+            maxLength: 7
           }
         }
       });
@@ -120,6 +124,67 @@ describe('Core Validator', function() {
         assert(err.last_name[1].rule === 'required');
         done();
       });
+    });
+
+    it('should validate all fields with presentOnly omitted or set to false', function(done) {
+      person._validator.validate({ city: 'Washington' }, function(err) {
+        assert(err);
+        assert(!err.first_name);
+        assert(err.last_name);
+        assert(err.last_name[0].rule === 'string');
+        assert(err.city);
+        assert(err.city[0].rule === 'maxLength');
+
+        person._validator.validate({ city: 'Washington' }, false, function(err) {
+          assert(err);
+          assert(!err.first_name);
+          assert(err.last_name);
+          assert(err.last_name[0].rule === 'string');
+          assert(err.city);
+          assert(err.city[0].rule === 'maxLength');
+          done();
+        });
+      });
+    });
+
+    it('should, for presentOnly === true, validate present values only, thus not need the required last_name', function(done) {
+      person._validator.validate({ first_name: 'foo' }, true, function(err) {
+        assert(!err);
+        done();
+      });
+    });
+
+    it('should validate only the specified value', function(done) {
+      person._validator.validate({ first_name: 'foo', last_name: 32, city: 'Washington' },
+        'first_name', function(err) {
+          assert(!err);
+
+          person._validator.validate({ first_name: 'foo', last_name: 32, city: 'Washington' },
+            'last_name', function(err) {
+              assert(err);
+              assert(err.last_name);
+              assert(err.last_name[0].rule === 'string');
+              assert(!err.city);
+              done();
+            });
+        });
+    });
+
+    it('should validate only the specified values', function(done) {
+      person._validator.validate({ first_name: 'foo', last_name: 32, city: 'Atlanta' },
+        ['first_name', 'city'], function(err) {
+          assert(!err);
+
+          person._validator.validate({ first_name: 'foo', last_name: 32, city: 'Washington' },
+            ['first_name', 'city'], function(err) {
+              assert(err);
+              assert(!err.first_name);
+              assert(!err.last_name);
+              assert(err.city);
+              assert(err.city[0].rule === 'maxLength');
+              done();
+            });
+        });
     });
 
   });

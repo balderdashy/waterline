@@ -51,4 +51,43 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with special key object attribute', function() {
+    var person;
+
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
+        connection: 'foo',
+        attributes: {
+          first_name: { type: 'STRING' },
+          last_name: { type: 'STRING' },
+          type: { 
+            type: 'STRING',
+            columnName: 'person_type'
+          }
+        }
+      });
+
+      waterline.loadCollection(Person);
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
+        if(err) return done(err);
+        person = colls.collections.person;
+        done();
+      });
+    });
+
+    it('should set type to attributes', function() {
+      assert(person._schema.schema.first_name.type);
+    });
+  });
+
 });

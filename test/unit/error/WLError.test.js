@@ -52,12 +52,22 @@ describe('lib/error', function () {
   describe('lib/error/WLError.js', function() {
     it('should have a stack property, like Error', function() {
       var err = errorify();
-      assert(err.stack)
+      assert(err.stack);
+    });
+    it('should allow changing the stack property', function() {
+      var err = errorify();
+      err.stack = 'new stack';
+      assert(err.stack.indexOf('new stack') >= 0, 'err.stack was not set properly');
     });
     it('should have a message property, like Error', function() {
       var err = errorify();
-      assert(err.message)
+      assert(err.message);
     })
+    it('should allow changing the message property', function() {
+      var err = errorify();
+      err.message = 'new message';
+      assert.equal(err.message, 'new message');
+    });
   })
 
 });

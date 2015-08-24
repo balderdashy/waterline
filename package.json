@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.10.23",
+  "version": "0.10.25",
   "homepage": "http://github.com/balderdashy/waterline",
   "contributors": [
     {
@@ -23,17 +23,21 @@
     "bluebird": "~2.9.25",
     "deep-diff": "~0.3.0",
     "lodash": "~3.9.1",
-    "switchback": "~1.1.3",
+    "switchback": "~2.0.0",
     "prompt": "~0.2.14",
     "waterline-criteria": "~0.11.1",
-    "waterline-schema": "~0.1.17"
+    "waterline-schema": "0.2.0-rc1"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "0.0.4",
-    "mocha": "~2.2.5",
+    "eslint": "^0.24.0",
+    "eslint-config-standard": "^3.4.0",
+    "eslint-config-standard-warn": "0.0.1",
+    "eslint-nibble": "^0.1.1",
     "istanbul": "~0.3.14",
-    "should": "~6.0.3",
+    "mocha": "~2.2.5",
     "sails-memory": "balderdashy/sails-memory",
+    "should": "~6.0.3",
     "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
   "keywords": [
@@ -52,9 +56,12 @@
   "main": "./lib/waterline",
   "scripts": {
     "test": "make test",
+    "pretest": "npm run lint",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
-    "coverage": "make coverage"
+    "coverage": "make coverage",
+    "lint": "eslint lib --reset",
+    "nibble": "eslint-nibble lib"
   },
   "engines": {
     "node": "*"
