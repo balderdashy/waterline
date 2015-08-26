@@ -354,6 +354,7 @@ describe('Populate Deep', function () {
     companyModel.find().where({companyName: 'company 2'})
             .populate('drivers.taxis',{sort : {taxiId : 1}})
             .populate('drivers.address')
+            .populate('taxis')
             .exec(function (err, companies) {
               if (err)
                 return done(err);
@@ -362,6 +363,7 @@ describe('Populate Deep', function () {
               //Level 1
               assert(companies[0].drivers.length === 1, 'Could not populate first level oneToMany collection.');
               assert(companies[0].drivers[0].driverName === 'driver 2', 'First level not correctly populated.');
+              assert(companies[0].taxis.length === 2, 'First level not correctly populated.');
               //Level 2 A
               assert(companies[0].drivers[0].taxis.length === 2, 'Could not populate second level manyToMany collection.');
               var taxi1 = companies[0].drivers[0].taxis[0];
