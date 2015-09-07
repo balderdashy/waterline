@@ -1,6 +1,5 @@
 var assert = require('assert');
 var normalize = require('../../../lib/waterline/utils/normalize');
-var units = normalize.NotExposed;
 var WLUsageError = require('../../../lib/waterline/error/WLUsageError');
 
 
@@ -46,59 +45,57 @@ describe('Normalize utility', function() {
     });
 
     describe('Where Clause Attribute Transformation', function() {
-      var process = units.ProcessWhereClauseAttributes;
 
       it('should recognize a sort clause', function() {
         var criteria = {where: {id: 3, sort: 'ASC'}};
-        var expected = {where: {id: 3}, sort: 'ASC'};
-        process(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: {id: 3}, sort: {ASC: 1}};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
 
       it('should handle multiple clauses in the where clause', function() {
         var criteria = {where: {skip: 5, sort: 'ASC', limit: 7, id: 4}};
-        var expected = {where: {id: 4}, skip: 5, sort: 'ASC', limit: 7};
-        process(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: {id: 4}, skip: 5, sort: {ASC: 1}, limit: 7};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, expected);
       });
 
       it('should make empty where clauses null', function() {
         var criteria = {where: {skip: 5, sort: 'ASC'}};
-        var expected = {where: null, skip: 5, sort: 'ASC'};
-        process(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: null, skip: 5, sort: {ASC: 1}};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
     });
 
     describe('Skip and Limit Attribute Validator', function() {
-      var validate = units.ValidateLimitAndSkipParameters;
 
       it('skip should turn negative numbers to zero', function() {
         var criteria = {skip: -4};
-        var expected = {skip: 0};
-        validate(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: null, skip: 0};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
 
       it('limit should turn negative numbers to zero', function() {
         var criteria = {limit: -63823};
-        var expected = {limit: 0};
-        validate(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: null, limit: 0};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
 
       it('skip should parse strings', function() {
         var criteria = {skip: '4'};
-        var expected = {skip: 4};
-        validate(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: null, skip: 4};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
 
       it('limit should parse strings', function() {
         var criteria = {limit: '42'};
-        var expected = {limit: 42};
-        validate(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: null, limit: 42};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
     });
 
@@ -133,24 +130,24 @@ describe('Normalize utility', function() {
         assert(criteria.sort.name === -1);
       });
 
-      var sort = units.NormalizeSortOptions;
       it('should handle the binary format properly when given a 1', function() {
         var criteria = {sort: {column: 1}};
-        var expected = {sort: {column: 1}};
-        sort(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: null, sort: {column: 1}};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
 
       it('should handle the binary format properly when given a 0', function() {
         var criteria = {sort: {column: 0}};
-        var expected = {sort: {column: -1}};
-        sort(criteria);
-        assert.deepEqual(expected, criteria);
+        var expected = {where: null, sort: {column: -1}};
+        var result = normalize.criteria(criteria);
+        assert.deepEqual(expected, result);
       });
 
       it('should throw an error and description on nonrecognized input', function() {
         var criteria = {sort: [1, 2, 3]};
-        assert.throws(function() { sort(criteria); }, WLUsageError);
+        assert.throws(function() {
+          normalize.criteria(criteria); }, WLUsageError);
       });
     });
   });
