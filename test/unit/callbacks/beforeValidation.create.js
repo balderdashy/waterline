@@ -5,6 +5,7 @@ describe('.beforeValidate()', function() {
 
   describe('basic function', function() {
     var person;
+    var passedCriteria;
 
     before(function(done) {
       var waterline = new Waterline();
@@ -15,8 +16,9 @@ describe('.beforeValidate()', function() {
           name: 'string'
         },
 
-        beforeValidate: function(values, cb) {
+        beforeValidate: function(values, criteria, cb) {
           values.name = values.name + ' updated';
+          passedCriteria = criteria;
           cb();
         }
       });
@@ -49,6 +51,7 @@ describe('.beforeValidate()', function() {
         person.create({ name: 'test' }, function(err, user) {
           assert(!err);
           assert(user.name === 'test updated');
+          assert(passedCriteria === null);
           done();
         });
       });
@@ -62,6 +65,7 @@ describe('.beforeValidate()', function() {
 
   describe('array of functions', function() {
     var person, status;
+    var passedCriteria = [];
 
     before(function(done) {
       var waterline = new Waterline();
@@ -74,14 +78,16 @@ describe('.beforeValidate()', function() {
 
         beforeValidate: [
           // Function 1
-          function(values, cb) {
+          function(values, criteria, cb) {
             values.name = values.name + ' fn1';
+            passedCriteria.push(criteria);
             cb();
           },
 
           // Function 2
-          function(values, cb) {
+          function(values, criteria, cb) {
             values.name = values.name + ' fn2';
+            passedCriteria.push(criteria);
             cb();
           }
         ]
@@ -109,6 +115,9 @@ describe('.beforeValidate()', function() {
       person.create({ name: 'test' }, function(err, user) {
         assert(!err);
         assert(user.name === 'test fn1 fn2');
+        assert(passedCriteria.length === 2);
+        assert(passedCriteria[0] === null);
+        assert(passedCriteria[1] === null);
         done();
       });
     });
