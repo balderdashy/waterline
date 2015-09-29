@@ -38,4 +38,5 @@ The backlog consists of features which are not currently in the immediate-term r
 
  Feature                                         | Owner                                              | Details
  :---------------------------------------------- | :------------------------------------------------- | :------
+ findOrCreate() - is new                         |                                                    | In callback supply isNew value indicating if new record was created, or existing one was found.
  
