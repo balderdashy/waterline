@@ -28,7 +28,7 @@ var diskAdapter = require('sails-disk'),
 var config = {
 
   // Setup Adapters
-  // Creates named adapters that have have been required
+  // Creates named adapters that have been required
   adapters: {
     'default': diskAdapter,
     disk: diskAdapter,
