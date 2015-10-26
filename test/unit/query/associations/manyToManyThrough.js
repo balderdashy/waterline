@@ -99,8 +99,8 @@ describe('Collection Query', function() {
       .populate('user')
       .exec(function(err, drive) {
         if(err) return done(err);
-		assert(!drive.car instanceof Array,"through table model associations return Array instead of single Objet");
-        assert(!drive.user instanceof Array,"through table model associations return Array instead of single Objet");
+	assert(!Array.isArray(drive.car),"through table model associations return Array instead of single Objet");
+        assert(!Array.isArray(drive.user),"through table model associations return Array instead of single Objet");
         done();
       });
     });
