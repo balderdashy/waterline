@@ -30,7 +30,7 @@ _(feel free to suggest things)_
 
  Feature                                                  | Owner                                                                            | Details
  :------------------------------------------------------- | :------------------------------------------------------------------------------- | :------
- 
+
 
 #### Backlog
 
@@ -39,4 +39,4 @@ The backlog consists of features which are not currently in the immediate-term r
  Feature                                         | Owner                                              | Details
  :---------------------------------------------- | :------------------------------------------------- | :------
  findOrCreate() - is new                         |                                                    | In callback supply isNew value indicating if new record was created, or existing one was found.
- 
+ Explicit 'in' key in query language               | @nwhatt                                            |From issue #1186. If the value of a key is an empty array, it can be interpreted ```Errors.find({or: [{ foo: { in: foodIds, '!': null } },{ bar: { in: barId,'!': null } }]}).exec(...)```                                
