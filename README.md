@@ -182,6 +182,7 @@ var User = Waterline.Collection.extend({
    * afterCreate
    * beforeDestroy
    * afterDestroy
+   * afterFind
    */
 
   beforeCreate: function(values, cb) {
@@ -545,6 +546,10 @@ Lifecycle callbacks are functions you can define to run at certain times in a qu
   - afterValidate / *fn(valuesToUpdate, cb)*
   - beforeUpdate / *fn(valuesToUpdate, cb)*
   - afterUpdate / *fn(updatedRecord, cb)*
+
+**Callbacks run on Find & FindOne**
+
+  - afterFind / *fn(values, cb)*
 
 **Callbacks run on Destroy**
 
