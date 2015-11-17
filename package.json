@@ -22,7 +22,7 @@
     "async": "~1.2.0",
     "bluebird": "~2.9.25",
     "deep-diff": "~0.3.0",
-    "lodash": "~3.9.1",
+    "lodash": "~4.0.0",
     "switchback": "~2.0.0",
     "prompt": "~0.2.14",
     "waterline-criteria": "~0.11.1",
