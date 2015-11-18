@@ -562,7 +562,7 @@ associations [here](https://github.com/balderdashy/waterline-docs/blob/master/mo
 
 ## Tests
 
-All tests are written with [mocha](http://visionmedia.github.io/mocha/) and should be run with [npm](https://www.npmjs.com/):
+All tests are written with [mocha](https://mochajs.org/) and should be run with [npm](https://www.npmjs.com/):
 
 ``` bash
   $ npm test
