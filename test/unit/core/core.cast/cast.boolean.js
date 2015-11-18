@@ -42,9 +42,9 @@ describe('Core Type Casting', function() {
       assert(values.name === false);
     });
 
-    it('should default to false', function() {
+    it('should not cast bad values', function() {
       var values = person._cast.run({ name: 'foo' });
-      assert(values.name === false);
+      assert(values.name === 'foo');
     });
 
     it('should cast integer 0 to a boolean', function() {
