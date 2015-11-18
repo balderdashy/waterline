@@ -4,7 +4,7 @@
 [![NPM version](https://badge.fury.io/js/waterline.svg)](http://badge.fury.io/js/waterline)
 [![Dependency Status](https://gemnasium.com/balderdashy/waterline.svg)](https://gemnasium.com/balderdashy/waterline)
 [![Test Coverage](https://codeclimate.com/github/balderdashy/waterline/badges/coverage.svg)](https://codeclimate.com/github/balderdashy/waterline)
-[![StackOverflow](http://img.shields.io/badge/stackoverflow-waterline-blue.svg)]( http://stackoverflow.com/questions/tagged/waterline)
+[![StackOverflow](https://img.shields.io/badge/stackoverflow-waterline-blue.svg)]( http://stackoverflow.com/questions/tagged/waterline)
 
 Waterline is a brand new kind of storage and retrieval engine.
 
@@ -72,7 +72,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [MongoDB](https://github.com/balderdashy/sails-mongo) - *0.9+ compatible*
   - [Memory](https://github.com/balderdashy/sails-memory) - *0.9+ compatible*
   - [Disk](https://github.com/balderdashy/sails-disk) - *0.9+ compatible*
-  - [Microsoft SQL Server](https://github.com/cnect/sails-sqlserver-adapter)
+  - [Microsoft SQL Server](https://github.com/cnect/sails-sqlserver)
   - [Redis](https://github.com/balderdashy/sails-redis)
   - [Riak](https://github.com/balderdashy/sails-riak)
   - [IRC](https://github.com/balderdashy/sails-irc)
@@ -398,7 +398,7 @@ User.find()
 
 ## Validations
 
-Validations are handled by [Anchor](https://github.com/balderdashy/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate.
+Validations are handled by [Anchor](https://github.com/sailsjs/anchor) which is based off of [Node Validate](https://github.com/chriso/node-validator) and supports most of the properties in node-validate.
 For a full list of validations see: [Anchor Validations](https://github.com/balderdashy/anchor/blob/master/lib/match/rules.js).
 
 Validations are defined directly in you Collection attributes. In addition you may set the attribute `type` to any supported Anchor type and Waterline will build a validation and set the schema type as a string for that attribute.
@@ -562,7 +562,7 @@ associations [here](https://github.com/balderdashy/waterline-docs/blob/master/mo
 
 ## Tests
 
-All tests are written with [mocha](http://visionmedia.github.com/mocha/) and should be run with [npm](http://npmjs.org):
+All tests are written with [mocha](http://visionmedia.github.io/mocha/) and should be run with [npm](https://www.npmjs.com/):
 
 ``` bash
   $ npm test
