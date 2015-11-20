@@ -1,11 +1,14 @@
-var Waterline = require('../../../../lib/waterline'),
-    assert = require('assert'),
-    async = require('async');
+var Waterline = require('../../../../lib/waterline');
+var assert = require('assert');
+var async = require('async');
+var _ = require('lodash');
 
 describe('Collection Query', function() {
 
   describe('many to many through association', function() {
     var Drive;
+    var User;
+    var Car;
 
     before(function(done) {
 
@@ -23,7 +26,7 @@ describe('Collection Query', function() {
           cars: {
             collection: 'car',
             through: 'drive',
-            via: 'car'
+            via: 'user'
           }
         }
       });
@@ -55,7 +58,8 @@ describe('Collection Query', function() {
           },
           drivers: {
             collection: 'user',
-            via: 'cars',
+            through: 'drive',
+            via: 'car',
             dominant: true
           }
         }
@@ -72,10 +76,11 @@ describe('Collection Query', function() {
       };
 
       waterline.initialize({adapters: {adapter: require('sails-memory')}, connections: connections }, function(err, colls) {
-        if(err) done(err);
+        if (err) return done(err);
         User = colls.collections.user;
         Drive = colls.collections.drive;
         Car = colls.collections.car;
+
         async.series([
           function (callback) {
             User.create({id: 1}, callback);
@@ -86,7 +91,7 @@ describe('Collection Query', function() {
           function (callback) {
             Car.create({id: 1}, callback);
           }
-        ],function(err) {
+        ], function(err) {
           done();
         });
       });
@@ -98,9 +103,11 @@ describe('Collection Query', function() {
       .populate('car')
       .populate('user')
       .exec(function(err, drive) {
-        if(err) return done(err);
-		assert(!drive.car instanceof Array,"through table model associations return Array instead of single Objet");
-        assert(!drive.user instanceof Array,"through table model associations return Array instead of single Objet");
+        if (err) return done(err);
+
+        assert(!_.isArray(drive.car), 'through table model associations return Array instead of single Objet');
+        assert(!_.isArray(drive.user), 'through table model associations return Array instead of single Objet');
+
         done();
       });
     });
