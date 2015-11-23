@@ -26,7 +26,7 @@
     "switchback": "~2.0.0",
     "prompt": "~0.2.14",
     "waterline-criteria": "~0.11.1",
-    "waterline-schema": "0.2.0-rc1"
+    "waterline-schema": "0.2.0-rc2"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "0.0.4",
