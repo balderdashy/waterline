@@ -45,6 +45,8 @@ _(feel free to suggest things)_
  pass criteria in before* hooks                           | [@mmiller42](https://github.com/mmiller42)                                       | pass criteria to the beforeUpdate, beforeDestroy, and beforeValidate callbacks, before the callback param. (see [PR](https://github.com/balderdashy/waterline/pull/1122))
  call adapter.createEach when possible                    |                                                                                  | optimize create using adapter.createEach when this is possible (see [issue](https://github.com/balderdashy/waterline/issues/1007))
  manytomany through improvements                          | [@atiertant](https://github.com/atiertant)                                       | handle manytomany through with all other feature (see [PR](https://github.com/balderdashy/waterline/pull/1134))
+ support the full bluebird API                            |                                                                                  | support the full bluebird API (see [issue](https://github.com/balderdashy/waterline/issues/1232))
+ support for custom indexes                               |                                                                                  | support custom and composite indexes (see [issue](https://github.com/balderdashy/waterline/issues/109))
 
 
 #### Backlog
