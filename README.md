@@ -80,7 +80,6 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [JSDom](https://github.com/mikermcneil/sails-jsdom)
   - [Neo4j](https://github.com/natgeo/sails-neo4j)
   - [OrientDB](https://github.com/appscot/sails-orientdb)
-  - [FoundationDB SQL Layer](https://github.com/FoundationDB/sql-layer-adapter-sails)
   - [ArangoDB](https://github.com/rosmo/sails-arangodb)
   - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
   - [GraphQL](https://github.com/wistityhq/waterline-graphql)
