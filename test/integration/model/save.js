@@ -67,6 +67,8 @@ describe('Model', function() {
         pet: {},
         car: {}
       };
+      
+      var idCount = 1;
 
       var adapterDef = {
         find: function(con, col, criteria, cb) {
@@ -78,12 +80,12 @@ describe('Model', function() {
           return cb(null, [values]);
         },
         create: function(con, col, values, cb) {
-          
-          if (col == 'pet') {
-            
+          values.id = idCount++;
+
+          if (col == 'pet' && vals.person.pets) {
             vals.person.pets.push(values);
           }
-          
+
           vals[col] = values;
           return cb(null, values);
         }
@@ -250,6 +252,15 @@ describe('Model', function() {
       });
     });
 
+    it('should create a new model when missing a primary key', function(done) {
+      var pet = new petCollection._model({ type: 'dog', first_name: 'K', last_name: '9' });
+
+      pet.save(function(err, values) {
+        assert(!err);
+        assert(values.id);
+        done();
+      });
+    });
 
     it('should succeed when saving an unmodified nested model instance.', function(done) {
       
