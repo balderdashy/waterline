@@ -47,7 +47,7 @@ _(feel free to suggest things)_
  manytomany through improvements                          | [@atiertant](https://github.com/atiertant)                                       | handle manytomany through with all other feature (see [PR](https://github.com/balderdashy/waterline/pull/1134))
  support the full bluebird API                            |                                                                                  | support the full bluebird API (see [issue](https://github.com/balderdashy/waterline/issues/1232))
  support for custom indexes                               |                                                                                  | support custom and composite indexes (see [issue](https://github.com/balderdashy/waterline/issues/109))
-
+support for concurrency locking                             |                                                                                  | prevent multiple users from accidentally overwriting each other's updates (see [issue](https://github.com/balderdashy/waterline/issues/1259))
 
 #### Backlog
 
