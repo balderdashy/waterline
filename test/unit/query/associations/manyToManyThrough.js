@@ -5,15 +5,15 @@ var async = require('async');
 describe('Collection Query', function () {
 
   describe('many to many through association', function () {
+    var waterline;
     var Driver;
     var Ride;
     var Taxi;
     var Payment;
 
     before(function (done) {
-
-      var waterline = new Waterline();
       var collections = {};
+      waterline = new Waterline();
 
       collections.payment = Waterline.Collection.extend({
         identity: 'Payment',
@@ -157,6 +157,9 @@ describe('Collection Query', function () {
       });
     });
 
+    after('teardown waterline instance', function (done) {
+      waterline.teardown(done);
+    });
 
     it('through table model associations should return a single objet', function(done) {
       Ride.findOne(1)
