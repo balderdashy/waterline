@@ -18,7 +18,7 @@
     }
   ],
   "dependencies": {
-    "anchor": "~0.10.2",
+    "anchor": "~0.11.0",
     "async": "~1.2.0",
     "bluebird": "~2.9.25",
     "deep-diff": "~0.3.0",
