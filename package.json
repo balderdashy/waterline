@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.10.25",
+  "version": "0.10.28",
   "homepage": "http://github.com/balderdashy/waterline",
   "contributors": [
     {
@@ -18,13 +18,13 @@
     }
   ],
   "dependencies": {
-    "anchor": "~0.10.2",
+    "anchor": "~0.11.0",
     "async": "~1.2.0",
     "bluebird": "~2.9.25",
     "deep-diff": "~0.3.0",
     "lodash": "~3.9.1",
-    "switchback": "~2.0.0",
     "prompt": "~0.2.14",
+    "switchback": "~2.0.0",
     "waterline-criteria": "~0.11.1",
     "waterline-schema": "0.2.0-rc2"
   },
