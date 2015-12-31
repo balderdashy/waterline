@@ -57,6 +57,7 @@ The backlog consists of features that are useful, but have not been picked up by
  cascading delete support                                         |                                                    | destroy the related associated child(s) (see [issue](https://github.com/balderdashy/waterline/issues/251))
  associations criteria based                                      |                                                    | filter results on child field value ex: '''model.find( 'model.child.id': 5 )''' (see [issue](https://github.com/balderdashy/waterline/issues/266))
  findOrCreate() - is new                                          |                                                    | In callback supply isNew value indicating if new record was created, or existing one was found.
+ population count                                                 |                                                    | Add syntax for getting the count of populated records rather than the values. See [#811](https://github.com/balderdashy/waterline/issues/811)
 
 
 #### Recently Merged
