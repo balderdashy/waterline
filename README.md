@@ -83,6 +83,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [ArangoDB](https://github.com/rosmo/sails-arangodb)
   - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
   - [GraphQL](https://github.com/wistityhq/waterline-graphql)
+  - [Solr](https://github.com/sajov/sails-solr)
 
 ## Collection
 
