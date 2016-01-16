@@ -73,3 +73,4 @@ Feature                                                     | Summary
  Support explicit `in` key in query language                | Add support for an explicit `in` key to work alongside using an array. See this [issue](https://github.com/balderdashy/waterline/issues/1186) for more details.
  Support deeper M:M through options                         | Add the ability for `through` tables to support multiple associations. See this [issue](https://github.com/balderdashy/waterline/issues/705) for more details.
  Transactions                                               | Add the ability to run transactions on adapters that support them. See this [issue](https://github.com/balderdashy/waterline/issues/755) for more details.
+ Projections                                                | Add the ability to use `.select()` on any query, including associations. See this [issue](https://github.com/balderdashy/waterline/issues/919) for more details.
