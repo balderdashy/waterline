@@ -18,6 +18,8 @@ This section includes the main features, enhancements, and other improvements te
   + Recursively populate child associations.
  + Validation updates
   + [Fix for boolean validations](https://github.com/balderdashy/waterline/pull/1225) where strings were being cast to `false` incorrectly.
+ + Updated Docs
+  + Document adapter spec in detail, including the `join` method and how it's used.
 
 
 &nbsp;
