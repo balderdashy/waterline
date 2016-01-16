@@ -11,7 +11,7 @@ This file contains the development roadmap for the upcoming release of Waterline
 This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.11 release of Waterline.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
  + Many to Many Through updates
-  + [Updated support and fixes](https://github.com/balderdashy/waterline/pull/1134) for m:m through. (thanks @atiertant)
+  + [Updated support and fixes](https://github.com/balderdashy/waterline/pull/1134) for m:m through. (thanks [@atiertant](https://github.com/atiertant))
  + Updated lifecyle hooks
   + Pass criteria into the hooks.
  + Deep populate
