@@ -16,6 +16,8 @@ This section includes the main features, enhancements, and other improvements te
   + Pass criteria into the hooks.
  + Deep populate
   + Recursively populate child associations.
+ + Validation updates
+  + [Fix for boolean validations](https://github.com/balderdashy/waterline/pull/1225) where strings were being cast to `false` incorrectly.
 
 
 &nbsp;
