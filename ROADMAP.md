@@ -53,7 +53,7 @@ The backlog items below are from before the recent change to the Waterline proje
 
 Feature                                                     | Summary
  :--------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Support the full Bluebird API                              | Support the full bluebird API. See this [issue](https://github.com/balderdashy/waterline/issues/1232)) for more details.
+ Support the full Bluebird API                              | Support the full bluebird API. See this [issue](https://github.com/balderdashy/waterline/issues/1232) for more details.
  Support for custom indexes                                 | Support custom and composite indexes. See this [issue](https://github.com/balderdashy/waterline/issues/109) for more details.
  Support for concurrency locking                            | Prevent multiple users from accidentally overwriting each other's updates. See this [issue](https://github.com/balderdashy/waterline/issues/1259) for more details.
  Better batch insert queries                                | Optimize `create` using the adapter's `createEach` when this possible. See this [issue](https://github.com/balderdashy/waterline/issues/1007) for more details.
@@ -70,4 +70,4 @@ Feature                                                     | Summary
  Support denormalization                                    | Support embeddable association. See this [PR](https://github.com/balderdashy/waterline/pull/428) for more details.
  Support default conditions                                 | Support default conditions in queries. See this [issue](https://github.com/balderdashy/waterline/issues/988) for more details.
  Make m:n nested updates API consistent with 1:1 and 1:M    | Nested updates in the form of `User.update({id: 1 }, { posts: [ { id: 1, title: 'Test post - updated' }] })` work for 1:1 and 1:M associations but breaks for M:N associations. The API for this should be consistent between association types. See [tests](https://github.com/balderdashy/waterline-adapter-tests/pull/51) for more details.
- Support explicit `in` key in query language                | Add support for an explicit `in` key to work alongside using an array. See [issue](https://github.com/balderdashy/waterline/issues/1186) for more details.
+ Support explicit `in` key in query language                | Add support for an explicit `in` key to work alongside using an array. See this [issue](https://github.com/balderdashy/waterline/issues/1186) for more details.
