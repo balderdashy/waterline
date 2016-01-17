@@ -2,3 +2,5 @@ node_modules
 *.swp
 *.swo
 .dist
+coverage/
+npm-debug.log
