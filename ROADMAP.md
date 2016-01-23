@@ -81,3 +81,5 @@ Feature                                                     | Summary
  Change the `this` context inside lifecycle callbacks       | Currently the `this` context is the generic collection instead of the instance (no instance has been made yet). Change this to get access to instance methods. See [issue](https://github.com/balderdashy/waterline/issues/1210) for more details.
  Run lifecycle callbacks on defined join tables             | Lifecycle callbacks don't run for join table records. See [issue](https://github.com/balderdashy/waterline/issues/1215) for more details.
  Do not mess with identity case                             | Identities of models should not be lowercased per default, better be left as defined. See [issue](https://github.com/balderdashy/waterline/issues/745) for more details.
+ Support JSONB in PostgreSQL                                | Add support for JSONB querying in the Postgres adapter. This requires modifing/extending the criteria language. See [issue](https://github.com/balderdashy/sails-postgresql/issues/212) for more details.
+ 
