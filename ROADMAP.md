@@ -40,6 +40,7 @@ Feature                                          | Proposal                     
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
  Pass criteria into lifecycle hooks              | [#1122](https://github.com/balderdashy/waterline/pull/1122)                           | Pass the queries criteria into lifecycle hooks.
  Deep populate                                   | [#1052](https://github.com/balderdashy/waterline/pull/1052)                           | Recursively populate child associations.
+ Use **$lookup** for relations in mongo          | [#375](https://github.com/balderdashy/sails-mongo/issues/375)                         | Add relation through new mongo left outer join substitution.
 
 
 
