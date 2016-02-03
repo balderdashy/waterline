@@ -2,16 +2,16 @@ var Waterline = require('../../../../lib/waterline');
 var assert = require('assert');
 var async = require('async');
 
-describe('Collection Query', function () {
+describe('Collection Query', function() {
 
-  describe('many to many through association', function () {
+  describe('many to many through association', function() {
     var waterline;
     var Driver;
     var Ride;
     var Taxi;
     var Payment;
 
-    before(function (done) {
+    before(function(done) {
       var collections = {};
       waterline = new Waterline();
 
@@ -157,7 +157,7 @@ describe('Collection Query', function () {
       });
     });
 
-    after('teardown waterline instance', function (done) {
+    after(function(done) {
       waterline.teardown(done);
     });
 
