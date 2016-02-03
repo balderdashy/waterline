@@ -56,12 +56,9 @@
   "main": "./lib/waterline",
   "scripts": {
     "test": "make test",
-    "pretest": "npm run lint",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
     "coverage": "make coverage",
-    "lint": "eslint lib --reset",
-    "nibble": "eslint-nibble lib"
   },
   "engines": {
     "node": ">=0.10.0 <=5.x.x"
