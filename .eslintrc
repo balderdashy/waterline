@@ -1,7 +1,9 @@
 {
-  "extends": "standard-warn",
+  "parser": "espree",
+  "extends": "eslint:recommended",
   "env": {
-    "node": true
+    "node": true,
+    "mocha": true
   },
   "rules": {
     "eqeqeq":                       [1, "smart"],
