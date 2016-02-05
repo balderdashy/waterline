@@ -108,10 +108,11 @@ describe('Model', function() {
 
           person.save(function(err) {
             assert(err);
-            assert(Array.isArray(err));
-            assert(err.length === 2);
-            assert(err[0].type === 'remove');
-            assert(err[1].type === 'remove');
+            assert(err.failedTransactions);
+            assert(Array.isArray(err.failedTransactions));
+            assert(err.failedTransactions.length === 2);
+            assert(err.failedTransactions[0].type === 'remove');
+            assert(err.failedTransactions[1].type === 'remove');
 
             done();
           });
