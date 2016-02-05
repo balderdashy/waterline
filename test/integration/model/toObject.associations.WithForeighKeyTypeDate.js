@@ -1,15 +1,10 @@
 var Waterline = require('../../../lib/waterline');
 var assert = require('assert');
-var async = require('async');
 
-describe('Collection Query', function() {
-
+describe('Model', function() {
   describe('.toObject() with associations with foreign key typed as datetime', function() {
     var waterline;
-    var Trucker;
     var Schedule;
-    var Workday;
-    var scheduleId;
 
     before(function(done) {
       waterline = new Waterline();
@@ -84,62 +79,23 @@ describe('Collection Query', function() {
 
       var connections = {
         'foo': {
-          adapter: 'adapter'
+          adapter: 'foobar'
         }
       };
 
-      waterline.initialize({ adapters: { adapter: require('sails-memory') }, connections: connections }, function(err, colls) {
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
         if (err) { done(err); }
-
-        Trucker = colls.collections.trucker;
-        Workday = colls.collections.workday;
         Schedule = colls.collections.schedule;
-
-        async.auto({
-
-          createTrucker: function(next) {
-            Trucker.create({ truckerName: 'trucker 1' }).exec(next);
-          },
-
-          createWorkday: function(next) {
-            Workday.create({
-              id: new Date(1970, 0, 1, 0, 0),
-              start: new Date(1970, 0, 1, 12, 0),
-              end: new Date(1970, 0, 1, 17, 0)
-            }).exec(next);
-          },
-
-          createSchedule: ['createTrucker', 'createWorkday', function(next, results) {
-            Schedule.create({
-              trucker_id: results.createTrucker.id,
-              workday_id: results.createWorkday.id,
-              miles: 10
-            }).exec(next);
-          }]
-
-        },
-
-        function(err, results) {
-          if (err) return done(err);
-          scheduleId = results.createSchedule.id;
-          done();
-        });
-      });
-    });
-
-    after('teardown waterline instance', function(done) {
-      waterline.teardown(done);
-    });
-
-    it('should return a valid object with ids for foreign key fields', function(done) {
-      Schedule.findOne({ id: scheduleId }).exec(function(err, schedule) {
-        if (err) { return done(err); }
-        var obj = schedule.toObject();
-        assert(obj.trucker === 1);
-        assert((new Date(obj.workday)).getTime() === (new Date(1970, 0, 1, 0, 0)).getTime());
-        assert(obj.miles === 10);
         done();
       });
+    });
+
+    it('should return a valid object with ids for foreign key fields', function() {
+      var schedule = new Schedule._model({ trucker: 1, workday: new Date(1970, 0, 1, 0, 0), miles: 10 });
+      var obj = schedule.toObject();
+      assert(obj.trucker === 1);
+      assert((new Date(obj.workday)).getTime() === (new Date(1970, 0, 1, 0, 0)).getTime());
+      assert(obj.miles === 10);
     });
   });
 });
