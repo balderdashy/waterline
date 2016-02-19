@@ -20,7 +20,10 @@ describe('Core Validator', function() {
           last_name: {
             type: 'string',
             required: true,
-            defaultsTo: 'Smith'
+            defaultsTo: 'Smith',
+            meta: {
+              foo: 'bar'
+            }
           }
         }
       });
@@ -57,6 +60,10 @@ describe('Core Validator', function() {
 
     it('should ignore schema properties', function() {
       assert(!person._validator.validations.last_name.defaultsTo);
+    });
+
+    it('should ignore the meta key', function() {
+      assert(!person._validator.validations.last_name.meta);
     });
 
   });
