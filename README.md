@@ -84,6 +84,7 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
   - [GraphQL](https://github.com/wistityhq/waterline-graphql)
   - [Solr](https://github.com/sajov/sails-solr)
+  - [Apache Derby](https://github.com/dash-/node-sails-derby)
 
 ## Collection
 
