@@ -82,6 +82,47 @@ describe('Core Schema', function() {
     });
   });
 
+  describe('with autoIncrement set to false', function() {
+    var person;
+
+    before(function(done) {
+      var waterline = new Waterline();
+
+      var Person = Waterline.Collection.extend({
+        identity: 'person',
+        connection: 'foo',
+        attributes: {
+          message: {
+            type: 'string',
+            autoIncrement: false
+          }
+        }
+      });
+
+      waterline.loadCollection(Person);
+
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
+        }
+      };
+
+      waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
+        if(err) return done(err);
+        person = colls.collections.person;
+        done();
+      });
+    });
+
+    it('should pass the autoIncrement down to the adapter', function() {
+      assert(!person._schema.schema.message.autoIncrement);
+    });
+
+    it('should leave the type set to string', function() {
+      assert(person._schema.schema.message.type === 'string');
+    });
+  });
+
   describe('with uniqueness key', function() {
     var person;
 
