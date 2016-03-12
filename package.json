@@ -15,6 +15,10 @@
     {
       "name": "zolmeister",
       "github": "https://github.com/zolmeister"
+    },
+    {
+      "name": "seerepo",
+      "github": "https://github.com/balderdashy/waterline/graphs/contributors"
     }
   ],
   "dependencies": {
