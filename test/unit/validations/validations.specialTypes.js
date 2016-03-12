@@ -19,16 +19,18 @@ describe('validations', function() {
     });
 
     it('should validate email type', function(done) {
-      validator.validate({ email: 'foobar@gmail.com' }, function(errors) {
-        assert(!errors);
+      validator.validate({ email: 'foobar@gmail.com' }, function (err, validationErrors) {
+        if (err) { return done(err); }
+        assert(!validationErrors);
         done();
       });
     });
 
     it('should error if incorrect email is passed', function(done) {
-      validator.validate({ email: 'foobar' }, function(errors) {
-        assert(errors);
-        assert(errors.email);
+      validator.validate({ email: 'foobar' }, function (err, validationErrors) {
+        if (err) { return done(err); }
+        assert(validationErrors);
+        assert(validationErrors.email);
         done();
       });
     });

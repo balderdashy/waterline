@@ -1,12 +1,12 @@
-var Validator = require( '../../../lib/waterline/core/validations' ),
-  assert = require( 'assert' );
+var Validator = require('../../../lib/waterline/core/validations'),
+  assert = require('assert');
 
-describe( 'validations', function () {
+describe('validations', function() {
 
-  describe( 'special types', function () {
+  describe('special types', function() {
     var validator;
 
-    before( function () {
+    before(function() {
 
       var validations = {
         name: {
@@ -24,64 +24,71 @@ describe( 'validations', function () {
       };
 
       var defaults = {
-        ignoreProperties: [ 'async', 'special' ]
+        ignoreProperties: ['async', 'special']
       };
 
       validator = new Validator();
-      validator.initialize( validations );
+      validator.initialize(validations);
 
       customValidator = new Validator();
-      customValidator.initialize( validations, {}, defaults );
-    } );
+      customValidator.initialize(validations, {}, defaults);
+    });
 
-    it( 'custom validator should validate email type', function ( done ) {
-      customValidator.validate( {
+    it('custom validator should validate email type', function(done) {
+      customValidator.validate({
         email: 'foobar@gmail.com'
-      }, function ( errors ) {
-        assert( !errors );
+      }, function(err, errors) {
+        if (err) {
+          return done(err);
+        }
+        assert(!errors);
         done();
-      } );
-    } );
+      });
+    });
 
-    it( 'custom validator should validate collection type', function ( done ) {
-      customValidator.validate( {
+    it('custom validator should validate collection type', function(done) {
+      customValidator.validate({
         cousins: []
-      }, function ( errors ) {
-        assert( !errors );
+      }, function(err, errors) {
+        if (err) {
+          return done(err);
+        }
+        assert(!errors);
         done();
-      } );
-    } );
+      });
+    });
 
-    it( 'standard validator should error with unrecognized properties', function ( done ) {
-      assert.throws( function () {
-        validator.validate( {
-          email: 'foobar@gmail.com'
-        }, function ( errors ) {
-          return done();
-        } );
-      }, function ( err ) {
-        if ( ( err instanceof Error ) && /Unknown rule: special/im.test( err ) ) {
-          return true;
+    it('standard validator should error with unrecognized properties', function(done) {
+      validator.validate({
+        email: 'foobar@gmail.com'
+      }, function(err, errors) {
+        if (err) {
+          if ((err instanceof Error) && /Unknown rule: special/im.test(err)) {
+            return done();
+          }
+          else {
+            return done(err);
+          }
         }
-      } );
-      done();
+        return done(new Error('Expected fatal error due to unknown "special" validation rule.'));
+      });
+    });//</it>
 
-    } );
-
-    it( 'standard validator should error with unrecognized properties in an association', function ( done ) {
-      assert.throws( function () {
-        validator.validate( {
-          cousins: []
-        }, function ( errors ) {
-          return done();
-        } );
-      }, function ( err ) {
-        if ( ( err instanceof Error ) && /Unknown rule: async/im.test( err ) ) {
-          return true;
+    it('standard validator should error with unrecognized properties in an association', function(done) {
+      validator.validate({
+        cousins: []
+      }, function(err, errors) {
+        if (err) {
+          if ((err instanceof Error) && /Unknown rule: async/im.test(err)) {
+            return done();
+          }
+          else {
+            return done(err);
+          }
         }
-      } );
-      done();
-    } );
+        return done(new Error('Expected fatal error due to unknown "async" validation rule.'));
+      });
+    });//</it>
 
-  } );
-} );
+  });
+});

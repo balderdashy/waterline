@@ -25,18 +25,26 @@ describe('validations', function() {
 
     describe('minLength', function() {
 
-      it('should validate minLength', function(done) {
-        validator.validate({ firstName: 'foo' }, function(errors) {
-          assert(!errors);
-          done();
+      it('should validate minLength', function (done) {
+        validator.validate({ firstName: 'foo' }, function (err, validationErrors) {
+          if (err) { return done(err); }
+          try {
+            assert(!validationErrors);
+            return done();
+          }
+          catch (e) {return done(e);}
         });
       });
 
       it('should error if length is shorter', function(done) {
-        validator.validate({ firstName: 'f' }, function(errors) {
-          assert(errors);
-          assert(errors.firstName);
-          done();
+        validator.validate({ firstName: 'f' }, function (err, validationErrors) {
+          if (err) { return done(err); }
+          try {
+            assert(validationErrors);
+            assert(validationErrors.firstName);
+            return done();
+          }
+          catch (e) {return done(e);}
         });
       });
     });
@@ -44,17 +52,25 @@ describe('validations', function() {
     describe('maxLength', function() {
 
       it('should validate maxLength', function(done) {
-        validator.validate({ lastName: 'foo' }, function(errors) {
-          assert(!errors);
-          done();
+        validator.validate({ lastName: 'foo' }, function (err, validationErrors) {
+          if (err) { return done(err); }
+          try {
+            assert(!validationErrors);
+            return done();
+          }
+            catch (e) {return done(e);}
         });
       });
 
       it('should error if length is longer', function(done) {
-        validator.validate({ lastName: 'foobar' }, function(errors) {
-          assert(errors);
-          assert(errors.lastName);
-          done();
+        validator.validate({ lastName: 'foobar' }, function (err, validationErrors) {
+          if (err) { return done(err); }
+          try {
+            assert(validationErrors);
+            assert(validationErrors.lastName);
+            return done();
+          }
+          catch (e) {return done(e);}
         });
       });
     });

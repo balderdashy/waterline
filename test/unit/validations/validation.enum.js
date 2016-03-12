@@ -20,7 +20,8 @@ describe('validations', function() {
     });
 
     it('should error if invalid enum is set', function(done) {
-      validator.validate({ sex: 'other' }, function(errors) {
+      validator.validate({ sex: 'other' }, function(err, errors) {
+        assert(!err, err);
         assert(errors);
         assert(errors.sex);
         assert(errors.sex[0].rule === 'in');
@@ -29,7 +30,8 @@ describe('validations', function() {
     });
 
     it('should NOT error if valid enum is set', function(done) {
-      validator.validate({ sex: 'male' }, function(errors) {
+      validator.validate({ sex: 'male' }, function(err, errors) {
+        assert(!err, err);
         assert(!errors);
         done();
       });
