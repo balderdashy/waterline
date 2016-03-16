@@ -1,5 +1,9 @@
 # Waterline Changelog
 
+### 0.11.1
+
+* [Enhancement] Handles fatal errors in validations better and returns clearer error messages for them. Who knew crashing the process would be bad? Thanks [@mikermcneil](https://github.com/mikermcneil)
+
 ### 0.11.0
 
 * [BREAKING CHANGE] Removed the second argument from `.save()` commands that returns the newly updated data that has been re-populated. This should increase performance and limit memory. See [#1295](https://github.com/balderdashy/waterline/pull/1295) for more details.
