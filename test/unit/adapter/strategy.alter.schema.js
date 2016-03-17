@@ -47,7 +47,7 @@ describe('Alter Mode Recovery with an enforced schema', function () {
           results = _.find(persistentData, options.where);
         }
         // Psuedo support for select (needed to act like a real adapter)
-        if(options.select) {
+        if(options.select && _.isArray(options.select) && options.select.length) {
 
           // Force ID in query
           options.select.push('id');
@@ -60,7 +60,8 @@ describe('Alter Mode Recovery with an enforced schema', function () {
         cb(null, results);
       },
       create: function (connectionName, collectionName, data, cb, connection) {
-        persistentData.push(data);
+        var schemaData = _.pick(data, ['id', 'name', 'age']);
+        persistentData.push(schemaData);
         cb(null, data);
       },
       drop: function (connectionName, collectionName, relations, cb, connection) {
@@ -125,4 +126,3 @@ describe('Alter Mode Recovery with an enforced schema', function () {
   });
 
 });
-
