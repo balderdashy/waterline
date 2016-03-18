@@ -1,6 +1,6 @@
 # Waterline Changelog
 
-### Master
+### 0.12.0
 
 * [Enhancement] Allows attribute definitions to contain a `meta` property that will be passed down to the adapter. This allows arbitrary information about an attribute to be passed down to interactions on the physical storage engine. Going forward any adapter specific migration information should be sent via the `meta` property. See [#1306](https://github.com/balderdashy/waterline/pull/1306) for more information.
 
