@@ -6,6 +6,8 @@
 
 * [Enhancement] Allows for the use of `.select()` to build out projections in both top level queries and association queries. See [#1310](https://github.com/balderdashy/waterline/pull/1310) for more details and examples.
 
+* [Enhancement] Allow for the ability to pass in extra data to an adapter function using the `.meta()` option. This could be used for a variety of things inside custom adapters such as passing connections around for transactions or passing config values for muti-tenant functionality. For more details see [#1325](https://github.com/balderdashy/waterline/pull/1325).
+
 ### 0.11.1
 
 * [Enhancement] Handles fatal errors in validations better and returns clearer error messages for them. Who knew crashing the process would be bad? Thanks [@mikermcneil](https://github.com/mikermcneil)
