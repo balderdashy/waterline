@@ -6,14 +6,12 @@ This file contains the development roadmap for the upcoming release of Waterline
 &nbsp;
 
 
-## v0.12
+## v0.13
 
 This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.11 release of Waterline.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
  + Updated lifecyle hooks
   + Pass criteria into the hooks.
- + Deep populate
-  + Recursively populate child associations.
  + Updated Docs
   + Document adapter spec in detail, including the `join` method and how it's used.
 
@@ -73,7 +71,6 @@ Feature                                                     | Summary
  Support explicit `in` key in query language                | Add support for an explicit `in` key to work alongside using an array. See this [issue](https://github.com/balderdashy/waterline/issues/1186) for more details.
  Support deeper M:M through options                         | Add the ability for `through` tables to support multiple associations. See this [issue](https://github.com/balderdashy/waterline/issues/705) for more details.
  Transactions                                               | Add the ability to run transactions on adapters that support them. See this [issue](https://github.com/balderdashy/waterline/issues/755) for more details.
- Projections                                                | Add the ability to use `.select()` on any query, including associations. See this [issue](https://github.com/balderdashy/waterline/issues/919) for more details.
  Change the `this` context inside lifecycle callbacks       | Currently the `this` context is the generic collection instead of the instance (no instance has been made yet). Change this to get access to instance methods. See [issue](https://github.com/balderdashy/waterline/issues/1210) for more details.
  Run lifecycle callbacks on defined join tables             | Lifecycle callbacks don't run for join table records. See [issue](https://github.com/balderdashy/waterline/issues/1215) for more details.
  Do not mess with identity case                             | Identities of models should not be lowercased per default, better be left as defined. See [issue](https://github.com/balderdashy/waterline/issues/745) for more details.
