@@ -1,5 +1,9 @@
 # Waterline Changelog
 
+### 0.12.1
+
+* [BUG] Fixes an issue when searching by `id` in schemaless mode. See [#1326](https://github.com/balderdashy/waterline/issues/1326) for more details.
+
 ### 0.12.0
 
 * [Enhancement] Allows attribute definitions to contain a `meta` property that will be passed down to the adapter. This allows arbitrary information about an attribute to be passed down to interactions on the physical storage engine. Going forward any adapter specific migration information should be sent via the `meta` property. See [#1306](https://github.com/balderdashy/waterline/pull/1306) for more information.
@@ -7,6 +11,10 @@
 * [Enhancement] Allows for the use of `.select()` to build out projections in both top level queries and association queries. See [#1310](https://github.com/balderdashy/waterline/pull/1310) for more details and examples.
 
 * [Enhancement] Allow for the ability to pass in extra data to an adapter function using the `.meta()` option. This could be used for a variety of things inside custom adapters such as passing connections around for transactions or passing config values for muti-tenant functionality. For more details see [#1325](https://github.com/balderdashy/waterline/pull/1325).
+
+### 0.11.2
+
+* [BUG] Fixes an issue when searching by `id` in schemaless mode. See [#1326](https://github.com/balderdashy/waterline/issues/1326) for more details.
 
 ### 0.11.1
 
