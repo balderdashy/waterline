@@ -81,7 +81,7 @@ describe('Alter Mode Recovery with schemaless data', function () {
       schema: false,
       attributes: {
         name: 'string',
-        age: 'number',
+        age: 'integer',
         id: 'integer'
       }
     };
