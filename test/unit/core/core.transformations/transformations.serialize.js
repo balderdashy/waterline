@@ -32,6 +32,20 @@ describe('Core Transformations', function() {
         assert(values.where.user.login);
         assert(values.where.user.login === 'foo');
       });
+
+      it('should work on SELECT queries', function() {
+        var values = transformer.serialize(
+          {
+            where: {
+              username: 'foo'
+            },
+            select: ['username']
+          }
+        );
+
+        assert(values.where.login);
+        assert.equal(values.select.indexOf('login'),  0);
+      });
     });
 
     describe('with associations', function() {
