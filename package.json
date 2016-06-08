@@ -22,24 +22,24 @@
     }
   ],
   "dependencies": {
-    "anchor": "~0.11.0",
+    "anchor": "~0.11.2",
     "async": "1.5.2",
     "bluebird": "3.2.1",
-    "deep-diff": "0.3.3",
+    "deep-diff": "0.3.4",
     "lodash": "3.10.1",
-    "prompt": "0.2.14",
-    "switchback": "2.0.0",
-    "waterline-criteria": "~0.11.2",
+    "prompt": "1.0.0",
+    "switchback": "2.0.1",
+    "waterline-criteria": "1.0.1",
     "waterline-schema": "0.2.0"
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "0.3.1",
-    "eslint": "1.10.3",
-    "espree": "3.0.1",
-    "istanbul": "0.4.2",
-    "mocha": "2.4.5",
+    "codeclimate-test-reporter": "0.3.2",
+    "eslint": "2.11.1",
+    "espree": "3.1.5",
+    "istanbul": "0.4.3",
+    "mocha": "2.5.3",
     "sails-memory": "balderdashy/sails-memory",
-    "should": "8.2.1",
+    "should": "9.0.0",
     "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
   },
   "keywords": [
