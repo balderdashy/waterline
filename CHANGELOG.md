@@ -1,5 +1,11 @@
 # Waterline Changelog
 
+### 0.12.2
+
+* [BUG] Fix issues with compatibility in `alter` auto-migrations. This was causing corrupted data depending on the permutation of adapter version and Waterline version. This should be fixed in the SQL adapters that support the new `select` query modifier.
+
+* [ENHANCEMENT] Updated dependencies to remove warning messages when installing.
+
 ### 0.12.1
 
 * [BUG] Fixes an issue when searching by `id` in schemaless mode. See [#1326](https://github.com/balderdashy/waterline/issues/1326) for more details.
@@ -11,6 +17,10 @@
 * [Enhancement] Allows for the use of `.select()` to build out projections in both top level queries and association queries. See [#1310](https://github.com/balderdashy/waterline/pull/1310) for more details and examples.
 
 * [Enhancement] Allow for the ability to pass in extra data to an adapter function using the `.meta()` option. This could be used for a variety of things inside custom adapters such as passing connections around for transactions or passing config values for muti-tenant functionality. For more details see [#1325](https://github.com/balderdashy/waterline/pull/1325).
+
+### 0.11.3
+
+* [BUG] Fix auto-updating attributes to take into account custom column names. See [#1360](https://github.com/balderdashy/waterline/pull/1360) for more details. Thanks to [@jenjenut233](https://github.com/jenjenut233) for the patch!
 
 ### 0.11.2
 
