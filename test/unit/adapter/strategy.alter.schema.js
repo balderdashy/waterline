@@ -81,7 +81,7 @@ describe('Alter Mode Recovery with an enforced schema', function () {
       schema: true,
       attributes: {
         name: 'string',
-        age: 'integer',
+        age: 'number',
         id: 'integer'
       }
     };
