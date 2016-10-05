@@ -1,8 +1,12 @@
 # Waterline Changelog
 
-### 0.11.2
+### 0.11.3
 
 * [BUG] Fix auto-updating attributes to take into account custom column names. See [#1360](https://github.com/balderdashy/waterline/pull/1360) for more details. Thanks to [@jenjenut233](https://github.com/jenjenut233) for the patch!
+
+### 0.11.2
+
+* [BUG] Fix #1326
 
 ### 0.11.1
 
