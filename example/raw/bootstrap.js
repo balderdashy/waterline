@@ -11,17 +11,18 @@ var _ = require('lodash')
  * models, connections, and adapters.
 
   @param options
-    :: {Object}   adapters     [i.e. a dictionary]
-    :: {Object}   connections  [i.e. a dictionary]
-    :: {Object}   collections  [i.e. a dictionary]
+    :: {Dictionary}   adapters
+    :: {Dictionary}   connections
+    :: {Dictionary}   collections
 
   @param  {Function} cb
     () {Error} err
     () ontology
-      :: {Object} collections
-      :: {Object} connections
+      :: {Dictionary} collections
+      :: {Dictionary} connections
 
   @return {Waterline}
+    (You probably wont want to use this.  Instead, write code in the callback and use the `ontology` that comes back.)
  */
 
 module.exports = function bootstrap( options, cb ) {
