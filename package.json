@@ -1,7 +1,7 @@
 {
-  "name": "waterline",
+  "name": "t1bao-waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.12.2",
+  "version": "0.0.2",
   "homepage": "http://github.com/balderdashy/waterline",
   "contributors": [
     {
