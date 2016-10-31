@@ -114,11 +114,11 @@ This is what's known as a "Phase 2 query":
       ]
     },
 
-    // The "limit" clause (if there is one, otherwise defaults to -1)
-    limit: -1,
+    // The "limit" clause (if there is one, otherwise defaults to `Number.MAX_SAFE_INTEGER`)
+    limit: 9007199254740991,
 
-    // The "skip" clause (if there is one, otherwise defaults to -1)
-    skip: 90,
+    // The "skip" clause (if there is one, otherwise defaults to 0)
+    skip: 0,
 
     // The expanded "sort" clause
     sort: [
@@ -134,8 +134,8 @@ This is what's known as a "Phase 2 query":
       where: {
         occupation: 'doctor'
       },
-      limit: -1,
-      skip: -1,
+      limit: Number.MAX_SAFE_INTEGER,
+      skip: 0,
       sort: 'yearsInIndustry DESC'
     }
   ]
@@ -211,7 +211,7 @@ the method to `join`, and provide additional info:
         { occupation_key: 'doctor' }
       ]
     },
-    limit: 2,//<< note that this was set to `2` automatically
+    limit: 2,//<< note that this was STILL set to `2` automatically
     skip: 90,
     sort: [
       { full_name: 'ASC' }
