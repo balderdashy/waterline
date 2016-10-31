@@ -93,11 +93,11 @@ This is what's known as a "Phase 2 query":
   using: 'user', // << the identity of the model
 
   // The criteria dictionary
-  // (because this is "find"/"findOne", "update")
+  // (because this is "find"/"findOne", "update", "destroy", "count", "sum", or "avg")
   criteria: {
 
     // The expanded "select" clause
-    // (note that because we specified a `select` or `omit`, this gets expanded in a schema-aware way.
+    // (note that because we specified an explicit `select` or `omit`, this gets expanded in a schema-aware way.
     // For no projections, this is `select: ['*']`.  And `select` is NEVER allowed to be `[]`.)
     select: [
       'id',
