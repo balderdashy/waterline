@@ -96,10 +96,15 @@ This is what's known as a "Phase 2 query":
   // (because this is "find"/"findOne", "update")
   criteria: {
 
-    // The expanded "omit" clause
-    // (note that either "omit" or "select" is ALWAYS set.  For no projection, expect `omit: []`.  `select` is NEVER `[]`.)
-    omit: [
-      'occupation'
+    // The expanded "select" clause
+    // (note that because we specified a `select` or `omit`, this gets expanded in a schema-aware way.
+    // For no projections, this is `select: ['*']`.  And `select` is NEVER allowed to be `[]`.)
+    select: [
+      'id',
+      'name',
+      'age',
+      'createdAt',
+      'updatedAt'
     ],
 
     // The expanded "where" clause
@@ -125,7 +130,7 @@ This is what's known as a "Phase 2 query":
   // (if nothing was populated, this would be empty.)
   populates: [
     {
-      omit: [],
+      select: [ '*' ],
       where: {
         occupation: 'doctor'
       },
@@ -151,14 +156,19 @@ Next, Waterline performs a couple of additional transformations:
 + replaces the model identity with the table name
 + removed `populates` (or potentially replaced it with `joins`)
   + this varies-- keep in mind that sometimes multiple physical protostatements will be built up and sent to different adapters-- or even the same one.
+  + if `joins` is added, then this would replace `method: 'findOne'` or `method: 'find'` with `method: 'join'`.
 
 ```js
 {
   method: 'find', //<< note that "findOne" was replaced with "find"
   using: 'users', //<< the table name
   criteria: {
-    omit: [
-      'occupation_key'
+    select: [
+      'id',
+      'full_name',
+      'age',
+      'created_at',
+      'updated_at'
     ],
     where: {
       and: [
@@ -189,8 +199,12 @@ the method to `join`, and provide additional info:
   method: 'join', //<< note that "findOne" was replaced with "join"
   using: 'users', //<< the table name
   criteria: {
-    omit: [
-      'occupation_key'
+    select: [
+      'id',
+      'full_name',
+      'age',
+      'created_at',
+      'updated_at'
     ],
     where: {
       and: [
@@ -220,8 +234,12 @@ In the database adapter, the physical protostatement is converted into an actual
 ```js
 {
   from: 'users',
-  omit: [
-    'occupation_key'
+  select: [
+    'id',
+    'full_name',
+    'age',
+    'created_at',
+    'updated_at'
   ],
   where: {
     and: [
@@ -247,7 +265,7 @@ This is the same kind of statement that you can send directly to the lower-level
 In the database driver, the statement is compiled into a native query:
 
 ```js
-SELECT * ....urhg..wait a sec.
+SELECT id, full_name, age, created_at, updated_at FROM users WHERE occupation_key="doctor" LIMIT 2 SKIP 90 SORT full_name ASC;
 ```
 
 
@@ -260,7 +278,7 @@ SELECT * ....urhg..wait a sec.
 
 
 
-## Validating a criteria
+## Validating a criteria's `where` clause
 
 #### If key is `and` or `or`...
 Then this is a predicate operator that should have an array on the RHS.
