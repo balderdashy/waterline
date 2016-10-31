@@ -215,11 +215,13 @@ the method to `join`, and provide additional info:
     skip: 90,
     sort: [
       { full_name: 'ASC' }
+    ],
+
+    // If `method` is `join`, then join instructions will be included in the criteria:
+    joins: [
+      // TODO: document `joins`
     ]
   },
-  joins: [
-    // TODO: document `joins`
-  ]
 }
 ```
 
@@ -278,15 +280,14 @@ SELECT id, full_name, age, created_at, updated_at FROM users WHERE occupation_ke
 
 
 
-## Validating a criteria's `where` clause
+## Validating/normalizing a criteria's `where` clause
 
 #### If key is `and` or `or`...
 Then this is a predicate operator that should have an array on the RHS.
 
-
 #### For any other key...
 
-The key itself must be a valid attr name or column name.
+The key itself must be a valid attr name or column name (depending on if this is a stage 2 or stage 3 query).
 
 The meaning of the RHS depends on its type:
 
