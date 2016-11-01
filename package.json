@@ -41,7 +41,7 @@
     "mocha": "2.5.3",
     "sails-memory": "balderdashy/sails-memory",
     "should": "9.0.0",
-    "waterline-adapter-tests": "balderdashy/waterline-adapter-tests"
+    "waterline-adapter-tests": "balderdashy/waterline-adapter-tests#machinepack"
   },
   "keywords": [
     "mvc",
