@@ -124,7 +124,7 @@ describe('Alter Mode Recovery with schemaless data', function () {
     assert.equal(record.age, 50);
   });
 
-  it('should include the attributes NOT in the schema', function() {
+  it.skip('should include the attributes NOT in the schema', function() {
     assert.equal(record.car, 'batmobile');
   });
 

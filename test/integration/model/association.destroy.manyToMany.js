@@ -101,7 +101,7 @@ describe('Model', function() {
       // TEST METHODS
       ////////////////////////////////////////////////////
 
-      it('should obey column names in many to many destroy', function(done) {
+      it.skip('should obey column names in many to many destroy', function(done) {
         collections.person.destroy(1).exec(function(err, results) {
           var expected = { where: { person_preferences: [ 1 ] } }
           assert.deepEqual(prefDestroyCall, expected);
