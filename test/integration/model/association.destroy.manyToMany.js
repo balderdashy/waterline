@@ -1,6 +1,7 @@
-var Waterline = require('../../../lib/waterline'),
-    _ = require('lodash'),
-    assert = require('assert');
+var _ = require('lodash');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
+var MigrateHelper = require('../../support/migrate.helper');
 
 describe('Model', function() {
   describe('associations Many To Many', function() {
@@ -90,7 +91,8 @@ describe('Model', function() {
           if(err) done(err);
           collections = colls.collections;
 
-          done();
+          // Run Auto-Migrations
+          MigrateHelper(colls, done);
         });
       });
 
