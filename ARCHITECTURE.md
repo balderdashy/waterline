@@ -157,7 +157,7 @@ Next, Waterline performs a couple of additional transformations:
 + replaces attribute names with column names
 + replaces the model identity with the table name
 + removed `populates` (or potentially replaced it with `joins`)
-  + this varies-- keep in mind that sometimes multiple physical protostatements will be built up and sent to different adapters-- or even the same one.
+  + this varies-- keep in mind that sometimes _multiple physical protostatements will be built up and sent to different adapters_-- or even the same one.
   + if `joins` is added, then this would replace `method: 'findOne'` or `method: 'find'` with `method: 'join'`.
 
 ```js
@@ -190,7 +190,7 @@ This physical protostatement is what gets sent to the database adapter.
 
 
 
-Note that, in some cases, multiple different physical protostatements will be built up.
+> Note that, in some cases, **multiple different physical protostatements** will be built up, and sent to the same or different adapters.
 
 For example, if Waterline decides that it is a good idea (based on the variety of logical query
 this is, which datastores it spans, and the support implemented in adapters), then it will transform
