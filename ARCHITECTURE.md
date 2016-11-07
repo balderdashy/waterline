@@ -126,10 +126,11 @@ This is what's known as a "Phase 2 query":
     ]
   },
 
-  // The `populates` array.
+  // The `populates` clause.
   // (if nothing was populated, this would be empty.)
-  populates: [
-    {
+  populates: {
+
+    friends: {
       select: [ '*' ],
       where: {
         occupation: 'doctor'
@@ -138,7 +139,8 @@ This is what's known as a "Phase 2 query":
       skip: 0,
       sort: 'yearsInIndustry DESC'
     }
-  ]
+
+  }
 
 }
 ```
