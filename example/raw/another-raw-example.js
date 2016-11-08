@@ -118,18 +118,18 @@ setupWaterline({
 
   //   console.log('k');
 
-  // });//</ User.addToCollection() >
+  // });
 
 
-  User.removeFromCollection([], 'chickens', [], function (err){
-    if (err) {
-      console.error(err.stack);
-      return;
-    }//--•
+  // User.removeFromCollection([], 'chickens', [], function (err){
+  //   if (err) {
+  //     console.error(err.stack);
+  //     return;
+  //   }//--•
 
-    console.log('k');
+  //   console.log('k');
 
-  });//</ User.addToCollection() >
+  // });
 
   // User.replaceCollection([], 'chickens', [], function (err){
   //   if (err) {
@@ -139,7 +139,7 @@ setupWaterline({
 
   //   console.log('k');
 
-  // });//</ User.addToCollection() >
+  // });
 
 
   // User.sum('pets', {}, function (err, sum){
@@ -150,7 +150,23 @@ setupWaterline({
 
   //   console.log('got '+sum);
 
-  // });//</ User.addToCollection() >
+  // });
+
+
+  User.stream({}, function eachRecord(user, next){
+
+    console.log('Record:',user);
+    return next();
+
+  }, function (err){
+    if (err) {
+      console.error('Uhoh:',err.stack);
+      return;
+    }//--•
+
+    console.log('k');
+
+  });//</ User.stream() >
 
 
 });
