@@ -189,7 +189,7 @@ setupWaterline({
         return;
       }
 
-      User.stream({
+      User.find({
         // select: ['*'],
         where: {},
         limit: 10,
@@ -200,32 +200,56 @@ setupWaterline({
         // sort: [
         //   { name: 'ASC' }
         // ]
-      }, function eachRecord(user, next){
-
-        console.log('Record:',util.inspect(user,{depth: null}));
-        return next();
-
-      }, {
-        populates: {
-
-          pets: {
-            // select: ['*'],
-            where: {},
-            limit: 100000,
-            skip: 0,
-            sort: 'id asc',
-          }
-
-        }
-      }, function (err){
+      })
+      .populate('pets')
+      .exec(function (err, records) {
         if (err) {
-          console.error('Uhoh:',err.stack);
+          console.log('Failed to find records:',err);
           return;
-        }//--•
+        }
 
-        console.log('k');
+        console.log('found:',records);
 
-      });//</ User.stream().exec() >
+      });
+
+      // User.stream({
+      //   select: ['*'],
+      //   where: {},
+      //   limit: 10,
+      //   // limit: Number.MAX_SAFE_INTEGER,
+      //   skip: 0,
+      //   sort: 'id asc',
+      //   // sort: {},
+      //   // sort: [
+      //   //   { name: 'ASC' }
+      //   // ]
+      // }, function eachRecord(user, next){
+
+      //   console.log('Record:',util.inspect(user,{depth: null}));
+      //   return next();
+
+      // }, {
+      //   populates: {
+
+      //     pets: {
+      //       select: ['*'],
+      //       where: {},
+      //       limit: 100000,
+      //       skip: 0,
+      //       sort: 'id asc',
+      //     }
+
+      //   }
+      // }, function (err){
+      //   if (err) {
+      //     console.error('Uhoh:',err.stack);
+      //     return;
+      //   }//--•
+
+      //   console.log('k');
+
+      // });//</ User.stream().exec() >
+
     });//</ User.create().exec() >
   });//</ Pet.createEach().exec() >
 
