@@ -123,7 +123,7 @@ setupWaterline({
 
   User.sum('pets', {}, function (err, sum){
     if (err) {
-      console.error(err.stack);
+      console.error('Uhoh:',err.stack);
       return;
     }//--•
 
