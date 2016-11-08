@@ -39,6 +39,7 @@ setupWaterline({
     user: {
       connection: 'myDb',//<< the datastore this model should use
       attributes: {
+        numChickens: { type: 'number' },
         pets: { collection: 'Pet' }
       }
     },
@@ -109,13 +110,24 @@ setupWaterline({
 
   var User = ontology.models.user;
 
-  User.addToCollection([], 'chickens', [], function (err){
+  // User.addToCollection([], 'chickens', [], function (err){
+  //   if (err) {
+  //     console.error(err.stack);
+  //     return;
+  //   }//--•
+
+  //   console.log('k');
+
+  // });//</ User.addToCollection() >
+
+
+  User.sum('pets', {}, function (err, sum){
     if (err) {
       console.error(err.stack);
       return;
     }//--•
 
-    console.log('k');
+    console.log('got '+sum);
 
   });//</ User.addToCollection() >
 
