@@ -109,13 +109,14 @@ setupWaterline({
 
   var User = ontology.models.user;
 
-  User.addToCollection([], 'pets', [], function (err){
+  User.addToCollection([], 'chickens', [], function (err){
     if (err) {
-      console.error(err);
+      console.error(err.stack);
       return;
     }//--•
 
     console.log('k');
+
   });//</ User.addToCollection() >
 
 
