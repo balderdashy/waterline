@@ -121,15 +121,36 @@ setupWaterline({
   // });//</ User.addToCollection() >
 
 
-  User.sum('pets', {}, function (err, sum){
+  User.removeFromCollection([], 'chickens', [], function (err){
     if (err) {
-      console.error('Uhoh:',err.stack);
+      console.error(err.stack);
       return;
     }//--•
 
-    console.log('got '+sum);
+    console.log('k');
 
   });//</ User.addToCollection() >
+
+  // User.replaceCollection([], 'chickens', [], function (err){
+  //   if (err) {
+  //     console.error(err.stack);
+  //     return;
+  //   }//--•
+
+  //   console.log('k');
+
+  // });//</ User.addToCollection() >
+
+
+  // User.sum('pets', {}, function (err, sum){
+  //   if (err) {
+  //     console.error('Uhoh:',err.stack);
+  //     return;
+  //   }//--•
+
+  //   console.log('got '+sum);
+
+  // });//</ User.addToCollection() >
 
 
 });
