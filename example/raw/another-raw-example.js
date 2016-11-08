@@ -42,7 +42,7 @@ setupWaterline({
       connection: 'myDb',//<< the datastore this model should use
       attributes: {
         numChickens: { type: 'integer' },//<< will be able to change it to `number` soon-- but right now doing so breaks stuff do to the internals of Waterline treating `type: 'number'` like a string (that changes in WL 0.13)
-        pets: { collection: 'pet' }
+        pets: { collection: 'Pet' }
       }
     },
 
