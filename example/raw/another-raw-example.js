@@ -10,6 +10,8 @@
 
 
 // Import dependencies
+var util = require('util');
+var _ = require('lodash');
 var setupWaterline = require('./bootstrap');
 var SailsDiskAdapter = require('sails-disk');
 
@@ -39,8 +41,8 @@ setupWaterline({
     user: {
       connection: 'myDb',//<< the datastore this model should use
       attributes: {
-        numChickens: { type: 'number' },
-        pets: { collection: 'Pet' }
+        numChickens: { type: 'integer' },
+        pets: { collection: 'pet' }
       }
     },
 
@@ -108,6 +110,7 @@ setupWaterline({
     '==========================================================================\n'
   );
 
+  var Pet = ontology.models.pet;
   var User = ontology.models.user;
 
   // User.addToCollection([], 'chickens', [], function (err){
@@ -153,20 +156,80 @@ setupWaterline({
   // });
 
 
-  User.stream({}, function eachRecord(user, next){
+  // User.stream({}, function eachRecord(user, next){
 
-    console.log('Record:',user);
-    return next();
+  //   console.log('Record:',user);
+  //   return next();
 
-  }, function (err){
+  // }, function (err){
+  //   if (err) {
+  //     console.error('Uhoh:',err.stack);
+  //     return;
+  //   }//--•
+
+  //   console.log('k');
+
+  // });//</ User.stream() >
+
+  Pet.createEach([
+    { name: 'Rover' },
+    { name: 'Samantha' }
+  ]).exec(function (err, pets) {
     if (err) {
-      console.error('Uhoh:',err.stack);
+      console.log('Failed to create pets:', err);
       return;
-    }//--•
+    }
 
-    console.log('k');
+    User.create({
+      numChickens: 74,
+      pets: _.pluck(pets, 'id')
+    }).exec(function (err) {
+      if (err) {
+        console.log('Failed to create records:',err);
+        return;
+      }
 
-  });//</ User.stream() >
+      User.stream({
+        // select: ['*'],
+        where: {},
+        limit: 10,
+        // limit: Number.MAX_SAFE_INTEGER,
+        skip: 0,
+        sort: 'id asc',
+        // sort: {},
+        // sort: [
+        //   { name: 'ASC' }
+        // ]
+      }, function eachRecord(user, next){
+
+        console.log('Record:',util.inspect(user,{depth: null}));
+        return next();
+
+      }, {
+        populates: {
+
+          pets: {
+            // select: ['*'],
+            where: {},
+            limit: 100000,
+            skip: 0,
+            sort: 'id asc',
+          }
+
+        }
+      }, function (err){
+        if (err) {
+          console.error('Uhoh:',err.stack);
+          return;
+        }//--•
+
+        console.log('k');
+
+      });//</ User.stream().exec() >
+    });//</ User.create().exec() >
+  });//</ Pet.createEach().exec() >
+
+
 
 
 });
