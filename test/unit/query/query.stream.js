@@ -3,7 +3,7 @@ var Waterline = require('../../../lib/waterline'),
 
 describe('Collection Query', function() {
 
-  describe('.stream()', function() {
+  describe.skip('.stream()', function() {
     var query;
 
     before(function(done) {

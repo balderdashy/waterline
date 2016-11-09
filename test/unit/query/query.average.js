@@ -3,7 +3,7 @@ var Waterline = require('../../../lib/waterline'),
 
 describe('Collection average', function () {
 
-  describe('.average()', function () {
+  describe.skip('.average()', function () {
     var query;
 
     before(function (done) {

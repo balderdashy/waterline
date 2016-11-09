@@ -1,7 +1,7 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
-describe('Collection groupBy', function () {
+describe.skip('Collection groupBy', function () {
 
   describe('.groupBy()', function () {
     var query;
