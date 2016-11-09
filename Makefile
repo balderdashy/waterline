@@ -1,6 +1,6 @@
 ROOT=$(shell pwd)
 
-test: test-unit test-integration
+test: test-unit
 
 test-unit:
 	@echo "\nRunning unit tests..."

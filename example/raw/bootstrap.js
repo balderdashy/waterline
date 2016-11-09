@@ -2,69 +2,79 @@
  * Module dependencies
  */
 
-var _ = require('lodash')
-  , Waterline = require('../../lib/waterline');
+var _ = require('lodash');
+var Waterline = require('../../lib/waterline'); //<< replace that with `require('waterline')`
+
 
 
 /**
  * Set up Waterline with the specified
- * models, connections, and adapters.
-
-  @param options
-    :: {Object}   adapters     [i.e. a dictionary]
-    :: {Object}   connections  [i.e. a dictionary]
-    :: {Object}   collections  [i.e. a dictionary]
-
-  @param  {Function} cb
-    () {Error} err
-    () ontology
-      :: {Object} collections
-      :: {Object} connections
-
-  @return {Waterline}
+ * models, datastores, and adapters.
+ *
+ * > This is just an example of a little utility
+ * > that makes this a little easier to work with,
+ * > for convenience.
+ *
+ * @optional {Dictionary} adapters
+ * @optional {Dictionary} datastores
+ * @optional {Dictionary} models
+ *
+ * @callback
+ *   @param {Error?} err
+ *   @param {Dictionary} ontology
+ *     @property {Dictionary} models
+ *     @property {Dictionary} datastores
  */
 
-module.exports = function bootstrap( options, cb ) {
+module.exports = function bootstrap (options, done) {
 
-  var adapters = options.adapters || {};
-  var connections = options.connections || {};
-  var collections = options.collections || {};
+  var adapterDefs = options.adapters || {};
+  var datastores = options.datastores || {};
+  var models = options.models || {};
 
 
 
-  _(adapters).each(function (def, identity) {
-    // Make sure our adapter defs have `identity` properties
-    def.identity = def.identity || identity;
-  });
-  
-
-  var extendedCollections = [];
-  _(collections).each(function (def, identity) {
-
-    // Make sure our collection defs have `identity` properties
-    def.identity = def.identity || identity;
-
-    // Fold object of collection definitions into an array
-    // of extended Waterline collections.
-    extendedCollections.push(Waterline.Collection.extend(def));
+  // Assign an `identity` to each of our adapter definitions.
+  _.each(adapterDefs, function (def, key) {
+    def.identity = def.identity || key;
   });
 
 
-  // Instantiate Waterline and load the already-extended
-  // Waterline collections.
-  var waterline = new Waterline();
-  extendedCollections.forEach(function (collection) {
-    waterline.loadCollection(collection);
+  // Assign an `identity` and call `Waterline.Collection.extend()`
+  // on each of our model definitions.
+  var extendedModelDefs = _.reduce(models, function (memo, def, key) {
+    def.identity = def.identity || key;
+    memo.push(Waterline.Collection.extend(def));
+    return memo;
+  }, []);
+
+
+  // Construct a Waterline ORM instance.
+  var orm = new Waterline();
+
+
+  // Load the  already-extended Waterline collections.
+  extendedModelDefs.forEach(function (extendedModelDef) {
+    orm.loadCollection(extendedModelDef);
   });
 
 
-  // Initialize Waterline
+  // Initialize this Waterline ORM instance.
   // (and tell it about our adapters)
-  waterline.initialize({
-    adapters: adapters,
-    connections: connections
-  }, cb);
+  orm.initialize({
+    adapters: adapterDefs,
+    connections: datastores,
+  }, function (err, rawResult){
+    if (err) { return done(err); }
 
-  return waterline;
+    // Send back the ORM metadata.
+    // (we call this the "ontology")
+    return done(undefined, {
+      models: rawResult.collections,
+      datastores: rawResult.connections,
+    });
+
+  });//</orm.initialize()>
+
 };
 

@@ -1,9 +1,9 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
-describe('Collection sum', function () {
+describe('Collection Query', function () {
 
-  describe('.min()', function () {
+  describe.skip('.min()', function () {
     var query;
 
     before(function (done) {

@@ -10,9 +10,12 @@ This file contains the development roadmap for the upcoming release of Waterline
 
 This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.11 release of Waterline.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
- + Updated lifecyle hooks
-  + Pass criteria into the hooks.
- + Updated Docs
+ + Pull out auto-migrations into https://github.com/balderdashy/sails-hook-orm
+ + Remove the 2nd argument to the .exec() callback from `.update()`.
+   + e.g. `PetStore.update({}).exec(function (err) {  })`
+  + This is for performance: currently, the expected behavior forces many adapters to do an extra query, with no easy workaround.
+ + Remove the 1st argument to `afterDestroy` and `afterUpdate` lifecycle callbacks
+ + Update docs
   + Document adapter spec in detail, including the `join` method and how it's used.
 
 
@@ -32,8 +35,7 @@ The backlog consists of approved proposals for useful features which are not cur
 
 Feature                                          | Proposal                                                                              | Summary
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
- Pass criteria into lifecycle hooks              | [#1122](https://github.com/balderdashy/waterline/pull/1122)                           | Pass the queries criteria into lifecycle hooks.
- Deep populate                                   | [#1052](https://github.com/balderdashy/waterline/pull/1052)                           | Recursively populate child associations.
+ Pass criteria into `beforeUpdate` and `beforeDestroy` lifecycle callbacks, and allow them to modify it.         | [#1122](https://github.com/balderdashy/waterline/pull/1122)                           | Pass the queries criteria into lifecycle hooks.
 
 
 
@@ -75,3 +77,4 @@ Feature                                                     | Summary
  Run lifecycle callbacks on defined join tables             | Lifecycle callbacks don't run for join table records. See [issue](https://github.com/balderdashy/waterline/issues/1215) for more details.
  Do not mess with identity case                             | Identities of models should not be lowercased per default, better be left as defined. See [issue](https://github.com/balderdashy/waterline/issues/745) for more details.
  Support JSONB in PostgreSQL                                | Add support for JSONB querying in the Postgres adapter. This requires modifing/extending the criteria language. See [issue](https://github.com/balderdashy/sails-postgresql/issues/212) for more details.
+ Deep populate                                   | [#1052](https://github.com/balderdashy/waterline/pull/1052)                           | Recursively populate child associations.

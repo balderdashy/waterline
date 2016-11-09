@@ -3,7 +3,7 @@ var Waterline = require('../../../lib/waterline'),
 
 describe('Collection Query', function() {
 
-  describe('dynamicFinders', function() {
+  describe.skip('dynamicFinders', function() {
 
     describe('configuration', function() {
       var collections;

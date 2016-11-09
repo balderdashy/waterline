@@ -1,8 +1,9 @@
 /**
  * Module Dependencies
  */
-var Waterline = require('../../../lib/waterline');
 var _ = require('lodash');
+var async = require('async');
+var Waterline = require('../../../lib/waterline');
 
 /**
  * @option {Adapter} adapter
@@ -38,15 +39,32 @@ module.exports = function (options) {
     };
 
     waterline.initialize({ adapters: { barbaz: options.adapter }, connections: connections }, function(err, ocean) {
-      if (err) return done(err);
-      
+      if (err) {
+        return done(err);
+      }
+
       // Save access to all collections + connections
       self.ocean = ocean;
 
-      // expose global?
-      SomeCollection = ocean.collections.tests;
-      self.SomeCollection = SomeCollection;
-      done();
+      // Run Auto-Migrations
+      var toBeSynced = _.reduce(ocean.collections, function(resources, collection) {
+        resources.push(collection);
+        return resources;
+      }, []);
+
+      // Run auto-migration strategies on each collection
+      async.eachSeries(toBeSynced, function(collection, next) {
+        collection.sync(next);
+      }, function(err) {
+        if (err) {
+          return done(err);
+        }
+
+        // Expose Global
+        SomeCollection = ocean.collections.tests;
+        self.SomeCollection = SomeCollection;
+        done();
+      });
     });
   };
 };

@@ -1,6 +1,12 @@
 # Waterline Changelog
 
-### 0.12.2
+### 0.11.3
+
+* [BUG] Fix auto-updating attributes to take into account custom column names. See [#1360](https://github.com/balderdashy/waterline/pull/1360) for more details. Thanks to [@jenjenut233](https://github.com/jenjenut233) for the patch!   Also fixes https://github.com/balderdashy/sails/issues/3821.
+
+### 0.11.2
+
+* [BUG] Fix #1326
 
 * [BUG] Fix issues with compatibility in `alter` auto-migrations. This was causing corrupted data depending on the permutation of adapter version and Waterline version. This should be fixed in the SQL adapters that support the new `select` query modifier.
 

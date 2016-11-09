@@ -1,6 +1,7 @@
-var Waterline = require('../../../lib/waterline');
 var assert = require('assert');
 var _ = require('lodash');
+var Waterline = require('../../../lib/waterline');
+var MigrateHelper = require('../../support/migrate.helper');
 
 describe('Alter Mode Recovery with an enforced schema', function () {
 
@@ -34,7 +35,6 @@ describe('Alter Mode Recovery with an enforced schema', function () {
         cb(null, (persistentData.length === 1) ? schema : undefined);
       },
       find: function (connectionName, collectionName, options, cb, connection) {
-
         if(!options.select && !options.where) {
           return cb(null, persistentData);
         }
@@ -44,8 +44,9 @@ describe('Alter Mode Recovery with an enforced schema', function () {
           results = persistentData;
         }
         else {
-          results = _.find(persistentData, options.where);
+          results = _.filter(persistentData, options.where);
         }
+
         // Psuedo support for select (needed to act like a real adapter)
         if(options.select && _.isArray(options.select) && options.select.length) {
 
@@ -102,10 +103,13 @@ describe('Alter Mode Recovery with an enforced schema', function () {
     waterline.loadCollection(PersonCollection);
     waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
       if (err) return done(err);
-      data.collections.person.findOne({id: 1}, function (err, found) {
-        if (err) return done(err);
-        record = found;
-        done();
+
+      MigrateHelper(data, function(err) {
+        data.collections.person.findOne({id: 1}, function (err, found) {
+          if (err) return done(err);
+          record = found;
+          done();
+        });
       });
     });
   });
