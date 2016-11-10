@@ -1,8 +1,8 @@
 {
   "name": "waterline",
-  "description": "An ORM for Node.js and the Sails framework",
+  "description": "An ORM for Node.js and the Sails framework.",
   "version": "0.11.5",
-  "homepage": "http://github.com/balderdashy/waterline",
+  "homepage": "http://waterlinejs.org",
   "contributors": [
     {
       "name": "particlebanana",
@@ -63,10 +63,10 @@
     "coverage": "make coverage"
   },
   "engines": {
-    "node": ">=0.10.0 <=5.x.x"
+    "node": ">=0.10.0"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/balderdashy/waterline/issues/new"
+    "url": "http://sailsjs.com/bugs"
   }
 }
