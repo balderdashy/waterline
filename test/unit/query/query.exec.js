@@ -65,6 +65,7 @@ describe('Collection Query', function() {
         var self = this;
 
         async.auto({
+
           objUsage: function (cb) {
             query.find()
             .exec({
@@ -74,9 +75,11 @@ describe('Collection Query', function() {
               error: cb
             });
           },
+
           cbUsage: function (cb) {
             query.find().exec(cb);
           }
+
         }, function asyncComplete (err, async_data) {
           // Save results for use below
           self._error = err;
