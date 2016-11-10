@@ -45,7 +45,7 @@ describe('.afterValidate()', function() {
           };
 
           waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-            if(err) done(err);
+            if (err) { return done(err); };
             person = colls.collections.user;
             done();
           });
@@ -94,7 +94,7 @@ describe('.afterValidate()', function() {
           };
 
           waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-            if(err) done(err);
+            if (err) { return done(err); };
             person = colls.collections.user;
             done();
           });
@@ -164,7 +164,7 @@ describe('.afterValidate()', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) done(err);
+          if (err) { return done(err); };
           person = colls.collections.user;
           done();
         });
@@ -222,7 +222,7 @@ describe('.afterValidate()', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) done(err);
+          if (err) { return done(err); };
           person = colls.collections.user;
           done();
         });

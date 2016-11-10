@@ -57,7 +57,7 @@ describe('Collection Query', function() {
       };
 
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
+        if (err) { return done(err); };
         Car = colls.collections.car;
         done();
       });

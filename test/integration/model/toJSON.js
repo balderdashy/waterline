@@ -50,7 +50,7 @@ describe('Model', function() {
       };
 
       waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, colls) {
-        if(err) done(err);
+        if (err) { return done(err); };
         collection = colls.collections.person;
         collection2 = colls.collections.person2;
         done();

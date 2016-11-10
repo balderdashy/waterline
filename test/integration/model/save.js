@@ -98,7 +98,7 @@ describe('Model', function() {
       };
 
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
+        if (err) { return done(err); };
 
         // Setup pet collection
         petCollection = colls.collections.pet;

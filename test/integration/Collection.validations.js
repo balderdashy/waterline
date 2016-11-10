@@ -57,7 +57,7 @@ describe('Waterline Collection', function() {
       // Fixture Adapter Def
       var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
+        if (err) { return done(err); };
         User = colls.collections.user;
         done();
       });
