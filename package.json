@@ -22,12 +22,12 @@
     }
   ],
   "dependencies": {
+    "@sailshq/lodash": "^3.10.2",
     "anchor": "~0.11.2",
-    "async": "1.5.2",
+    "async": "2.0.1",
     "bluebird": "3.2.1",
     "deep-diff": "0.3.4",
     "flaverr": "^1.0.0",
-    "@sailshq/lodash": "^3.10.2",
     "prompt": "1.0.0",
     "switchback": "2.0.1",
     "waterline-criteria": "1.0.1",
