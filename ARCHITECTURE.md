@@ -85,7 +85,7 @@ var q = User.findOne({
 
 Under the covers, when you call `.exec()`, Waterline expands the stage 1 query into a dictionary (i.e. plain JavaScript object).
 
-This is what's known as a "Phase 2 query":
+This is what's known as a "Stage 2 query":
 
 ```js
 {
