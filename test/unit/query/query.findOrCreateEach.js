@@ -3,7 +3,7 @@ var Waterline = require('../../../lib/waterline'),
 
 describe('Collection Query', function() {
 
-  describe('.findOrCreateEach()', function() {
+  describe.skip('.findOrCreateEach()', function() {
 
     describe('with proper values', function() {
       var query;

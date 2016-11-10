@@ -108,7 +108,7 @@ describe('Collection', function() {
         assert(typeof person.createEach === 'function');
       });
 
-      it('should have .findOrCreateEach() method', function() {
+      it('should have .findOrCreateEach() method (although all it does is throw an error if you try and call it)', function() {
         assert(typeof person.findOrCreateEach === 'function');
       });
     });

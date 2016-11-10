@@ -42,20 +42,31 @@ describe('.afterCreate()', function() {
       });
     });
 
-    /**
-     * findOrCreateEach
-     */
-
-    describe('.findOrCreateEach()', function() {
-
-      it('should run afterCreate and mutate values', function(done) {
-        person.findOrCreateEach([{ name: 'test' }], [{ name: 'test' }], function(err, users) {
-          assert(!err);
-          assert(users[0].name === 'test updated');
-          done();
+    describe('.create()', function() {
+      it('should run beforeCreate and mutate values before communicating w/ adapter so that they\'re different when persisted', function(done) {
+        person.create({ name: 'test' }, function(err, user) {
+          try {
+            assert(!err);
+            assert(user.name === 'test updated');
+            return done();
+          } catch (e) { return done(e); }
         });
       });
     });
+
+    describe('.createEach()', function() {
+      it('should run beforeCreate and mutate values before communicating w/ adapter so that they\'re different when persisted', function(done) {
+        person.createEach([{ name: 'test1' }, { name: 'test2' }], function(err, users) {
+          try {
+            assert(!err);
+            assert.equal(users[0].name, 'test updated');
+            assert.equal(users[1].name, 'test updated');
+            return done();
+          } catch (e) { return done(e); }
+        });
+      });
+    });
+
   });
 
 
@@ -111,13 +122,18 @@ describe('.afterCreate()', function() {
       });
     });
 
-    it('should run the functions in order', function(done) {
-      person.findOrCreateEach([{ name: 'test' }], [{ name: 'test' }], function(err, users) {
-        assert(!err);
-        assert(users[0].name === 'test fn1 fn2');
-        done();
+    describe('on .create()', function() {
+      it('should run the functions in order', function(done) {
+        person.create({ name: 'test' }, function(err, user) {
+          try {
+            assert(!err);
+            assert.equal(user.name, 'test fn1 fn2');
+            return done();
+          } catch (e) { return done(e); }
+        });
       });
-    });
-  });
+    });//</describe :: on .create()>
+
+  });//</describe :: array of functions>
 
 });

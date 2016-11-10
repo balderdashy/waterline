@@ -36,26 +36,37 @@ describe('.afterValidate()', function() {
       };
 
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
+        if(err) { return done(err); }
         person = colls.collections.user;
         done();
       });
     });
 
-    /**
-     * findOrCreateEach
-     */
-
-    describe('.findOrCreateEach()', function() {
-
-      it('should run afterValidate and mutate values', function(done) {
-        person.findOrCreateEach([{ name: 'test' }], [{ name: 'test' }], function(err, users) {
-          assert(!err);
-          assert(users[0].name === 'test updated');
-          done();
+    describe('.create()', function() {
+      it('should run beforeCreate and mutate values before communicating w/ adapter so that they\'re different when persisted', function(done) {
+        person.create({ name: 'test' }, function(err, user) {
+          try {
+            assert(!err);
+            assert(user.name === 'test updated');
+            return done();
+          } catch (e) { return done(e); }
         });
       });
     });
+
+    describe('.createEach()', function() {
+      it('should run beforeCreate and mutate values before communicating w/ adapter so that they\'re different when persisted', function(done) {
+        person.createEach([{ name: 'test1' }, { name: 'test2' }], function(err, users) {
+          try {
+            assert(!err);
+            assert.equal(users[0].name, 'test1 updated');
+            assert.equal(users[1].name, 'test2 updated');
+            return done();
+          } catch (e) { return done(e); }
+        });
+      });
+    });
+
   });
 
 
@@ -105,19 +116,24 @@ describe('.afterValidate()', function() {
       };
 
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
+        if(err) { return done(err); }
         person = colls.collections.user;
         done();
       });
     });
 
-    it('should run the functions in order', function(done) {
-      person.findOrCreateEach([{ name: 'test' }], [{ name: 'test' }], function(err, users) {
-        assert(!err);
-        assert(users[0].name === 'test fn1 fn2');
-        done();
+    describe('on .create()', function() {
+      it('should run the functions in order', function(done) {
+        person.create({ name: 'test' }, function(err, user) {
+          try {
+            assert(!err);
+            assert.equal(user.name, 'test fn1 fn2');
+            return done();
+          } catch (e) { return done(e); }
+        });
       });
-    });
-  });
+    });//</describe :: on .create()>
+
+  });//</describe :: array of functions>
 
 });
