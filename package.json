@@ -58,10 +58,9 @@
   "repository": "git://github.com/balderdashy/waterline.git",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "make test",
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha test/integration test/structure test/support test/unit --recursive",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
-    "coverage": "make coverage"
   },
   "engines": {
     "node": ">=0.10.0"
