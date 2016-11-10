@@ -11,7 +11,7 @@
 
 // Import dependencies
 var util = require('util');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var setupWaterline = require('./bootstrap');
 var SailsDiskAdapter = require('sails-disk');
 

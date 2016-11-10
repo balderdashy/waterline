@@ -4,7 +4,7 @@
 var innerJoin = require('../../../lib/waterline/query/integrator/innerJoin');
 var assert = require('assert');
 var should = require('should');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 
 describe('innerJoin', function() {

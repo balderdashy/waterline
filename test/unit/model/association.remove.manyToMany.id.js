@@ -1,4 +1,4 @@
-var _ = require('lodash'),
+var _ = require('@sailshq/lodash'),
     assert = require('assert'),
     manyToManyFixture = require('../../support/fixtures/model/context.manyToMany.fixture'),
     Model = require('../../../lib/waterline/model');

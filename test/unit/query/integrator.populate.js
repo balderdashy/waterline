@@ -1,7 +1,7 @@
 /**
  * Test dependencies
  */
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var leftOuterJoin = require('../../../lib/waterline/query/integrator/leftOuterJoin');
 var populate = require('../../../lib/waterline/query/integrator/populate');
 var fixtures = {
@@ -10,7 +10,7 @@ var fixtures = {
 };
 var assert = require('assert');
 var should = require('should');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 describe('populate', function() {
 

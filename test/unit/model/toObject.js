@@ -2,7 +2,7 @@ var assert = require('assert');
 var belongsToFixture = require('../../support/fixtures/model/context.belongsTo.fixture');
 var manyToManyFixture = require('../../support/fixtures/model/context.manyToMany.fixture');
 var simpleFixture = require('../../support/fixtures/model/context.simple.fixture');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var Model = require('../../../lib/waterline/model');
 
 describe('instance methods', function() {

@@ -1,7 +1,7 @@
 /**
  * Module Dependencies
  */
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var async = require('async');
 var Waterline = require('../../../lib/waterline');
 

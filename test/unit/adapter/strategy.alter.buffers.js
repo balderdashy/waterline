@@ -1,6 +1,6 @@
 var Waterline = require('../../../lib/waterline');
 var assert = require('assert');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 describe('Alter Mode Recovery with buffer attributes', function () {
 

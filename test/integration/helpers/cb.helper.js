@@ -4,7 +4,7 @@
 var assert = require('assert'),
     should = require('should'),
     util = require('util'),
-    _ = require('lodash');
+    _ = require('@sailshq/lodash');
 
 
 module.exports = {

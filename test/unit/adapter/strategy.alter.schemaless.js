@@ -1,5 +1,5 @@
 var assert = require('assert');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var Waterline = require('../../../lib/waterline');
 var MigrateHelper = require('../../support/migrate.helper');
 

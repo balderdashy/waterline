@@ -1,5 +1,5 @@
 var Waterline = require('../../../lib/waterline');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var assert = require('assert');
 
 describe('Model', function() {
