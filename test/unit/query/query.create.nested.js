@@ -66,7 +66,7 @@ describe('Collection Query', function() {
 
       it('should reduce the nested object down to a foreign key', function(done) {
         query.create({ name: 'foo', nestedModel: { name: 'joe' }}, function(err, status) {
-          assert(!err);
+          assert(!err, err);
           assert(status.nestedModel);
           assert(status.nestedModel === 1);
           done();
@@ -147,7 +147,7 @@ describe('Collection Query', function() {
         ];
 
         query.create({ id: 5, name: 'foo', nestedModels: nestedModels }, function(err, status) {
-          assert(!err);
+          assert(!err, err);
           assert(status.nestedModels.length === 0);
           assert(findValues.length === 4);
           done();

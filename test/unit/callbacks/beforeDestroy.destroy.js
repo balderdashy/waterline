@@ -47,7 +47,7 @@ describe('.beforeDestroy()', function() {
 
       it('should run beforeDestroy', function(done) {
         person.destroy({ name: 'test' }, function(err) {
-          assert(!err);
+          assert(!err, err);
           assert(status === true);
           done();
         });
@@ -107,7 +107,7 @@ describe('.beforeDestroy()', function() {
 
     it('should run the functions in order', function(done) {
       person.destroy({ name: 'test' }, function(err) {
-        assert(!err);
+        assert(!err, err);
         assert(status === 'fn1 fn2');
         done();
       });

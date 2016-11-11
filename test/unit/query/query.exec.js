@@ -48,11 +48,11 @@ describe('Collection Query', function() {
       // .exec() usage
       query.find()
       .exec(function(err, results0) {
-        assert(!err);
+        assert(!err, err);
 
         // callback usage
         query.find(function (err, results1) {
-          assert(!err);
+          assert(!err, err);
           assert(results0.length === results1.length);
         });
         done();

@@ -47,7 +47,7 @@ describe('.afterValidate()', function() {
 
       it('should run afterValidate and mutate values', function(done) {
         person.create({ name: 'test' }, function(err, user) {
-          assert(!err);
+          assert(!err, err);
           assert(user.name === 'test updated');
           done();
         });
@@ -107,7 +107,7 @@ describe('.afterValidate()', function() {
 
     it('should run the functions in order', function(done) {
       person.create({ name: 'test' }, function(err, user) {
-        assert(!err);
+        assert(!err, err);
         assert(user.name === 'test fn1 fn2');
         done();
       });

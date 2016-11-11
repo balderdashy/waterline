@@ -53,7 +53,7 @@ describe('.beforeValidate()', function() {
 
         it('should run beforeValidate and mutate values on create', function(done) {
           person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-            assert(!err);
+            assert(!err, err);
             assert(user.name === 'test updated');
             done();
           });
@@ -102,7 +102,7 @@ describe('.beforeValidate()', function() {
 
         it('should not run beforeValidate and mutate values on find', function(done) {
           person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-            assert(!err);
+            assert(!err, err);
             assert(user.name === 'test');
             done();
           });
@@ -171,7 +171,7 @@ describe('.beforeValidate()', function() {
 
       it('should run the functions in order on create', function(done) {
         person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-          assert(!err);
+          assert(!err, err);
           assert(user.name === 'test fn1 fn2');
           done();
         });
@@ -229,7 +229,7 @@ describe('.beforeValidate()', function() {
 
       it('should not run any of the functions on find', function(done) {
         person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-          assert(!err);
+          assert(!err, err);
           assert(user.name === 'test');
           done();
         });

@@ -50,7 +50,7 @@ describe('Collection Query', function() {
 
       it('should allow an integer to be passed in as criteria', function(done) {
         query.findOne(1, function(err, values) {
-          assert(!err);
+          assert(!err, err);
           assert(values.where.id === 1);
           done();
         });
@@ -61,7 +61,7 @@ describe('Collection Query', function() {
         .where({ name: 'Foo Bar' })
         .where({ id: { '>': 1 } })
         .exec(function(err, results) {
-          assert(!err);
+          assert(!err, err);
           assert(!Array.isArray(results));
 
           assert(Object.keys(results.where).length === 2);
@@ -122,7 +122,7 @@ describe('Collection Query', function() {
 
         it('should use the custom primary key when a single value is passed in', function(done) {
           query.findOne(1, function(err, values) {
-            assert(!err);
+            assert(!err, err);
             assert(values.where.myPk === 1);
             done();
           });
@@ -176,7 +176,7 @@ describe('Collection Query', function() {
 
         it('should use the custom primary key when a single value is passed in', function(done) {
           query.findOne(1, function(err, values) {
-            assert(!err);
+            assert(!err, err);
             assert(values.where.pkColumn === 1);
             done();
           });

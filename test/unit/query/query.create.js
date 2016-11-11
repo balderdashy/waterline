@@ -108,7 +108,7 @@ describe('Collection Query', function() {
         query.create()
         .set({ name: 'bob' })
         .exec(function(err, result) {
-          assert(!err);
+          assert(!err, err);
           assert(result);
           done();
         });

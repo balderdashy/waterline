@@ -65,7 +65,7 @@ describe('Waterline Collection', function() {
 
     it('should work with valid data', function(done) {
       User.create({ name: 'foo bar', email: 'foobar@gmail.com'}, function(err, user) {
-        assert(!err);
+        assert(!err, err);
         done();
       });
     });
@@ -81,7 +81,7 @@ describe('Waterline Collection', function() {
 
     it('should support valid enums on strings', function(done) {
       User.create({ name: 'foo', sex: 'male' }, function(err, user) {
-        assert(!err);
+        assert(!err, err);
         assert(user.sex === 'male');
         done();
       });
@@ -98,7 +98,7 @@ describe('Waterline Collection', function() {
 
     it('should work with valid username', function(done) {
       User.create({ name: 'foo', username: 'foozball_dude' }, function(err, user) {
-        assert(!err);
+        assert(!err, err);
         done();
       });
     });
@@ -114,7 +114,7 @@ describe('Waterline Collection', function() {
 
     it('should support custom type functions with the model\'s context', function(done) {
       User.create({ name: 'foo', sex: 'male', password: 'passW0rd', passwordConfirmation: 'passW0rd' }, function(err, user) {
-        assert(!err);
+        assert(!err, err);
         done();
       });
     });

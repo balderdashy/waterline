@@ -43,7 +43,7 @@ describe('Collection Query', function() {
 
       it('should not return an error', function(done) {
         query.destroy({}, function(err) {
-          assert(!err);
+          assert(!err, err);
           done();
         });
       });
@@ -52,14 +52,14 @@ describe('Collection Query', function() {
         query.destroy()
         .where({})
         .exec(function(err) {
-          assert(!err);
+          assert(!err, err);
           done();
         });
       });
 
       it('should not delete an empty IN array', function(done) {
         query.destroy({id: []}, function(err, deleted) {
-          assert(!err);
+          assert(!err, err);
           assert(deleted.length === 0);
           done();
         });
@@ -113,7 +113,7 @@ describe('Collection Query', function() {
 
       it('should use the custom primary key when a single value is passed in', function(done) {
         query.destroy(1, function(err, values) {
-          assert(!err);
+          assert(!err, err);
           assert(values.where.pkColumn === 1);
           done();
         });

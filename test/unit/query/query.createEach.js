@@ -122,7 +122,7 @@ describe('Collection Query', function() {
         query.createEach()
         .set([{ name: 'bob' }, { name: 'foo'}])
         .exec(function(err, result) {
-          assert(!err);
+          assert(!err, err);
           assert(result);
           assert(result[0].name === 'bob');
           assert(result[1].name === 'foo');

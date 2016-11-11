@@ -141,7 +141,7 @@ describe('Model', function() {
       person.last_name = 'foobaz';
 
       person.save(function(err) {
-        assert(!err);
+        assert(!err, err);
         assert.equal(vals.person.last_name, 'foobaz');
         done();
       });
@@ -156,7 +156,7 @@ describe('Model', function() {
       person.pets.push({type: 'log'});
 
       person.save(function(err) {
-        assert(!err);
+        assert(!err, err);
 
         assert(_.isPlainObject(vals.pet));
         assert.equal(_.keys(vals.pet).length, 0);

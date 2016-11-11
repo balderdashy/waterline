@@ -47,7 +47,7 @@ describe('.afterValidate()', function() {
 
       it('should run afterValidate and mutate values', function(done) {
         person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
-          assert(!err);
+          assert(!err, err);
           assert(users[0].name === 'test updated');
           assert(users[1].name === 'test2 updated');
           done();
@@ -108,7 +108,7 @@ describe('.afterValidate()', function() {
 
     it('should run the functions in order', function(done) {
       person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
-        assert(!err);
+        assert(!err, err);
         assert(users[0].name === 'test fn1 fn2');
         assert(users[1].name === 'test2 fn1 fn2');
         done();

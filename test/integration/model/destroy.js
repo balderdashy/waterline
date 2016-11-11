@@ -50,7 +50,7 @@ describe('Model', function() {
       var person = new collection._model({ id: 1, first_name: 'foo', last_name: 'bar' });
 
       person.destroy(function(err, status) {
-        assert(!err);
+        assert(!err, err);
         assert(status === true);
         done();
       });

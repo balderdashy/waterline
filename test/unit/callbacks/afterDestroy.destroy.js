@@ -53,7 +53,7 @@ describe('.afterDestroy()', function() {
 
       it('should run afterDestroy', function(done) {
         person.destroy({ name: 'test' }, function(err) {
-          assert(!err);
+          assert(!err, err);
           assert(status === true);
           done();
         });
@@ -116,7 +116,7 @@ describe('.afterDestroy()', function() {
 
     it('should run the functions in order', function(done) {
       person.destroy({ name: 'test' }, function(err) {
-        assert(!err);
+        assert(!err, err);
         assert(status === 'fn1 fn2');
         done();
       });

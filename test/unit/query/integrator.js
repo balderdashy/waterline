@@ -49,7 +49,7 @@ describe('integrator', function () {
             before(function (done){
                 assert.doesNotThrow(function () {
                     integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                        assert(!err);
+                        assert(!err, err);
                         results = _results;
                         done(err);
                     });
@@ -106,7 +106,7 @@ describe('integrator', function () {
                     it('should still work in a predictable way (populate an empty array)', function (done) {
                         assert.doesNotThrow(function () {
                             integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                                assert(!err);
+                                assert(!err, err);
                                 return done(err);
                             });
                         });
@@ -132,7 +132,7 @@ describe('integrator', function () {
             before(function (done){
                 assert.doesNotThrow(function () {
                     integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                        assert(!err);
+                        assert(!err, err);
                         results = _results;
                         done(err);
                     });
@@ -208,7 +208,7 @@ describe('integrator', function () {
         before(function (done){
             assert.doesNotThrow(function () {
                 integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                    assert(!err);
+                    assert(!err, err);
                     results = _results;
                     done(err);
                 });

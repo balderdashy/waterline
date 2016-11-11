@@ -53,7 +53,7 @@ describe('instance methods', function() {
       person.name = 'foobar';
 
       person.save(function(err) {
-        assert(!err);
+        assert(!err, err);
         done();
       });
     });
