@@ -42,6 +42,16 @@ describe('Waterline Collection', function() {
 
           password: {
             type: 'password'
+          },
+          
+          age: {
+            type: 'integer',
+            dbType: 'customDbType'
+          },
+          
+          address: {
+            type: 'string',
+            dbType: 'geoString'
           }
         }
       });
@@ -55,7 +65,10 @@ describe('Waterline Collection', function() {
       };
 
       // Fixture Adapter Def
-      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+      var adapterDef = { 
+        create: function(con, col, values, cb) { return cb(null, values); },
+        types: { customdbtype: function(val){ return !isNaN(val) && val > 0; } }
+      };
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
         if (err) { return done(err); };
         User = colls.collections.user;
@@ -124,6 +137,29 @@ describe('Waterline Collection', function() {
         assert(!user);
         assert(err.ValidationError);
         assert(err.ValidationError.password[0].rule === 'password');
+        done();
+      });
+    });
+    
+    it('should support adapter custom type with valid age', function(done) {
+      User.create({ name: 'foo', sex: 'male', age: 10 }, function(err, user) {
+        assert(!err, err);
+        done();
+      });
+    });
+
+    it('should error with invalid input for adapter custom type', function(done) {
+      User.create({ name: 'foo', sex: 'male', age: -5 }, function(err, user) {
+        assert(!user);
+        assert(err.ValidationError);
+        assert.equal(err.ValidationError.age[0].rule, 'customdbtype');
+        done();
+      });
+    });
+    
+    it('should support dbType even if adapter doesn\'t have a validation rule for it', function(done) {
+      User.create({ name: 'foo', sex: 'male', address: 'N 30° 19\' 7.14"' }, function(err, user) {
+        assert(!err, err);
         done();
       });
     });
