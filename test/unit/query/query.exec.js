@@ -89,14 +89,11 @@ describe('Collection Query', function() {
 
       });
 
-      it('should not fail', function() {
-        assert(this._results);
-        assert(!this._error);
+      it('should not fail, and should work the same as it does w/ a callback', function() {
+        assert(!this._error, this._error);
+        assert.equal(this._results.cbUsage.length, this._results.objUsage.length);
       });
 
-      it('should work the same as it does with a callback', function() {
-        assert(this._results.cbUsage.length === this._results.objUsage.length);
-      });
     });
 
   });

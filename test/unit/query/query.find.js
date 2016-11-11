@@ -33,7 +33,7 @@ describe('Collection Query', function() {
       };
 
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) return done(err);
+        if(err) { return done(err); }
         query = colls.collections.user;
         done();
       });
@@ -41,13 +41,17 @@ describe('Collection Query', function() {
 
     it('should allow options to be optional', function(done) {
       query.find({}, function(err, values) {
-        assert(!err);
-        done();
+        try {
+          assert(!err,err);
+          done();
+        } catch (e) { return done(e); }
       });
     });
 
     it('should return an array', function(done) {
       query.find({}, {}, function(err, values) {
+        if (err) { return done(err); }
+
         assert(Array.isArray(values));
         done();
       });
@@ -55,6 +59,8 @@ describe('Collection Query', function() {
 
     it('should return an instance of Model', function(done) {
       query.find({}, {}, function(err, values) {
+        if (err) { return done(err); }
+
         assert(typeof values[0].doSomething === 'function');
         done();
       });
@@ -68,17 +74,20 @@ describe('Collection Query', function() {
       .skip(1)
       .sort({ name: 0 })
       .exec(function(err, results) {
-        assert(!err);
-        assert(Array.isArray(results));
+        try {
+          assert(!err,err);
+          assert(Array.isArray(results));
 
-        assert(Object.keys(results[0].where).length === 2);
-        assert(results[0].where.name == 'Foo Bar');
-        assert(results[0].where.id['>'] == 1);
-        assert(results[0].limit == 1);
-        assert(results[0].skip == 1);
-        assert.equal(results[0].sort[0].name, 'DESC');
+          // TODO: apply code conventions (but I don't want to change this while the tests aren't already passing)
+          assert(Object.keys(results[0].where).length === 2);
+          assert(results[0].where.name == 'Foo Bar');
+          assert(results[0].where.id['>'] == 1);
+          assert(results[0].limit == 1);
+          assert(results[0].skip == 1);
+          assert.equal(results[0].sort[0].name, 'DESC');
 
-        done();
+          done();
+        } catch (e) { return done(e); }
       });
     });
 
@@ -87,13 +96,15 @@ describe('Collection Query', function() {
         query.find()
         .paginate()
         .exec(function(err, results) {
-          assert(!err);
-          assert(Array.isArray(results));
+          try {
+            assert(!err,err);
+            assert(Array.isArray(results));
 
-          assert(results[0].skip === 0);
-          assert(results[0].limit === 10);
+            assert(results[0].skip === 0);
+            assert(results[0].limit === 10);
 
-          done();
+            done();
+          } catch (e) { return done(e); }
         });
       });
 
@@ -101,6 +112,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 1})
         .exec(function(err, results) {
+          if (err) { return done(err); }
+
           assert(results[0].skip === 0);
 
           done();
@@ -111,6 +124,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 1})
         .exec(function(err, results) {
+          if (err) { return done(err); }
+
           assert(results[0].skip === 0);
 
           done();
@@ -121,6 +136,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 2})
         .exec(function(err, results) {
+          if (err) { return done(err); }
+
           assert(results[0].skip === 10);
 
           done();
@@ -131,6 +148,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({limit: 1})
         .exec(function(err, results) {
+          if (err) { return done(err); }
+
           assert(results[0].limit === 1);
 
           done();
@@ -141,6 +160,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 2, limit: 10})
         .exec(function(err, results) {
+          if (err) { return done(err); }
+
           assert(results[0].skip  === 10);
           assert(results[0].limit === 10);
 
@@ -152,6 +173,8 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 3, limit: 10})
         .exec(function(err, results) {
+          if (err) { return done(err); }
+
           assert(results[0].skip  === 20);
           assert(results[0].limit === 10);
 

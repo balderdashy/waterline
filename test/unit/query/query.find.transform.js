@@ -69,15 +69,21 @@ describe('Collection Query', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
+          if(err) { return done(err); }
+
           colls.collections.user.find({ name: 'foo' }, function(err, values) {
-            assert(values[0].name);
-            assert(!values[0].login);
-            done();
+            if (err) { return done(err); }
+            try {
+              assert(values[0].name);
+              assert(!values[0].login);
+              done();
+            } catch (e) { return done(e); }
           });
-        });
-      });
-    });
+
+        });//<waterline.initialize()>
+      });//</it>
+
+    });//</describe :: with transformed values>
 
   });
 });
