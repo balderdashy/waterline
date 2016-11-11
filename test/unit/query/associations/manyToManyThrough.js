@@ -112,8 +112,9 @@ describe('Collection Query', function() {
 
       waterline.initialize({adapters: {adapter: require('sails-memory')}, connections: connections}, function(err, colls) {
         if (err) {
-          done(err);
+          return done(err);
         }
+
         Driver = colls.collections.driver;
         Taxi = colls.collections.taxi;
         Ride = colls.collections.ride;
@@ -152,10 +153,12 @@ describe('Collection Query', function() {
             Payment.createEach(payments, callback);
           }
         ], function(err) {
-          done(err);
+          if (err) { return done(err); }
+          return done();
         });
-      });
-    });
+
+      });//< / waterline.initialize()>
+    });//</before>
 
     after(function(done) {
       waterline.teardown(done);

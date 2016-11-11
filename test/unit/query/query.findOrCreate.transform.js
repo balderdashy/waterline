@@ -106,12 +106,17 @@ describe('Collection Query', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
+          if(err) { return done(err); }
+
           colls.collections.user.findOrCreate({ where: { name: 'foo' }}, { name: 'foo' }, function(err, values) {
-            assert(values.name);
-            assert(!values.login);
-            done();
+            if (err) { return done(err); }
+            try {
+              assert(values.name);
+              assert(!values.login);
+              done();
+            } catch (e) { return done(e); }
           });
+
         });
       });
     });
