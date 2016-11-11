@@ -39,37 +39,52 @@ describe('Collection Query', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
-          query = colls.collections.user;
-          done();
+          if(err) { return done(err); }
+          try {
+            query = colls.collections.user;
+            return done();
+          } catch (e) { return done(e); }
         });
       });
 
       it('should change the updatedAt timestamp', function(done) {
         query.update({}, { name: 'foo' }, function(err, status) {
-          assert(status[0].updatedAt);
-          done();
+          if(err) { return done(err); }
+          try {
+            assert(status[0].updatedAt);
+            return done();
+          } catch (e) { return done(e); }
         });
       });
 
       it('should set values', function(done) {
         query.update({}, { name: 'foo' }, function(err, status) {
-          assert(status[0].name === 'foo');
-          done();
+          if (err) { return done(err); }
+          try {
+            assert(status[0].name === 'foo');
+            return done();
+          } catch (e) { return done(e); }
         });
       });
 
       it('should strip values that don\'t belong to the schema', function(done) {
         query.update({}, { foo: 'bar' }, function(err, values) {
-          assert(!values.foo);
-          done();
+          if (err) { return done(err); }
+          try {
+            assert(!values.foo);
+            return done();
+          } catch (e) { return done(e); }
         });
       });
 
       it('should return an instance of Model', function(done) {
         query.update({}, { name: 'foo' }, function(err, status) {
-          assert(typeof status[0].doSomething === 'function');
-          done();
+          if (err){ return done(err); }
+
+          try {
+            assert(typeof status[0].doSomething === 'function');
+            return done();
+          } catch (e) { return done(e); }
         });
       });
 
@@ -78,9 +93,11 @@ describe('Collection Query', function() {
         .where({})
         .set({ name: 'foo' })
         .exec(function(err, results) {
-          assert(!err);
-          assert(results[0].name === 'foo');
-          done();
+          try {
+            assert(!err, err);
+            assert(results[0].name === 'foo');
+            done();
+          } catch (e) { return done(e); }
         });
       });
 
@@ -113,7 +130,7 @@ describe('Collection Query', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
+          if(err) { return done(err); }
           query = colls.collections.user;
           done();
         });
@@ -121,9 +138,12 @@ describe('Collection Query', function() {
 
       it('should cast values before sending to adapter', function(done) {
         query.update({}, { name: 'foo', age: '27' }, function(err, values) {
-          assert(values[0].name === 'foo');
-          assert(values[0].age === 27);
-          done();
+          if(err) { return done(err); }
+          try {
+            assert(values[0].name === 'foo');
+            assert(values[0].age === 27);
+            return done();
+          } catch (e) { return done(e); }
         });
       });
     });
@@ -164,7 +184,7 @@ describe('Collection Query', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if (err) { return done(err); };
+          if (err) { return done(err); }
           query = colls.collections.user;
           done();
         });
@@ -173,9 +193,11 @@ describe('Collection Query', function() {
 
       it('should use the custom primary key when a single value is passed in', function(done) {
         query.update(1, { name: 'foo' }, function(err, values) {
-          assert(!err);
-          assert(values[0].where.pkColumn === 1);
-          done();
+          try {
+            assert(!err, err);
+            assert(values[0].where.pkColumn === 1);
+            done();
+          } catch (e) { return done(e); }
         });
       });
     });
