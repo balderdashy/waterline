@@ -38,14 +38,15 @@ describe('Collection Query', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
+          if (err) { return done(err); }
           query = colls.collections.user;
           done();
         });
-      });
+      });//</before>
 
       it('should set default values', function(done) {
         query.findOrCreate({ name: 'Foo Bar' }, {}, function(err, status) {
+          if (err) { return done(err); }
           assert(status.name === 'Foo Bar');
           done();
         });
@@ -53,6 +54,7 @@ describe('Collection Query', function() {
 
       it('should set default values with exec', function(done) {
         query.findOrCreate({ name: 'Foo Bar' }).exec(function(err, status) {
+          if (err) { return done(err); }
           assert(status.name === 'Foo Bar');
           done();
         });
@@ -60,6 +62,7 @@ describe('Collection Query', function() {
 
       it('should work with multiple objects', function(done) {
         query.findOrCreate([{ name: 'Foo Bar' }, { name: 'Makis'}]).exec(function(err, status) {
+          if (err) { return done(err); }
           assert(status[0].name === 'Foo Bar');
           assert(status[1].name === 'Makis');
           done();
@@ -68,6 +71,7 @@ describe('Collection Query', function() {
 
       it('should add timestamps', function(done) {
         query.findOrCreate({ name: 'Foo Bar' }, {}, function(err, status) {
+          if (err) { return done(err); }
           assert(status.createdAt);
           assert(status.updatedAt);
           done();
@@ -76,6 +80,7 @@ describe('Collection Query', function() {
 
       it('should set values', function(done) {
         query.findOrCreate({ name: 'Foo Bar' }, { name: 'Bob' }, function(err, status) {
+          if (err) { return done(err); }
           assert(status.name === 'Bob');
           done();
         });
@@ -83,6 +88,7 @@ describe('Collection Query', function() {
 
       it('should strip values that don\'t belong to the schema', function(done) {
         query.findOrCreate({ name: 'Foo Bar'}, { foo: 'bar' }, function(err, values) {
+          if (err) { return done(err); }
           assert(!values.foo);
           done();
         });
@@ -90,6 +96,7 @@ describe('Collection Query', function() {
 
       it('should return an instance of Model', function(done) {
         query.findOrCreate({ name: 'Foo Bar' }, {}, function(err, status) {
+          if (err) { return done(err); }
           assert(typeof status.doSomething === 'function');
           done();
         });
@@ -100,10 +107,12 @@ describe('Collection Query', function() {
         .where({ name: 'foo' })
         .set({ name: 'bob' })
         .exec(function(err, result) {
-          assert(!err);
-          assert(result);
-          assert(result.name === 'bob');
-          done();
+          try {
+            assert(!err);
+            assert(result);
+            assert(result.name === 'bob');
+            done();
+          } catch (e) { return done(e); }
         });
       });
     });
@@ -138,7 +147,7 @@ describe('Collection Query', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
+          if (err) { return done(err); }
           query = colls.collections.user;
           done();
         });
@@ -146,6 +155,7 @@ describe('Collection Query', function() {
 
       it('should cast values before sending to adapter', function(done) {
         query.findOrCreate({ name: 'Foo Bar' }, { name: 'foo', age: '27' }, function(err, values) {
+          if (err) { return done(err); }
           assert(values.name === 'foo');
           assert(values.age === 27);
           done();
