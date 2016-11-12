@@ -31,7 +31,7 @@
     "prompt": "1.0.0",
     "switchback": "2.0.1",
     "waterline-criteria": "1.0.1",
-    "waterline-schema": "0.2.0"
+    "waterline-schema": "balderdashy/waterline-schema"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "0.3.2",
