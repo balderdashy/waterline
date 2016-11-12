@@ -100,3 +100,13 @@
 ### 0.10.26
 
 * [BUGFIX] Fix issue with `defaultsTo` not setting values for undefined values.
+
+### 0.10.25 and earlier?
+
+See https://github.com/balderdashy/waterline/commits/f5efc0349fe9594a962357287bb6c25acdda9a76.
+
+> #### Earlier still?
+>
+> For the first year or so, Waterline lived in the main Sails repo.  See https://github.com/balderdashy/sails/commits/master?after=q8Jnoggc%2F%2B7O7021adjRanuRhssrNDM3NA%3D%3D and back.
+
+
