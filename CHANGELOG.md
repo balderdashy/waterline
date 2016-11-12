@@ -7,6 +7,10 @@
   + Aggregation clauses (`sum`, `average`, `min`, `max`, and `groupBy`) are no longer supported in criteria.  Instead, see new model methods.
   + `limit: 0` now does the same thing as `limit: undefined` (matches zero results, instead of matching ∞ results)
   + Limit must be < Number.MAX_SAFE_INTEGER (...with one exception: for compatibility/convenience, `Infinity` is tolerated and normalized to `Number.MAX_SAFE_INTEGER` automatically.)
+  + Criteria dictionaries with a mixed `where` clause are no longer supported.
+    + e.g. instead of `{ username: 'santaclaus', limit: 4, select: ['beardLength', 'lat', 'long']}`,
+    + use `{ where: { username: 'santaclaus' }, limit: 4, select: ['beardLength', 'lat', 'long'] }`.
+    + And as for anywhere you're building criteria using Waterline's chainable deferred object, then don't worry about this-- it's taken care of for you.
 * [DEPRECATE] Deprecated criteria usage:
   + Avoid specifying a limit of < 0.  It is still ignored, and acts like `limit: undefined`, but it now logs a deprecation warning to the console.
 
