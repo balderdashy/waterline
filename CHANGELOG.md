@@ -1,5 +1,15 @@
 # Waterline Changelog
 
+### Edge
+
+* [BREAKING] Breaking changes to criteria usage:
+  + For performance, criteria passed in to Waterline's model methods will now be mutated in-place in most situations (whereas in Sails/Waterline v0.12, this was not necessarily the case.)
+  + Aggregation clauses (`sum`, `average`, `min`, `max`, and `groupBy`) are no longer supported in criteria.  Instead, see new model methods.
+  + `limit: 0` now does the same thing as `limit: undefined` (matches zero results, instead of matching ∞ results)
+  + Limit must be < Number.MAX_SAFE_INTEGER (...with one exception: for compatibility/convenience, `Infinity` is tolerated and normalized to `Number.MAX_SAFE_INTEGER` automatically.)
+* [DEPRECATE] Deprecated criteria usage:
+  + Avoid specifying a limit of < 0.  It is still ignored, and acts like `limit: undefined`, but it now logs a deprecation warning to the console.
+
 
 ### 0.11.6
 
