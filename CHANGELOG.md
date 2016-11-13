@@ -12,6 +12,7 @@
   + Criteria dictionaries with a mixed `where` clause are no longer supported.
     + e.g. instead of `{ username: 'santaclaus', limit: 4, select: ['beardLength', 'lat', 'long']}`,
     + use `{ where: { username: 'santaclaus' }, limit: 4, select: ['beardLength', 'lat', 'long'] }`.
+    + Note that you can still do `{ username: 'santaclaus' }` as shorthand for `{ where: { username: 'santaclaus' } }` -- it's just that you can't mix other top-level query clauses in there without namespacing the `where` operators inside of `where`.
     + And as for anywhere you're building criteria using Waterline's chainable deferred object, then don't worry about this-- it's taken care of for you.
 * [DEPRECATE] Deprecated criteria usage:
   + Avoid specifying a limit of < 0.  It is still ignored, and acts like `limit: undefined`, but it now logs a deprecation warning to the console.
