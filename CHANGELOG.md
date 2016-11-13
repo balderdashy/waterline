@@ -2,6 +2,8 @@
 
 ### Edge
 
+* [BREAKING] Waterline attribute names must now be [ECMAScript 5.1-compatible variable names](https://github.com/mikermcneil/machinepack-javascript/blob/3786c05388cf49220a6d3b6dbbc1d80312d247ec/machines/validate-varname.js#L41).
+  + Custom column names can still be configured to anything, as long as it is supported by the underlying database.
 * [BREAKING] Breaking changes to criteria usage:
   + For performance, criteria passed in to Waterline's model methods will now be mutated in-place in most situations (whereas in Sails/Waterline v0.12, this was not necessarily the case.)
   + Aggregation clauses (`sum`, `average`, `min`, `max`, and `groupBy`) are no longer supported in criteria.  Instead, see new model methods.
@@ -13,7 +15,6 @@
     + And as for anywhere you're building criteria using Waterline's chainable deferred object, then don't worry about this-- it's taken care of for you.
 * [DEPRECATE] Deprecated criteria usage:
   + Avoid specifying a limit of < 0.  It is still ignored, and acts like `limit: undefined`, but it now logs a deprecation warning to the console.
-
 
 ### 0.11.6
 
