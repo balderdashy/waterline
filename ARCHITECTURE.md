@@ -386,6 +386,8 @@ Then, it would then be forged into one or more stage 3 queries, depending on the
   criteria: {
     where: {
       and: [
+        { id_colname: { in: [ 39, 844, 2, 3590, 381, 3942, 93, 3959, 1, 492, 449, 224 ] } },
+        //^^ injected b/c this is implementing part of an xD/A populate
         { name_colname: { startsWith: 'Fluffy' } }
       ]
     },
@@ -409,6 +411,7 @@ Then, it would then be forged into one or more stage 3 queries, depending on the
     where: {
       and: [
         { id_colname: { in: [ 2323, 3291, 38, 1399481 ] } }
+        //^^ injected b/c this is implementing part of an xD/A populate
       ]
     },
     limit: 9007199254740991,
