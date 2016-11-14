@@ -279,6 +279,15 @@ SELECT id, full_name, age, created_at, updated_at FROM users WHERE occupation_ke
 
 ## Query pipeline (example)
 
+Here's a quick example that demonstrates how this all fits together.
+
+It operates under these assumptions:
+
+1. A person have exactly one mom (also a Person)
+2. A person can have many "cats" (Cat), and they can have many "humanFriends" (Person)
+3. A person can have many "dogs" (Dog), but every dog has one "owner" (Person)
+
+
 
 Given the following stage 1 query:
 
