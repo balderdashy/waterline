@@ -319,7 +319,7 @@ It would be forged into the following stage 2 query:
     where: {},
     limit: 9007199254740991,
     skip: 0,
-    sort: [],
+    sort: [ { id: 'ASC' } ], //<< implicitly added
     select: ['id', 'name', 'age', 'mom'],
     //^^ note that it automatically filled in the pk attr,
     // as well as the fk attrs for any model associations
@@ -335,7 +335,7 @@ It would be forged into the following stage 2 query:
       where: {},
       limit: 9007199254740991,
       skip: 0,
-      sort: [],
+      sort: [ { id: 'ASC' } ], //<< implicitly added
       select: ['*']
     },
     cats: {
@@ -367,17 +367,18 @@ Then, it would then be forged into one or more stage 3 queries, depending on the
     where: {},
     limit: 9007199254740991,
     skip: 0,
-    sort: [],
+    sort: [ { id_colname: 'ASC' } ],
     select: ['id_colname', 'name_col_____name', 'age_whatever', 'mom_fk_col_name']
     // If this had been `['*']`, then the `select` clause would have simply been omitted.
   },
-  joins: [ /*...*/ ]
+  // Note that `joins` might sometimes be included here.
+  // But since this example is xD/A, the `joins` key would not exist.
 }
 ```
 
 
 ```js
-// Another stage 3 query
+// Another stage 3 query (for "cats")
 {
   method: 'find',
   using: 'the_cat_table',
@@ -393,13 +394,34 @@ Then, it would then be forged into one or more stage 3 queries, depending on the
     sort: [ { age_col_name: 'DESC' } ],
     select: ['id_colname', 'name_colname__', '_temperament_colname'],
     // Note that even though this was an `omit`, it was expanded.
-  },
-  joins: [ /*...*/ ]
+  }
 }
 ```
 
 
+```js
+// Yet another stage 3 query  (for "mom")
+{
+  method: 'find',
+  using: 'the_person_table',
+  meta: {},
+  criteria: {
+    where: {
+      and: [
+        { id_colname: { in: [ 2323, 3291, 38, 1399481 ] } }
+      ]
+    },
+    limit: 9007199254740991,
+    skip: 0,
+    sort: [ { id_colname: 'ASC' } ],
+    select: ['id_colname', 'name_col_____name', 'age_whatever', 'mom_fk_col_name']
+    // ^This is always fully expanded, because you can't currently specify a subcriteria for a model association.
+  }
+}
+```
 
+
+_etc._
 
 
 
