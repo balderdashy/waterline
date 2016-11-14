@@ -277,7 +277,7 @@ SELECT id, full_name, age, created_at, updated_at FROM users WHERE occupation_ke
 
 
 
-## Example
+## Query pipeline (example)
 
 
 Given the following stage 1 query:
