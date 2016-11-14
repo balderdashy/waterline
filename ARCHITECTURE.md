@@ -293,23 +293,17 @@ Given the following stage 1 query:
 
 ```js
 // A stage 1 query
-{
-  method: 'find',
-  using: 'person',
-  criteria: {
-    select: ['name', 'age']
-  },
-  populates: {
-    mom: true,
-    dogs: true,
-    cats: {
-      where: { name: { startsWith: 'Fluffy' } },
-      limit: 50,
-      sort: 'age DESC',
-      omit: ['age']
-    }
-  }
-}
+var q = Person.find({
+  select: ['name', 'age']
+})
+.populate('mom')
+.populate('dogs')
+.populate('cats', {
+  where: { name: { startsWith: 'Fluffy' } },
+  limit: 50,
+  sort: 'age DESC',
+  omit: ['age']
+});
 ```
 
 It would be forged into the following stage 2 query:
