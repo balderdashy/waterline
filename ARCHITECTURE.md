@@ -295,6 +295,8 @@ Given the following stage 1 query:
     dogs: true,
     cats: {
       where: { name: { startsWith: 'Fluffy' } },
+      limit: 50,
+      sort: 'age DESC',
       omit: ['age']
     }
   }
@@ -303,7 +305,7 @@ Given the following stage 1 query:
 
 It would be forged into the following stage 2 query:
 
-```
+```js
 // A stage 2 query
 {
 
@@ -342,9 +344,9 @@ It would be forged into the following stage 2 query:
           { name: { startsWith: 'Fluffy' } }
         ]
       },
-      limit: 9007199254740991,
+      limit: 50,
       skip: 0,
-      sort: [],
+      sort: [ { age: 'DESC' } ],
       omit: ['age']
     }
   }
@@ -368,6 +370,29 @@ Then, it would then be forged into one or more stage 3 queries, depending on the
     sort: [],
     select: ['id_colname', 'name_col_____name', 'age_whatever', 'mom_fk_col_name']
     // If this had been `['*']`, then the `select` clause would have simply been omitted.
+  },
+  joins: [ /*...*/ ]
+}
+```
+
+
+```js
+// Another stage 3 query
+{
+  method: 'find',
+  using: 'the_cat_table',
+  meta: {},
+  criteria: {
+    where: {
+      and: [
+        { name_colname: { startsWith: 'Fluffy' } }
+      ]
+    },
+    limit: 50,
+    skip: 0,
+    sort: [ { age_col_name: 'DESC' } ],
+    select: ['id_colname', 'name_colname__', '_temperament_colname'],
+    // Note that even though this was an `omit`, it was expanded.
   },
   joins: [ /*...*/ ]
 }
