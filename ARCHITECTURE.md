@@ -277,6 +277,102 @@ SELECT id, full_name, age, created_at, updated_at FROM users WHERE occupation_ke
 
 
 
+## Example
+
+
+Given the following stage 1 query:
+
+```js
+// A stage 1 query
+{
+  method: 'find',
+  using: 'person',
+  criteria: {
+    select: ['name', 'age']
+  },
+  populates: {
+    mom: true,
+    dogs: true,
+    cats: {
+      where: { name: { startsWith: 'Fluffy' } },
+      omit: ['age']
+    }
+  }
+}
+```
+
+It would be forged into the following stage 2 query:
+
+```
+// A stage 2 query
+{
+
+  method: 'find',
+
+  using: 'person',
+
+  meta: {},
+
+  criteria: {
+    where: {},
+    limit: 9007199254740991,
+    skip: 0,
+    sort: [],
+    select: ['id', 'name', 'age', 'mom'],
+    //^^ note that it automatically filled in the pk attr,
+    // as well as the fk attrs for any model associations
+    // being populated.  (if omit was specified instead,
+    // then it would have been checked to be sure that neither
+    // the pk attr nor any necessary fk attrs were being explicitly
+    // omitted.  If any were, Waterline would refuse to run the query.)
+  },
+
+  populates: {
+    mom: true,
+    dogs: {
+      where: {},
+      limit: 9007199254740991,
+      skip: 0,
+      sort: [],
+      select: ['*']
+    },
+    cats: {
+      where: {
+        and: [
+          { name: { startsWith: 'Fluffy' } }
+        ]
+      },
+      limit: 9007199254740991,
+      skip: 0,
+      sort: [],
+      omit: ['age']
+    }
+  }
+
+}
+```
+
+
+Then, it would then be forged into one or more stage 3 queries, depending on the datastores/adapters at work.  For example:
+
+```js
+// A stage 3 query
+{
+  method: 'find',
+  using: 'the_person_table',
+  meta: {},
+  criteria: {
+    where: {},
+    limit: 9007199254740991,
+    skip: 0,
+    sort: [],
+    select: ['id_colname', 'name_col_____name', 'age_whatever', 'mom_fk_col_name']
+    // If this had been `['*']`, then the `select` clause would have simply been omitted.
+  },
+  joins: [ /*...*/ ]
+}
+```
+
 
 
 
