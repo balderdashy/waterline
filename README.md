@@ -80,6 +80,23 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
   $ npm test
 ```
 
+## Meta Keys
+
+These keys allow end users to modify the behaviour of Waterline methods. You can pass them into the `meta` piece of query.
+
+```javascript
+Model.find()
+.meta({
+  skipAllLifecycleCallbacks: true
+})
+.exec();
+```
+
+Meta Key                              | Purpose
+:------------------------------------ | :------------------------------
+skipAllLifecycleCallbacks             | Prevents lifecycle callbacks from running in the query.
+
+
 ## Coverage
 
 To generate the code coverage report, run:
