@@ -90,7 +90,9 @@
   //  if (!_.contains(['+ci', '-ci', '∆ci', '+ce', '-ce', '∆ce']), change.verb) {...}
   //  ```
   //  See the problem in that code?  Neither did we-- that's the problem!)
-  "nocomma": true,
+  // "nocomma": true,
+  //
+  // (^^TODO: come back and change this once I have internet again and can update the jshint version in SublimeLinter)
 
   // Strictly enforce the consistent use of single quotes.
   // (this is a convention that was established primarily to make it easier
