@@ -431,6 +431,7 @@ _etc._
 
 
 
+
 ## Validating/normalizing a criteria's `where` clause
 
 #### If key is `and` or `or`...
@@ -486,5 +487,29 @@ Examples:
 { occupation: { like: 'asdf' } },
 { occupation: { startsWith: 'asdf' } },
 { occupation: { endsWith: 'asdf' } },
+
+
+
+
+
+
+
+
+
+## Nomenclature
+
+Quick reference for what various things inside of the query are called.
+
+> These notes are for the stage 2 and stage 3 queries-- but they are mostly applicable to stage 1 queries and stage 4 queries as well.  Just note that stage 1 queries tend to be much more tolerant in general, whereas stage 4 queries are more strict.
+>
+> + For more specific (albeit slightly older) docs on criteria in stage 4 queries, see https://github.com/treelinehq/waterline-query-docs/blob/99a51109a8cfe5b705f40b987d4d933852a4af4c/docs/criteria.md
+> + For more specific (albeit slightly older) docs on criteria in stage 1 queries, see https://github.com/balderdashy/waterline-criteria/blob/26f2d0e25ff88e5e1d49e55116988322339aad10/lib/validators/validate-sort-clause.js and https://github.com/balderdashy/waterline-criteria/blob/26f2d0e25ff88e5e1d49e55116988322339aad10/lib/validators/validate-where-clause.js
+
+
+| Word/Phrase            | Meaning |
+|:-----------------------|:------------------------------------------------------------------------------|
+| query key              | A top-level key in the query itself; e.g. `criteria`, `populates`, `newRecords`, etc.  There are a specific set of permitted query keys (attempting to use any extra keys will cause errors!  But note that instead of attaching ad hoc query keys, you can use `meta` for custom stuff.)
+| clause                 | A top-level key in the `criteria`.  There are a specific set of permitted clauses in criterias.  Which clauses are allowed depends on what stage of query this is (for example, stage 3 queries don't permit the use of `omit`, but stage 2 queries _do_)
+| comparator directive   | An item within the array of a fully normalized `sort` clause.  Should always be a dictionary with exactly one key, which is the name of an attribute (or column name, if this is a stage 3 query).  The RHS value of the key must always be either 'ASC' or 'DESC'.
 
 
