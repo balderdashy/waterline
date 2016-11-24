@@ -496,7 +496,7 @@ Examples:
 
 
 
-## Nomenclature
+## Glossary
 
 Quick reference for what various things inside of the query are called.
 
