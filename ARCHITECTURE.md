@@ -500,16 +500,48 @@ Examples:
 
 Quick reference for what various things inside of the query are called.
 
-> These notes are for the stage 2 and stage 3 queries-- but they are mostly applicable to stage 1 queries and stage 4 queries as well.  Just note that stage 1 queries tend to be much more tolerant in general, whereas stage 4 queries are more strict.
+> These notes are for the stage 2 and stage 3 queries-- but they are mostly applicable to stage 1 queries and stage 4 queries as well.  Just note that stage 1 queries tend to be much more tolerant in general, whereas stage 4 queries are more strict.  Also realize that the details of what is supported in criteria varies slightly between stages.
 >
-> + For more specific (albeit slightly older) docs on criteria in stage 4 queries, see https://github.com/treelinehq/waterline-query-docs/blob/99a51109a8cfe5b705f40b987d4d933852a4af4c/docs/criteria.md
-> + For more specific (albeit slightly older) docs on criteria in stage 1 queries, see https://github.com/balderdashy/waterline-criteria/blob/26f2d0e25ff88e5e1d49e55116988322339aad10/lib/validators/validate-sort-clause.js and https://github.com/balderdashy/waterline-criteria/blob/26f2d0e25ff88e5e1d49e55116988322339aad10/lib/validators/validate-where-clause.js
+> + For more specific (albeit slightly older and potentially out of date) docs on criteria in stage 4 queries, see https://github.com/treelinehq/waterline-query-docs/blob/99a51109a8cfe5b705f40b987d4d933852a4af4c/docs/criteria.md
+> + For more specific (albeit slightly older and potentially out of date) docs on criteria in stage 1 queries, see https://github.com/balderdashy/waterline-criteria/blob/26f2d0e25ff88e5e1d49e55116988322339aad10/lib/validators/validate-sort-clause.js and https://github.com/balderdashy/waterline-criteria/blob/26f2d0e25ff88e5e1d49e55116988322339aad10/lib/validators/validate-where-clause.js
 
 
 | Word/Phrase            | Meaning |
 |:-----------------------|:------------------------------------------------------------------------------|
 | query key              | A top-level key in the query itself; e.g. `criteria`, `populates`, `newRecords`, etc.  There are a specific set of permitted query keys (attempting to use any extra keys will cause errors!  But note that instead of attaching ad hoc query keys, you can use `meta` for custom stuff.)
 | clause                 | A top-level key in the `criteria`.  There are a specific set of permitted clauses in criterias.  Which clauses are allowed depends on what stage of query this is (for example, stage 3 queries don't permit the use of `omit`, but stage 2 queries _do_)
+| `sort` clause          | When fully-normalized, this is an array of >=1 dictionaries called comparator directives.
 | comparator directive   | An item within the array of a fully normalized `sort` clause.  Should always be a dictionary with exactly one key, which is the name of an attribute (or column name, if this is a stage 3 query).  The RHS value of the key must always be either 'ASC' or 'DESC'.
+| `where` clause         | The `where` clause of a fully normalized criteria always has one key at the top level: either "and" or "or", whose RHS is an array consisting of zero or more conjuncts or disjuncts.
+| conjunct               | A dictionary within an `and` array.  When fully normalized, always consists of exactly one key-- an attribute name (or column name), whose RHS is either (A) a nested predicate operator or (B) a filter.
+| disjunct               | A dictionary within an `or` array whose contents work exactly like those of a conjunct (see above).
+| predicate operator     | A _predicate operator_ (or simply a _predicate_) is an array-- more specifically, it is the RHS of a key/value pair where the key is either "and" or "or".  This array consists of 0 or more dictionaries called either "conjuncts" or "disjuncts" (depending on whether it's an "and" or an "or")
+| filter                 | A _filter_ is the RHS of a key/value pair within a conjunct or disjunct.  It represents how values for a particular attribute name (or column name) will be qualified.  Once normalized, filters are always either a primitive (called an _equivalency filter_) or a dictionary (called a _complex filter_) consisting of one or more key/value pairs called "modifiers" (aka "sub-attribute modifiers").
+| modifier               | The RHS of a key/value pair within a complex filter, where the key is one of a special list of legal modifiers such as `nin`, `in`, `contains`, `!`, `>=`, etc.  A modifier impacts how values for a particular attribute name (or column name) will be qualified.  In certain special cases, multiple different modifiers can be combined together within a complex filter (e.g. combining `>` and `<` to indicate a range of values).  The data type for a particular modifier depends on the modifier.  For example, a modifier for key `in` or `nin` must be an array, but a modifier for key `contains` must be either a string or number.
 
 
+```
+// Example: Look up records whose name contains "Ricky", as well as being prefixed or suffixed
+// with some sort of formal-sounding title.
+where: {
+  and: [
+    { name: {contains: 'Ricky'} },
+    {
+      or: [
+        { name: {endsWith: 'Esq.'} },
+        { name: {endsWith: 'Jr.'} },
+        { name: {endsWith: 'Sr.'} },
+        { name: {endsWith: 'II'} },
+        { name: {endsWith: 'III'} },
+        { name: {endsWith: 'IV'} },
+        { name: {startsWith: 'Dr.'} }
+        { name: {startsWith: 'Miss'} }
+        { name: {startsWith: 'Ms.'} }
+        { name: {startsWith: 'Mrs.'} }
+        { name: {startsWith: 'Mr.'} },
+        { name: {startsWith: 'Rvd.'} }
+      ]
+    }
+  ]
+}
+```
