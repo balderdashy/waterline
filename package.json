@@ -29,6 +29,7 @@
     "deep-diff": "0.3.4",
     "flaverr": "^1.0.0",
     "prompt": "1.0.0",
+    "rttc": "^10.0.0-0",
     "switchback": "2.0.1",
     "waterline-criteria": "1.0.1",
     "waterline-schema": "balderdashy/waterline-schema"
