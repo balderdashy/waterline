@@ -135,7 +135,7 @@ This is what's known as a "Stage 2 query":
       where: {
         occupation: 'doctor'
       },
-      limit: Number.MAX_SAFE_INTEGER,
+      limit: (Number.MAX_SAFE_INTEGER||9007199254740991),
       skip: 0,
       sort: 'yearsInIndustry DESC'
     }
