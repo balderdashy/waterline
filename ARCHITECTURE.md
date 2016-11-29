@@ -275,6 +275,12 @@ SELECT id, full_name, age, created_at, updated_at FROM users WHERE occupation_ke
 
 
 
+## Example `where` clause iterator
+
+See https://gist.github.com/mikermcneil/8252ce4b7f15d9e2901003a3a7a800cf for an example of an iterator for a stage 2 query's `where` clause.
+
+
+
 
 
 ## Query pipeline (example)
@@ -546,3 +552,7 @@ where: {
   ]
 }
 ```
+
+
+
+
