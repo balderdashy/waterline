@@ -3,7 +3,7 @@ var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
 describe('Collection Type Casting ::', function() {
-  describe('with JSON type', function() {
+  describe('with JSON type ::', function() {
     var person;
 
     before(function(done) {

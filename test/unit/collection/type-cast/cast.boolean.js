@@ -2,8 +2,8 @@ var assert = require('assert');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
-describe('Collection Type Casting', function() {
-  describe('with Boolean type', function() {
+describe('Collection Type Casting ::', function() {
+  describe('with Boolean type ::', function() {
     var person;
 
     before(function(done) {
