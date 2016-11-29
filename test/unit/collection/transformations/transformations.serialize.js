@@ -1,12 +1,11 @@
-var Waterline = require('../../../../lib/waterline'),
-    Schema = require('waterline-schema'),
-    Transformer = require('../../../../lib/waterline/core/transformations'),
-    assert = require('assert');
+var assert = require('assert');
+var _ = require('@sailshq/lodash');
+var Schema = require('waterline-schema');
+var Waterline = require('../../../../lib/waterline');
+var Transformer = require('../../../../lib/waterline/utils/system/transformer-builder');
 
-describe('Core Transformations', function() {
-
-  describe('serialize', function() {
-
+describe('Collection Transformations ::', function() {
+  describe('Serialize ::', function() {
     describe('with normal key/value pairs', function() {
       var transformer;
 
@@ -24,13 +23,13 @@ describe('Core Transformations', function() {
       it('should change username key to login', function() {
         var values = transformer.serialize({ username: 'foo' });
         assert(values.login);
-        assert(values.login === 'foo');
+        assert.equal(values.login, 'foo');
       });
 
       it('should work recursively', function() {
         var values = transformer.serialize({ where: { user: { username: 'foo' }}});
         assert(values.where.user.login);
-        assert(values.where.user.login === 'foo');
+        assert.equal(values.where.user.login, 'foo');
       });
 
       it('should work on SELECT queries', function() {
@@ -44,7 +43,7 @@ describe('Core Transformations', function() {
         );
 
         assert(values.where.login);
-        assert.equal(values.select.indexOf('login'),  0);
+        assert.equal(_.indexOf(values.select, 'login'),  0);
       });
     });
 
@@ -56,16 +55,15 @@ describe('Core Transformations', function() {
        */
 
       before(function() {
-        var collections = [],
-            waterline = new Waterline();
+        var collections = [];
 
         collections.push(Waterline.Collection.extend({
           identity: 'customer',
           tableName: 'customer',
+          primaryKey: 'uuid',
           attributes: {
             uuid: {
-              type: 'string',
-              primaryKey: true
+              type: 'string'
             }
           }
         }));
@@ -73,7 +71,11 @@ describe('Core Transformations', function() {
         collections.push(Waterline.Collection.extend({
           identity: 'foo',
           tableName: 'foo',
+          primaryKey: 'id',
           attributes: {
+            id: {
+              type: 'number'
+            },
             customer: {
               model: 'customer'
             }
@@ -87,15 +89,14 @@ describe('Core Transformations', function() {
       it('should change customer key to customer_uuid', function() {
         var values = transformer.serialize({ customer: 1 });
         assert(values.customer);
-        assert(values.customer === 1);
+        assert.equal(values.customer, 1);
       });
 
       it('should work recursively', function() {
         var values = transformer.serialize({ where: { user: { customer: 1 }}});
         assert(values.where.user.customer);
-        assert(values.where.user.customer === 1);
+        assert.equal(values.where.user.customer, 1);
       });
     });
   });
-
 });

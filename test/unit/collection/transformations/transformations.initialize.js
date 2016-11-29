@@ -1,10 +1,8 @@
-var Transformer = require('../../../../lib/waterline/core/transformations'),
-    assert = require('assert');
+var assert = require('assert');
+var Transformer = require('../../../../lib/waterline/utils/system/transformer-builder');
 
-describe('Core Transformations', function() {
-
-  describe('initialize', function() {
-
+describe('Collection Transformations ::', function() {
+  describe('Initialize ::', function() {
     describe('with string columnName', function() {
       var transformer;
 
@@ -46,9 +44,8 @@ describe('Core Transformations', function() {
           return '';
         })();
 
-        assert(msg == 'columnName transformation must be a string');
+        assert(msg == 'Column Name must be a string on username');
       });
     });
   });
-
 });

@@ -1,10 +1,8 @@
-var Transformer = require('../../../../lib/waterline/core/transformations'),
-    assert = require('assert');
+var assert = require('assert');
+var Transformer = require('../../../../lib/waterline/utils/system/transformer-builder');
 
-describe('Core Transformations', function() {
-
-  describe('unserialize', function() {
-
+describe('Collection Transformations ::', function() {
+  describe('Unserialize ::', function() {
     describe('with normal key/value pairs', function() {
       var transformer;
 
@@ -22,9 +20,8 @@ describe('Core Transformations', function() {
       it('should change login key to username', function() {
         var values = transformer.unserialize({ login: 'foo' });
         assert(values.username);
-        assert(values.username === 'foo');
+        assert.equal(values.username, 'foo');
       });
     });
-
   });
 });
