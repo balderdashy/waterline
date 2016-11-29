@@ -30,6 +30,10 @@ describe('Collection Validator ::', function() {
           city: {
             type: 'string',
             maxLength: 7
+          },
+          sex: {
+            type: 'string',
+            in: ['male', 'female']
           }
         }
       });
@@ -108,6 +112,18 @@ describe('Collection Validator ::', function() {
       assert(!cityErrors.last_name);
       assert(cityErrors.city);
       assert.equal(_.first(cityErrors.city).rule, 'maxLength');
+    });
+
+    it('should error if invalid enum is set', function() {
+      var errors = person._validator({ sex: 'other' }, true);
+      assert(errors);
+      assert(errors.sex);
+      assert.equal(_.first(errors.sex).rule, 'in');
+    });
+
+    it('should NOT error if valid enum is set', function() {
+      var errors = person._validator({ sex: 'male' }, true);
+      assert(!errors);
     });
   });
 });
