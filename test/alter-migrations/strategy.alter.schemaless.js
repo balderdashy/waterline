@@ -3,7 +3,7 @@ var _ = require('@sailshq/lodash');
 var Waterline = require('../../../lib/waterline');
 var MigrateHelper = require('../../support/migrate.helper');
 
-describe('Alter Mode Recovery with schemaless data', function () {
+describe.skip('Alter Mode Recovery with schemaless data', function () {
 
   var record;
 
