@@ -31,12 +31,12 @@ describe('Collection Type Casting ::', function() {
       };
 
       waterline.initialize({ adapters: { foobar: {} }, connections: connections }, function(err, orm) {
-        if(err) {
+        if (err) {
           return done(err);
         }
 
         person = orm.collections.person;
-        done();
+        return done();
       });
     });
 
