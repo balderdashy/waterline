@@ -1,16 +1,14 @@
 /**
  * Module dependencies
  */
-var innerJoin = require('../../../lib/waterline/query/integrator/innerJoin');
 var assert = require('assert');
-var should = require('should');
 var _ = require('@sailshq/lodash');
+var innerJoin = require('../../../lib/waterline/utils/integrator/innerJoin');
 
-
-describe('innerJoin', function() {
+describe('InnerJoin ::', function() {
 
   // Clear the require cache
-  Object.keys(require.cache).forEach(function (modulePath) {
+  _.keys(require.cache).forEach(function(modulePath) {
     delete require.cache[modulePath];
   });
 
@@ -31,7 +29,7 @@ describe('innerJoin', function() {
           },
           rightKey: {
             wtf: new Date()
-          },
+          }
         });
       });
 
@@ -66,7 +64,6 @@ describe('innerJoin', function() {
 
 
   describe('when run with valid input', function() {
-
     var results;
     var expected = {
       'results.length': 2,
@@ -90,18 +87,15 @@ describe('innerJoin', function() {
     });
 
     it('output should be an array', function() {
-      results.should.be.Array;
+      assert(_.isArray(results));
     });
 
     it('output should match the expected results', function() {
-
       // Check that expected # of results exist.
-      results.should.have.lengthOf(expected['results.length']);
+      assert.equal(results.length, expected['results.length']);
 
       // Check that results are exactly correct.
-      results.should.eql(expected.results);
+      assert.deepEqual(results, expected.results);
     });
-
   });
-
 });
