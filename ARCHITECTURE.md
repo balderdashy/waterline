@@ -579,3 +579,46 @@ where: {
 
 
 
+## Associations
+
+### Broad classifications of associations:
+
++ singular (association which declares `model`)
++ plural (association which declares `collection`)
+
+*There is also a distinction between one-way and two-way associations:*
+
+"Two-way" just means that there's another "side" to the association-- i.e. that, if you change the association, the expected results when you populate the other side of the association change-- _automatically_ (and in some cases, they actually change at the physical layer when you make the original change).  "One-way" means that there is no other side.  If you change a one-way association, no other associations are affected.
+
+There are three different kinds of two-way associations, and two different kinds of one-way associations.  Here they are:
+
+### The various kinds of two-way associations:
+
++ plural, two-way, *exclusive*   (plural association whose `via` is pointing at a singular association on the other side)
++ singular, two-way (singular association who is pointed at on the other side by a plural association w/ `via`)
++ plural, two-way, *shared*  (plural association whose `via` is pointing at a plural association on the other side with a matching `via`)
+
+### The various kinds of one-way associations:
+
++ singular, one-way  (singular association who is NOT pointed at by any `via`)
++ plural, one-way (plural association without a `via` of its own, and which is NOT pointed at by `via` on the other side)
+
+
+
+## Special cases / FAQ
+
+##### _What about *through* associations?_
+
+A *through* association is a subgenre of plural, two-way, shared associations, where you actually can set up the junction model as one of the models in your app-level code.
+
+
+##### _What about *reflexive* associations?_
+
+A **reflexive** association is just any association where the associated model is the same as the parent model.
+
+
+##### _What about if you have a plural association with `via` pointed at another plural association, but there is no via on the other side?_
+
+That's an error (i.e. in waterline-schema)*.
+
+
