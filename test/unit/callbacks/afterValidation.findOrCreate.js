@@ -1,7 +1,7 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
-describe('.afterValidate()', function() {
+describe.skip('.afterValidate()', function() {
 
   describe('basic function', function() {
 
