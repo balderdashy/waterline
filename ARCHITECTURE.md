@@ -130,6 +130,19 @@ This is what's known as a "Stage 2 query":
   // (if nothing was populated, this would be empty.)
   populates: {
 
+    // The keys inside of `populates` are either:
+    // • `true` - if this is a singular ("model") association
+    // • a subcriteria - if this is a plural ("collection") association a fully-normalized, stage 2 Waterline criteria
+    // • `false` - special case, only for when this is a plural ("collection") association: when the provided subcriteria would actually be a no-op that will always end up as `[]`
+    //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // > Side note about what to expect under the relevant key in record(s) when you populate vs. don't populate:
+    // > • When populating a singular association, you'll always get either a dictionary (a child record) or `null` (if no child record matches the fk; e.g. if the fk was old, or if it was `null`)
+    // > • When populating a plural association, you'll always get an array of dictionaries (child records).  Of course, it might be empty.
+    // > • When NOT populating a singular association, you'll get whatever is stored in the database (there is no guarantee it will be correct-- if you fiddle with your database directly at the physical layer, you could mess it up).  Note that we ALWAYS guarantee that the key will be present though, so long as it's not being explicitly excluded by `omit` or `select`.  i.e. even if the database says it's not there, the key will exist as `null`.
+    // > • When NOT populating a plural association, you'll never get the key.  It won't exist on the resulting record(s).
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     friends: {
       select: [ '*' ],
       where: {
