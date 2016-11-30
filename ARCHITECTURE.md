@@ -68,6 +68,7 @@ var q = User.findOne({
   where: {
     occupation: 'doctor'
   },
+  select: ['name', 'age', 'createdAt'],
   skip: 90,
   sort: 'name asc'
 }).populate('friends', {
@@ -97,15 +98,19 @@ This is what's known as a "Stage 2 query":
   criteria: {
 
     // The expanded "select" clause
-    // (note that because we specified an explicit `select` or `omit`, this gets expanded in a schema-aware way.
+    // (note that the only reason this is not `['*']` is because we specified an explicit `select` or `omit`
+    // It will ALWAYS include the primary key.)
     // For no projections, this is `select: ['*']`.  And `select` is NEVER allowed to be `[]`.)
     select: [
       'id',
       'name',
       'age',
-      'createdAt',
-      'updatedAt'
+      'createdAt'
     ],
+
+    // The expanded "omit" clause
+    // (always empty array, unless we provided an `omit`.  If `omit` is anything other than [], then `select` must be `['*']` -- and vice versa)
+    omit: [],
 
     // The expanded "where" clause
     where: {
@@ -127,7 +132,7 @@ This is what's known as a "Stage 2 query":
   },
 
   // The `populates` clause.
-  // (if nothing was populated, this would be empty.)
+  // (if nothing was populated, this would be an empty dictionary.)
   populates: {
 
     // The keys inside of `populates` are either:
@@ -145,12 +150,15 @@ This is what's known as a "Stage 2 query":
 
     friends: {
       select: [ '*' ],
+      omit: [],
       where: {
         occupation: 'doctor'
       },
       limit: (Number.MAX_SAFE_INTEGER||9007199254740991),
       skip: 0,
-      sort: 'yearsInIndustry DESC'
+      sort: [
+        { yearsInIndustry: 'DESC' }
+      ]
     }
 
   }
