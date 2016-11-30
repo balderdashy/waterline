@@ -2,10 +2,11 @@ var assert = require('assert');
 var Waterline = require('../../../lib/waterline');
 
 describe('Collection Query ::', function() {
-  describe('.count()', function() {
+  describe('.avg()', function() {
     var query;
 
     before(function(done) {
+      // Extend for testing purposes
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
@@ -15,16 +16,23 @@ describe('Collection Query ::', function() {
           id: {
             type: 'number'
           },
-          name: {
-            type: 'string'
+          age: {
+            type: 'number'
+          },
+          percent: {
+            type: 'number'
           }
         }
       });
 
-      waterline.loadCollection(Model);
-
       // Fixture Adapter Def
-      var adapterDef = { count: function(con, query, cb) { return cb(null, 1); }};
+      var adapterDef = {
+        avg: function(con, query, cb) {
+          return cb(null, query);
+        }
+      };
+
+      waterline.loadCollection(Model);
 
       var connections = {
         'foo': {
@@ -33,7 +41,7 @@ describe('Collection Query ::', function() {
       };
 
       waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
-        if(err) {
+        if (err) {
           return done(err);
         }
         query = orm.collections.user;
@@ -41,26 +49,21 @@ describe('Collection Query ::', function() {
       });
     });
 
-    it('should return a count', function(done) {
-      query.count({ name: 'foo'}, {}, function(err, count) {
+    it('should return criteria with average set', function(done) {
+      query.avg('age').exec(function(err, query) {
         if(err) {
           return done(err);
         }
 
-        assert(count > 0);
-        done();
+        assert.equal(query.numericAttrName, 'age');
+        return done();
       });
     });
 
-    it('should allow a query to be built using deferreds', function(done) {
-      query.count()
-      .exec(function(err, result) {
-        if(err) {
-          return done(err);
-        }
-
-        assert(result);
-        done();
+    it('should NOT accept an array', function(done) {
+      query.avg(['age', 'percent']).exec(function(err) {
+        assert(err);
+        return done();
       });
     });
   });

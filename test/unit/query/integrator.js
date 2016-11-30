@@ -1,269 +1,201 @@
 /**
  * Module dependencies
  */
-var integrate = require('../../../lib/waterline/query/integrator');
 var assert = require('assert');
-var should = require('should');
 var _ = require('@sailshq/lodash');
+var integrate = require('../../../lib/waterline/utils/integrator');
 
+describe('Integrator ::', function() {
 
+  describe('with no callback', function() {
+    it('should throw', function() {
+      assert.throws(function() {
+        integrate({}, []);
+      });
+    });
+  });
 
-
-describe('integrator', function () {
-
-    describe('with no callback', function () {
-
-        it('should throw', function () {
-            assert.throws(function () {
-                integrate({}, []);
-            });
+  describe('with otherwise-invalid input', function() {
+    it('should trigger cb(err)', function(done) {
+      assert.doesNotThrow(function() {
+        integrate('foo', 'bar', 'id', function(err) {
+          assert(err);
+          return done();
         });
+      });
+    });
+  });
+
+  describe('with valid input', function() {
+    describe(':: N..M :: ', function() {
+      var fixtures = {
+        joins: _.cloneDeep(require('../../support/fixtures/integrator/n..m.joins.js')),
+        cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
+      };
+
+      var results;
+
+      before(function(done){
+        assert.doesNotThrow(function() {
+          integrate(fixtures.cache, fixtures.joins, 'id', function(err, _results) {
+            if (err) {
+              return done(err);
+            }
+
+            results = _results;
+            done(err);
+          });
+        });
+      });
+
+      it('should be an array', function() {
+        assert(_.isArray(results));
+      });
+
+      describe(':: populated aliases', function() {
+        var aliases = _.keys(_.groupBy(fixtures.joins, 'alias'));
+
+        it('should exist for every alias specified in `joins` (i.e. every `populate()`)', function() {
+          // Each result is an object and contains a valid alias
+          _.each(results, function(result) {
+            assert(_.isObject(result));
+
+            var alias = _.some(aliases, function(alias) {
+              return result[alias];
+            });
+
+            assert.equal(alias, true);
+          });
+        });
+
+        it('should contain all aliases in the results', function() {
+          var accountedFor = _.all(aliases, function(alias) {
+            return results.length === _.pluck(results, alias).length;
+          });
+
+          assert.equal(accountedFor, true);
+        });
+
+        describe('with no matching child records',function () {
+          // Empty the child table in the cache
+          before(function() {
+            fixtures.cache.message_to_user = [];
+          });
+
+          it('should still work in a predictable way (populate an empty array)', function(done) {
+            assert.doesNotThrow(function() {
+              integrate(fixtures.cache, fixtures.joins, 'id', done);
+            });
+          });
+        });
+      });
     });
 
+    describe(':: 1..N ::', function() {
+      var results;
+      var fixtures = {
+        joins: _.cloneDeep(require('../../support/fixtures/integrator/n..1.joins.js')),
+        cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
+      };
 
-
-    describe('with otherwise-invalid input', function () {
-
-        it('should trigger cb(err)', function (done) {
-            assert.doesNotThrow(function () {
-                integrate('foo', 'bar', 'id', function (err, results) {
-                    assert(err);
-                    done();
-                });
-            });
+      before(function(done){
+        assert.doesNotThrow(function() {
+          integrate(fixtures.cache, fixtures.joins, 'id', function(err, _results) {
+            if (err) {
+              return done(err);
+            }
+            results = _results;
+            return done();
+          });
         });
+      });
+
+      it('should be an array', function() {
+        assert(_.isArray(results));
+      });
+
+      describe(':: populated aliases', function() {
+        var aliases = _.keys(_.groupBy(fixtures.joins, 'alias'));
+
+        it('should exist for every alias specified in `joins` (i.e. every `populate()`)', function() {
+          // Each result is an object and contains a valid alias
+          _.each(results, function(result) {
+            assert(_.isPlainObject(result));
+
+            var alias = _.some(aliases, function(alias) {
+              return result[alias];
+            });
+
+            assert.equal(alias, true);
+          });
+
+          // All aliases are accounted for in results
+          var accountedFor = _.all(aliases, function (alias) {
+            return results.length === _.pluck(results, alias).length;
+          });
+
+          assert.equal(accountedFor, true);
+        });
+
+        it('should have proper number of users in "from"', function() {
+          assert.equal(results[0].from.length, 1);
+          assert.equal(results[1].from.length, 1);
+          assert.equal(results[2].from.length, 0);
+        });
+      });
+    });
+  });
+
+  describe(':: multiple populates ::', function() {
+    var results;
+    var fixtures = {
+      joins: _.cloneDeep(require('../../support/fixtures/integrator/multiple.joins.js')),
+      cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
+    };
+
+    before(function(done){
+      assert.doesNotThrow(function() {
+        integrate(fixtures.cache, fixtures.joins, 'id', function(err, _results) {
+          if (err) {
+            return done(err);
+          }
+          results = _results;
+          return done();
+        });
+      });
     });
 
-
-
-    describe('with valid input', function () {
-
-        describe(':: N..M :: ',function () {
-
-            var fixtures = {
-                joins: _.cloneDeep(require('../../support/fixtures/integrator/n..m.joins.js')),
-                cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
-            };
-            var results;
-
-            before(function (done){
-                assert.doesNotThrow(function () {
-                    integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                        assert(!err, err);
-                        results = _results;
-                        done(err);
-                    });
-                });
-            });
-
-            it('should be an array', function () {
-                results.should.be.Array;
-            });
-
-            it('should have items which have all the properties of the parent table');
-
-            describe(':: populated aliases', function () {
-                var aliases = Object.keys(_.groupBy(fixtures.joins, 'alias'));
-
-                it('should exist for every alias specified in `joins` (i.e. every `populate()`)', function () {
-
-                    // Each result is an object and contains a valid alias
-                    _.each(results, function (result) {
-                        result
-                        .should.be.Object;
-
-                        _.any(aliases, function (alias) {
-                            return result[alias];
-                        })
-                        .should.be.true;
-                    });
-
-                    // Double check.
-                    _.each(results, function (result) {
-                        result.should.be.Object;
-
-                        _.each(aliases, function (alias) {
-                            result[alias].should.be.ok;
-                        });
-                    });
-
-                    // All aliases are accounted for in results
-                    _.all(aliases, function (alias) {
-                        return results.length === _.pluck(results, alias).length;
-                    }).should.be.true;
-                });
-
-                it('should not include extraneous attributes');
-
-
-                describe('with no matching child records',function () {
-
-                    // Empty the child table in the cache
-                    before(function () {
-                        fixtures.cache.message_to_user = [];
-                    });
-
-                    it('should still work in a predictable way (populate an empty array)', function (done) {
-                        assert.doesNotThrow(function () {
-                            integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                                assert(!err, err);
-                                return done(err);
-                            });
-                        });
-                    });
-                });
-            });
-        });
-
-
-
-
-
-
-
-        describe(':: 1..N ::',function () {
-
-            var results;
-            var fixtures = {
-                joins: _.cloneDeep(require('../../support/fixtures/integrator/n..1.joins.js')),
-                cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
-            };
-
-            before(function (done){
-                assert.doesNotThrow(function () {
-                    integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                        assert(!err, err);
-                        results = _results;
-                        done(err);
-                    });
-                });
-            });
-
-            it('should be an array', function () {
-                results.should.be.Array;
-            });
-
-            describe(':: populated aliases', function () {
-                var aliases = Object.keys(_.groupBy(fixtures.joins, 'alias'));
-
-                it('should exist for every alias specified in `joins` (i.e. every `populate()`)', function () {
-
-                    // Each result is an object and contains a valid alias
-                    _.each(results, function (result) {
-                        result
-                        .should.be.Object;
-
-                        _.any(aliases, function (alias) {
-                            return result[alias];
-                        })
-                        .should.be.true;
-                    });
-
-                    // Double check.
-                    _.each(results, function (result) {
-                        result.should.be.Object;
-
-                        _.each(aliases, function (alias) {
-                            result[alias].should.be.ok;
-                            result[alias].should.be.ok;
-                        });
-                    });
-
-                    // All aliases are accounted for in results
-                    _.all(aliases, function (alias) {
-                        return results.length === _.pluck(results, alias).length;
-                    }).should.be.true;
-                });
-
-                it('should have proper number of users in "from"', function () {
-
-                    // console.log('\n\n:: 1..N ::\nresults ::\n',
-                        // require('util').inspect(results, {depth: 4}));
-
-                    results[0].should.have.property('from').with.lengthOf(1);
-                    results[1].should.have.property('from').with.lengthOf(1);
-                    results[2].should.have.property('from').with.lengthOf(0);
-
-                });
-            });
-
-
-            it('should not include extraneous attributes');
-        });
+    it('should be an array', function() {
+      assert(_.isArray(results));
     });
 
+    describe(':: populated aliases', function() {
+      var aliases = _.keys(_.groupBy(fixtures.joins, 'alias'));
 
+      it('should exist for every alias specified in `joins` (i.e. every `populate()`)', function() {
+        // Each result is an object and contains a valid alias
+        _.each(results, function(result) {
+          assert(_.isPlainObject(result));
+          var alias = _.some(aliases, function (alias) {
+            return result[alias];
+          });
 
-
-
-
-    describe(':: multiple populates ::',function () {
-
-        var results;
-        var fixtures = {
-            joins: _.cloneDeep(require('../../support/fixtures/integrator/multiple.joins.js')),
-            cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
-        };
-
-        before(function (done){
-            assert.doesNotThrow(function () {
-                integrate(fixtures.cache, fixtures.joins, 'id', function (err, _results) {
-                    assert(!err, err);
-                    results = _results;
-                    done(err);
-                });
-            });
+          assert.equal(alias, true);
         });
 
-        it('should be an array', function () {
-            results.should.be.Array;
+        // All aliases are accounted for in results
+        var accountedFor = _.all(aliases, function(alias) {
+          return results.length === _.pluck(results, alias).length;
         });
 
-        describe(':: populated aliases', function () {
-            var aliases = Object.keys(_.groupBy(fixtures.joins, 'alias'));
+        assert.equal(accountedFor, true);
+      });
 
-            it('should exist for every alias specified in `joins` (i.e. every `populate()`)', function () {
-
-                // Each result is an object and contains a valid alias
-                _.each(results, function (result) {
-                    result
-                    .should.be.Object;
-
-                    _.any(aliases, function (alias) {
-                        return result[alias];
-                    })
-                    .should.be.true;
-                });
-
-                // Double check.
-                _.each(results, function (result) {
-                    result.should.be.Object;
-
-                    _.each(aliases, function (alias) {
-                        result[alias].should.be.ok;
-                        result[alias].should.be.ok;
-                    });
-                });
-
-                // All aliases are accounted for in results
-                _.all(aliases, function (alias) {
-                    return results.length === _.pluck(results, alias).length;
-                }).should.be.true;
-
-            });
-
-            it('should contain expected results', function () {
-
-                // console.log('\n\n:: multiple populates ::\nresults ::\n',
-                    // require('util').inspect(results, {depth: 4}));
-                results[0].should.have.property('from').with.lengthOf(1);
-                results[1].should.have.property('from').with.lengthOf(1);
-                results[2].should.have.property('from').with.lengthOf(0);
-            });
-        });
-
-
-        it('should not include extraneous attributes');
+      it('should contain expected results', function() {
+        assert.equal(results[0].from.length, 1);
+        assert.equal(results[1].from.length, 1);
+        assert.equal(results[2].from.length, 0);
+      });
     });
-
+  });
 });
