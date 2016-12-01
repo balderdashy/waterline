@@ -20,7 +20,6 @@ describe('Collection Query ::', function() {
         }
       };
 
-
       it('should transform criteria before sending to adapter', function(done) {
         var waterline = new Waterline();
         waterline.loadCollection(Waterline.Collection.extend(_.merge({}, modelDef)));
