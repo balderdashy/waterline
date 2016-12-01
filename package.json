@@ -40,8 +40,7 @@
     "eslint": "2.11.1",
     "espree": "3.1.5",
     "istanbul": "0.4.3",
-    "mocha": "2.5.3",
-    "should": "9.0.0"
+    "mocha": "2.5.3"
   },
   "keywords": [
     "mvc",
