@@ -1,30 +1,33 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var _ = require('@sailshq/lodash');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.find()', function() {
     var query;
 
     before(function(done) {
-
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'id',
+        schema: false,
         attributes: {
+          id: {
+            type: 'number'
+          },
           name: {
             type: 'string',
             defaultsTo: 'Foo Bar'
-          },
-          doSomething: function() {}
+          }
         }
       });
 
       waterline.loadCollection(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { find: function(con, col, criteria, cb) { return cb(null, [criteria]); }};
+      var adapterDef = { find: function(con, query, cb) { return cb(null, [query.criteria]); }};
 
       var connections = {
         'foo': {
@@ -32,37 +35,33 @@ describe('Collection Query', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) { return done(err); }
-        query = colls.collections.user;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if(err) {
+          return done(err);
+        }
+        query = orm.collections.user;
+        return done();
       });
     });
 
     it('should allow options to be optional', function(done) {
-      query.find({}, function(err, values) {
-        try {
-          assert(!err,err);
-          done();
-        } catch (e) { return done(e); }
+      query.find({}, function(err) {
+        if(err) {
+          return done(err);
+        }
+
+        return done();
       });
     });
 
     it('should return an array', function(done) {
       query.find({}, {}, function(err, values) {
-        if (err) { return done(err); }
+        if (err) {
+          return done(err);
+        }
 
-        assert(Array.isArray(values));
-        done();
-      });
-    });
-
-    it('should return an instance of Model', function(done) {
-      query.find({}, {}, function(err, values) {
-        if (err) { return done(err); }
-
-        assert(typeof values[0].doSomething === 'function');
-        done();
+        assert(_.isArray(values));
+        return done();
       });
     });
 
@@ -74,20 +73,16 @@ describe('Collection Query', function() {
       .skip(1)
       .sort({ name: 0 })
       .exec(function(err, results) {
-        try {
-          assert(!err,err);
-          assert(Array.isArray(results));
+        if (err) {
+          return done(err);
+        }
 
-          // TODO: apply code conventions (but I don't want to change this while the tests aren't already passing)
-          assert(Object.keys(results[0].where).length === 2);
-          assert(results[0].where.name == 'Foo Bar');
-          assert(results[0].where.id['>'] == 1);
-          assert(results[0].limit == 1);
-          assert(results[0].skip == 1);
-          assert.equal(results[0].sort[0].name, 'DESC');
+        assert(_.isArray(results));
+        assert.equal(results[0].limit, 1);
+        assert.equal(results[0].skip, 1);
+        assert.equal(results[0].sort[0].name, 'DESC');
 
-          done();
-        } catch (e) { return done(e); }
+        return done();
       });
     });
 
@@ -96,15 +91,15 @@ describe('Collection Query', function() {
         query.find()
         .paginate()
         .exec(function(err, results) {
-          try {
-            assert(!err,err);
-            assert(Array.isArray(results));
+          if (err) {
+            return done(err);
+          }
 
-            assert(results[0].skip === 0);
-            assert(results[0].limit === 10);
+          assert(_.isArray(results));
+          assert.equal(results[0].skip, 0);
+          assert.equal(results[0].limit, 10);
 
-            done();
-          } catch (e) { return done(e); }
+          return done();
         });
       });
 
@@ -112,11 +107,12 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 1})
         .exec(function(err, results) {
-          if (err) { return done(err); }
+          if (err) {
+            return done(err);
+          }
 
-          assert(results[0].skip === 0);
-
-          done();
+          assert.equal(results[0].skip, 0);
+          return done();
         });
       });
 
@@ -124,11 +120,12 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 1})
         .exec(function(err, results) {
-          if (err) { return done(err); }
+          if (err) {
+            return done(err);
+          }
 
-          assert(results[0].skip === 0);
-
-          done();
+          assert.equal(results[0].skip, 0);
+          return done();
         });
       });
 
@@ -136,11 +133,12 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 2})
         .exec(function(err, results) {
-          if (err) { return done(err); }
+          if (err) {
+            return done(err);
+          }
 
-          assert(results[0].skip === 10);
-
-          done();
+          assert.equal(results[0].skip, 10);
+          return done();
         });
       });
 
@@ -148,11 +146,12 @@ describe('Collection Query', function() {
         query.find()
         .paginate({limit: 1})
         .exec(function(err, results) {
-          if (err) { return done(err); }
+          if (err) {
+            return done(err);
+          }
 
-          assert(results[0].limit === 1);
-
-          done();
+          assert.equal(results[0].limit, 1);
+          return done();
         });
       });
 
@@ -160,12 +159,13 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 2, limit: 10})
         .exec(function(err, results) {
-          if (err) { return done(err); }
+          if (err) {
+            return done(err);
+          }
 
-          assert(results[0].skip  === 10);
-          assert(results[0].limit === 10);
-
-          done();
+          assert.equal(results[0].skip, 10);
+          assert.equal(results[0].limit, 10);
+          return done();
         });
       });
 
@@ -173,12 +173,13 @@ describe('Collection Query', function() {
         query.find()
         .paginate({page: 3, limit: 10})
         .exec(function(err, results) {
-          if (err) { return done(err); }
+          if (err) {
+            return done(err);
+          }
 
-          assert(results[0].skip  === 20);
-          assert(results[0].limit === 10);
-
-          done();
+          assert.equal(results[0].skip, 20);
+          assert.equal(results[0].limit, 10);
+          return done();
         });
       });
     });
