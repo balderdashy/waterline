@@ -1,32 +1,33 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var _ = require('@sailshq/lodash');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.findOne()', function() {
-
     describe('with autoPK', function() {
       var query;
 
       before(function(done) {
-
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
           connection: 'foo',
+          primaryKey: 'id',
           attributes: {
+            id: {
+              type: 'number'
+            },
             name: {
               type: 'string',
               defaultsTo: 'Foo Bar'
-            },
-            doSomething: function() {}
+            }
           }
         });
 
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { find: function(con, col, criteria, cb) { return cb(null, [criteria]); }};
+        var adapterDef = { findOne: function(con, query, cb) { return cb(null, [query.criteria]); }};
 
         var connections = {
           'foo': {
@@ -34,25 +35,23 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
-          query = colls.collections.user;
-          done();
-        });
-      });
-
-      it('should return an instance of Model', function(done) {
-        query.findOne({ name: 'foo' }, function(err, values) {
-          assert(typeof values.doSomething === 'function');
-          done();
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          query = orm.collections.user;
+          return done();
         });
       });
 
       it('should allow an integer to be passed in as criteria', function(done) {
         query.findOne(1, function(err, values) {
-          assert(!err, err);
-          assert(values.where.id === 1);
-          done();
+          if (err) {
+            return done(err);
+          }
+
+          assert.equal(values.where.id, 1);
+          return done();
         });
       });
 
@@ -61,21 +60,20 @@ describe('Collection Query', function() {
         .where({ name: 'Foo Bar' })
         .where({ id: { '>': 1 } })
         .exec(function(err, results) {
-          assert(!err, err);
-          assert(!Array.isArray(results));
+          if (err) {
+            return done(err);
+          }
 
-          assert(Object.keys(results.where).length === 2);
-          assert(results.where.name == 'Foo Bar');
-          assert(results.where.id['>'] == 1);
-
-          done();
+          assert(!_.isArray(results));
+          assert.equal(_.keys(results.where).length, 1);
+          assert.equal(results.where.and[0].name, 'Foo Bar');
+          assert.equal(results.where.and[1].id['>'], 1);
+          return done();
         });
       });
-
     });
 
     describe('with custom PK', function() {
-
       describe('with no columnName set', function() {
         var query;
 
@@ -87,15 +85,14 @@ describe('Collection Query', function() {
           var Model = Waterline.Collection.extend({
             identity: 'user',
             connection: 'foo',
-            autoPK: false,
+            primaryKey: 'myPk',
             attributes: {
               name: {
                 type: 'string',
                 defaultsTo: 'Foo Bar'
               },
               myPk: {
-                type: 'integer',
-                primaryKey: true,
+                type: 'number',
                 defaultsTo: 1
               }
             }
@@ -104,7 +101,7 @@ describe('Collection Query', function() {
           waterline.loadCollection(Model);
 
           // Fixture Adapter Def
-          var adapterDef = { find: function(con, col, criteria, cb) { return cb(null, [criteria]); }};
+          var adapterDef = { findOne: function(con, query, cb) { return cb(null, [query.criteria]); }};
 
           var connections = {
             'foo': {
@@ -112,19 +109,23 @@ describe('Collection Query', function() {
             }
           };
 
-          waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-            if (err) { return done(err); };
-            query = colls.collections.user;
-            done();
+          waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+            if (err) {
+              return done(err);
+            }
+            query = orm.collections.user;
+            return done();
           });
         });
 
 
         it('should use the custom primary key when a single value is passed in', function(done) {
           query.findOne(1, function(err, values) {
-            assert(!err, err);
-            assert(values.where.myPk === 1);
-            done();
+            if (err) {
+              return done(err);
+            }
+            assert.equal(values.where.myPk, 1);
+            return done();
           });
         });
       });
@@ -140,15 +141,14 @@ describe('Collection Query', function() {
           var Model = Waterline.Collection.extend({
             identity: 'user',
             connection: 'foo',
-            autoPK: false,
+            primaryKey: 'myPk',
             attributes: {
               name: {
                 type: 'string',
                 defaultsTo: 'Foo Bar'
               },
               myPk: {
-                type: 'integer',
-                primaryKey: true,
+                type: 'number',
                 columnName: 'pkColumn',
                 defaultsTo: 1
               }
@@ -158,7 +158,7 @@ describe('Collection Query', function() {
           waterline.loadCollection(Model);
 
           // Fixture Adapter Def
-          var adapterDef = { find: function(con, col, criteria, cb) { return cb(null, [criteria]); }};
+          var adapterDef = { findOne: function(con, query, cb) { return cb(null, [query.criteria]); }};
 
           var connections = {
             'foo': {
@@ -166,23 +166,27 @@ describe('Collection Query', function() {
             }
           };
 
-          waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-            if (err) { return done(err); };
-            query = colls.collections.user;
-            done();
+          waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+            if (err) {
+              return done(err);
+            }
+
+            query = orm.collections.user;
+            return done();
           });
         });
-
 
         it('should use the custom primary key when a single value is passed in', function(done) {
           query.findOne(1, function(err, values) {
-            assert(!err, err);
-            assert(values.where.pkColumn === 1);
-            done();
+            if (err) {
+              return done(err);
+            }
+
+            assert.equal(values.where.pkColumn, 1);
+            return done();
           });
         });
       });
-
     });
   });
 });
