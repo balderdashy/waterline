@@ -605,7 +605,14 @@ There are three different kinds of two-way associations, and two different kinds
 
 
 
+
 ## Special cases / FAQ
+
+##### _What is an "exclusive" association?_
+
+It just means a plural association with the special restriction that no two records can have the same associated child records in it.
+
+> This is vs. a "shared" association, which is what we call any plural association that is non-exclusive, as per this definition.
 
 ##### _What about *through* associations?_
 
