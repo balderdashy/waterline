@@ -36,11 +36,9 @@
     "waterline-schema": "balderdashy/waterline-schema"
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "0.3.2",
     "eslint": "2.11.1",
     "espree": "3.1.5",
-    "istanbul": "0.4.3",
-    "mocha": "2.5.3"
+    "mocha": "3.0.2"
   },
   "keywords": [
     "mvc",
