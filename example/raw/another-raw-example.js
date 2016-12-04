@@ -39,18 +39,28 @@ setupWaterline({
   models: {
 
     user: {
-      connection: 'myDb',//<< the datastore this model should use
+      // connection: 'myDb',//<< the datastore this model should use
+      datastore: 'myDb',// (^^^TODO: change this to `datastore` once it works)
+
       attributes: {
-        numChickens: { type: 'integer' },//<< will be able to change it to `number` soon-- but right now doing so breaks stuff do to the internals of Waterline treating `type: 'number'` like a string (that changes in WL 0.13)
-        pets: { collection: 'Pet' }
-      }
+        id: { type: 'number' },
+        numChickens: { type: 'number' },
+        pets: { collection: 'pet' }
+      },
+      primaryKey: 'id',
+      schema: true
     },
 
     pet: {
-      connection: 'myDb',//<< the datastore this model should use
+      // connection: 'myDb',//<< the datastore this model should use
+      datastore: 'myDb',// (^^^TODO: change this to `datastore` once it works)
+
       attributes: {
+        id: { type: 'number' },
         name: { type: 'string' }
-      }
+      },
+      primaryKey: 'id',
+      schema: true
     }
 
   }
@@ -189,31 +199,8 @@ setupWaterline({
         return;
       }
 
-      User.find({
-        // select: ['*'],
-        where: {},
-        limit: 10,
-        // limit: (Number.MAX_SAFE_INTEGER||9007199254740991),
-        skip: 0,
-        sort: 'id asc',
-        // sort: {},
-        // sort: [
-        //   { name: 'ASC' }
-        // ]
-      })
-      .populate('pets')
-      .exec(function (err, records) {
-        if (err) {
-          console.log('Failed to find records:',err);
-          return;
-        }
-
-        console.log('found:',records);
-
-      });
-
-      // User.stream({
-      //   select: ['*'],
+      // User.find({
+      //   // select: ['*'],
       //   where: {},
       //   limit: 10,
       //   // limit: (Number.MAX_SAFE_INTEGER||9007199254740991),
@@ -223,32 +210,55 @@ setupWaterline({
       //   // sort: [
       //   //   { name: 'ASC' }
       //   // ]
-      // }, function eachRecord(user, next){
-
-      //   console.log('Record:',util.inspect(user,{depth: null}));
-      //   return next();
-
-      // }, {
-      //   populates: {
-
-      //     pets: {
-      //       select: ['*'],
-      //       where: {},
-      //       limit: 100000,
-      //       skip: 0,
-      //       sort: 'id asc',
-      //     }
-
-      //   }
-      // }, function (err){
+      // })
+      // .populate('pets')
+      // .exec(function (err, records) {
       //   if (err) {
-      //     console.error('Uhoh:',err.stack);
+      //     console.log('Failed to find records:',err);
       //     return;
-      //   }//--•
+      //   }
 
-      //   console.log('k');
+      //   console.log('found:',records);
 
-      // });//</ User.stream().exec() >
+      // });
+
+      User.stream({
+        select: ['*'],
+        where: {},
+        limit: 10,
+        // limit: (Number.MAX_SAFE_INTEGER||9007199254740991),
+        skip: 0,
+        sort: 'id asc',
+        // sort: {},
+        // sort: [
+        //   { name: 'ASC' }
+        // ]
+      }, function eachRecord(user, next){
+
+        console.log('Record:',util.inspect(user,{depth: null}));
+        return next();
+
+      }, {
+        populates: {
+
+          pets: {
+            select: ['*'],
+            where: {},
+            limit: 100000,
+            skip: 0,
+            sort: 'id asc',
+          }
+
+        }
+      }, function (err){
+        if (err) {
+          console.error('Uhoh:',err.stack);
+          return;
+        }//--•
+
+        console.log('k');
+
+      });//</ User.stream().exec() >
 
     });//</ User.create().exec() >
   });//</ Pet.createEach().exec() >
