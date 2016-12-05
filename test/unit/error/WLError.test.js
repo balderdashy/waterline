@@ -7,7 +7,7 @@ var WLError = require('../../../lib/waterline/error/WLError');
 var assert = require('assert');
 
 
-describe.skip('lib/error', function () {
+describe('lib/error', function () {
 
   describe('errorify', function () {
 
