@@ -1,4 +1,4 @@
-var Waterline = require('../../../lib/waterline');
+var Waterline = require('../../lib/waterline');
 var assert = require('assert');
 var _ = require('@sailshq/lodash');
 
