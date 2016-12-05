@@ -16,12 +16,9 @@ describe('Integrator ::', function() {
   });
 
   describe('with otherwise-invalid input', function() {
-    it('should trigger cb(err)', function(done) {
-      assert.doesNotThrow(function() {
-        integrate('foo', 'bar', 'id', function(err) {
-          assert(err);
-          return done();
-        });
+    it('should return an error', function() {
+      assert.throws(function() {
+        integrate('foo', 'bar', 'id');
       });
     });
   });
@@ -35,17 +32,8 @@ describe('Integrator ::', function() {
 
       var results;
 
-      before(function(done){
-        assert.doesNotThrow(function() {
-          integrate(fixtures.cache, fixtures.joins, 'id', function(err, _results) {
-            if (err) {
-              return done(err);
-            }
-
-            results = _results;
-            done(err);
-          });
-        });
+      before(function(){
+        results = integrate(fixtures.cache, fixtures.joins, 'id');
       });
 
       it('should be an array', function() {
@@ -76,15 +64,15 @@ describe('Integrator ::', function() {
           assert.equal(accountedFor, true);
         });
 
-        describe('with no matching child records',function () {
+        describe('with no matching child records', function() {
           // Empty the child table in the cache
           before(function() {
             fixtures.cache.message_to_user = [];
           });
 
-          it('should still work in a predictable way (populate an empty array)', function(done) {
+          it('should still work in a predictable way (populate an empty array)', function() {
             assert.doesNotThrow(function() {
-              integrate(fixtures.cache, fixtures.joins, 'id', done);
+              integrate(fixtures.cache, fixtures.joins, 'id');
             });
           });
         });
@@ -98,16 +86,8 @@ describe('Integrator ::', function() {
         cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
       };
 
-      before(function(done){
-        assert.doesNotThrow(function() {
-          integrate(fixtures.cache, fixtures.joins, 'id', function(err, _results) {
-            if (err) {
-              return done(err);
-            }
-            results = _results;
-            return done();
-          });
-        });
+      before(function(){
+        results = integrate(fixtures.cache, fixtures.joins, 'id');
       });
 
       it('should be an array', function() {
@@ -130,7 +110,7 @@ describe('Integrator ::', function() {
           });
 
           // All aliases are accounted for in results
-          var accountedFor = _.all(aliases, function (alias) {
+          var accountedFor = _.all(aliases, function(alias) {
             return results.length === _.pluck(results, alias).length;
           });
 
@@ -153,16 +133,8 @@ describe('Integrator ::', function() {
       cache: _.cloneDeep(require('../../support/fixtures/integrator/cache'))
     };
 
-    before(function(done){
-      assert.doesNotThrow(function() {
-        integrate(fixtures.cache, fixtures.joins, 'id', function(err, _results) {
-          if (err) {
-            return done(err);
-          }
-          results = _results;
-          return done();
-        });
-      });
+    before(function(){
+      results = integrate(fixtures.cache, fixtures.joins, 'id');
     });
 
     it('should be an array', function() {
@@ -176,7 +148,7 @@ describe('Integrator ::', function() {
         // Each result is an object and contains a valid alias
         _.each(results, function(result) {
           assert(_.isPlainObject(result));
-          var alias = _.some(aliases, function (alias) {
+          var alias = _.some(aliases, function(alias) {
             return result[alias];
           });
 

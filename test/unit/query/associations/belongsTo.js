@@ -73,7 +73,7 @@ describe('Collection Query ::', function() {
     });
 
     it('should build a join query', function(done) {
-      Car.findOne({ driver: 1 })
+      Car.findOne()
       .populate('driver')
       .exec(function(err) {
         if (err) {

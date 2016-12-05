@@ -1,21 +1,24 @@
-var Waterline = require('../../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../../lib/waterline');
 
-describe('Collection Query', function() {
-  describe('populated associations', function() {
+describe('Collection Query ::', function() {
+  describe('populated associations ::', function() {
     var User;
     var Car;
     var generatedCriteria = {};
 
     before(function(done) {
-
       var waterline = new Waterline();
       var collections = {};
 
       collections.user = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
+          id: {
+            type: 'number'
+          },
           car: {
             model: 'car'
           },
@@ -29,7 +32,11 @@ describe('Collection Query', function() {
       collections.car = Waterline.Collection.extend({
         identity: 'car',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
+          id: {
+            type: 'number'
+          },
           driver: {
             model: 'user',
             columnName: 'foobar'
@@ -43,10 +50,16 @@ describe('Collection Query', function() {
       // Fixture Adapter Def
       var adapterDef = {
         identity: 'foo',
-        find: function(con, col, criteria, cb) {
-          generatedCriteria = criteria;
-          if(col === 'user') return cb(null, [{ id: 1, car: 1 }]);
-          if(col === 'car') return cb(null, [{ id: 1, foobar: 1 }]);
+        find: function(con, query, cb) {
+          generatedCriteria = query.criteria;
+          if (query.using === 'user') {
+            return cb(null, [{ id: 1, car: 1 }]);
+          }
+
+          if (query.using === 'car') {
+            return cb(null, [{ id: 1, foobar: 1 }]);
+          }
+
           return cb();
         }
       };
@@ -57,42 +70,28 @@ describe('Collection Query', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if (err) { return done(err); };
-        User = colls.collections.user;
-        Car = colls.collections.car;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
+        }
+        User = orm.collections.user;
+        Car = orm.collections.car;
+        return done();
       });
     });
 
 
     it('should transform populated values', function(done) {
-      User.find().populate('car').exec(function(err, user) {
-        if(err) return done(err);
-        assert(user[0].car);
-        assert(user[0].car.driver);
-        assert(!user[0].car.foobar);
-        done();
+      User.find().populate('car').exec(function(err, users) {
+        if (err) {
+          return done(err);
+        }
+
+        assert(users[0].car);
+        assert(users[0].car.driver);
+        assert(!users[0].car.foobar);
+        return done();
       });
     });
-
-    it('should modelize populated values', function(done) {
-      User.find().populate('car').exec(function(err, user) {
-        if(err) return done(err);
-        assert(user[0].car);
-        assert(typeof user[0].car.save === 'function');
-        done();
-      });
-    });
-
-    it('should transform criteria values', function(done) {
-      Car.find().populate('driver', { name: 'foo' }).exec(function(err, car) {
-        if(err) return done(err);
-        assert(generatedCriteria.where.my_name);
-        assert(!generatedCriteria.where.name);
-        done();
-      });
-    });
-
   });
 });

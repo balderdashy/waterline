@@ -65,16 +65,6 @@ describe('Collection Query ::', function() {
           return done();
         });
       });
-
-      it('should not delete an empty IN array', function(done) {
-        query.destroy({id: []}, function(err) {
-          if (err) {
-            return done(err);
-          }
-
-          return done();
-        });
-      });
     });
 
     describe('with custom columnName set', function() {

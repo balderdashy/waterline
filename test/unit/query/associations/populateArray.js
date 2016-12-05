@@ -1,21 +1,22 @@
-var Waterline = require('../../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../../lib/waterline');
 
-describe('Collection Query', function() {
-  describe('specific populated associations', function() {
-    var User;
+describe('Collection Query ::', function() {
+  describe('specific populated associations ::', function() {
     var Car;
-    var Ticket;
 
     before(function(done) {
-
       var waterline = new Waterline();
       var collections = {};
 
       collections.user = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
+          id: {
+            type: 'number'
+          },
           car: {
             model: 'car'
           },
@@ -29,7 +30,11 @@ describe('Collection Query', function() {
       collections.ticket = Waterline.Collection.extend({
         identity: 'ticket',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
+          id: {
+            type: 'number'
+          },
           reason: {
             columnName: 'reason',
             type: 'string'
@@ -43,14 +48,18 @@ describe('Collection Query', function() {
       collections.car = Waterline.Collection.extend({
         identity: 'car',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
+          id: {
+            type: 'number'
+          },
           driver: {
             model: 'user',
             columnName: 'foobar'
           },
           tickets: {
-              collection: 'ticket',
-              via: 'car'
+            collection: 'ticket',
+            via: 'car'
           }
         }
       });
@@ -62,10 +71,19 @@ describe('Collection Query', function() {
       // Fixture Adapter Def
       var adapterDef = {
         identity: 'foo',
-        find: function(con, col, criteria, cb) {
-          if(col === 'user') return cb(null, [{ id: 1, car: 1, name: 'John Doe' }]);
-          if(col === 'car') return cb(null, [{ id: 1, foobar: 1, tickets: [1, 2]}]);
-          if(col === 'ticket') return cb(null, [{ id: 1, reason: 'red light', car:1}, { id: 2, reason: 'Parking in a disabled space', car: 1 }]);
+        find: function(con, query, cb) {
+          if(query.using === 'user') {
+            return cb(null, [{ id: 1, car: 1, name: 'John Doe' }]);
+          }
+
+          if(query.using === 'car') {
+            return cb(null, [{ id: 1, foobar: 1, tickets: [1, 2]}]);
+          }
+
+          if(query.using === 'ticket') {
+            return cb(null, [{ id: 1, reason: 'red light', car:1}, { id: 2, reason: 'Parking in a disabled space', car: 1 }]);
+          }
+
           return cb();
         }
       };
@@ -76,27 +94,30 @@ describe('Collection Query', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if (err) { return done(err); };
-        User = colls.collections.user;
-        Car = colls.collections.car;
-        Ticket = colls.collections.ticket;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
+        }
+        User = orm.collections.user;
+        Car = orm.collections.car;
+        Ticket = orm.collections.ticket;
+        return done();
       });
     });
 
 
     it('should populate all related collections', function(done) {
       Car.find().populate(['driver','tickets']).exec(function(err, car) {
-        if(err) return done(err);
+        if (err) {
+          return done(err);
+        }
         assert(car[0].driver);
         assert(car[0].driver.name);
         assert(car[0].tickets);
         assert(car[0].tickets[0].car);
         assert(car[0].tickets[1].car);
-        done();
+        return done();
       });
     });
-
   });
 });

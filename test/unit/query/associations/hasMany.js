@@ -17,7 +17,7 @@ describe('Collection Query ::', function() {
         primaryKey: 'uuid',
         attributes: {
           uuid: {
-            type: 'string',
+            type: 'number'
           },
           cars: {
             collection: 'car',
