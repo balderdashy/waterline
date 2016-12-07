@@ -65,7 +65,7 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 ```
 
 ## Meta Keys
-These keys allow end users to modify the behaviour of Waterline methods. You can pass them into the `meta` piece of query.
+These keys allow end users to modify the behaviour of Waterline methods. You can pass them via the `.meta()` query modifier method, or as the `meta` query key.
 
 ```javascript
 Model.find()
