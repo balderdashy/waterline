@@ -18,6 +18,12 @@
     + And as for anywhere you're building criteria using Waterline's chainable deferred object, then don't worry about this-- it's taken care of for you.
 * [DEPRECATE] Deprecated criteria usage:
   + Avoid specifying a limit of < 0.  It is still ignored, and acts like `limit: undefined`, but it now logs a deprecation warning to the console.
+* [BREAKING] Automigrations
+  + Automigrations now live outside of Waterline core (in waterline-util)
+  + Remove `index` for automigrations
+  + In core SQL adapters, `.create()` no longer deals with updating the current autoincrement value (the "next value") when a record with a greater value is explicitly created
+  + In core SQL adapters, `.createEach()` will STILL deal with updating the current autoincrement value (the "next value") when a record with a greater value is explicitly created -- BUT only when the `incrementSequencesOnCreateEach` meta key is set to `true`.
+
 
 ### 0.11.6
 
