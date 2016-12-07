@@ -1,18 +1,24 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('.beforeDestroy()', function() {
-
-  describe('basic function', function() {
-    var person, status = false;
+describe('Before Destroy Lifecycle Callback ::', function() {
+  describe('Destroy ::', function() {
+    var person;
+    var status = false;
 
     before(function(done) {
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
-          name: 'string'
+          id: {
+            type: 'number'
+          },
+          name: {
+            type: 'string'
+          }
         },
 
         beforeDestroy: function(criteria, cb) {
@@ -24,7 +30,7 @@ describe('.beforeDestroy()', function() {
       waterline.loadCollection(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, options); }};
+      var adapterDef = { destroy: function(con, query, cb) { return cb(null, query); }};
 
       var connections = {
         'foo': {
@@ -32,86 +38,25 @@ describe('.beforeDestroy()', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
-      });
-    });
-
-    /**
-     * Destroy
-     */
-
-    describe('.destroy()', function() {
-
-      it('should run beforeDestroy', function(done) {
-        person.destroy({ name: 'test' }, function(err) {
-          assert(!err);
-          assert(status === true);
-          done();
-        });
-      });
-    });
-  });
-
-
-  /**
-   * Test Callbacks can be defined as arrays and run in order.
-   */
-
-  describe('array of functions', function() {
-    var person, status;
-
-    before(function(done) {
-      var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
-        identity: 'user',
-        connection: 'foo',
-        attributes: {
-          name: 'string'
-        },
-
-        beforeDestroy: [
-          // Function 1
-          function(criteria, cb) {
-            status = 'fn1 ';
-            cb();
-          },
-
-          // Function 2
-          function(criteria, cb) {
-            status = status + 'fn2';
-            cb();
-          }
-        ]
-      });
-
-      waterline.loadCollection(Model);
-
-      // Fixture Adapter Def
-      var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, options); }};
-
-      var connections = {
-        'foo': {
-          adapter: 'foobar'
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
         }
-      };
-
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
+        person = orm.collections.user;
+        return done();
       });
     });
 
-    it('should run the functions in order', function(done) {
+
+    it('should run beforeDestroy', function(done) {
       person.destroy({ name: 'test' }, function(err) {
-        assert(!err);
-        assert(status === 'fn1 fn2');
-        done();
+        if (err) {
+          return done(err);
+        }
+
+        assert.equal(status, true);
+        return done();
       });
     });
   });
-
 });

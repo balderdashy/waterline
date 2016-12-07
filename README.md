@@ -1,10 +1,10 @@
-# [<img title="waterline-logo" src="http://i.imgur.com/3Xqh6Mz.png" width="810px" alt="Waterline logo"/>](https://github.com/balderdashy/waterline)
+# [<img title="waterline-logo" src="http://i.imgur.com/3Xqh6Mz.png" width="610px" alt="Waterline logo"/>](http://waterlinejs.org)
 
-[![Build Status](https://travis-ci.org/balderdashy/waterline.svg?branch=master)](https://travis-ci.org/balderdashy/waterline)
 [![NPM version](https://badge.fury.io/js/waterline.svg)](http://badge.fury.io/js/waterline)
-[![Dependency Status](https://gemnasium.com/balderdashy/waterline.svg)](https://gemnasium.com/balderdashy/waterline)
-[![Test Coverage](https://codeclimate.com/github/balderdashy/waterline/badges/coverage.svg)](https://codeclimate.com/github/balderdashy/waterline)
-[![StackOverflow](https://img.shields.io/badge/stackoverflow-waterline-blue.svg)]( http://stackoverflow.com/questions/tagged/waterline)
+[![Master Branch Build Status](https://travis-ci.org/balderdashy/waterline.svg?branch=master)](https://travis-ci.org/balderdashy/waterline)
+[![Master Branch Build Status (Windows)](https://ci.appveyor.com/api/projects/status/tdu70ax32iymvyq3?svg=true)](https://ci.appveyor.com/project/mikermcneil/waterline)
+[![StackOverflow (waterline)](https://img.shields.io/badge/stackoverflow-waterline-blue.svg)]( http://stackoverflow.com/questions/tagged/waterline)
+[![StackOverflow (sails)](https://img.shields.io/badge/stackoverflow-sails.js-blue.svg)]( http://stackoverflow.com/questions/tagged/sails.js)
 
 Waterline is a brand new kind of storage and retrieval engine.
 
@@ -12,23 +12,19 @@ It provides a uniform API for accessing stuff from different kinds of databases,
 
 Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
 
-For detailed documentation, go to [Waterline Documentation](https://github.com/balderdashy/waterline-docs) repository.
+For detailed documentation, see [the Waterline documentation](https://github.com/balderdashy/waterline-docs).
 
 ## Installation
-
 Install from NPM.
 
 ```bash
-$ npm install waterline
+  $ npm install waterline
 ```
 
 ## Overview
+Waterline uses the concept of an adapter to translate a predefined set of methods into a query that can be understood by your data store. Adapters allow you to use various datastores such as MySQL, PostgreSQL, MongoDB, Redis, etc. and have a clear API for working with your model data.
 
-Waterline uses the concept of an Adapter to translate a predefined set of methods into a query that can be understood by your data store. Adapters allow you to use various datastores such as MySQL, PostgreSQL, MongoDB, Redis, etc. and have a clear API for working with your model data.
-
-It also allows an adapter to define it's own methods that don't necessarily fit into the CRUD methods defined by default in Waterline. If an adapter defines a custom method, Waterline will simply pass the function arguments down to the adapter.
-
-You may also supply an array of adapters and Waterline will map out the methods so they are both mixed in. It works similar to Underscore's [Extend](http://underscorejs.org/#extend) method where the last item in the array will override any methods in adapters before it. This allows you to mixin both the traditional CRUD adapters such as MySQL with specialized adapters such as Twilio and have both types of methods available.
+It also allows an adapter to define its own methods that don't necessarily fit into the CRUD methods defined by default in Waterline. If an adapter defines a custom method, Waterline will simply pass the function arguments down to the adapter.
 
 #### Community Adapters
 
@@ -40,9 +36,6 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [Microsoft SQL Server](https://github.com/cnect/sails-sqlserver)
   - [Redis](https://github.com/balderdashy/sails-redis)
   - [Riak](https://github.com/balderdashy/sails-riak)
-  - [IRC](https://github.com/balderdashy/sails-irc)
-  - [Twitter](https://github.com/balderdashy/sails-twitter)
-  - [JSDom](https://github.com/mikermcneil/sails-jsdom)
   - [Neo4j](https://github.com/natgeo/sails-neo4j)
   - [OrientDB](https://github.com/appscot/sails-orientdb)
   - [ArangoDB](https://github.com/rosmo/sails-arangodb)
@@ -52,46 +45,46 @@ You may also supply an array of adapters and Waterline will map out the methods 
   - [Apache Derby](https://github.com/dash-/node-sails-derby)
 
 
-## Support
-Need help or have a question?
-- [StackOverflow](http://stackoverflow.com/questions/tagged/waterline)
-- [Gitter Chat Room](https://gitter.im/balderdashy/sails)
+
+## Help
+Need help or have a question?  Click [here](http://sailsjs.com/support).
 
 
-## Issue Submission
-Please read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
-
-Waterline and Sails are composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md), many of which have their own dedicated repository. If you suspect an issue in one of these sub-modules, you can find its repo on the [organization](https://github.com/balderdashy) page, or in [MODULES.md](https://github.com/balderdashy/sails/blob/master/MODULES.md).  Click [here](https://github.com/balderdashy/waterline/search?q=&type=Issues) to search/post issues in this repository.
-
-
-## Feature Requests
-If you have an idea for a new feature, please feel free to submit it as a pull request to the backlog section of the [ROADMAP.md](https://github.com/balderdashy/waterline/blob/master/ROADMAP.md) file in this repository.
+## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/waterline.svg)](http://npmjs.com/package/waterline)
+To report a bug, [click here](http://sailsjs.com/bugs).
 
 
 ## Contribute
-Please carefully read our [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md) before submitting a pull request with code changes.
+Please observe the guidelines and conventions laid out in our [contribution guide](http://sailsjs.com/contribute) when opening issues or submitting pull requests.
 
-
-## Tests
-
+#### Tests
 All tests are written with [mocha](https://mochajs.org/) and should be run with [npm](https://www.npmjs.com/):
 
 ``` bash
   $ npm test
 ```
 
-## Coverage
+## Meta Keys
+These keys allow end users to modify the behaviour of Waterline methods. You can pass them into the `meta` piece of query.
 
-To generate the code coverage report, run:
-
-``` bash
-  $ npm run coverage
+```javascript
+Model.find()
+.meta({
+  skipAllLifecycleCallbacks: true
+})
+.exec();
 ```
-And have a look at `coverage/lcov-report/index.html`.
+
+Meta Key                              | Purpose
+:------------------------------------ | :------------------------------
+skipAllLifecycleCallbacks             | Prevents lifecycle callbacks from running in the query.
+
+
 
 ## License
+[MIT](http://sailsjs.com/license). Copyright © 2012-2016 Balderdash Design Co.
 
-[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2016 Balderdash Design Co.
+Waterline, like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
 
 
-![image_squidhome@2x.png](http://sailsjs.org/images/bkgd_squiddy.png)
+![image_squidhome@2x.png](http://sailsjs.com/images/bkgd_squiddy.png)

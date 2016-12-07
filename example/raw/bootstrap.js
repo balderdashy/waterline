@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var Waterline = require('../../lib/waterline'); //<< replace that with `require('waterline')`
 
 

@@ -1,9 +1,8 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('.afterDestroy()', function() {
-
-  describe('basic function', function() {
+describe('After Destroy Lifecycle Callback ::', function() {
+  describe('Destroy ::', function() {
     var person, status;
 
     before(function(done) {
@@ -11,13 +10,21 @@ describe('.afterDestroy()', function() {
       var Model = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
-          name: 'string'
+          id: {
+            type: 'number'
+          },
+          name: {
+            type: 'string'
+          }
         },
 
-        afterDestroy: function(values, cb) {
+        afterDestroy: function(cb) {
           person.create({ test: 'test' }, function(err, result) {
-            if(err) return cb(err);
+            if (err) {
+              return cb(err);
+            }
             status = result.status;
             cb();
           });
@@ -28,8 +35,8 @@ describe('.afterDestroy()', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        destroy: function(con, col, options, cb) { return cb(null, options); },
-        create: function(con, col, options, cb) { return cb(null, { status: true }); }
+        destroy: function(con, query, cb) { return cb(undefined, query); },
+        create: function(con, query, cb) { return cb(undefined, { status: true }); }
       };
 
       var connections = {
@@ -38,89 +45,24 @@ describe('.afterDestroy()', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
-      });
-    });
-
-    /**
-     * Destroy
-     */
-
-    describe('.destroy()', function() {
-
-      it('should run afterDestroy', function(done) {
-        person.destroy({ name: 'test' }, function(err) {
-          assert(!err);
-          assert(status === true);
-          done();
-        });
-      });
-    });
-  });
-
-
-  /**
-   * Test Callbacks can be defined as arrays and run in order.
-   */
-
-  describe('array of functions', function() {
-    var person, status;
-
-    before(function(done) {
-      var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
-        identity: 'user',
-        connection: 'foo',
-        attributes: {
-          name: 'string'
-        },
-
-        afterDestroy: [
-          // Function 1
-          function(values, cb) {
-            status = 'fn1 ';
-            cb();
-          },
-
-          // Function 2
-          function(values, cb) {
-            status = status + 'fn2';
-            cb();
-          }
-        ]
-      });
-
-      // Fixture Adapter Def
-      var adapterDef = {
-        destroy: function(con, col, options, cb) { return cb(null, options); },
-        create: function(con, col, options, cb) { return cb(null, { status: true }); }
-      };
-
-      waterline.loadCollection(Model);
-
-      var connections = {
-        'foo': {
-          adapter: 'foobar'
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
         }
-      };
-
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
+        person = orm.collections.user;
+        return done();
       });
     });
 
-    it('should run the functions in order', function(done) {
+    it('should run afterDestroy', function(done) {
       person.destroy({ name: 'test' }, function(err) {
-        assert(!err);
-        assert(status === 'fn1 fn2');
-        done();
+        if (err) {
+          return done(err);
+        }
+
+        assert.equal(status, true);
+        return done();
       });
     });
   });
-
 });

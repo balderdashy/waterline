@@ -3,7 +3,7 @@
  */
 
 var express = require('express'),
-    _ = require('lodash'),
+    _ = require('@sailshq/lodash'),
     app = express(),
     Waterline = require('waterline'),
     bodyParser = require('body-parser'),

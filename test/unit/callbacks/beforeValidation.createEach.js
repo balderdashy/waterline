@@ -1,9 +1,8 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('.beforeValidate()', function() {
-
-  describe('basic function', function() {
+describe('Before Validate Lifecycle Callback ::', function() {
+  describe.skip('Create Each ::', function() {
     var person;
 
     before(function(done) {
@@ -11,8 +10,14 @@ describe('.beforeValidate()', function() {
       var Model = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
-          name: 'string'
+          id: {
+            type: 'number'
+          },
+          name: {
+            type: 'string'
+          }
         },
 
         beforeValidate: function(values, cb) {
@@ -24,7 +29,7 @@ describe('.beforeValidate()', function() {
       waterline.loadCollection(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+      var adapterDef = { create: function(con, query, cb) { return cb(null, query); }};
 
       var connections = {
         'foo': {
@@ -32,88 +37,25 @@ describe('.beforeValidate()', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
-      });
-    });
-
-    /**
-     * CreateEach
-     */
-
-    describe('.createEach()', function() {
-
-      it('should run beforeValidate and mutate values', function(done) {
-        person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
-          assert(!err);
-          assert(users[0].name === 'test updated');
-          assert(users[1].name === 'test2 updated');
-          done();
-        });
-      });
-    });
-  });
-
-
-  /**
-   * Test Callbacks can be defined as arrays and run in order.
-   */
-
-  describe('array of functions', function() {
-    var person, status;
-
-    before(function(done) {
-      var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
-        identity: 'user',
-        connection: 'foo',
-        attributes: {
-          name: 'string'
-        },
-
-        beforeValidate: [
-          // Function 1
-          function(values, cb) {
-            values.name = values.name + ' fn1';
-            cb();
-          },
-
-          // Function 2
-          function(values, cb) {
-            values.name = values.name + ' fn2';
-            cb();
-          }
-        ]
-      });
-
-      waterline.loadCollection(Model);
-
-      // Fixture Adapter Def
-      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
-
-      var connections = {
-        'foo': {
-          adapter: 'foobar'
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
         }
-      };
-
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
+        person = orm.collections.user;
+        return done();
       });
     });
 
-    it('should run the functions in order', function(done) {
+    it('should run beforeValidate and mutate values', function(done) {
       person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
-        assert(!err);
-        assert(users[0].name === 'test fn1 fn2');
-        assert(users[1].name === 'test2 fn1 fn2');
-        done();
+        if (err) {
+          return done(err);
+        }
+
+        assert.equal(users[0].name, 'test updated');
+        assert.equal(users[1].name, 'test2 updated');
+        return done();
       });
     });
   });
-
 });

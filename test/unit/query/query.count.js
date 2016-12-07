@@ -1,30 +1,30 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.count()', function() {
     var query;
 
     before(function(done) {
-
       var waterline = new Waterline();
       var Model = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
-          name: {
-            type: 'string',
-            defaultsTo: 'Foo Bar'
+          id: {
+            type: 'number'
           },
-          doSomething: function() {}
+          name: {
+            type: 'string'
+          }
         }
       });
 
       waterline.loadCollection(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { count: function(con, col, criteria, cb) { return cb(null, 1); }};
+      var adapterDef = { count: function(con, query, cb) { return cb(null, 1); }};
 
       var connections = {
         'foo': {
@@ -32,16 +32,20 @@ describe('Collection Query', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) return done(err);
-        query = colls.collections.user;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if(err) {
+          return done(err);
+        }
+        query = orm.collections.user;
+        return done();
       });
     });
 
     it('should return a count', function(done) {
       query.count({ name: 'foo'}, {}, function(err, count) {
-        if(err) return done(err);
+        if(err) {
+          return done(err);
+        }
 
         assert(count > 0);
         done();
@@ -51,12 +55,13 @@ describe('Collection Query', function() {
     it('should allow a query to be built using deferreds', function(done) {
       query.count()
       .exec(function(err, result) {
-        if(err) return done(err);
+        if(err) {
+          return done(err);
+        }
 
         assert(result);
         done();
       });
     });
-
   });
 });

@@ -1,22 +1,22 @@
-var Waterline = require('../../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../../lib/waterline');
 
-describe('Collection Query', function() {
+describe('Collection Query ::', function() {
   describe('belongs to association', function() {
-    var Car, generatedCriteria = {};
+    var Car;
+    var generatedQuery;
 
     before(function(done) {
-
       var waterline = new Waterline();
       var collections = {};
 
       collections.user = Waterline.Collection.extend({
         identity: 'user',
         connection: 'foo',
+        primaryKey: 'uuid',
         attributes: {
           uuid: {
-            type: 'string',
-            primaryKey: true
+            type: 'string'
           },
           name: {
             type: 'string',
@@ -28,7 +28,11 @@ describe('Collection Query', function() {
       collections.car = Waterline.Collection.extend({
         identity: 'car',
         connection: 'foo',
+        primaryKey: 'id',
         attributes: {
+          id: {
+            type: 'number'
+          },
           driver: {
             model: 'user'
           }
@@ -41,11 +45,14 @@ describe('Collection Query', function() {
       // Fixture Adapter Def
       var adapterDef = {
         identity: 'foo',
-        join: function(con, col, criteria, cb) {
-          generatedCriteria = criteria;
+        join: function(con, query, cb) {
+          generatedQuery = query;
           return cb();
         },
-        find: function(con, col, criteria, cb) {
+        find: function(con, query, cb) {
+          return cb();
+        },
+        findOne: function(con, query, cb) {
           return cb();
         }
       };
@@ -56,37 +63,30 @@ describe('Collection Query', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        Car = colls.collections.car;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
+        }
+        Car = orm.collections.car;
+        return done();
       });
     });
-
 
     it('should build a join query', function(done) {
-      Car.findOne({ driver: 1 })
-      .populate('driver')
-      .exec(function(err, values) {
-        if(err) return done(err);
-        assert(generatedCriteria.joins[0].parent === 'car');
-        assert(generatedCriteria.joins[0].parentKey === 'driver');
-        assert(generatedCriteria.joins[0].child === 'user');
-        assert(generatedCriteria.joins[0].childKey === 'uuid');
-        assert(generatedCriteria.joins[0].removeParentKey === true);
-        done();
-      });
-    });
-
-
-    it.skip('should return error if criteria is undefined', function(done) {
       Car.findOne()
       .populate('driver')
-      .exec(function(err, values) {
-        assert(err, 'An Error is expected');
-        done();
+      .exec(function(err) {
+        if (err) {
+          return done(err);
+        }
+
+        assert.equal(generatedQuery.joins[0].parent, 'car');
+        assert.equal(generatedQuery.joins[0].parentKey, 'driver');
+        assert.equal(generatedQuery.joins[0].child, 'user');
+        assert.equal(generatedQuery.joins[0].childKey, 'uuid');
+        assert.equal(generatedQuery.joins[0].removeParentKey, true);
+        return done();
       });
     });
-
   });
 });

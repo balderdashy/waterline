@@ -1,47 +1,28 @@
-var Waterline = require('../../../../lib/waterline');
 var assert = require('assert');
 var async = require('async');
+var _ = require('@sailshq/lodash');
+var Waterline = require('../../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('many to many through association', function() {
     var waterline;
     var Driver;
     var Ride;
     var Taxi;
-    var Payment;
+    var _records = {};
 
     before(function(done) {
       var collections = {};
       waterline = new Waterline();
 
-      collections.payment = Waterline.Collection.extend({
-        identity: 'Payment',
-        connection: 'foo',
-        tableName: 'payment_table',
-        attributes: {
-          paymentId: {
-            type: 'integer',
-            primaryKey: true
-          },
-          amount: {
-            type: 'integer'
-          },
-          ride: {
-            collection: 'Ride',
-            via: 'payment'
-          }
-        }
-      });
-
       collections.driver = Waterline.Collection.extend({
         identity: 'Driver',
         connection: 'foo',
         tableName: 'driver_table',
+        primaryKey: 'driverId',
         attributes: {
           driverId: {
-            type: 'integer',
-            primaryKey: true
+            type: 'number'
           },
           driverName: {
             type: 'string'
@@ -50,10 +31,6 @@ describe('Collection Query', function() {
             collection: 'Taxi',
             via: 'driver',
             through: 'ride'
-          },
-          rides: {
-            collection: 'Ride',
-            via: 'taxi'
           }
         }
       });
@@ -62,10 +39,10 @@ describe('Collection Query', function() {
         identity: 'Taxi',
         connection: 'foo',
         tableName: 'taxi_table',
+        primaryKey: 'taxiId',
         attributes: {
           taxiId: {
-            type: 'integer',
-            primaryKey: true
+            type: 'number'
           },
           taxiMatricule: {
             type: 'string'
@@ -82,13 +59,10 @@ describe('Collection Query', function() {
         identity: 'Ride',
         connection: 'foo',
         tableName: 'ride_table',
+        primaryKey: 'rideId',
         attributes: {
           rideId: {
-            type: 'integer',
-            primaryKey: true
-          },
-          payment: {
-            model: 'Payment'
+            type: 'number'
           },
           taxi: {
             model: 'Taxi'
@@ -99,69 +73,92 @@ describe('Collection Query', function() {
         }
       });
 
-      waterline.loadCollection(collections.payment);
       waterline.loadCollection(collections.driver);
       waterline.loadCollection(collections.taxi);
       waterline.loadCollection(collections.ride);
 
-      var connections = {
-        'foo': {
-          adapter: 'adapter'
+      // Fixture Adapter Def
+      var adapterDef = {
+        identity: 'foo',
+        find: function(con, query, cb) {
+          var filter = _.first(_.keys(query.criteria.where));
+          var records = _.filter(_records[query.using], function(record) {
+            var matches = false;
+            _.each(query.criteria.where[filter], function(pk) {
+              if (record[filter] === pk) {
+                matches = true;
+              }
+            });
+            return matches;
+          });
+
+          return cb(undefined, records);
+        },
+        findOne: function(con, query, cb) {
+          var record = _.find(_records[query.using], query.criteria.where);
+          return cb(undefined, record);
+        },
+        createEach: function(con, query, cb) {
+          _records[query.using] = _records[query.using] || [];
+          _records[query.using] = _records[query.using].concat(query.newRecords);
+          return setImmediate(function() {
+            cb(undefined, query.newRecords);
+          });
+        },
+        destroy: function(con, query, cb) {
+          return cb();
+        },
+        update: function(con, query, cb) {
+          return cb();
         }
       };
 
-      waterline.initialize({adapters: {adapter: require('sails-memory')}, connections: connections}, function(err, colls) {
-        if (err) {
-          done(err);
+      var connections = {
+        'foo': {
+          adapter: 'foobar'
         }
-        Driver = colls.collections.driver;
-        Taxi = colls.collections.taxi;
-        Ride = colls.collections.ride;
-        Payment = colls.collections.payment;
+      };
+
+      waterline.initialize({adapters: { foobar: adapterDef }, connections: connections}, function(err, orm) {
+        if (err) {
+          return done(err);
+        }
+
+        Driver = orm.collections.driver;
+        Taxi = orm.collections.taxi;
+        Ride = orm.collections.ride;
 
         var drivers = [
           {driverId: 1, driverName: 'driver 1'},
           {driverId: 2, driverName: 'driver 2'}
         ];
+
         var taxis = [
           {taxiId: 1, taxiMatricule: 'taxi_1'},
           {taxiId: 2, taxiMatricule: 'taxi_2'}
         ];
+
         var rides = [
           {rideId: 1, taxi: 1, driver: 1},
           {rideId: 4, taxi: 2, driver: 2},
           {rideId: 5, taxi: 1, driver: 2}
         ];
-        var payments = [
-          {paymentId: 3, amount: 10, ride: 1},
-          {paymentId: 7, amount: 21, ride: 4},
-          {paymentId: 15, amount: 7, ride: 5}
-        ];
 
         async.series([
-          function(callback) {
-            Driver.createEach(drivers, callback);
+          function(next) {
+            Driver.createEach(drivers, next);
           },
-          function(callback) {
-            Taxi.createEach(taxis, callback);
+          function(next) {
+            Taxi.createEach(taxis, next);
           },
-          function(callback) {
-            Ride.createEach(rides, callback);
-          },
-          function(callback) {
-            Payment.createEach(payments, callback);
+          function(next) {
+            Ride.createEach(rides, next);
           }
-        ], function(err) {
-          done(err);
-        });
+        ], done);
       });
     });
 
-    after(function(done) {
-      waterline.teardown(done);
-    });
-
-    it('through table model associations should return a single objet', function(done) {
+    it('should return a single object when querying the through table', function(done) {
       Ride.findOne(1)
       .populate('taxi')
       .populate('driver')
@@ -169,12 +166,13 @@ describe('Collection Query', function() {
         if (err) {
           return done(err);
         }
-        assert(!Array.isArray(ride.taxi), 'through table model associations return Array instead of single Objet');
-        assert(!Array.isArray(ride.driver), 'through table model associations return Array instead of single Objet');
-        assert(ride.taxi.taxiId === 1);
-        assert(ride.taxi.taxiMatricule === 'taxi_1');
-        assert(ride.driver.driverId === 1);
-        assert(ride.driver.driverName === 'driver 1');
+
+        assert(!_.isArray(ride.taxi), 'through table model associations return Array instead of single Objet');
+        assert(!_.isArray(ride.driver), 'through table model associations return Array instead of single Objet');
+        assert.equal(ride.taxi.taxiId, 1);
+        assert.equal(ride.taxi.taxiMatricule, 'taxi_1');
+        assert.equal(ride.driver.driverId, 1);
+        assert.equal(ride.driver.driverName, 'driver 1');
         done();
       });
     });
@@ -217,7 +215,7 @@ describe('Collection Query', function() {
         }
         driver.taxis.add(2);
         driver.taxis.remove(1);
-        driver.save(function(err, driver) {
+        driver.save(function(err) {
           if (err) {
             return done(err);
           }
@@ -232,6 +230,5 @@ describe('Collection Query', function() {
         });
       });
     });
-
   });
 });

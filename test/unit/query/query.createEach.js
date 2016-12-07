@@ -1,20 +1,22 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var _ = require('@sailshq/lodash');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.createEach()', function() {
-
     describe('with proper values', function() {
       var query;
 
       before(function(done) {
-
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
           connection: 'foo',
+          primaryKey: 'id',
           attributes: {
+            id: {
+              type: 'number'
+            },
             first:{
               type: 'string',
               defaultsTo: 'Foo'
@@ -23,26 +25,29 @@ describe('Collection Query', function() {
               type: 'string',
               defaultsTo: 'Bar'
             },
-            full: {
-              type: 'string',
-              defaultsTo: function() { return this.first + ' ' + this.second; }
-            },
             name: {
               type: 'string',
               defaultsTo: 'Foo Bar'
             },
             arr: {
-              type: 'array',
+              type: 'json',
               defaultsTo: []
             },
-            doSomething: function() {}
+            createdAt: {
+              type: 'number',
+              autoCreatedAt: true
+            },
+            updatedAt: {
+              type: 'number',
+              autoUpdatedAt: true
+            }
           }
         });
 
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+        var adapterDef = { createEach: function(con, query, cb) { return cb(null, query.newRecords); }};
 
         var connections = {
           'foo': {
@@ -50,23 +55,24 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
-          query = colls.collections.user;
-          done();
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          query = orm.collections.user;
+          return done();
         });
       });
 
-
       it('should require an array of values', function(done) {
-        query.createEach({}, function(err, values) {
+        query.createEach({}, function(err) {
           assert(err);
-          done();
+          return done();
         });
       });
 
       it('should require a valid set of records', function(done) {
-        query.createEach([{},'string'], function(err, values) {
+        query.createEach([{},'string'], function(err) {
           assert(err);
           done();
         });
@@ -74,47 +80,58 @@ describe('Collection Query', function() {
 
       it('should add default values to each record', function(done) {
         query.createEach([{},{}], function(err, values) {
-          assert(Array.isArray(values));
-          assert(values[0].name === 'Foo Bar');
-          assert(values[1].name === 'Foo Bar');
-          done();
-        });
-      });
+          if (err) {
+            return done(err);
+          }
 
-      it('should add default values to each record when function', function(done) {
-        query.createEach([{},{}], function(err, values) {
-          assert(Array.isArray(values));
-          assert(values[0].full === 'Foo Bar');
-          assert(values[1].full === 'Foo Bar');
-          done();
+          assert(_.isArray(values));
+          assert.equal(values[0].name, 'Foo Bar');
+          assert.equal(values[1].name, 'Foo Bar');
+          return done();
         });
       });
 
       it('should clone default values for each record', function(done) {
         query.createEach([{},{}], function(err, values) {
-          assert(Array.isArray(values));
-          assert(values[0].arr !== values[1].arr);
+          if (err) {
+            return done(err);
+          }
+
+          assert(_.isArray(values));
+          assert.notEqual(values[0].arr !== values[1].arr);
+
+          // Add an item to one array
           values[1].arr.push('another');
-          assert(values[0].arr.length === 0);
-          assert(values[1].arr.length === 1);
-          done();
+
+          // Check that the values aren't refs
+          assert.equal(values[0].arr.length, 0);
+          assert.equal(values[1].arr.length, 1);
+          return done();
         });
       });
 
       it('should strip values that don\'t belong to the schema', function(done) {
         query.createEach([{ foo: 'bar' }], function(err, values) {
+          if (err) {
+            return done(err);
+          }
+
           assert(!values[0].foo);
-          done();
+          return done();
         });
       });
 
       it('should add timestamp values to each record', function(done) {
         query.createEach([{},{}], function(err, values) {
+          if (err) {
+            return done(err);
+          }
+
           assert(values[0].createdAt);
           assert(values[0].updatedAt);
           assert(values[0].createdAt);
           assert(values[1].updatedAt);
-          done();
+          return done();
         });
       });
 
@@ -122,11 +139,14 @@ describe('Collection Query', function() {
         query.createEach()
         .set([{ name: 'bob' }, { name: 'foo'}])
         .exec(function(err, result) {
-          assert(!err);
+          if (err) {
+            return done(err);
+          }
+
           assert(result);
-          assert(result[0].name === 'bob');
-          assert(result[1].name === 'foo');
-          done();
+          assert.equal(result[0].name, 'bob');
+          assert.equal(result[1].name, 'foo');
+          return done();
         });
       });
     });
@@ -135,21 +155,28 @@ describe('Collection Query', function() {
       var query;
 
       before(function(done) {
-
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
           connection: 'foo',
+          primaryKey: 'id',
           attributes: {
-            name: 'string',
-            age: 'integer'
+            id: {
+              type: 'number'
+            },
+            name: {
+              type: 'string'
+            },
+            age: {
+              type: 'number'
+            }
           }
         });
 
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { create: function(con, col, valuesList, cb) { return cb(null, valuesList); }};
+        var adapterDef = { createEach: function(con, query, cb) { return cb(null, query.newRecords); }};
 
         var connections = {
           'foo': {
@@ -157,29 +184,38 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) done(err);
-          query = colls.collections.user;
-          done();
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          query = orm.collections.user;
+          return done();
         });
       });
 
       it('should cast values before sending to adapter', function(done) {
         query.createEach([{ name: 'foo', age: '27' }], function(err, values) {
-          assert(values[0].name === 'foo');
-          assert(values[0].age === 27);
-          done();
+          if (err) {
+            return done(err);
+          }
+
+          assert.equal(values[0].name, 'foo');
+          assert.equal(values[0].age, 27);
+          return done();
         });
       });
 
       it('should not be detructive to passed-in arrays', function(done) {
         var myPreciousArray = [{ name: 'foo', age: '27' }];
-        query.createEach(myPreciousArray, function(err, values) {
-          assert(myPreciousArray.length === 1);
-          done();
+        query.createEach(myPreciousArray, function(err) {
+          if (err) {
+            return done(err);
+          }
+
+          assert.equal(myPreciousArray.length, 1);
+          return done();
         });
       });
     });
-
   });
 });

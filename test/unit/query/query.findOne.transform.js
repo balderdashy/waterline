@@ -1,39 +1,34 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var _ = require('@sailshq/lodash');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.findOne()', function() {
-
     describe('with transformed values', function() {
-      var Model;
-
-      before(function() {
-
-        // Extend for testing purposes
-        Model = Waterline.Collection.extend({
-          identity: 'user',
-          connection: 'foo',
-
-          attributes: {
-            name: {
-              type: 'string',
-              columnName: 'login'
-            }
+      var modelDef = {
+        identity: 'user',
+        connection: 'foo',
+        primaryKey: 'id',
+        attributes: {
+          id: {
+            type: 'number'
+          },
+          name: {
+            type: 'string',
+            columnName: 'login'
           }
-        });
-      });
+        }
+      };
 
       it('should transform criteria before sending to adapter', function(done) {
-
         var waterline = new Waterline();
-        waterline.loadCollection(Model);
+        waterline.loadCollection(Waterline.Collection.extend(_.merge({}, modelDef)));
 
         // Fixture Adapter Def
         var adapterDef = {
-          find: function(con, col, criteria, cb) {
-            assert(criteria.where.login);
-            return cb(null, [criteria]);
+          findOne: function(con, query, cb) {
+            assert(query.criteria.where.login);
+            return cb(null, [query.criteria]);
           }
         };
 
@@ -43,21 +38,22 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
-          colls.collections.user.findOne({ where: { name: 'foo' }}, done);
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          orm.collections.user.findOne({ where: { name: 'foo' }}, done);
         });
       });
 
       it('should transform values after receiving from adapter', function(done) {
-
         var waterline = new Waterline();
-        waterline.loadCollection(Model);
+        waterline.loadCollection(Waterline.Collection.extend(_.merge({}, modelDef)));
 
         // Fixture Adapter Def
         var adapterDef = {
-          find: function(con, col, criteria, cb) {
-            assert(criteria.where.login);
+          findOne: function(con, query, cb) {
+            assert(query.criteria.where.login);
             return cb(null, [{ login: 'foo' }]);
           }
         };
@@ -68,16 +64,20 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
-          colls.collections.user.findOne({ name: 'foo' }, function(err, values) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          orm.collections.user.findOne({ name: 'foo' }, function(err, values) {
+            if (err) {
+              return done(err);
+            }
             assert(values.name);
             assert(!values.login);
-            done();
+            return done();
           });
         });
       });
     });
-
   });
 });

@@ -22,26 +22,23 @@
     }
   ],
   "dependencies": {
+    "@sailshq/lodash": "^3.10.2",
     "anchor": "~0.11.2",
-    "async": "1.5.2",
+    "async": "2.0.1",
     "bluebird": "3.2.1",
     "deep-diff": "0.3.4",
     "flaverr": "^1.0.0",
-    "lodash": "3.10.1",
+    "lodash.issafeinteger": "4.0.4",
     "prompt": "1.0.0",
+    "rttc": "^10.0.0-1",
     "switchback": "2.0.1",
     "waterline-criteria": "1.0.1",
-    "waterline-schema": "0.2.0"
+    "waterline-schema": "balderdashy/waterline-schema"
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "0.3.2",
     "eslint": "2.11.1",
     "espree": "3.1.5",
-    "istanbul": "0.4.3",
-    "mocha": "2.5.3",
-    "sails-memory": "balderdashy/sails-memory",
-    "should": "9.0.0",
-    "waterline-adapter-tests": "balderdashy/waterline-adapter-tests#machinepack"
+    "mocha": "3.0.2"
   },
   "keywords": [
     "mvc",
@@ -58,13 +55,12 @@
   "repository": "git://github.com/balderdashy/waterline.git",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "make test",
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha test --recursive",
     "prepublish": "npm prune",
-    "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js",
-    "coverage": "make coverage"
+    "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js"
   },
   "engines": {
-    "node": ">=0.10.0 <=5.x.x"
+    "node": ">=0.10.0"
   },
   "license": "MIT",
   "bugs": {

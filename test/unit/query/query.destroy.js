@@ -1,32 +1,33 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.destroy()', function() {
 
     describe('with Auto PK', function() {
       var query;
 
       before(function(done) {
-
         var waterline = new Waterline();
         var Model = Waterline.Collection.extend({
           identity: 'user',
           connection: 'foo',
+          primaryKey: 'id',
           attributes: {
+            id: {
+              type: 'number'
+            },
             name: {
               type: 'string',
               defaultsTo: 'Foo Bar'
-            },
-            doSomething: function() {}
+            }
           }
         });
 
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { destroy: function(con, col, options, cb) { return cb(null); }};
+        var adapterDef = { destroy: function(con, query, cb) { return cb(); }};
 
         var connections = {
           'foo': {
@@ -34,17 +35,22 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
-          query = colls.collections.user;
-          done();
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          query = orm.collections.user;
+          return done();
         });
       });
 
       it('should not return an error', function(done) {
         query.destroy({}, function(err) {
-          assert(!err);
-          done();
+          if (err) {
+            return done(err);
+          }
+
+          return done();
         });
       });
 
@@ -52,16 +58,11 @@ describe('Collection Query', function() {
         query.destroy()
         .where({})
         .exec(function(err) {
-          assert(!err);
-          done();
-        });
-      });
+          if (err) {
+            return done(err);
+          }
 
-      it('should not delete an empty IN array', function(done) {
-        query.destroy({id: []}, function(err, deleted) {
-          assert(!err);
-          assert(deleted.length === 0);
-          done();
+          return done();
         });
       });
     });
@@ -70,22 +71,20 @@ describe('Collection Query', function() {
       var query;
 
       before(function(done) {
-
         var waterline = new Waterline();
 
         // Extend for testing purposes
         var Model = Waterline.Collection.extend({
           identity: 'user',
           connection: 'foo',
-          autoPK: false,
+          primaryKey: 'myPk',
           attributes: {
             name: {
               type: 'string',
               defaultsTo: 'Foo Bar'
             },
             myPk: {
-              type: 'integer',
-              primaryKey: true,
+              type: 'number',
               columnName: 'pkColumn',
               defaultsTo: 1
             }
@@ -95,7 +94,7 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, options); }};
+        var adapterDef = { destroy: function(con, query, cb) { return cb(null, query.criteria); }};
 
         var connections = {
           'foo': {
@@ -103,22 +102,24 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) done(err);
-          query = colls.collections.user;
-          done();
+        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          query = orm.collections.user;
+          return done();
         });
       });
 
 
       it('should use the custom primary key when a single value is passed in', function(done) {
-        query.destroy(1, function(err, values) {
-          assert(!err);
-          assert(values.where.pkColumn === 1);
-          done();
+        query.destroy(1, function(err) {
+          if (err) {
+            return done(err);
+          }
+          return done();
         });
       });
     });
-
   });
 });

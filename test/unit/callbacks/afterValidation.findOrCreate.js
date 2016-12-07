@@ -1,7 +1,7 @@
 var Waterline = require('../../../lib/waterline'),
     assert = require('assert');
 
-describe('.afterValidate()', function() {
+describe.skip('.afterValidate()', function() {
 
   describe('basic function', function() {
 
@@ -45,7 +45,7 @@ describe('.afterValidate()', function() {
           };
 
           waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-            if(err) done(err);
+            if (err) { return done(err); };
             person = colls.collections.user;
             done();
           });
@@ -53,7 +53,7 @@ describe('.afterValidate()', function() {
 
         it('should run afterValidate and mutate values on create', function(done) {
           person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-            assert(!err);
+            assert(!err, err);
             assert(user.name === 'test updated');
             done();
           });
@@ -94,7 +94,7 @@ describe('.afterValidate()', function() {
           };
 
           waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-            if(err) done(err);
+            if (err) { return done(err); };
             person = colls.collections.user;
             done();
           });
@@ -102,7 +102,7 @@ describe('.afterValidate()', function() {
 
         it('should not run afterValidate and mutate values on find', function(done) {
           person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-            assert(!err);
+            assert(!err, err);
             assert(user.name === 'test');
             done();
           });
@@ -164,7 +164,7 @@ describe('.afterValidate()', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) done(err);
+          if (err) { return done(err); };
           person = colls.collections.user;
           done();
         });
@@ -172,7 +172,7 @@ describe('.afterValidate()', function() {
 
       it('should run the functions in order on create', function(done) {
         person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-          assert(!err);
+          assert(!err, err);
           assert(user.name === 'test fn1 fn2');
           done();
         });
@@ -222,7 +222,7 @@ describe('.afterValidate()', function() {
         };
 
         waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) done(err);
+          if (err) { return done(err); };
           person = colls.collections.user;
           done();
         });
@@ -230,7 +230,7 @@ describe('.afterValidate()', function() {
 
       it('should not run any of the functions on find', function(done) {
         person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
-          assert(!err);
+          assert(!err, err);
           assert(user.name === 'test');
           done();
         });
