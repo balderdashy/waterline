@@ -65,7 +65,8 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 ```
 
 ## Meta Keys
-These keys allow end users to modify the behaviour of Waterline methods. You can pass them via the `.meta()` query modifier method, or as the `meta` query key.
+
+As of Waterline 0.13 (Sails v1.0), these keys allow end users to modify the behaviour of Waterline methods. You can pass them as the `meta` query key, or via the `.meta()` query modifier method:
 
 ```javascript
 Model.find()
