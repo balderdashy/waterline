@@ -630,62 +630,6 @@ That's an error (i.e. in waterline-schema)*.
 
 
 
-
-
 ## Required vs allowNull vs. defaultsTo vs. autoCreatedAt vs. autoUpdatedAt
 
-In the tables below, a strikethrough (e.g. ~~foo~~) indicates that the value would be rejected and the query would come back w/ an error.
-
-
-##### On .create()
-
-|                    |  Neither                      | `required: true`            | `allowNull: true`              | `required: true` & `allowNull: true`  | `defaultsTo: ∂`                    | `defaultsTo: ∂` & `allowNull: true`  | `autoCreatedAt: @`          | `autoCreatedAt: @` & `allowNull: true`  |
-|:-------------------|:------------------------------|:----------------------------|:-------------------------------|:--------------------------------------|:-----------------------------------|:-------------------------------------|:----------------------------|:----------------------------------------|
-| _unrecognized_     | null ok,  undefined => _omit_ | _n/a_                       | _n/a_                          | _n/a_                                 | _n/a_                              | _n/a_                                | _n/a_                       | _n/a_                                   |
-| `type: 'string'`   | ~~null~~, undefined => ''     | ~~null~~, ~~undefined~~     | null ok, undefined => ''       | null ok, ~~undefined~~                | ~~null~~, undefined => ∂           | null ok, undefined => ∂              | ~~null~~, undefined => @    | null ok, undefined => @                 |
-| `type: 'number'`   | ~~null~~, undefined => 0      | ~~null~~, ~~undefined~~     | null ok, undefined => 0        | null ok, ~~undefined~~                | ~~null~~, undefined => ∂           | null ok, undefined => ∂              | ~~null~~, undefined => @    | null ok, undefined => @                 |
-| `type: 'boolean'`  | ~~null~~, undefined => false  | ~~null~~, ~~undefined~~     | null ok, undefined => false    | null ok, ~~undefined~~                | ~~null~~, undefined => ∂           | null ok, undefined => ∂              | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `type: 'json'`     | null ok,  undefined => null   | null ok,  ~~undefined~~     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              | null ok,  undefined => ∂           | **E_REDUNDANT** _(WL-S)_             | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `type: 'ref'`      | null ok,  undefined => null   | null ok,  ~~undefined~~     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              | null ok,  undefined => ∂           | **E_REDUNDANT** _(WL-S)_             | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `model: ...`       | null ok,  undefined => null   | ~~null~~, ~~undefined~~     | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_           | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_          | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `collection: ...`  | ~~null~~, undefined => _omit_ | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_           | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_          | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-
-
-##### On .update()
-
-For an `.update()`,  if `undefined` is specified, it is always omitted (treated as the same thing as if you didn't specify the property at all.)
-
-
-|                    |  Neither          | `required: true`            | `allowNull: true`              | `required: true` & `allowNull: true`  | `defaultsTo: ∂`                    | `defaultsTo: ∂` & `allowNull: true`  | `autoUpdatedAt: @`          | `autoUpdatedAt: @` & `allowNull: true`  |
-|:-------------------|:------------------|:----------------------------|:-------------------------------|:--------------------------------------|:-----------------------------------|:-------------------------------------|:----------------------------|:----------------------------------------|
-| _unrecognized_     | null ok           | _n/a_                       | _n/a_                          | _n/a_                                 | _n/a_                              | _n/a_                                | _n/a_                       | _n/a_                                   |
-| `type: 'string'`   | ~~null~~          | ~~null~~                    | null ok                        | null ok                               | ~~null~~                           | null ok                              | ~~null~~, undefined => @    | null ok, undefined => @                 |
-| `type: 'number'`   | ~~null~~          | ~~null~~                    | null ok                        | null ok                               | ~~null~~                           | null ok                              | ~~null~~, undefined => @    | null ok, undefined => @                 |
-| `type: 'boolean'`  | ~~null~~          | ~~null~~                    | null ok                        | null ok                               | ~~null~~                           | null ok                              | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `type: 'json'`     | null ok           | null ok                     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              | null ok                            | null ok                              | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `type: 'ref'`      | null ok           | null ok                     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              | null ok                            | null ok                              | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `model: ...`       | null ok           | ~~null~~                    | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_           | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_          | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-| `collection: ...`  | ~~null~~          | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_           | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_          | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_             |
-
-
-
-##### Base value within records from a result set (or for when the adapter sends back null)
-
-i.e. for when the adapter(s) sends back `undefined` or `null` for a particular attr value
-
-> Note that the auto*At/required cases were omitted from the table below--because they do not have any effect.
-
-|                                     |  Neither                       | `allowNull: true`              | `defaultsTo: ∂`                    | `defaultsTo: ∂` & `allowNull: true` |
-|:------------------------------------|:-------------------------------|:-------------------------------|:-----------------------------------|:------------------------------------|
-| _unrecognized_                      | null ok, undefined => _omit_   | _n/a_                          | _n/a_                              | _n/a_                               |
-| `type: 'string'`                    | '' (either way)                | null ok, undefined=> ''        | null ok (but warn), undefined=> ∂  | null ok, undefined=> ∂              |
-| `type: 'number'`                    | 0 (either way                  | null ok, undefined=> 0         | null ok (but warn), undefined=> ∂  | null ok, undefined=> ∂              |
-| `type: 'boolean'`                   | false                          | null ok, undefined=> false     | null ok (but warn), undefined=> ∂  | null ok, undefined=> ∂              |
-| `type: 'json'`                      | null                           | **E_REDUNDANT** _(WL-S)_       | null ok,  undefined => ∂           | **E_REDUNDANT** _(WL-S)_            |
-| `type: 'ref'`                       | null                           | **E_REDUNDANT** _(WL-S)_       | null ok,  undefined => ∂           | **E_REDUNDANT** _(WL-S)_            |
-| `model: ...` _(not populated)_      | null                           | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_         |
-| `collection: ...` _(not populated)_ | _omit_ (either way)            | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_         |
-| `model: ...` _(**populated**)_      | null ok, undefined=> null      | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_         |
-| `collection: ...` _(**populated**)_ | []                             | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_         |
-
-
+TBD.  See https://gist.github.com/mikermcneil/dfc6b033ea8a75cb467e8d50606c81cc.

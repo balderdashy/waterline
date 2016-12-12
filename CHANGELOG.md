@@ -38,6 +38,10 @@
   + In core SQL adapters, `.createEach()` will STILL deal with updating the current autoincrement value (the "next value") when a record with a greater value is explicitly created -- BUT only when the `incrementSequencesOnCreateEach` meta key is set to `true`.
 
 
+<!--
+
+  TODO: figure this out; see https://gist.github.com/mikermcneil/dfc6b033ea8a75cb467e8d50606c81cc
+
 ##### `required` & `allowNull`
 
 * [BREAKING] Standardizing the definition of `required`
@@ -47,7 +51,7 @@
   + If an attribute specifies itself as `allowNull: true`, then if a value for that attr is explicitly provided as `null` in a `.create()` or `.update()`, it will always be allowed through-- even in cases where it wouldn't be normally (i.e. the RTTC type safety check is skipped.)  For example, this allows you to set `null` for `type: 'string'` attributes (or "number", or "boolean").
   + If you attempt to explicitly specify `allowNull: false`, then you're prevented from initializing Waterline.  (You'll see an error, suggesting that you should use `validations: { notNull: true }` instead.)  This behavior could change in future versions of Waterline to allow for more intuitive usage, but for now, since there are other changes to how type safety checks work, it's better to err on the side of strictness.
   + Other types (json and ref) allow `null` out of the box anyway, so `allowNull: true` is not necessary for them.  If you try to set `allowNull: true` on a type: 'json' or type: 'ref' attribute, Waterline will refuse to initialize (explaining that this configuration is redundant, and that you can remove `allowNull: true`, since `type: 'json'`/`type: 'ref'` implicitly allow it anyways).
-    + This is completely separate from the `required` check, which works the same way regardless-- an attribute can be both `required: true` AND `allowNull: true`...as long as it is allowed to be both of those things individually.
+    + This is completely separate from the `required` check, which works the same way regardless- an attribute can be both `required: true` AND `allowNull: true`...as long as it is allowed to be both of those things individually.
   + If `allowNull: true` is set, then `defaultsTo` is allowed to be set to `null` regardless of whether it would normally be allowed.
     + For type: 'string', the implicit default is `''`
     + For type: 'number', the implicit default is `0`
@@ -63,7 +67,7 @@
     + Most of the time, `allowNull` shouldn't need to be used.  (For most attributes, it tends to be better not to use `null`- since it's so easy to store `null` accidentally, and then cause hard-to-debug data type mismatch issues.)
 
 
-
+-->
 
 
 ### 0.11.6
