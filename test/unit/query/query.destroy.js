@@ -85,8 +85,7 @@ describe('Collection Query ::', function() {
             },
             myPk: {
               type: 'number',
-              columnName: 'pkColumn',
-              defaultsTo: 1
+              columnName: 'pkColumn'
             }
           }
         });

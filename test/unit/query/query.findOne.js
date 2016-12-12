@@ -27,7 +27,7 @@ describe('Collection Query ::', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { findOne: function(con, query, cb) { return cb(null, [query.criteria]); }};
+        var adapterDef = { find: function(con, query, cb) { return cb(null, [query.criteria]); }};
 
         var connections = {
           'foo': {
@@ -57,8 +57,12 @@ describe('Collection Query ::', function() {
 
       it('should allow a query to be built using deferreds', function(done) {
         query.findOne()
-        .where({ name: 'Foo Bar' })
-        .where({ id: { '>': 1 } })
+        .where({
+          name: 'Foo Bar',
+          id: {
+            '>': 1
+          }
+        })
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -92,8 +96,7 @@ describe('Collection Query ::', function() {
                 defaultsTo: 'Foo Bar'
               },
               myPk: {
-                type: 'number',
-                defaultsTo: 1
+                type: 'number'
               }
             }
           });
@@ -101,7 +104,7 @@ describe('Collection Query ::', function() {
           waterline.loadCollection(Model);
 
           // Fixture Adapter Def
-          var adapterDef = { findOne: function(con, query, cb) { return cb(null, [query.criteria]); }};
+          var adapterDef = { find: function(con, query, cb) { return cb(null, [query.criteria]); }};
 
           var connections = {
             'foo': {
@@ -149,8 +152,7 @@ describe('Collection Query ::', function() {
               },
               myPk: {
                 type: 'number',
-                columnName: 'pkColumn',
-                defaultsTo: 1
+                columnName: 'pkColumn'
               }
             }
           });
@@ -158,7 +160,7 @@ describe('Collection Query ::', function() {
           waterline.loadCollection(Model);
 
           // Fixture Adapter Def
-          var adapterDef = { findOne: function(con, query, cb) { return cb(null, [query.criteria]); }};
+          var adapterDef = { find: function(con, query, cb) { return cb(null, [query.criteria]); }};
 
           var connections = {
             'foo': {
