@@ -606,6 +606,48 @@ There are three different kinds of two-way associations, and two different kinds
 
 
 
+
+
+### Required vs allowNull
+
+
+##### On .create()
+
+|                    |  Neither                      | `required: true`            | `allowNull: true`              | `required: true` & `allowNull: true`  |
+|:-------------------|:------------------------------|:----------------------------|:-------------------------------|:--------------------------------------|
+| _unrecognized_     | null ok,  undefined => _omit_ | _n/a_                       | _n/a_                          | _n/a_                                 |
+| `type: 'string'`   | ~~null~~, undefined => ''     | ~~null~~, ~~undefined~~     | null ok, undefined => ''       | null ok, ~~undefined~~                |
+| `type: 'number'`   | ~~null~~, undefined => 0      | ~~null~~, ~~undefined~~     | null ok, undefined => 0        | null ok, ~~undefined~~                |
+| `type: 'boolean'`  | ~~null~~, undefined => false  | ~~null~~, ~~undefined~~     | null ok, undefined => false    | null ok, ~~undefined~~                |
+| `type: 'json'`     | null ok,  undefined => null   | null ok,  ~~undefined~~     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              |
+| `type: 'ref'`      | null ok,  undefined => null   | null ok,  ~~undefined~~     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              |
+| `model: ...`       | null ok,  undefined => null   | ~~null~~, ~~undefined~~     | null ok, undefined => null     | null ok, undefined => null            |
+| `collection: ...`  | ~~null~~, undefined => _omit_ | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_           |
+
+
+##### On .update()
+
+|                    |  Neither                      | `required: true`            | `allowNull: true`              | `required: true` & `allowNull: true`  |
+|:-------------------|:------------------------------|:----------------------------|:-------------------------------|:--------------------------------------|
+| _unrecognized_     | null ok,  undefined => _omit_ | _n/a_                       | _n/a_                          | _n/a_                                 |
+| `type: 'string'`   | ~~null~~, undefined => ''     | ~~null~~, ~~undefined~~     | null ok, undefined => ''       | null ok, ~~undefined~~                |
+| `type: 'number'`   | ~~null~~, undefined => 0      | ~~null~~, ~~undefined~~     | null ok, undefined => 0        | null ok, ~~undefined~~                |
+| `type: 'boolean'`  | ~~null~~, undefined => false  | ~~null~~, ~~undefined~~     | null ok, undefined => false    | null ok, ~~undefined~~                |
+| `type: 'json'`     | null ok,  undefined => null   | null ok,  ~~undefined~~     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              |
+| `type: 'ref'`      | null ok,  undefined => null   | null ok,  ~~undefined~~     | **E_REDUNDANT** _(WL-S)_       | **E_REDUNDANT** _(WL-S)_              |
+| `model: ...`       | null ok,  undefined => null   | ~~null~~, ~~undefined~~     | null ok, undefined => null     | null ok, undefined => null            |
+| `collection: ...`  | ~~null~~, undefined => _omit_ | **E_INVALID_ATTR** _(WL-S)_ | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_           |
+
+
+
+
+
+
+
+
+
+
+
 ## Special cases / FAQ
 
 ##### _What is an "exclusive" association?_
