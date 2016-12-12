@@ -26,7 +26,7 @@ describe('Collection Query ::', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          findOne: function(con, query, cb) {
+          find: function(con, query, cb) {
             assert(query.criteria.where.login);
             return cb(null, [query.criteria]);
           }
@@ -52,7 +52,7 @@ describe('Collection Query ::', function() {
 
         // Fixture Adapter Def
         var adapterDef = {
-          findOne: function(con, query, cb) {
+          find: function(con, query, cb) {
             assert(query.criteria.where.login);
             return cb(null, [{ login: 'foo' }]);
           }
