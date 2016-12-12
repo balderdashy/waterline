@@ -605,10 +605,34 @@ There are three different kinds of two-way associations, and two different kinds
 
 
 
+## Special cases / FAQ
+
+##### _What is an "exclusive" association?_
+
+It just means a plural association with the special restriction that no two records can have the same associated child records in it.
+
+> This is vs. a "shared" association, which is what we call any plural association that is non-exclusive, as per this definition.
+
+##### _What about *through* associations?_
+
+A *through* association is a subgenre of plural, two-way, shared associations, where you actually can set up the junction model as one of the models in your app-level code.
+
+
+##### _What about *reflexive* associations?_
+
+A **reflexive** association is just any association where the associated model is the same as the parent model.
+
+
+##### _What about if you have a plural association with `via` pointed at another plural association, but there is no via on the other side?_
+
+That's an error (i.e. in waterline-schema)*.
 
 
 
-### Required vs allowNull vs. defaultsTo vs. autoCreatedAt vs. autoUpdatedAt
+
+
+
+## Required vs allowNull vs. defaultsTo vs. autoCreatedAt vs. autoUpdatedAt
 
 In the tables below, a strikethrough (e.g. ~~foo~~) indicates that the value would be rejected and the query would come back w/ an error.
 
@@ -663,33 +687,5 @@ i.e. for when the adapter(s) sends back `undefined` or `null` for a particular a
 | `collection: ...` _(not populated)_ | _omit_ (either way)            | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_         |
 | `model: ...` _(**populated**)_      | null ok, undefined=> null      | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_         |
 | `collection: ...` _(**populated**)_ | []                             | **E_INVALID_ATTR** _(WL-S)_    | **E_INVALID_ATTR** _(WL-S)_        | **E_INVALID_ATTR** _(WL-S)_         |
-
-
-
-
-
-
-
-## Special cases / FAQ
-
-##### _What is an "exclusive" association?_
-
-It just means a plural association with the special restriction that no two records can have the same associated child records in it.
-
-> This is vs. a "shared" association, which is what we call any plural association that is non-exclusive, as per this definition.
-
-##### _What about *through* associations?_
-
-A *through* association is a subgenre of plural, two-way, shared associations, where you actually can set up the junction model as one of the models in your app-level code.
-
-
-##### _What about *reflexive* associations?_
-
-A **reflexive** association is just any association where the associated model is the same as the parent model.
-
-
-##### _What about if you have a plural association with `via` pointed at another plural association, but there is no via on the other side?_
-
-That's an error (i.e. in waterline-schema)*.
 
 
