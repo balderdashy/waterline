@@ -79,7 +79,6 @@ Model.find()
 Meta Key                              | Default         | Purpose
 :------------------------------------ | :---------------| :------------------------------
 skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
-dontIncrementSequencesOnCreateEach    | false           | For SQL adapters: set to `true` to prevent the default behavior of automatically updating a table's current autoincrement value (the "next value") in `.createEach()` in the case where one of the records is being created with a greater value than the current sequence number.
 dontReturnRecordsOnUpdate             | false           | For adapters: set to `true` to tell the database adapter to send back a special report dictionary (the raw result from the Waterline driver) INSTEAD of the default behavior of sending back an array of all updated records.  Useful for performance reasons when working with updates that affect large numbers of records.
 
 
