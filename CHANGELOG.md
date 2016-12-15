@@ -31,6 +31,19 @@
     + `model: ...` - `null`
     + _(collection attrs are virtual, so they are omitted when not being populated)_
 
+* [BREAKING] Updating records to have `null` values for an attribute that declares a `defaultsTo` now results in setting the default value in the database-- _instead of `null`_.
+* [BREAKING] If adapter does not send back a value for a particular attribute (or if it sends back `undefined`), then send the following back to userland code:
+  + if it is the primary key, then trigger callback with an Error
+  + else if it is a singular ("model") association, return `null` as the result
+  + else if it has a default value, return it as the result
+  + otherwise, return the appropriate base value for the type as the result
+    + For type: 'string', this is `''`
+    + For type: 'number', this is `0`
+    + For type: 'boolean', this is `false`
+    + For type: 'json', this is `null`
+    + For type: 'ref', this is `null`
+    + See https://gist.github.com/mikermcneil/dfc6b033ea8a75cb467e8d50606c81cc for more details.
+
 ##### Automigrations
 * [BREAKING] Automigrations now live outside of Waterline core (in waterline-util)
   + Remove `index` for automigrations
