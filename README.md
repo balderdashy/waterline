@@ -76,6 +76,10 @@ SomeModel.find()
 .exec();
 ```
 
+These keys are not set in stone, and may still change prior to release. (They're posted here now as a way to gather feedback and suggestions.)
+
+
+
 Meta Key                              | Default         | Purpose
 :------------------------------------ | :---------------| :------------------------------
 skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
@@ -83,19 +87,20 @@ cascadeOnDestroy                      | false           | Set to `true` to autom
 fetchRecordsOnUpdate                  | false           | For adapters: set to `true` to tell the database adapter to send back all records that were updated.  Otherwise, the second argument to the `.update()` callback is the raw output from the underlying driver  Warning: Enabling this key may cause performance issues for update queries that affect large numbers of records.
 fetchRecordsOnDestroy                 | false           | For adapters: set to `true` to tell the database adapter to send back all records that were destroyed.  Otherwise, the second argument to the `.destroy()` callback is the raw output from the underlying driver.  Warning: Enabling this key may cause performance issues for destroy queries that affect large numbers of records.
 
-#### Providing defaults for meta keys
+#### Related model settings
 
-To provide app/process-wide defaults for meta keys, use the `meta` model setting.
+To provide per-model/orm-wide defaults for the cascadeOnDestroy or fetchRecordsOn* meta keys, use the model setting with the same name:
 
 ```javascript
 {
   attributes: {...},
   primaryKey: 'id',
-  meta: {
-    fetchRecordsOnUpdate: true
-  }
+  cascadeOnDestroy: true,
+  fetchRecordsOnUpdate: true
 }
 ```
+
+> Not every meta key will necessarily have a model setting with the same name-- in fact, to minimize peak configuration complexity, most will probably not.
 
 
 ## New methods
