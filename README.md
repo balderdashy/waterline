@@ -69,7 +69,7 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 As of Waterline 0.13 (Sails v1.0), these keys allow end users to modify the behaviour of Waterline methods. You can pass them as the `meta` query key, or via the `.meta()` query modifier method:
 
 ```javascript
-Model.find()
+SomeModel.find()
 .meta({
   skipAllLifecycleCallbacks: true
 })
@@ -79,7 +79,24 @@ Model.find()
 Meta Key                              | Default         | Purpose
 :------------------------------------ | :---------------| :------------------------------
 skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
-dontReturnRecordsOnUpdate             | false           | For adapters: set to `true` to tell the database adapter to send back a special report dictionary (the raw result from the Waterline driver) INSTEAD of the default behavior of sending back an array of all updated records.  Useful for performance reasons when working with updates that affect large numbers of records.
+cascadeOnDestroy                      | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection()`) on plural ("collection") associations when deleting a record.  Under the covers, what this actually means varies depending on whether the association is _exclusive_ (has a _singular_ association on the other side) or _non-exclusive_ (has a _plural_ association on the other side).  Basically, it either sets the other side to `null`, or it deletes junction records.  See the documentation for `replaceCollection()` for more information.  _Note: In order to do this when the `fetchRecordsOnDestroy` meta key IS NOT enabled (the default configuration), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._
+fetchRecordsOnUpdate                  | false           | For adapters: set to `true` to tell the database adapter to send back all records that were updated.  Otherwise, the second argument to the `.update()` callback is the raw output from the underlying driver  Warning: Enabling this key may cause performance issues for update queries that affect large numbers of records.
+fetchRecordsOnDestroy                 | false           | For adapters: set to `true` to tell the database adapter to send back all records that were destroyed.  Otherwise, the second argument to the `.destroy()` callback is the raw output from the underlying driver.  Warning: Enabling this key may cause performance issues for destroy queries that affect large numbers of records.
+
+#### Providing defaults for meta keys
+
+To provide app/process-wide defaults for meta keys, use the `meta` model setting.
+
+```
+//api/models/SomeModel.js
+{
+  attributes: {...},
+  primaryKey: 'id',
+  meta: {
+    fetchRecordsOnUpdate: true
+  }
+}
+```
 
 
 
