@@ -127,7 +127,7 @@ If the association uses a junction, then any formerly-ascribed junction records 
 
 Add new members to the specified collection of one or more parent records.
 
-```
+```javascript
 // For users 3 and 4, add pets 99 and 98 to the "pets" collection.
 // > (if either user record already has one of those pets in its "pets",
 // > then we just silently skip over it)
@@ -143,7 +143,7 @@ User.addToCollection([3,4], 'pets')
 
 Remove members from the the specified collection of one or more parent records.
 
-```
+```javascript
 // For users 3 and 4, remove pets 99 and 98 from their "pets" collection.
 // > (if either user record does not actually have one of those pets in its "pets",
 // > then we just silently skip over it)
