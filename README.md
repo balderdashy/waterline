@@ -14,6 +14,9 @@ Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate
 
 For detailed documentation, see [the Waterline documentation](https://github.com/balderdashy/waterline-docs).
 
+
+> Looking for the version of Waterline used in Sails v0.12?  See https://github.com/balderdashy/waterline/tree/0.11.x.
+
 ## Installation
 Install from NPM.
 
@@ -69,17 +72,96 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 As of Waterline 0.13 (Sails v1.0), these keys allow end users to modify the behaviour of Waterline methods. You can pass them as the `meta` query key, or via the `.meta()` query modifier method:
 
 ```javascript
-Model.find()
+SomeModel.find()
 .meta({
   skipAllLifecycleCallbacks: true
 })
 .exec();
 ```
 
+These keys are not set in stone, and may still change prior to release. (They're posted here now as a way to gather feedback and suggestions.)
+
+
+
 Meta Key                              | Default         | Purpose
 :------------------------------------ | :---------------| :------------------------------
 skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
-dontReturnRecordsOnUpdate             | false           | For adapters: set to `true` to tell the database adapter to send back a special report dictionary (the raw result from the Waterline driver) INSTEAD of the default behavior of sending back an array of all updated records.  Useful for performance reasons when working with updates that affect large numbers of records.
+cascadeOnDestroy                      | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection(..., ..., [])`) on plural ("collection") associations when deleting a record.  _Note: In order to do this when the `fetchRecordsOnDestroy` meta key IS NOT enabled (the default configuration), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._
+fetchRecordsOnUpdate                  | false           | For adapters: set to `true` to tell the database adapter to send back all records that were updated.  Otherwise, the second argument to the `.update()` callback is the raw output from the underlying driver  Warning: Enabling this key may cause performance issues for update queries that affect large numbers of records.
+fetchRecordsOnDestroy                 | false           | For adapters: set to `true` to tell the database adapter to send back all records that were destroyed.  Otherwise, the second argument to the `.destroy()` callback is the raw output from the underlying driver.  Warning: Enabling this key may cause performance issues for destroy queries that affect large numbers of records.
+
+#### Related model settings
+
+To provide per-model/orm-wide defaults for the cascadeOnDestroy or fetchRecordsOn* meta keys, use the model setting with the same name:
+
+```javascript
+{
+  attributes: {...},
+  primaryKey: 'id',
+  cascadeOnDestroy: true,
+  fetchRecordsOnUpdate: true
+}
+```
+
+> Not every meta key will necessarily have a model setting with the same name-- in fact, to minimize peak configuration complexity, most will probably not.
+
+
+## New methods
+
+Rough draft of documentation for a few new methods available in Waterline v0.13.
+
+
+#### replaceCollection()
+
+Replace the specified collection of one or more parent records with a new set of members.
+
+```javascript
+// For users 3 and 4, change their "pets" collection to contain ONLY pets 99 and 98.
+User.replaceCollection([3,4], 'pets')
+.members([99,98])
+.exec(function (err) {
+  // ...
+});
+```
+
+Under the covers, what this method _actually does_ varies depending on whether the association passed in uses a junction or not.
+
+> We know a plural association must use a junction if either (A) it is one-way ("via-less") or (B) it reciprocates another _plural_ association.
+
+If the association uses a junction, then any formerly-ascribed junction records are deleted, and junction records are created for the new members.  Otherwise, if the association _doesn't_ use a junction, then the value of the reciprocal association in former child records is set to `null`, and the same value in newly-ascribed child records is set to the parent record's ID.  (Note that, with this second category of association, there can only ever be _one_ parent record.  Attempting to pass in multiple parent records will result in an error.)
+
+
+#### addToCollection()
+
+Add new members to the specified collection of one or more parent records.
+
+```javascript
+// For users 3 and 4, add pets 99 and 98 to the "pets" collection.
+// > (if either user record already has one of those pets in its "pets",
+// > then we just silently skip over it)
+User.addToCollection([3,4], 'pets')
+.members([99,98])
+.exec(function(err){
+  // ...
+});
+```
+
+
+#### removeFromCollection()
+
+Remove members from the the specified collection of one or more parent records.
+
+```javascript
+// For users 3 and 4, remove pets 99 and 98 from their "pets" collection.
+// > (if either user record does not actually have one of those pets in its "pets",
+// > then we just silently skip over it)
+User.removeFromCollection([3,4], 'pets')
+.members([99,98])
+.exec(function(err) {
+  // ...
+});
+```
+
 
 
 
