@@ -75,7 +75,7 @@ var q = User.findOne({
   where: {
     occupation: 'doctor'
   },
-  sort: 'yearsInIndustry DeSc'
+  sort: 'yearsInIndustry desc'
 });
 ```
 
@@ -110,7 +110,7 @@ This is what's known as a "Stage 2 query":
 
     // The expanded "omit" clause
     // (always empty array, unless we provided an `omit`.  If `omit` is anything other than [], then `select` must be `['*']` -- and vice versa)
-    omit: [],
+    omit: ['occupation'],
 
     // The expanded "where" clause
     where: {
@@ -123,7 +123,7 @@ This is what's known as a "Stage 2 query":
     limit: 9007199254740991,
 
     // The "skip" clause (if there is one, otherwise defaults to 0)
-    skip: 0,
+    skip: 90,
 
     // The expanded "sort" clause
     sort: [
@@ -177,7 +177,7 @@ This is what's known as a "Stage 2 query":
 Next, Waterline performs a couple of additional transformations:
 
 + replaces `method: 'findOne'` with `method: 'find'` (and updates `limit` accordingly)
-+ replaces attribute names with column names
++ replaces model attribute names with physical database attribute/column names
 + replaces the model identity with the table name
 + removed `populates` (or potentially replaced it with `joins`)
   + this varies-- keep in mind that sometimes _multiple physical protostatements will be built up and sent to different adapters_-- or even the same one.
@@ -186,21 +186,20 @@ Next, Waterline performs a couple of additional transformations:
 ```js
 {
   method: 'find', //<< note that "findOne" was replaced with "find"
-  using: 'users', //<< the table name
+  using: 'users', //<< the table name, it can be different than the model name, as it can be set in the model definition
   criteria: {
     select: [
       'id',
-      'full_name',
+      'full_name', // << in this case full_name is the native database attribute/column name
       'age',
-      'created_at',
-      'updated_at'
+      'created_at'
     ],
     where: {
       and: [
         { occupation_key: 'doctor' }
       ]
     },
-    limit: 2,//<< note that this was set to `2` automatically
+    limit: 1, //<< note that this was set to `1` automatically, because of being originally a "findOne"
     skip: 90,
     sort: [
       { full_name: 'ASC' }
@@ -208,6 +207,7 @@ Next, Waterline performs a couple of additional transformations:
   }
 }
 ```
+$$$ I replaced limit: 2 with limit: 1, I didn't check the code to see if 2 is meant to be 1 for some strange reason?!
 
 This physical protostatement is what gets sent to the database adapter.
 
@@ -228,15 +228,14 @@ the method to `join`, and provide additional info:
       'id',
       'full_name',
       'age',
-      'created_at',
-      'updated_at'
+      'created_at'
     ],
     where: {
       and: [
         { occupation_key: 'doctor' }
       ]
     },
-    limit: 2,//<< note that this was STILL set to `2` automatically
+    limit: 1,//<< note that this was STILL set to `1` automatically
     skip: 90,
     sort: [
       { full_name: 'ASC' }
@@ -249,7 +248,7 @@ the method to `join`, and provide additional info:
   },
 }
 ```
-
+$$$ I don't know how to mess with the joins here and how to document it
 
 
 ### Stage 4 query
@@ -265,15 +264,14 @@ In the database adapter, the physical protostatement is converted into an actual
     'id',
     'full_name',
     'age',
-    'created_at',
-    'updated_at'
+    'created_at'
   ],
   where: {
     and: [
       { occupation_key: 'doctor' }
     ]
   },
-  limit: 2,
+  limit: 1,
   skip: 90,
   sort: [
     { full_name: 'ASC' }
@@ -292,9 +290,8 @@ This is the same kind of statement that you can send directly to the lower-level
 In the database driver, the statement is compiled into a native query:
 
 ```js
-SELECT id, full_name, age, created_at, updated_at FROM users WHERE occupation_key="doctor" LIMIT 2 SKIP 90 SORT full_name ASC;
+SELECT id, full_name, age, created_at FROM users WHERE occupation_key="doctor" LIMIT 1 SKIP 90 SORT full_name ASC;
 ```
-
 
 
 
