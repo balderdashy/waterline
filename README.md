@@ -14,6 +14,9 @@ Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate
 
 For detailed documentation, see [the Waterline documentation](https://github.com/balderdashy/waterline-docs).
 
+
+> Looking for the version of Waterline used in Sails v0.12?  See https://github.com/balderdashy/waterline/tree/0.11.x.
+
 ## Installation
 Install from NPM.
 
@@ -83,7 +86,7 @@ These keys are not set in stone, and may still change prior to release. (They're
 Meta Key                              | Default         | Purpose
 :------------------------------------ | :---------------| :------------------------------
 skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
-cascadeOnDestroy                      | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection(..., ..., [])`) on plural ("collection") associations when deleting a record.  _Note: In order to do this when the `fetchRecordsOnDestroy` meta key IS NOT enabled (the default configuration), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._  
+cascadeOnDestroy                      | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection(..., ..., [])`) on plural ("collection") associations when deleting a record.  _Note: In order to do this when the `fetchRecordsOnDestroy` meta key IS NOT enabled (the default configuration), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._
 fetchRecordsOnUpdate                  | false           | For adapters: set to `true` to tell the database adapter to send back all records that were updated.  Otherwise, the second argument to the `.update()` callback is the raw output from the underlying driver  Warning: Enabling this key may cause performance issues for update queries that affect large numbers of records.
 fetchRecordsOnDestroy                 | false           | For adapters: set to `true` to tell the database adapter to send back all records that were destroyed.  Otherwise, the second argument to the `.destroy()` callback is the raw output from the underlying driver.  Warning: Enabling this key may cause performance issues for destroy queries that affect large numbers of records.
 
@@ -121,7 +124,7 @@ User.replaceCollection([3,4], 'pets')
 });
 ```
 
-Under the covers, what this method _actually does_ varies depending on whether the association passed in uses a junction or not. 
+Under the covers, what this method _actually does_ varies depending on whether the association passed in uses a junction or not.
 
 > We know a plural association must use a junction if either (A) it is one-way ("via-less") or (B) it reciprocates another _plural_ association.
 
