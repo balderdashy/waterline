@@ -605,7 +605,6 @@ There are three different kinds of two-way associations, and two different kinds
 
 
 
-
 ## Special cases / FAQ
 
 ##### _What is an "exclusive" association?_
@@ -629,3 +628,8 @@ A **reflexive** association is just any association where the associated model i
 That's an error (i.e. in waterline-schema)*.
 
 
+
+
+## Required vs allowNull vs. defaultsTo vs. autoCreatedAt vs. autoUpdatedAt
+
+TBD.  See https://gist.github.com/mikermcneil/dfc6b033ea8a75cb467e8d50606c81cc.

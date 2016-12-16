@@ -65,7 +65,8 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 ```
 
 ## Meta Keys
-These keys allow end users to modify the behaviour of Waterline methods. You can pass them into the `meta` piece of query.
+
+As of Waterline 0.13 (Sails v1.0), these keys allow end users to modify the behaviour of Waterline methods. You can pass them as the `meta` query key, or via the `.meta()` query modifier method:
 
 ```javascript
 Model.find()
@@ -75,9 +76,10 @@ Model.find()
 .exec();
 ```
 
-Meta Key                              | Purpose
-:------------------------------------ | :------------------------------
-skipAllLifecycleCallbacks             | Prevents lifecycle callbacks from running in the query.
+Meta Key                              | Default         | Purpose
+:------------------------------------ | :---------------| :------------------------------
+skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
+dontReturnRecordsOnUpdate             | false           | For adapters: set to `true` to tell the database adapter to send back a special report dictionary (the raw result from the Waterline driver) INSTEAD of the default behavior of sending back an array of all updated records.  Useful for performance reasons when working with updates that affect large numbers of records.
 
 
 
