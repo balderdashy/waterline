@@ -632,4 +632,8 @@ That's an error (i.e. in waterline-schema)*.
 
 ## Required vs allowNull vs. defaultsTo vs. autoCreatedAt vs. autoUpdatedAt
 
-TBD.  See https://gist.github.com/mikermcneil/dfc6b033ea8a75cb467e8d50606c81cc.
+Though relatively simple from the perspective of userland, this gets a bit complicated internally in Waterline.
+
+For details, see https://docs.google.com/spreadsheets/d/1whV739iW6O9SxRZLCIe2lpvuAUqm-ie7j7tn_Pjir3s/edit#gid=1814738146
+
+
