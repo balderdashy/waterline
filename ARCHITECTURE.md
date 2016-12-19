@@ -605,6 +605,36 @@ There are three different kinds of two-way associations, and two different kinds
 
 
 
+
+
+## Adapters & auto-migrations
+
+Auto-migrations are now handled outside of Waterline core.
+
+Notes for adapter maintainers who implement `define` et al:
+
+
+
+##### Reserved column types
+
+When interpeting `autoMigrations.columnType`, there are a few special reserved column types to be aware of, that should always be handled:
+  + `_numberkey` _(e.g. you might understand this as "INTEGER")_
+  + `_stringkey` _(e.g. you might understand this as "VARCHAR")_
+  + _string  _(e.g. you might understand this as "TEXT")_
+  + _number  _(e.g. you might understand this as "DOUBLE")_
+  + _boolean _(e.g. you might understand this as "TINYINT")
+  + _json  _(e.g. you might understand this as "TEXT" in MySQL, or "JSON" in PostgreSQL)
+  + _ref  _(non-JSON-structured data that may or may not be serializable in adapter-specific ways; e.g. you might understand this as "TEXT".)_
+
+These (^^) are the different core Waterline logical data types, but prefixed by underscore (e.g. `_string`) AS WELL AS two special reserved column types (`_numberkey` and `_stringkey`).  These two additional column types are used for primary key and foreign key (singular association) values.  Note that foreign key values could also be null.
+
+##### Unrecognized column types
+
+If `autoMigrations.columnType` for a given attribute is unrecognized for your database, then fail with an error.
+
+
+
+
 ## Special cases / FAQ
 
 ##### _What is an "exclusive" association?_
@@ -635,5 +665,14 @@ That's an error (i.e. in waterline-schema)*.
 Though relatively simple from the perspective of userland, this gets a bit complicated internally in Waterline.
 
 For details, see https://docs.google.com/spreadsheets/d/1whV739iW6O9SxRZLCIe2lpvuAUqm-ie7j7tn_Pjir3s/edit#gid=1814738146
+
+
+
+
+
+
+
+
+
 
 
