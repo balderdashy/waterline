@@ -86,24 +86,26 @@ These keys are not set in stone, and may still change prior to release. (They're
 Meta Key                              | Default         | Purpose
 :------------------------------------ | :---------------| :------------------------------
 skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
-cascadeOnDestroy                      | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection(..., ..., [])`) on plural ("collection") associations when deleting a record.  _Note: In order to do this when the `fetchRecordsOnDestroy` meta key IS NOT enabled (the default configuration), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._
-fetchRecordsOnUpdate                  | false           | For adapters: set to `true` to tell the database adapter to send back all records that were updated.  Otherwise, the second argument to the `.update()` callback is `undefined`.  Warning: Enabling this key may cause performance issues for update queries that affect large numbers of records.
-fetchRecordsOnDestroy                 | false           | For adapters: set to `true` to tell the database adapter to send back all records that were destroyed.  Otherwise, the second argument to the `.destroy()` callback is `undefined`.  Warning: Enabling this key may cause performance issues for destroy queries that affect large numbers of records.
+cascade                               | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection(..., ..., [])`) on plural ("collection") associations when deleting a record.  _Note: In order to do this when the `fetch` meta key IS NOT enabled (the default configuration), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._
+fetch                                 | false           | For adapters: When performing `.update()` or `.create()`, set this to `true` to tell the database adapter to send back all records that were updated/destroyed.  Otherwise, the second argument to the `.exec()` callback is `undefined`.  Warning: Enabling this key may cause performance issues for update/destroy queries that affect large numbers of records.
+
 
 #### Related model settings
 
-To provide per-model/orm-wide defaults for the cascadeOnDestroy or fetchRecordsOn* meta keys, use the model setting with the same name:
+To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, there are a few different model settings you might take advantage of:
 
 ```javascript
 {
   attributes: {...},
   primaryKey: 'id',
+
   cascadeOnDestroy: true,
-  fetchRecordsOnUpdate: true
+  fetchRecordsOnUpdate: true,
+  fetchRecordsOnDestroy: true,
 }
 ```
 
-> Not every meta key will necessarily have a model setting with the same name-- in fact, to minimize peak configuration complexity, most will probably not.
+> Not every meta key will necessarily have a model setting that controls it-- in fact, to minimize peak configuration complexity, most will probably not.
 
 
 ## New methods
