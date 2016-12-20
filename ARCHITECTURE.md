@@ -620,11 +620,11 @@ Notes for adapter maintainers who implement `define` et al:
 When interpeting `autoMigrations.columnType`, there are a few special reserved column types to be aware of, that should always be handled:
   + `_numberkey` _(e.g. you might understand this as "INTEGER")_
   + `_stringkey` _(e.g. you might understand this as "VARCHAR")_
-  + _string  _(e.g. you might understand this as "TEXT")_
-  + _number  _(e.g. you might understand this as "DOUBLE")_
-  + _boolean _(e.g. you might understand this as "TINYINT")
-  + _json  _(e.g. you might understand this as "TEXT" in MySQL, or "JSON" in PostgreSQL)
-  + _ref  _(non-JSON-structured data that may or may not be serializable in adapter-specific ways; e.g. you might understand this as "TEXT".)_
+  + `_string`  _(e.g. you might understand this as "TEXT")_
+  + `_number`  _(e.g. you might understand this as "DOUBLE")_
+  + `_boolean` _(e.g. you might understand this as "TINYINT")_
+  + `_json`  _(e.g. you might understand this as "TEXT" in MySQL, or "JSON" in PostgreSQL)_
+  + `_ref` _(non-JSON-structured data that may or may not be serializable in adapter-specific ways; e.g. you might understand this as "TEXT".)_
 
 These (^^) are the different core Waterline logical data types, but prefixed by underscore (e.g. `_string`) AS WELL AS two special reserved column types (`_numberkey` and `_stringkey`).  These two additional column types are used for primary key and foreign key (singular association) values.  Note that foreign key values could also be null.
 
