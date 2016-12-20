@@ -619,7 +619,9 @@ Notes for adapter maintainers who implement `define` et al:
 
 When interpeting `autoMigrations.columnType`, there are a few special reserved column types to be aware of, that should always be handled:
   + `_numberkey` _(e.g. you might understand this as "INTEGER")_
-  + `_stringkey` _(e.g. you might understand this as "VARCHAR")_
+  + `_stringkey` _(e.g. you might understand this as "VARCHAR(255)")_
+  + `_numbertimestamp` _(e.g. you might understand this as "BIGINTEGER" -- this is for JS timestamps (epoch ms))_
+  + `_stringtimestamp` _(e.g. you might understand this as "VARCHAR(14)")_
   + _string  _(e.g. you might understand this as "TEXT")_
   + _number  _(e.g. you might understand this as "DOUBLE")_
   + _boolean _(e.g. you might understand this as "TINYINT")
