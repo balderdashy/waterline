@@ -622,11 +622,11 @@ When interpeting `autoMigrations.columnType`, there are a few special reserved c
   + `_stringkey` _(e.g. you might understand this as "VARCHAR(255)")_
   + `_numbertimestamp` _(e.g. you might understand this as "BIGINTEGER" -- this is for JS timestamps (epoch ms))_
   + `_stringtimestamp` _(e.g. you might understand this as "VARCHAR(14)")_
-  + _string  _(e.g. you might understand this as "TEXT")_
-  + _number  _(e.g. you might understand this as "DOUBLE")_
-  + _boolean _(e.g. you might understand this as "TINYINT")
-  + _json  _(e.g. you might understand this as "TEXT" in MySQL, or "JSON" in PostgreSQL)
-  + _ref  _(non-JSON-structured data that may or may not be serializable in adapter-specific ways; e.g. you might understand this as "TEXT".)_
+  + `_string`  _(e.g. you might understand this as "TEXT")_
+  + `_number`  _(e.g. you might understand this as "DOUBLE")_
+  + `_boolean` _(e.g. you might understand this as "TINYINT")_
+  + `_json`  _(e.g. you might understand this as "TEXT" in MySQL, or "JSON" in PostgreSQL)_
+  + `_ref` _(non-JSON-structured data that may or may not be serializable in adapter-specific ways; e.g. you might understand this as "TEXT".)_
 
 These (^^) are the different core Waterline logical data types, but prefixed by underscore (e.g. `_string`) AS WELL AS two special reserved column types (`_numberkey` and `_stringkey`).  These two additional column types are used for primary key and foreign key (singular association) values.  Note that foreign key values could also be null.
 
