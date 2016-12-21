@@ -87,7 +87,7 @@ describe('Collection Query ::', function() {
     });
 
     describe('.paginate()', function() {
-      it('should skip to 0 and limit to 10 by default', function(done) {
+      it('should skip to 0 and limit to 30 by default', function(done) {
         query.find()
         .paginate()
         .exec(function(err, results) {
@@ -97,7 +97,7 @@ describe('Collection Query ::', function() {
 
           assert(_.isArray(results));
           assert.equal(results[0].skip, 0);
-          assert.equal(results[0].limit, 10);
+          assert.equal(results[0].limit, 30);
 
           return done();
         });
@@ -111,7 +111,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 0);
+          assert.equal(results[0].skip, 30);
           return done();
         });
       });
@@ -124,12 +124,12 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 0);
+          assert.equal(results[0].skip, 30);
           return done();
         });
       });
 
-      it('should set skip to 10', function(done) {
+      it('should set skip to 30', function(done) {
         query.find()
         .paginate({page: 2})
         .exec(function(err, results) {
@@ -137,7 +137,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 10);
+          assert.equal(results[0].skip, 60);
           return done();
         });
       });
@@ -155,7 +155,7 @@ describe('Collection Query ::', function() {
         });
       });
 
-      it('should set skip to 10 and limit to 10', function(done) {
+      it('should set skip to 20 and limit to 10', function(done) {
         query.find()
         .paginate({page: 2, limit: 10})
         .exec(function(err, results) {
@@ -163,13 +163,13 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 10);
+          assert.equal(results[0].skip, 20);
           assert.equal(results[0].limit, 10);
           return done();
         });
       });
 
-      it('should set skip to 20 and limit to 10', function(done) {
+      it('should set skip to 30 and limit to 10', function(done) {
         query.find()
         .paginate({page: 3, limit: 10})
         .exec(function(err, results) {
@@ -177,7 +177,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 20);
+          assert.equal(results[0].skip, 30);
           assert.equal(results[0].limit, 10);
           return done();
         });
