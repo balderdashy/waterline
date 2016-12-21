@@ -104,7 +104,7 @@ describe('Collection Query ::', function() {
             assert(values[0].name);
             assert(!values[0].login);
             return done();
-          });
+          }, { fetch: true });
         });
       });
     });

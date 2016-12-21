@@ -60,7 +60,7 @@ describe('Collection Query ::', function() {
 
           assert(status[0].updatedAt);
           return done();
-        });
+        }, { fetch: true });
       });
 
       it('should set values', function(done) {
@@ -71,7 +71,7 @@ describe('Collection Query ::', function() {
 
           assert.equal(status[0].name, 'foo');
           return done();
-        });
+        }, { fetch: true });
       });
 
       it('should strip values that don\'t belong to the schema', function(done) {
@@ -82,13 +82,16 @@ describe('Collection Query ::', function() {
 
           assert(!values.foo);
           return done();
-        });
+        }, { fetch: true });
       });
 
       it('should allow a query to be built using deferreds', function(done) {
         query.update()
         .where({})
         .set({ name: 'foo' })
+        .meta({
+          fetch: true
+        })
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -98,7 +101,6 @@ describe('Collection Query ::', function() {
           return done();
         });
       });
-
     });
 
     describe('casting values', function() {
@@ -152,7 +154,7 @@ describe('Collection Query ::', function() {
           assert.equal(values[0].name, 'foo');
           assert.equal(values[0].age, 27);
           return done();
-        });
+        }, { fetch: true });
       });
     });
 
@@ -206,7 +208,7 @@ describe('Collection Query ::', function() {
 
           assert.equal(values[0].where.pkColumn, 1);
           return done();
-        });
+        }, { fetch: true });
       });
     });
   });
