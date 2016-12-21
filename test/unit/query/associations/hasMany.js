@@ -82,7 +82,7 @@ describe('Collection Query ::', function() {
         assert.equal(generatedQuery.joins[0].parentKey, 'uuid');
         assert.equal(generatedQuery.joins[0].child, 'car');
         assert.equal(generatedQuery.joins[0].childKey, 'driver');
-        assert(_.isArray(generatedQuery.joins[0].select));
+        assert(_.isArray(generatedQuery.joins[0].criteria.select));
         assert.equal(generatedQuery.joins[0].removeParentKey, false);
 
         return done();

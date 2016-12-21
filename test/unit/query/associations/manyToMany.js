@@ -91,7 +91,7 @@ describe('Collection Query ::', function() {
         assert.equal(generatedQuery.joins[1].parentKey, 'car_drivers');
         assert.equal(generatedQuery.joins[1].child, 'car');
         assert.equal(generatedQuery.joins[1].childKey, 'id');
-        assert(_.isArray(generatedQuery.joins[1].select));
+        assert(_.isArray(generatedQuery.joins[1].criteria.select));
         assert.equal(generatedQuery.joins[1].removeParentKey, false);
 
         return done();
