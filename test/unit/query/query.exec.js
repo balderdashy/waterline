@@ -57,7 +57,7 @@ describe('Collection Query ::', function() {
         }
 
         // callback usage
-        query.find(function(err, results1) {
+        query.find({}, {}, function(err, results1) {
           if (err) {
             return done(err);
           }
