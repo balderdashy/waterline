@@ -136,8 +136,7 @@ describe('Collection Query ::', function() {
       });
 
       it('should allow a query to be built using deferreds', function(done) {
-        query.createEach()
-        .set([{ name: 'bob' }, { name: 'foo'}])
+        query.createEach([{ name: 'bob' }, { name: 'foo'}])
         .exec(function(err, result) {
           if (err) {
             return done(err);
