@@ -98,19 +98,23 @@ describe('Collection Query ::', function() {
         if (err) {
           return done(err);
         }
-        User = orm.collections.user;
+
         Car = orm.collections.car;
-        Ticket = orm.collections.ticket;
+
         return done();
       });
     });
 
 
     it('should populate all related collections', function(done) {
-      Car.find().populate(['driver','tickets']).exec(function(err, car) {
+      Car.find()
+      .populate('driver')
+      .populate('tickets')
+      .exec(function(err, car) {
         if (err) {
           return done(err);
         }
+
         assert(car[0].driver);
         assert(car[0].driver.name);
         assert(car[0].tickets);

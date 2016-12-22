@@ -89,7 +89,7 @@ describe('Collection Query ::', function() {
     describe('.paginate()', function() {
       it('should skip to 0 and limit to 30 by default', function(done) {
         query.find()
-        .paginate()
+        .paginate(0)
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -105,7 +105,7 @@ describe('Collection Query ::', function() {
 
       it('should set skip to 0 from page 0', function(done) {
         query.find()
-        .paginate({page: 1})
+        .paginate(1)
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -118,7 +118,7 @@ describe('Collection Query ::', function() {
 
       it('should set skip to 0 from page 1', function(done) {
         query.find()
-        .paginate({page: 1})
+        .paginate(1)
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -131,7 +131,7 @@ describe('Collection Query ::', function() {
 
       it('should set skip to 30', function(done) {
         query.find()
-        .paginate({page: 2})
+        .paginate(2)
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -144,7 +144,7 @@ describe('Collection Query ::', function() {
 
       it('should set limit to 1', function(done) {
         query.find()
-        .paginate({limit: 1})
+        .paginate(1, 1)
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -157,7 +157,7 @@ describe('Collection Query ::', function() {
 
       it('should set skip to 20 and limit to 10', function(done) {
         query.find()
-        .paginate({page: 2, limit: 10})
+        .paginate(2, 10)
         .exec(function(err, results) {
           if (err) {
             return done(err);
@@ -171,7 +171,7 @@ describe('Collection Query ::', function() {
 
       it('should set skip to 30 and limit to 10', function(done) {
         query.find()
-        .paginate({page: 3, limit: 10})
+        .paginate(3, 10)
         .exec(function(err, results) {
           if (err) {
             return done(err);

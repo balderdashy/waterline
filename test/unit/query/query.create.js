@@ -116,8 +116,7 @@ describe('Collection Query ::', function() {
       });
 
       it('should allow a query to be built using deferreds', function(done) {
-        query.create()
-        .set({ name: 'bob' })
+        query.create({ name: 'bob' })
         .exec(function(err, result) {
           if (err) {
             return done(err);
