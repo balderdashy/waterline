@@ -3,7 +3,7 @@ var _ = require('@sailshq/lodash');
 var Waterline = require('../../../lib/waterline');
 
 describe('Collection Query ::', function() {
-  describe.skip('.findOrCreate()', function() {
+  describe('.findOrCreate()', function() {
     describe('with transformed values', function() {
       var modelDef = {
         identity: 'user',
