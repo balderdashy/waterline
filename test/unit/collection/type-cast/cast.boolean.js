@@ -2,9 +2,9 @@ var assert = require('assert');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
-describe.skip('Collection Type Casting ::', function() {
+describe('Collection Type Casting ::', function() {
   describe('with Boolean type ::', function() {
-    var person;
+    var Person;
 
     before(function(done) {
       var waterline = new Waterline();
@@ -34,40 +34,46 @@ describe.skip('Collection Type Casting ::', function() {
         if (err) {
           return done(err);
         }
-        person = orm.collections.person;
+        Person = orm.collections.person;
         return done();
       });
     });
 
+
+    it('should act as no-op when given a boolean', function() {
+      assert.equal(Person.validate('activated', true), true);
+      assert.equal(Person.validate('activated', false), false);
+    });
+
     it('should cast string "true" to a boolean', function() {
-      var values = { activated: 'true' };
-      person._cast(values);
-      assert.equal(values.activated, true);
+      assert.equal(Person.validate('activated', 'true'), true);
     });
 
     it('should cast string "false" to a boolean', function() {
-      var values = { activated: 'false' };
-      person._cast(values);
-      assert.equal(values.activated, false);
+      // FUTURE: this may change in a future major version release of RTTC
+      // (this test is here to help catch that when/if it happens)
+      assert.equal(Person.validate('activated', 'false'), false);
     });
 
     it('should cast number 0 to a boolean', function() {
-      var values = { activated: 0 };
-      person._cast(values);
-      assert.equal(values.activated, false);
+      // FUTURE: this may change in a future major version release of RTTC
+      // (this test is here to help catch that when/if it happens)
+      assert.equal(Person.validate('activated', 0), false);
     });
 
     it('should cast number 1 to a boolean', function() {
-      var values = { activated: 1 };
-      person._cast(values);
-      assert.equal(values.activated, true);
+      assert.equal(Person.validate('activated', 1), true);
     });
 
     it('should throw when a value can\'t be cast', function() {
-      var values = { activated: 'not yet' };
-      assert.throws(function() {
-        person._cast(values);
-      });
+      try {
+        Person.validate('activated', 'not yet');
+      } catch (e) {
+        switch (e.code) {
+          case 'E_VALIDATION': return;
+          default: throw e;
+        }
+      }
     });
 
   });

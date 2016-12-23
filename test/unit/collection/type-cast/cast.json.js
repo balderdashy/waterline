@@ -3,8 +3,9 @@ var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
 describe.skip('Collection Type Casting ::', function() {
+
   describe('with JSON type ::', function() {
-    var person;
+    var Person;
 
     before(function(done) {
       var waterline = new Waterline();
@@ -35,18 +36,16 @@ describe.skip('Collection Type Casting ::', function() {
           return done(err);
         }
 
-        person = orm.collections.person;
+        Person = orm.collections.person;
         return done();
       });
     });
 
     it('should ensure values are JSON stringified', function() {
-      var values = {
-        organization: "{ name: 'Foo Bar', location: [-31.0123, 31.0123] }"
-      };
-
-      person._cast(values);
-      assert(_.isString(values.organization));
+      var ORIGINAL = '{ name: \'Foo Bar\', location: [-31.0123, 31.0123] }';
+      var result = Person.validate('organization', ORIGINAL);
+      assert(_.isString(result));
+      assert.equal(ORIGINAL, result);
     });
 
   });
