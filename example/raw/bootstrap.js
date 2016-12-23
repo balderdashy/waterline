@@ -12,7 +12,7 @@ var Waterline = require('../../lib/waterline'); //<< replace that with `require(
  * models, datastores, and adapters.
  *
  * > This is just an example of a little utility
- * > that makes this a little easier to work with,
+ * > that makes Waterline easier to work with,
  * > for convenience.
  *
  * @optional {Dictionary} adapters
