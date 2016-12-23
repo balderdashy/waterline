@@ -57,7 +57,7 @@ describe('Collection Transformations ::', function() {
       before(function() {
         var collections = [];
 
-        collections.push(Waterline.Collection.extend({
+        collections.push(Waterline.Model.extend({
           identity: 'customer',
           tableName: 'customer',
           primaryKey: 'uuid',
@@ -68,7 +68,7 @@ describe('Collection Transformations ::', function() {
           }
         }));
 
-        collections.push(Waterline.Collection.extend({
+        collections.push(Waterline.Model.extend({
           identity: 'foo',
           tableName: 'foo',
           primaryKey: 'id',

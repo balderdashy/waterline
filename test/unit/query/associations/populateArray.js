@@ -9,7 +9,7 @@ describe('Collection Query ::', function() {
       var waterline = new Waterline();
       var collections = {};
 
-      collections.user = Waterline.Collection.extend({
+      collections.user = Waterline.Model.extend({
         identity: 'user',
         connection: 'foo',
         primaryKey: 'id',
@@ -27,7 +27,7 @@ describe('Collection Query ::', function() {
         }
       });
 
-      collections.ticket = Waterline.Collection.extend({
+      collections.ticket = Waterline.Model.extend({
         identity: 'ticket',
         connection: 'foo',
         primaryKey: 'id',
@@ -45,7 +45,7 @@ describe('Collection Query ::', function() {
         }
       });
 
-      collections.car = Waterline.Collection.extend({
+      collections.car = Waterline.Model.extend({
         identity: 'car',
         connection: 'foo',
         primaryKey: 'id',

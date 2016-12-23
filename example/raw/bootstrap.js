@@ -40,11 +40,11 @@ module.exports = function bootstrap (options, done) {
   });
 
 
-  // Assign an `identity` and call `Waterline.Collection.extend()`
+  // Assign an `identity` and call `Waterline.Model.extend()`
   // on each of our model definitions.
   var extendedModelDefs = _.reduce(models, function (memo, def, key) {
     def.identity = def.identity || key;
-    memo.push(Waterline.Collection.extend(def));
+    memo.push(Waterline.Model.extend(def));
     return memo;
   }, []);
 

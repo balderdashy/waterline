@@ -7,7 +7,7 @@ describe('Before Create Lifecycle Callback ::', function() {
 
     before(function(done) {
       var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
+      var Model = Waterline.Model.extend({
         identity: 'user',
         connection: 'foo',
         primaryKey: 'id',

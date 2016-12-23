@@ -98,7 +98,7 @@ describe.skip('Alter Mode Recovery with schemaless data', function () {
     var adapters = {fake: adapter};
 
     // Build the collections and find the record
-    var PersonCollection = Waterline.Collection.extend(PersonModel);
+    var PersonCollection = Waterline.Model.extend(PersonModel);
     waterline.registerModel(PersonCollection);
     waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
       if (err) return done(err);

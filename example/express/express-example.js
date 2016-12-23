@@ -60,7 +60,7 @@ var config = {
 // WATERLINE MODELS
 //////////////////////////////////////////////////////////////////
 
-var User = Waterline.Collection.extend({
+var User = Waterline.Model.extend({
 
   identity: 'user',
   connection: 'myLocalDisk',
@@ -71,7 +71,7 @@ var User = Waterline.Collection.extend({
   }
 });
 
-var Pet = Waterline.Collection.extend({
+var Pet = Waterline.Model.extend({
 
   identity: 'pet',
   connection: 'myLocalMySql',
@@ -154,6 +154,6 @@ orm.initialize(config, function(err, models) {
 
   // Start Server
   app.listen(3000);
-  
+
   console.log("To see saved users, visit http://localhost:3000/users");
 });

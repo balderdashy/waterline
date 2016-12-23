@@ -112,7 +112,7 @@ describe.skip('Alter Mode Recovery with buffer attributes', function () {
 
 
   it('should recover data', function (done) {
-    var PersonCollection = Waterline.Collection.extend(PersonModel);
+    var PersonCollection = Waterline.Model.extend(PersonModel);
     waterline.registerModel(PersonCollection);
     waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
       if (err) {

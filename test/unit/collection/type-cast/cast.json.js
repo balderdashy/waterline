@@ -9,7 +9,7 @@ describe.skip('Collection Type Casting ::', function() {
 
     before(function(done) {
       var waterline = new Waterline();
-      var Person = Waterline.Collection.extend({
+      var Person = Waterline.Model.extend({
         identity: 'person',
         datastore: 'foo',
         primaryKey: 'id',

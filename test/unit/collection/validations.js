@@ -10,7 +10,7 @@ describe.skip('Collection Validator ::', function() {
     before(function(done) {
       var waterline = new Waterline();
 
-      var Person = Waterline.Collection.extend({
+      var Person = Waterline.Model.extend({
         identity: 'person',
         datastore: 'foo',
         primaryKey: 'id',

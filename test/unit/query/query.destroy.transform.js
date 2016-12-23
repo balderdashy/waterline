@@ -8,7 +8,7 @@ describe('Collection Query ::', function() {
 
       before(function() {
         // Extend for testing purposes
-        Model = Waterline.Collection.extend({
+        Model = Waterline.Model.extend({
           identity: 'user',
           connection: 'foo',
           primaryKey: 'id',
