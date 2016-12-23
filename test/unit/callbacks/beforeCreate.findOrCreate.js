@@ -28,7 +28,7 @@ describe('.beforeCreate()', function() {
             }
           });
 
-          waterline.loadCollection(Model);
+          waterline.registerModel(Model);
 
           // Fixture Adapter Def
           var adapterDef = {
@@ -90,7 +90,7 @@ describe('.beforeCreate()', function() {
             }
           });
 
-          waterline.loadCollection(Model);
+          waterline.registerModel(Model);
 
           // Fixture Adapter Def
           var adapterDef = {

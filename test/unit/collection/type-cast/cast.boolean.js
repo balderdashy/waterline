@@ -10,7 +10,7 @@ describe('Collection Type Casting ::', function() {
     before(function(done) {
       orm = new Waterline();
 
-      orm.loadCollection(Waterline.Collection.extend({
+      orm.registerModel(Waterline.Collection.extend({
         identity: 'person',
         datastore: 'foo',
         primaryKey: 'id',

@@ -23,7 +23,7 @@ describe('Collection Query ::', function() {
 
       it('should transform criteria before sending to adapter', function(done) {
         var waterline = new Waterline();
-        waterline.loadCollection(Waterline.Collection.extend(_.merge({}, modelDef)));
+        waterline.registerModel(Waterline.Collection.extend(_.merge({}, modelDef)));
 
         // Fixture Adapter Def
         var adapterDef = {
@@ -49,7 +49,7 @@ describe('Collection Query ::', function() {
 
       it('should transform values before sending to adapter', function(done) {
         var waterline = new Waterline();
-        waterline.loadCollection(Waterline.Collection.extend(_.merge({}, modelDef)));
+        waterline.registerModel(Waterline.Collection.extend(_.merge({}, modelDef)));
 
         // Fixture Adapter Def
         var adapterDef = {
@@ -75,7 +75,7 @@ describe('Collection Query ::', function() {
 
       it('should transform values after receiving from adapter', function(done) {
         var waterline = new Waterline();
-        waterline.loadCollection(Waterline.Collection.extend(_.merge({}, modelDef)));
+        waterline.registerModel(Waterline.Collection.extend(_.merge({}, modelDef)));
 
         // Fixture Adapter Def
         var adapterDef = {

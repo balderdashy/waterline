@@ -46,7 +46,7 @@ describe.skip('Collection Validator ::', function() {
         }
       });
 
-      waterline.loadCollection(Person);
+      waterline.registerModel(Person);
 
       var datastores = {
         'foo': {

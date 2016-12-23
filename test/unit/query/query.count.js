@@ -21,7 +21,7 @@ describe('Collection Query ::', function() {
         }
       });
 
-      waterline.loadCollection(Model);
+      waterline.registerModel(Model);
 
       // Fixture Adapter Def
       var adapterDef = { count: function(con, query, cb) { return cb(null, 1); }};

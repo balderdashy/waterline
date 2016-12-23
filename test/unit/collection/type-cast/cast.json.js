@@ -23,7 +23,7 @@ describe.skip('Collection Type Casting ::', function() {
         }
       });
 
-      waterline.loadCollection(Person);
+      waterline.registerModel(Person);
 
       var datastores = {
         'foo': {

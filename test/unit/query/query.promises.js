@@ -22,7 +22,7 @@ describe('Collection Promise ::', function() {
         }
       });
 
-      waterline.loadCollection(Model);
+      waterline.registerModel(Model);
 
       // Fixture Adapter Def
       var adapterDef = {

@@ -64,9 +64,9 @@ describe('Collection Query ::', function() {
         }
       });
 
-      waterline.loadCollection(collections.user);
-      waterline.loadCollection(collections.car);
-      waterline.loadCollection(collections.ticket);
+      waterline.registerModel(collections.user);
+      waterline.registerModel(collections.car);
+      waterline.registerModel(collections.ticket);
 
       // Fixture Adapter Def
       var adapterDef = {

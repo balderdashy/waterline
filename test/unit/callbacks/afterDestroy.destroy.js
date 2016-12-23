@@ -31,7 +31,7 @@ describe('After Destroy Lifecycle Callback ::', function() {
         }
       });
 
-      waterline.loadCollection(Model);
+      waterline.registerModel(Model);
 
       // Fixture Adapter Def
       var adapterDef = {

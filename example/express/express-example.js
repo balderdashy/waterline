@@ -84,8 +84,8 @@ var Pet = Waterline.Collection.extend({
 
 
 // Load the Models into the ORM
-orm.loadCollection(User);
-orm.loadCollection(Pet);
+orm.registerModel(User);
+orm.registerModel(Pet);
 
 
 

@@ -26,7 +26,7 @@ describe('Collection Query ::', function() {
 
       it('should transform values before sending to adapter', function(done) {
         var waterline = new Waterline();
-        waterline.loadCollection(Model);
+        waterline.registerModel(Model);
 
         // Fixture Adapter Def
         var adapterDef = {

@@ -55,7 +55,7 @@ module.exports = function bootstrap (options, done) {
 
   // Load the  already-extended Waterline collections.
   extendedModelDefs.forEach(function (extendedModelDef) {
-    orm.loadCollection(extendedModelDef);
+    orm.registerModel(extendedModelDef);
   });
 
 

@@ -39,7 +39,7 @@ describe('Collection Query ::', function() {
           }
         });
 
-        waterline.loadCollection(Model);
+        waterline.registerModel(Model);
 
         // Fixture Adapter Def
         var adapterDef = { create: function(con, query, cb) { return cb(null, query.newRecord); }};
@@ -147,7 +147,7 @@ describe('Collection Query ::', function() {
           }
         });
 
-        waterline.loadCollection(Model);
+        waterline.registerModel(Model);
 
         // Fixture Adapter Def
         var adapterDef = { create: function(con, query, cb) { return cb(null, query.newRecord); }};
@@ -208,7 +208,7 @@ describe('Collection Query ::', function() {
           }
         });
 
-        waterline.loadCollection(Model);
+        waterline.registerModel(Model);
 
         // Fixture Adapter Def
         var adapterDef = { create: function(con, query, cb) { return cb(null, query.newRecord); }};
@@ -265,7 +265,7 @@ describe('Collection Query ::', function() {
           }
         });
 
-        waterline.loadCollection(Model);
+        waterline.registerModel(Model);
 
         // Fixture Adapter Def
         var adapterDef = { create: function(con, query, cb) { return cb(null, query.newRecord); }};
@@ -315,7 +315,7 @@ describe('Collection Query ::', function() {
           }
         });
 
-        waterline.loadCollection(Model);
+        waterline.registerModel(Model);
 
         // Fixture Adapter Def
         var adapterDef = {

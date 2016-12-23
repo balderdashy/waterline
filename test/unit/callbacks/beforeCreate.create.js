@@ -26,7 +26,7 @@ describe('Before Create Lifecycle Callback ::', function() {
         }
       });
 
-      waterline.loadCollection(Model);
+      waterline.registerModel(Model);
 
       // Fixture Adapter Def
       var adapterDef = { create: function(con, query, cb) { return cb(null, query.newRecord); }};

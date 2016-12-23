@@ -32,7 +32,7 @@ describe('Collection Query ::', function() {
         }
       };
 
-      waterline.loadCollection(Model);
+      waterline.registerModel(Model);
 
       var connections = {
         'foo': {
