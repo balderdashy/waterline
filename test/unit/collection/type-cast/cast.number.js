@@ -2,13 +2,15 @@ var assert = require('assert');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
-describe.skip('Collection Type Casting ::', function() {
-  describe('with Number type ::', function() {
-    var person;
+describe('Type Casting ::', function() {
+  describe('with `type: \'number\'` ::', function() {
 
+    var orm;
+    var Person;
     before(function(done) {
-      var waterline = new Waterline();
-      var Person = Waterline.Model.extend({
+      orm = new Waterline();
+
+      orm.registerModel(Waterline.Model.extend({
         identity: 'person',
         datastore: 'foo',
         primaryKey: 'id',
@@ -16,41 +18,46 @@ describe.skip('Collection Type Casting ::', function() {
           id: {
             type: 'number'
           },
+          activated: {
+            type: 'boolean'
+          },
           age: {
             type: 'number'
+          },
+          name: {
+            type: 'string'
+          },
+          organization: {
+            type: 'json'
+          },
+          avatarBlob: {
+            type: 'ref'
           }
         }
-      });
+      }));
 
-      waterline.registerModel(Person);
-
-      var datastores = {
-        'foo': {
-          adapter: 'foobar'
+      orm.initialize({
+        adapters: {
+          foobar: {}
+        },
+        datastores: {
+          foo: { adapter: 'foobar' }
         }
-      };
+      }, function(err, orm) {
+        if (err) { return done(err); }
 
-      waterline.initialize({ adapters: { foobar: {} }, datastores: datastores }, function(err, orm) {
-        if (err) {
-          return done(err);
-        }
-        person = orm.collections.person;
+        Person = orm.collections.person;
         return done();
-      });
-    });
+      });//</.initialize()>
+
+    });//</before>
 
     it('should cast strings to numbers when integers', function() {
-      var values = { age: '27' };
-      person._cast(values);
-      assert(_.isNumber(values.age));
-      assert.equal(values.age, 27);
+      assert.equal(Person.validate('age', '27'), 27);
     });
 
     it('should cast strings to numbers when floats', function() {
-      var values = { age: '27.01' };
-      person._cast(values);
-      assert(_.isNumber(values.age));
-      assert.equal(values.age, 27.01);
+      assert.equal(Person.validate('age', '27.01'), 27.01);
     });
 
     it('should throw when a number can\'t be cast', function() {
@@ -60,19 +67,27 @@ describe.skip('Collection Type Casting ::', function() {
       });
     });
 
-    it.skip('should not try and cast mongo ID\'s when an id property is used', function() {
-      var values = { age: '51f88ddc5d7967808b000002' };
-      person._cast(values);
-      assert(_.isString(values.age));
-      assert.equal(values.age, '51f88ddc5d7967808b000002');
+    it('should not try and do anything fancy with mongo ID\'s, even when it\'s really tempting', function() {
+      try {
+        Person.validate('age', '51f88ddc5d7967808b000002');
+      } catch (e) {
+        switch (e.code) {
+          case 'E_VALIDATION':
+            // FUTURE: maybe expand test to check more things
+            return;
+
+          // As of Thu Dec 22, 2016, this test is failing because
+          // validation is not being completely rolled up yet.
+          default: throw new Error('The actual error code was "'+e.code+'" - but it should have been "E_VALIDATION": the rolled-up validation error.  This is so that errors from the public `.validate()` are consistent with errors exposed when creating or updating records (i.e. when multiple values are being set at the same time.)  Here is the error that was actually received:\n```\n' +e.stack+'\n```');
+        }
+      }
     });
 
-    it.skip('should not try and cast mongo ID\'s when value matches a mongo string', function() {
-      var values = { age: '51f88ddc5d7967808b000002' };
-      person._cast(values);
-      assert(_.isString(values.age));
-      assert.equal(values.age, '51f88ddc5d7967808b000002');
-    });
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // For further details on edge case handling, plus thousands more tests, see:
+    // • http://npmjs.com/package/rttc
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   });
 });

@@ -2,11 +2,11 @@ var assert = require('assert');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
-describe('Collection Type Casting ::', function() {
-  describe('with Boolean type ::', function() {
+describe('Type Casting ::', function() {
+  describe('with `type: \'boolean\'` ::', function() {
 
-    var Person;
     var orm;
+    var Person;
     before(function(done) {
       orm = new Waterline();
 
@@ -20,6 +20,18 @@ describe('Collection Type Casting ::', function() {
           },
           activated: {
             type: 'boolean'
+          },
+          age: {
+            type: 'number'
+          },
+          name: {
+            type: 'string'
+          },
+          organization: {
+            type: 'json'
+          },
+          avatarBlob: {
+            type: 'ref'
           }
         }
       }));
@@ -72,7 +84,7 @@ describe('Collection Type Casting ::', function() {
       } catch (e) {
         switch (e.code) {
           case 'E_VALIDATION':
-            // TODO: check more things
+            // FUTURE: maybe expand test to check more things
             return;
 
           // As of Thu Dec 22, 2016, this test is failing because
@@ -81,6 +93,11 @@ describe('Collection Type Casting ::', function() {
         }
       }
     });
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // For further details on edge case handling, plus thousands more tests, see:
+    // • http://npmjs.com/package/rttc
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   });//</describe>
 });//</describe>

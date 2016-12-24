@@ -2,13 +2,14 @@ var assert = require('assert');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
-describe.skip('Collection Type Casting ::', function() {
-  describe('with Ref type ::', function() {
-    var person;
-
+describe('Type Casting ::', function() {
+  describe('with `type: \'ref\'` ::', function() {
+    var orm;
+    var Person;
     before(function(done) {
-      var waterline = new Waterline();
-      var Person = Waterline.Model.extend({
+      orm = new Waterline();
+
+      orm.registerModel(Waterline.Model.extend({
         identity: 'person',
         datastore: 'foo',
         primaryKey: 'id',
@@ -16,41 +17,73 @@ describe.skip('Collection Type Casting ::', function() {
           id: {
             type: 'number'
           },
-          file: {
+          activated: {
+            type: 'boolean'
+          },
+          age: {
+            type: 'number'
+          },
+          name: {
+            type: 'string'
+          },
+          organization: {
+            type: 'json'
+          },
+          avatarBlob: {
             type: 'ref'
           }
         }
-      });
+      }));
 
-      waterline.registerModel(Person);
-
-      var datastores = {
-        'foo': {
-          adapter: 'foobar'
+      orm.initialize({
+        adapters: {
+          foobar: {}
+        },
+        datastores: {
+          foo: { adapter: 'foobar' }
         }
-      };
+      }, function(err, orm) {
+        if (err) { return done(err); }
 
-      waterline.initialize({ adapters: { foobar: {} }, datastores: datastores }, function(err, orm) {
-        if (err) {
-          return done(err);
-        }
-        person = orm.collections.person;
+        Person = orm.collections.person;
         return done();
+      });//</.initialize()>
+
+    });//</before>
+
+    it('should not modify ref types (and should return the original reference)', function() {
+
+      var pretendIncomingBlobStream = new (require('stream').Readable)();
+      // Note that Waterline also ensures strict equality:
+      assert(Person.validate('avatarBlob', pretendIncomingBlobStream) === pretendIncomingBlobStream);
+    });
+
+    it('should accept EVEN the wildest nonsense, just like it is, and not change it, not even one little bit', function() {
+
+      var wildNonsense = [ Waterline, assert, _ ];
+      wildNonsense.__proto__ = Waterline.prototype;
+      wildNonsense.constructor = assert;
+      wildNonsense.toJSON = _;
+      wildNonsense.toString = Waterline;
+      Object.defineProperty(wildNonsense, 'surprise', {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: wildNonsense
       });
+      Object.freeze(wildNonsense);
+      wildNonsense.temperature = -Infinity;
+      Object.seal(wildNonsense);
+      wildNonsense.numSeals = NaN;
+      wildNonsense.numSeaLions = Infinity;
+
+      assert(Person.validate('avatarBlob', wildNonsense) === wildNonsense);
     });
 
-    it('should not modify ref types', function() {
-      var values = {
-        file: {
-          title: 'hello'
-        }
-      };
-
-      person._cast(values);
-
-      assert(_.isPlainObject(values.file));
-      assert.equal(values.file.title, 'hello');
-    });
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // For further details on edge case handling, plus thousands more tests, see:
+    // • http://npmjs.com/package/rttc
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   });
 });
