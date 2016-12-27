@@ -19,7 +19,7 @@ describe.skip('Alter Mode Recovery with an enforced schema', function () {
     }];
 
     var adapter = {
-      registerConnection: function (connection, collections, cb) {
+      registerDatastore: function (connection, collections, cb) {
         cb(null, null);
       },
       define: function (connectionName, collectionName, definition, cb) {
