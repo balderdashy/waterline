@@ -473,7 +473,7 @@ The key itself must be a valid attr name or column name (depending on if this is
 The meaning of the RHS depends on its type:
 
 => string, number, boolean, or null
- => indicates an equality filter
+ => indicates an equality constraint
 
 => array
   => indicates shortcut notation for "IN"
@@ -546,8 +546,8 @@ Quick reference for what various things inside of the query are called.
 | disjunct               | A dictionary within an `or` array whose contents work exactly like those of a conjunct (see above).
 | scruple                | Another name for a dictionary which could be a conjunct or disjunct.  Particularly useful when talking about a stage 1 query, since not everything will have been normalized yet.
 | predicate operator     | A _predicate operator_ (or simply a _predicate_) is an array-- more specifically, it is the RHS of a key/value pair where the key is either "and" or "or".  This array consists of 0 or more dictionaries called either "conjuncts" or "disjuncts" (depending on whether it's an "and" or an "or")
-| filter                 | A _filter_ is the RHS of a key/value pair within a conjunct or disjunct.  It represents how values for a particular attribute name (or column name) will be qualified.  Once normalized, filters are always either a primitive (called an _equivalency filter_) or a dictionary (called a _complex filter_) consisting of exactly one key/value pairs called a "modifier" (aka "sub-attribute modifier").  In certain special cases, (in stage 1 queries only!) multiple different modifiers can be combined together within a complex filter (e.g. combining `>` and `<` to indicate a range of values).  In stage 2 queries, these have already been normalized out (using `and`).
-| modifier               | The RHS of a key/value pair within a complex filter, where the key is one of a special list of legal modifiers such as `nin`, `in`, `contains`, `!`, `>=`, etc.  A modifier impacts how values for a particular attribute name (or column name) will be qualified.  The data type for a particular modifier depends on the modifier.  For example, a modifier for key `in` or `nin` must be an array, but a modifier for key `contains` must be either a string or number.
+| constraint             | A _constraint_ (ska "filter") is the RHS of a key/value pair within a conjunct or disjunct.  It represents how values for a particular attribute name (or column name) will be qualified.  Once normalized, constraints are always either a primitive (called an _equivalency constraint_ or _eq constraint_) or a dictionary (called a _complex constraint_) consisting of exactly one key/value pairs called a "modifier" (aka "sub-attribute modifier").  In certain special cases, (in stage 1 queries only!) multiple different modifiers can be combined together within a complex constraint (e.g. combining `>` and `<` to indicate a range of values).  In stage 2 queries, these have already been normalized out (using `and`).
+| modifier               | The RHS of a key/value pair within a complex constraint, where the key is one of a special list of legal modifiers such as `nin`, `in`, `contains`, `!`, `>=`, etc.  A modifier impacts how values for a particular attribute name (or column name) will be qualified.  The data type for a particular modifier depends on the modifier.  For example, a modifier for key `in` or `nin` must be an array, but a modifier for key `contains` must be either a string or number.
 
 
 ```
