@@ -1,4 +1,5 @@
 var assert = require('assert');
+var util = require('util');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../lib/waterline');
 
@@ -45,12 +46,13 @@ describe('Collection Query ::', function() {
       });
 
       it('should allow an integer to be passed in as criteria', function(done) {
-        query.findOne(1, function(err, values) {
+        query.findOne(1, function(err, record) {
           if (err) {
             return done(err);
           }
 
-          assert.equal(values.where.id, 1);
+          assert(_.isObject(record.where), 'Expected `record.where` to be a dictionary, but it is not.  Here is `record`:'+util.inspect(record,{depth:5})+'');
+          assert.equal(record.where.id, 1);
           return done();
         });
       });
