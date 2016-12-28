@@ -51,7 +51,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert(_.isObject(record.where), 'Expected `record.where` to be a dictionary, but it is not.  Here is `record`:'+util.inspect(record,{depth:5})+'');
+          assert(_.isObject(record.where), 'Expected `record.where` to be a dictionary, but it is not.  Here is `record`:\n```\n'+util.inspect(record,{depth:5})+'\n```\n');
           assert.equal(record.where.id, 1);
           return done();
         });
