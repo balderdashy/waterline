@@ -2,7 +2,7 @@ var assert = require('assert');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
-describe('Type Casting ::', function() {
+describe.skip('Type Casting ::', function() {
   describe('with `type: \'number\'` ::', function() {
 
     var orm;
