@@ -20,7 +20,7 @@ describe('After Destroy Lifecycle Callback ::', function() {
           }
         },
 
-        afterDestroy: function(cb) {
+        afterDestroy: function(arrayOfDestroyedRecordsMaybe, cb) {
           person.create({ test: 'test' }, function(err, result) {
             if (err) {
               return cb(err);
