@@ -9,6 +9,8 @@ describe('Collection Query ::', function() {
         identity: 'user',
         connection: 'foo',
         primaryKey: 'id',
+        fetchRecordsOnCreate: true,
+        fetchRecordsOnCreateEach: true,
         attributes: {
           id: {
             type: 'number'
