@@ -47,8 +47,7 @@
 ##### Automigrations
 * [BREAKING] Automigrations now live outside of Waterline core (in waterline-util)
   + Remove `index` for automigrations
-  + In core SQL adapters, `.create()` no longer deals with updating the current autoincrement value (the "next value") when a record with a greater value is explicitly created
-  + In core SQL adapters, `.createEach()` will STILL deal with updating the current autoincrement value (the "next value") when a record with a greater value is explicitly created -- BUT only when the `incrementSequencesOnCreateEach` meta key is set to `true`.
+  + In core SQL adapters, `.create()` and `.createEach()` no longer deals with updating the current autoincrement sequence (the "next value to use") when a record with a greater value is explicitly created
 
 
 <!--
