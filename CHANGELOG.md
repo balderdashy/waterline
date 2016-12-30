@@ -15,39 +15,35 @@
   + Criteria dictionaries with a mixed `where` clause are no longer supported.
     + e.g. instead of `{ username: 'santaclaus', limit: 4, select: ['beardLength', 'lat', 'long']}`,
     + use `{ where: { username: 'santaclaus' }, limit: 4, select: ['beardLength', 'lat', 'long'] }`.
-    + Note that you can still do `{ username: 'santaclaus' }` as shorthand for `{ where: { username: 'santaclaus' } }` -- it's just that you can't mix other top-level query clauses in there without namespacing the `where` operators inside of `where`.
+    + Note that you can still do `{ username: 'santaclaus' }` as shorthand for `{ where: { username: 'santaclaus' } }` -- it's just that you can't mix other top-level criteria clauses (like `limit`) alongside constraints (e.g. `username`).
     + And as for anywhere you're building criteria using Waterline's chainable deferred object, then don't worry about this-- it's taken care of for you.
 * [DEPRECATE] Deprecated criteria usage:
   + Avoid specifying a limit of < 0.  It is still ignored, and acts like `limit: undefined`, but it now logs a deprecation warning to the console.
-* [BREAKING] With the major exception of `.populate()`, repeated use of any other one chainable query method like `.sort()`, `.where()`, `.set()`, `.meta()`, etc is no longer supported.
-* [BREAKING] Coercion of resulting records
-  + Resulting records are no longer special instances-- they are just dictionaries (plain JavaScript objects)
-  + Resulting records are now also coerced using RTTC semantics; meaning that when properties come back from the adapter as `undefined`, Waterline's behavior is now standardized.  Specifically, it is governed by the concept of RTTC base values.  The exact meaning of this varies depending on `type`, so here's a rundown:
-    + `type: 'string'` - `''` (empty string)
-    + `type: 'number'` - `0` (zero)
-    + `type: 'boolean'` - `false`
-    + `type: 'json'` - `null`
-    + `type: 'ref'` - `null`
-    + `model: ...` - `null`
-    + _(collection attrs are virtual, so they are omitted when not being populated)_
-
-* [BREAKING] Updating records to have `null` values for an attribute that declares a `defaultsTo` now results in setting the default value in the database-- _instead of `null`_.
-* [BREAKING] If adapter does not send back a value for a particular attribute (or if it sends back `undefined`), then send the following back to userland code:
-  + if it is the primary key, then trigger callback with an Error
-  + else if it is a singular ("model") association, return `null` as the result
-  + else if it has a default value, return it as the result
-  + otherwise, return the appropriate base value for the type as the result
-    + For type: 'string', this is `''`
-    + For type: 'number', this is `0`
-    + For type: 'boolean', this is `false`
-    + For type: 'json', this is `null`
-    + For type: 'ref', this is `null`
-    + See https://gist.github.com/mikermcneil/dfc6b033ea8a75cb467e8d50606c81cc for more details.
+* [BREAKING] With the major exception of `.populate()`, repeated use of any other one chainable query method like `.sort()`, `.where()`, `.set()`, `.meta()`, etc is no longer supported. For example, you should not do: `User.find().where({username: 'santaclaus'}).where({location: 'north pole'})`
+* [BREAKING] Coercion of result records
+  + Resulting records from calling model methods are no longer special instances-- they are just dictionaries (plain JavaScript objects)
+  + There are now warning messages for some common problematic results from the adapter. This is designed to make it easier to catch schema migration issues, as well as to identify adapter bugs.
+  
 
 ##### Automigrations
 * [BREAKING] Automigrations now live outside of Waterline core (in waterline-util)
   + Remove `index` for automigrations
   + In core SQL adapters, `.create()` and `.createEach()` no longer deals with updating the current autoincrement sequence (the "next value to use") when a record with a greater value is explicitly created
+
+##### Data types
+* The data types in Waterline have changed to more closely reflect their purpose: validation and coercion of JavaScript values. This drastically reduced the number of types to just 5: string, number, boolean, json, and ref.
+* To allow for flexibility in automigrations, attributes may also specify a new key, `columnType`. If specified, the `columnType` is sent to the appropriate adapter during automigration (in sails-hook-orm). This allows Sails/Waterline models to indicate how the values for individual attributes should be stored _at rest_ vs. how they are validated/coerced when your code calls `.create()` or `.update()`.
+* All documented previously-supported types are checked for and adjusted if possible (in sails-hook-orm), but if you are using a custom type, you may need to choose an appropriate `type` and `columnType`.
+* `defaultsTo` can no longer be specified as a function. In practice, this can lead to unintended consequences, and its implementation was adding considerable weight and complexity to Waterline (without a whole lot of tangible benefit).
+* Optional attributes with no value specified are no longer necessarily stored as `null`. If they are set to `type: 'json'` or `type: 'ref'`, and there is no `defaultsTo`, then `null` is stored. But, if an attribute declares itself as `type: 'string'`, then when a record is created without specifying a value for that attribute, it is stored as `''` (empty string). Similarly, `type: 'number'` is stored as `0`, and `type: 'boolean'` as `false`. To represent an attribute which might be `null` or a string, use `type: 'json'` (combining it with the new `isString` validation rule, if you like).
+
+##### Model methods
++ Revamped [.stream()](http://sailsjs.com/documentation/reference/waterline-orm/models/stream)
+  + Simplify interface and remove reliance on emitters in favor of [adapter-agnostic batch processing](https://gitter.im/balderdashy/sails?at=58655edd9d4cc4fc53553d51).
+  + Add support for `.populate()`
+  + Now supports batch-at-a-time or record-at-a-time iteration.
+  
+  
 
 
 <!--
