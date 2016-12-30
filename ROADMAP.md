@@ -8,7 +8,7 @@ This file contains the development roadmap for the upcoming release of Waterline
 
 ## v0.13
 
-This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.11 release of Waterline.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
+This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.13 release of Waterline.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
  + Pull out auto-migrations into https://github.com/balderdashy/sails-hook-orm
  + Remove the 2nd argument to the .exec() callback from `.update()`.
