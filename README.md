@@ -72,11 +72,11 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 As of Waterline 0.13 (Sails v1.0), these keys allow end users to modify the behaviour of Waterline methods. You can pass them as the `meta` query key, or via the `.meta()` query modifier method:
 
 ```javascript
-SomeModel.find()
+SomeModel.create({...})
 .meta({
   skipAllLifecycleCallbacks: true
 })
-.exec();
+.exec(...);
 ```
 
 These keys are not set in stone, and may still change prior to release. (They're posted here now as a way to gather feedback and suggestions.)
