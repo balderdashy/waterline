@@ -13,6 +13,7 @@ describe('Collection Query ::', function() {
           identity: 'user',
           connection: 'foo',
           primaryKey: 'id',
+          fetchRecordsOnCreateEach: true,
           attributes: {
             id: {
               type: 'number'
@@ -159,6 +160,7 @@ describe('Collection Query ::', function() {
           identity: 'user',
           connection: 'foo',
           primaryKey: 'id',
+          fetchRecordsOnCreateEach: true,
           attributes: {
             id: {
               type: 'number'
