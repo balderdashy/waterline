@@ -31,7 +31,7 @@
     "rttc": "^10.0.0-1",
     "switchback": "2.0.1",
     "waterline-criteria": "1.0.1",
-    "waterline-schema": "balderdashy/waterline-schema"
+    "waterline-schema": "^1.0.0-1"
   },
   "devDependencies": {
     "eslint": "2.11.1",
