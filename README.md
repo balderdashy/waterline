@@ -169,7 +169,7 @@ User.removeFromCollection([3,4], 'pets')
 
 
 ## License
-[MIT](http://sailsjs.com/license). Copyright © 2012-2016 Balderdash Design Co.
+[MIT](http://sailsjs.com/license). Copyright © 2012-2017 Mike McNeil, Balderdash Design Co., & The Sails Company
 
 Waterline, like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
 

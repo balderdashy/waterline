@@ -2,11 +2,11 @@
 ======================================================
 HELLO, and welcome to the (experimental) Sailsbot
 issue-submission system.  If you encounter any
-problems with this system, please contact
-sgress454@treeline.io
+problems with this system, please contact us directly
+at http://sailsjs.com/contact
 
-FIRST THINGS FIRST: please fill out the following info 
-(Don't change text between **) 
+FIRST THINGS FIRST: please fill out the following info
+(Don't change text between **)
 ======================================================
 ### BEGIN VERSION INFO ###
 -->
@@ -16,11 +16,11 @@ FIRST THINGS FIRST: please fill out the following info
 **NPM version**:
 **Operating system**:
 
-<!-- 
+<!--
 ### END VERSION INFO ###
 ======================================================
-GREAT! - Now read carefully 
-(Sailsbot will know if you don't)!  
+GREAT! - Now read carefully
+(Sailsbot will know if you don't)!
 ======================================================
 
 Before you submit an issue for Waterline, please make sure you have read the Sails issue contribution guide (http://bit.ly/sails-issue-guide) carefully, and then verify the following by typing an X in between each set of [ ] brackets below (don't make any other changes to the text!):
