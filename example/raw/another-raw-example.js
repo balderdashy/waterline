@@ -39,8 +39,7 @@ setupWaterline({
   models: {
 
     user: {
-      // connection: 'myDb',//<< the datastore this model should use
-      datastore: 'myDb',// (^^^TODO: change this to `datastore` once it works)
+      datastore: 'myDb',
 
       attributes: {
         id: { type: 'number' },
@@ -52,8 +51,7 @@ setupWaterline({
     },
 
     pet: {
-      // connection: 'myDb',//<< the datastore this model should use
-      datastore: 'myDb',// (^^^TODO: change this to `datastore` once it works)
+      datastore: 'myDb',
 
       attributes: {
         id: { type: 'number' },
