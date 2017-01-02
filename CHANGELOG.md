@@ -23,7 +23,7 @@
 * [BREAKING] Coercion of result records
   + Resulting records from calling model methods are no longer special instances-- they are just dictionaries (plain JavaScript objects)
   + There are now warning messages for some common problematic results from the adapter. This is designed to make it easier to catch schema migration issues, as well as to identify adapter bugs.
-  
+
 
 ##### Automigrations
 * [BREAKING] Automigrations now live outside of Waterline core (in waterline-util)
@@ -42,40 +42,17 @@
   + Simplify interface and remove reliance on emitters in favor of [adapter-agnostic batch processing](https://gitter.im/balderdashy/sails?at=58655edd9d4cc4fc53553d51).
   + Add support for `.populate()`
   + Now supports batch-at-a-time or record-at-a-time iteration.
-  
-  
 
-
-<!--
-
-  TODO: figure this out; see https://gist.github.com/mikermcneil/dfc6b033ea8a75cb467e8d50606c81cc
 
 ##### `required` & `allowNull`
 
 * [BREAKING] Standardizing the definition of `required`
   + If an attribute specifies itself as `required`, it means that a value for the attribute must be _defined_ when using Waterline to do a `.create()`.
   + For example, if `foo` is a required attribute, then passing in `foo: undefined` or omitting `foo` on a `.create()` would fail the required check.
-* [NEW] The introduction of `allowNull` (some details still TBD)
-  + If an attribute specifies itself as `allowNull: true`, then if a value for that attr is explicitly provided as `null` in a `.create()` or `.update()`, it will always be allowed through-- even in cases where it wouldn't be normally (i.e. the RTTC type safety check is skipped.)  For example, this allows you to set `null` for `type: 'string'` attributes (or "number", or "boolean").
-  + If you attempt to explicitly specify `allowNull: false`, then you're prevented from initializing Waterline.  (You'll see an error, suggesting that you should use `validations: { notNull: true }` instead.)  This behavior could change in future versions of Waterline to allow for more intuitive usage, but for now, since there are other changes to how type safety checks work, it's better to err on the side of strictness.
-  + Other types (json and ref) allow `null` out of the box anyway, so `allowNull: true` is not necessary for them.  If you try to set `allowNull: true` on a type: 'json' or type: 'ref' attribute, Waterline will refuse to initialize (explaining that this configuration is redundant, and that you can remove `allowNull: true`, since `type: 'json'`/`type: 'ref'` implicitly allow it anyways).
-    + This is completely separate from the `required` check, which works the same way regardless- an attribute can be both `required: true` AND `allowNull: true`...as long as it is allowed to be both of those things individually.
-  + If `allowNull: true` is set, then `defaultsTo` is allowed to be set to `null` regardless of whether it would normally be allowed.
-    + For type: 'string', the implicit default is `''`
-    + For type: 'number', the implicit default is `0`
-    + For type: 'boolean', the implicit default is `false`
-    + For type: 'json', the implicit default is `null`
-    + For type: 'ref', the implicit default is `null`
-    + For `model: ...`, the implicit default is `null`
-  + In waterline-schema: If a singular ("model") association is NOT `required`, and it does not specify a `allowNull` setting, then the association is implicitly set to `allowNull: true`.
-  + In waterline-schema: If a singular ("model") association IS `required`, and it does not specify a `allowNull` setting, then `null` will not pass (because it is not a valid foreign key value)
-  + `allowNull: true` is never allowed on plural ("collection") associations
-  + `allowNull: true` is also never allowed to be explicitly set on singular ("model") associations: if `allowNull: true` is explicitly set, then Waterline fails to initialize w/ an error (telling you that the attribute definition is invalid because you should not ever need to explicitly set `allowNull` on a singular ("model") association)
-  + **Best practice**
-    + Most of the time, `allowNull` shouldn't need to be used.  (For most attributes, it tends to be better not to use `null`- since it's so easy to store `null` accidentally, and then cause hard-to-debug data type mismatch issues.)
-
-
--->
+  + In addition, trying to .create() OR .update() the value as either `''` (empty string) or `null` would fail the required check.
++ If an attribute specifies itself as `type: 'string'`, then if a value for that attr is explicitly provided as `null` in a `.create()` or `.update()`, it will **no longer be allowed through**-- regardless of the attribute's `required` status.
++ Other types (json and ref) allow `null` out of the box.  To support a string attribute which might be `null`, you'll want to set the attribute to `type: 'json'`.  If you want to prevent numbers, booleans, arrays, and dictionaries, then you'll also want to add the `isString: true` validation rule.
++ For more information and a reference of edge cases, see https://docs.google.com/spreadsheets/d/1whV739iW6O9SxRZLCIe2lpvuAUqm-ie7j7tn_Pjir3s/edit#gid=1927470769
 
 
 ### 0.11.6
