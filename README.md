@@ -58,7 +58,7 @@ To report a bug, [click here](http://sailsjs.com/bugs).
 
 
 ## Contribute
-Please observe the guidelines and conventions laid out in our [contribution guide](http://sailsjs.com/contribute) when opening issues or submitting pull requests.
+Please observe the guidelines and conventions laid out in our [contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
 
 #### Tests
 All tests are written with [mocha](https://mochajs.org/) and should be run with [npm](https://www.npmjs.com/):

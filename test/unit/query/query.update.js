@@ -21,8 +21,7 @@ describe('Collection Query ::', function() {
               defaultsTo: 'Foo Bar'
             },
             age: {
-              type: 'number',
-              required: true
+              type: 'number'
             },
             updatedAt: {
               type: 'number',
@@ -34,7 +33,7 @@ describe('Collection Query ::', function() {
         waterline.registerModel(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { update: function(con, query, cb) { return cb(null, [query.valuesToSet]); }};
+        var adapterDef = { update: function(con, query, cb) { query.valuesToSet.id = 1; return cb(null, [query.valuesToSet]); }};
 
         var connections = {
           'foo': {
@@ -42,7 +41,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
@@ -128,7 +127,7 @@ describe('Collection Query ::', function() {
         waterline.registerModel(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { update: function(con, query, cb) { return cb(null, [query.valuesToSet]); }};
+        var adapterDef = { update: function(con, query, cb) { query.valuesToSet.id = 1; return cb(null, [query.valuesToSet]); }};
 
         var connections = {
           'foo': {
@@ -136,7 +135,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
@@ -182,7 +181,7 @@ describe('Collection Query ::', function() {
         waterline.registerModel(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { update: function(con, query, cb) { return cb(null, [query.criteria]); }};
+        var adapterDef = { update: function(con, query, cb) { return cb(null, [{myPk: 1, criteria: query.criteria}]); }};
 
         var connections = {
           'foo': {
@@ -190,7 +189,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
@@ -206,7 +205,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(values[0].where.pkColumn, 1);
+          assert.equal(values[0].criteria.where.pkColumn, 1);
           return done();
         }, { fetch: true });
       });

@@ -37,7 +37,7 @@ describe('After Destroy Lifecycle Callback ::', function() {
       // Fixture Adapter Def
       var adapterDef = {
         destroy: function(con, query, cb) { return cb(undefined, query); },
-        create: function(con, query, cb) { return cb(undefined, { status: true }); }
+        create: function(con, query, cb) { return cb(undefined, { status: true, id: 1 }); }
       };
 
       var connections = {
@@ -46,7 +46,7 @@ describe('After Destroy Lifecycle Callback ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
         if (err) {
           return done(err);
         }

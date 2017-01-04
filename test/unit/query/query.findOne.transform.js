@@ -28,7 +28,7 @@ describe('Collection Query ::', function() {
         var adapterDef = {
           find: function(con, query, cb) {
             assert(query.criteria.where.login);
-            return cb(null, [query.criteria]);
+            return cb(null, [{id: 1, criteria: query.criteria}]);
           }
         };
 
@@ -38,7 +38,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
@@ -54,7 +54,7 @@ describe('Collection Query ::', function() {
         var adapterDef = {
           find: function(con, query, cb) {
             assert(query.criteria.where.login);
-            return cb(null, [{ login: 'foo' }]);
+            return cb(null, [{ id: 1, login: 'foo' }]);
           }
         };
 
@@ -64,7 +64,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }

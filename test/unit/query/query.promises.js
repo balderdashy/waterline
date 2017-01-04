@@ -27,7 +27,7 @@ describe('Collection Promise ::', function() {
       // Fixture Adapter Def
       var adapterDef = {
         find: function(con, query, cb) {
-          return cb(undefined, [query.criteria]);
+          return cb(undefined, [{id: 1, criteria: query.criteria}]);
         }
       };
 
@@ -37,7 +37,7 @@ describe('Collection Promise ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
         if (err) {
           return done(err);
         }

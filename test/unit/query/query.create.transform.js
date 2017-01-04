@@ -39,11 +39,11 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
-          orm.collections.user.create({ name: 'foo' }, done);
+          orm.collections.user.create({ name: 'foo', id: 1 }, done);
         });
       });
 
@@ -65,12 +65,12 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
 
-          orm.collections.user.create({ name: 'foo' }, function(err, values) {
+          orm.collections.user.create({ name: 'foo', id: 1 }, function(err, values) {
             if (err) {
               return done(err);
             }
