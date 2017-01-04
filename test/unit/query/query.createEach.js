@@ -48,7 +48,13 @@ describe('Collection Query ::', function() {
         waterline.registerModel(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { createEach: function(con, query, cb) { return cb(null, query.newRecords); }};
+        var adapterDef = {
+          createEach: function(con, query, cb) {
+            var id = 0;
+            query.newRecords = _.map(query.newRecords, function(newRecord) { newRecord.id = ++id; return newRecord; });
+            return cb(null, query.newRecords);
+          }
+        };
 
         var connections = {
           'foo': {
@@ -56,7 +62,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
@@ -177,7 +183,13 @@ describe('Collection Query ::', function() {
         waterline.registerModel(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { createEach: function(con, query, cb) { return cb(null, query.newRecords); }};
+        var adapterDef = {
+          createEach: function(con, query, cb) {
+            var id = 0;
+            query.newRecords = _.map(query.newRecords, function(newRecord) { newRecord.id = ++id; return newRecord; });
+            return cb(null, query.newRecords);
+          }
+        };
 
         var connections = {
           'foo': {
@@ -185,7 +197,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }

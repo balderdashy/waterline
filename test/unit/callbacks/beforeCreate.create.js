@@ -38,7 +38,7 @@ describe('Before Create Lifecycle Callback ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
         if (err) {
           return done(err);
         }
@@ -48,7 +48,7 @@ describe('Before Create Lifecycle Callback ::', function() {
     });
 
     it('should run beforeCreate and mutate values', function(done) {
-      person.create({ name: 'test' }, function(err, user) {
+      person.create({ name: 'test', id: 1 }, function(err, user) {
         if (err) {
           return done(err);
         }

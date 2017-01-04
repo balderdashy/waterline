@@ -101,7 +101,7 @@ describe.skip('Alter Mode Recovery with an enforced schema', function () {
     // Build the collections and find the record
     var PersonCollection = Waterline.Model.extend(PersonModel);
     waterline.registerModel(PersonCollection);
-    waterline.initialize({adapters: adapters, connections: connections}, function (err, data) {
+    waterline.initialize({adapters: adapters, datastores: connections}, function (err, data) {
       if (err) return done(err);
 
       MigrateHelper(data, function(err) {

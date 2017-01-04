@@ -27,7 +27,7 @@ describe('Collection Query ::', function() {
       waterline.registerModel(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { find: function(con, query, cb) { return cb(null, [query.criteria]); }};
+      var adapterDef = { find: function(con, query, cb) { return cb(null, [{id: 1, criteria: query.criteria}]); }};
 
       var connections = {
         'foo': {
@@ -35,7 +35,7 @@ describe('Collection Query ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
         if(err) {
           return done(err);
         }
@@ -78,9 +78,9 @@ describe('Collection Query ::', function() {
         }
 
         assert(_.isArray(results));
-        assert.equal(results[0].limit, 1);
-        assert.equal(results[0].skip, 1);
-        assert.equal(results[0].sort[0].name, 'DESC');
+        assert.equal(results[0].criteria.limit, 1);
+        assert.equal(results[0].criteria.skip, 1);
+        assert.equal(results[0].criteria.sort[0].name, 'DESC');
 
         return done();
       });
@@ -96,8 +96,8 @@ describe('Collection Query ::', function() {
           }
 
           assert(_.isArray(results));
-          assert.equal(results[0].skip, 0);
-          assert.equal(results[0].limit, 30);
+          assert.equal(results[0].criteria.skip, 0);
+          assert.equal(results[0].criteria.limit, 30);
 
           return done();
         });
@@ -111,7 +111,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 30);
+          assert.equal(results[0].criteria.skip, 30);
           return done();
         });
       });
@@ -124,7 +124,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 30);
+          assert.equal(results[0].criteria.skip, 30);
           return done();
         });
       });
@@ -137,7 +137,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 60);
+          assert.equal(results[0].criteria.skip, 60);
           return done();
         });
       });
@@ -150,7 +150,7 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].limit, 1);
+          assert.equal(results[0].criteria.limit, 1);
           return done();
         });
       });
@@ -163,8 +163,8 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 20);
-          assert.equal(results[0].limit, 10);
+          assert.equal(results[0].criteria.skip, 20);
+          assert.equal(results[0].criteria.limit, 10);
           return done();
         });
       });
@@ -177,8 +177,8 @@ describe('Collection Query ::', function() {
             return done(err);
           }
 
-          assert.equal(results[0].skip, 30);
-          assert.equal(results[0].limit, 10);
+          assert.equal(results[0].criteria.skip, 30);
+          assert.equal(results[0].criteria.limit, 10);
           return done();
         });
       });

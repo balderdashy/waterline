@@ -30,6 +30,8 @@ describe('Collection Query ::', function() {
       var adapterDef = {
         createEach: function(con, query, cb) {
           assert(_.first(query.newRecords).login);
+          var id = 0;
+          query.newRecords = _.map(query.newRecords, function(newRecord) { newRecord.id = ++id; return newRecord; });
           return cb(null, query.newRecords);
         }
       };
@@ -40,7 +42,7 @@ describe('Collection Query ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
         if (err) {
           return done(err);
         }
@@ -55,6 +57,8 @@ describe('Collection Query ::', function() {
       // Fixture Adapter Def
       var adapterDef = {
         createEach: function(con, query, cb) {
+          var id = 0;
+          query.newRecords = _.map(query.newRecords, function(newRecord) { newRecord.id = ++id; return newRecord; });
           return cb(null, query.newRecords);
         }
       };
@@ -65,7 +69,7 @@ describe('Collection Query ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
         if (err) {
           return done(err);
         }

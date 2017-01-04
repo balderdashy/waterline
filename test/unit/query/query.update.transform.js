@@ -29,7 +29,7 @@ describe('Collection Query ::', function() {
         var adapterDef = {
           update: function(con, query, cb) {
             assert(query.criteria.where.login);
-            return cb(undefined, [query.valuesToSet]);
+            return cb(undefined);
           }
         };
 
@@ -39,7 +39,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
@@ -55,7 +55,7 @@ describe('Collection Query ::', function() {
         var adapterDef = {
           update: function(con, query, cb) {
             assert(query.valuesToSet.login);
-            return cb(undefined, [query.valuesToSet]);
+            return cb(undefined);
           }
         };
 
@@ -65,7 +65,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }
@@ -81,6 +81,7 @@ describe('Collection Query ::', function() {
         var adapterDef = {
           update: function(con, query, cb) {
             assert(query.valuesToSet.login);
+            query.valuesToSet.id = 1;
             return cb(undefined, [query.valuesToSet]);
           }
         };
@@ -91,7 +92,7 @@ describe('Collection Query ::', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
           if (err) {
             return done(err);
           }

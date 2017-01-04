@@ -44,7 +44,7 @@ describe('.beforeCreate()', function() {
             }
           };
 
-          waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
             if (err) {
               return done(err);
             }
@@ -56,7 +56,7 @@ describe('.beforeCreate()', function() {
         });
 
         it('should run beforeCreate and mutate values on create', function(done) {
-          person.findOrCreate({ name: 'test' }, { name: 'test' }, function(err, user) {
+          person.findOrCreate({ name: 'test' }, { name: 'test', id: 1 }, function(err, user) {
             if (err) {
               return done(err);
             }
@@ -96,7 +96,7 @@ describe('.beforeCreate()', function() {
 
           // Fixture Adapter Def
           var adapterDef = {
-            find: function(con, query, cb) { return cb(null, [query.criteria.where]); },
+            find: function(con, query, cb) { return cb(null, [{ name: 'test', id: 1}] ); },
             create: function(con, query, cb) { return cb(null, query.newRecord); }
           };
 
@@ -106,7 +106,7 @@ describe('.beforeCreate()', function() {
             }
           };
 
-          waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, orm) {
+          waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
             if (err) {
               return done(err);
             }
