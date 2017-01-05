@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "eslint": "2.11.1",
-    "espree": "3.1.5",
     "mocha": "3.0.2"
   },
   "keywords": [
@@ -53,6 +52,9 @@
   "main": "./lib/waterline",
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha test --recursive",
+    "fasttest": "NODE_ENV=test ./node_modules/mocha/bin/mocha test --recursive",
+    "pretest": "npm run lint",
+    "lint": "eslint lib",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js"
   },
