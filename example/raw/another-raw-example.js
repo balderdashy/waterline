@@ -184,7 +184,7 @@ setupWaterline({
     { name: 'Samantha' }
   ]).exec(function (err, pets) {
     if (err) {
-      console.log('Failed to create pets:', err);
+      console.log('Failed to create pets:', err.stack);
       return;
     }
 
@@ -193,7 +193,7 @@ setupWaterline({
       pets: _.pluck(pets, 'id')
     }).exec(function (err) {
       if (err) {
-        console.log('Failed to create records:',err);
+        console.log('Failed to create records:',err.stack);
         return;
       }
 
