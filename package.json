@@ -53,7 +53,7 @@
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha test --recursive",
     "fasttest": "NODE_ENV=test ./node_modules/mocha/bin/mocha test --recursive",
-    "pretest": "npm run lint",
+    "posttest": "npm run lint",
     "lint": "eslint lib",
     "prepublish": "npm prune",
     "browserify": "rm -rf .dist && mkdir .dist && browserify lib/waterline.js -s Waterline | uglifyjs > .dist/waterline.min.js"
