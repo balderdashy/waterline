@@ -42,7 +42,7 @@ setupWaterline({
       datastore: 'myDb',
 
       attributes: {
-        id: { type: 'number' },
+        id: { type: 'number', autoMigrations: { autoIncrement: true } },
         numChickens: { type: 'number' },
         pets: { collection: 'pet' }
       },
@@ -54,7 +54,7 @@ setupWaterline({
       datastore: 'myDb',
 
       attributes: {
-        id: { type: 'number' },
+        id: { type: 'number', autoMigrations: { autoIncrement: true } },
         name: { type: 'string' }
       },
       primaryKey: 'id',
