@@ -69,16 +69,6 @@ describe('Collection Promise ::', function() {
       });
     });
 
-    it('should reject the promise if the spread handler fails', function(done) {
-      query.find({}).spread(function() {
-        throw new Error('Error in promise handler');
-      }).then(function() {
-        done(new Error('Unexpected success'));
-      }).catch(function() {
-        return done();
-      });
-    });
-
     it('should only resolve once', function(done){
       var promise = query.find({});
       var prevResult;
