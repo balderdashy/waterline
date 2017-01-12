@@ -3,7 +3,7 @@ var util = require('util');
 var _ = require('@sailshq/lodash');
 var Waterline = require('../../../lib/waterline');
 
-describe.skip('Collection Validator ::', function() {
+describe('Collection Validator ::', function() {
   describe('.validate()', function() {
     var person;
 
@@ -18,27 +18,12 @@ describe.skip('Collection Validator ::', function() {
           id: {
             type: 'number'
           },
-          score: {
-            type: 'string',
-            validations: {
-              minLength: 2,
-              maxLength: 5
-            }
-          },
-          last_name: {
-            type: 'string',
-            validations: {
-              minLength: 1
-            }
-          },
-          city: {
-            type: 'string',
-            validations: {
-              maxLength: 7
-            }
+          age: {
+            type: 'number'
           },
           sex: {
             type: 'string',
+            required: true,
             validations: {
               isIn: ['male', 'female']
             }
@@ -54,7 +39,7 @@ describe.skip('Collection Validator ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: {} }, datastores: datastores }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: { update: function(con, query, cb) { return cb(); } } }, datastores: datastores }, function(err, orm) {
         if (err) {
           return done(err);
         }
@@ -63,72 +48,75 @@ describe.skip('Collection Validator ::', function() {
       });
     });
 
-    it('should validate all fields with presentOnly omitted', function() {
-      var errors = person._validator({ city: 'Washington' });
-
-      assert(errors, 'expected validation errors');
-      assert(!errors.first_name);
-      assert(errors.last_name);
-      assert(errors.city);
-      assert(errors.score);
-      assert(errors.sex);
-      assert.equal(_.first(errors.last_name).rule, 'minLength');
-      assert.equal(_.first(errors.city).rule, 'maxLength');
-      assert.equal(_.first(errors.score).rule, 'minLength');
-      assert.equal(_.first(errors.sex).rule, 'isIn');
+    it('should return an Error with name `UsageError` when a required field is not present in a `create`', function(done) {
+      person.create({}).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/required/));
+        return done();
+      });
     });
 
-    it('should validate all fields with presentOnly set to false', function() {
-      var errors = person._validator({ city: 'Austin' }, false);
-
-      assert(errors, 'expected validation errors');
-      assert(!errors.first_name);
-      assert(errors.last_name);
-      assert(errors.score);
-      assert(errors.sex);
-      assert.equal(_.first(errors.last_name).rule, 'minLength');
-      assert.equal(_.first(errors.score).rule, 'minLength');
-      assert.equal(_.first(errors.sex).rule, 'isIn');
+    it('should return an Error with name `UsageError` when a required string field is set to empty string in a `create`', function(done) {
+      person.create({ sex: '' }).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/required/));
+        return done();
+      });
     });
 
-    it('should, for presentOnly === true, validate present values only, thus not need the required last_name', function() {
-      var errors = person._validator({ first_name: 'foo' }, true);
-      assert(!errors, 'expected no validation errors but instead got: ' + util.inspect(errors, false, null));
+    it('should return an Error with name `UsageError` when a field is set to the wrong type in a `create`', function(done) {
+      person.create({ name: 'foo', age: 'bar' }).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/type/));
+        return done();
+      });
     });
 
-    it('should validate only the specified value', function() {
-      var firstNameErrors = person._validator({ first_name: 'foo', last_name: 32, city: 'Washington' }, 'first_name');
-      assert(!firstNameErrors, 'expected no validation errors for first name');
-
-      var lastNameErrors = person._validator({ first_name: 'foo', city: 'Washington' }, 'last_name');
-      assert(lastNameErrors);
-      assert(lastNameErrors.last_name);
-      assert.equal(_.first(lastNameErrors.last_name).rule, 'minLength');
-      assert(!lastNameErrors.city);
+    it('should return an Error with name `UsageError` when a field fails a validation rule in a `create`', function(done) {
+      person.create({ name: 'foo', sex: 'bar' }).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/rule/));
+        return done();
+      });
     });
 
-    it('should validate only the specified values when expressed as an array', function() {
-      var errors = person._validator({ first_name: 'foo', last_name: 32, city: 'Atlanta' }, ['first_name', 'city']);
-      assert(!errors);
-
-      var cityErrors = person._validator({ first_name: 'foo', last_name: 32, city: 'Washington' }, ['first_name', 'city']);
-      assert(cityErrors);
-      assert(!cityErrors.first_name);
-      assert(!cityErrors.last_name);
-      assert(cityErrors.city);
-      assert.equal(_.first(cityErrors.city).rule, 'maxLength');
+    it('should not return an Error when a required field is not present in an `update`', function(done) {
+      person.update({}, {}).exec(function(err) {
+        assert(!err);
+        return done();
+      });
     });
 
-    it('should error if invalid enum is set', function() {
-      var errors = person._validator({ sex: 'other' }, true);
-      assert(errors);
-      assert(errors.sex);
-      assert.equal(_.first(errors.sex).rule, 'isIn');
+    it('should return an Error with name `UsageError` when a required string field is set to empty string in a `create`', function(done) {
+      person.update({}, { sex: '' }).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/required/));
+        return done();
+      });
     });
 
-    it('should NOT error if valid enum is set', function() {
-      var errors = person._validator({ sex: 'male' }, true);
-      assert(!errors);
+    it('should return an Error with name `UsageError` when a field is set to the wrong type in a `create`', function(done) {
+      person.update({}, { age: 'bar' }).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/type/));
+        return done();
+      });
     });
+
+    it('should return an Error with name `UsageError` when a field fails a validation rule in a `create`', function(done) {
+      person.update({}, { sex: 'bar' }).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/rule/));
+        return done();
+      });
+    });
+
   });
 });
