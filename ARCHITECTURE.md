@@ -73,7 +73,8 @@ var q = User.findOne({
   sort: 'name asc'
 }).populate('friends', {
   where: {
-    occupation: 'doctor'
+    occupation: 'doctor',
+    age: { '>': 40, '<': 50 }
   },
   sort: 'yearsInIndustry desc'
 });
@@ -114,9 +115,7 @@ This is what's known as a "Stage 2 query":
 
     // The expanded "where" clause
     where: {
-      and: [
-        { occupation: 'doctor' }
-      ]
+      occupation: 'doctor'
     },
 
     // The "limit" clause (if there is one, otherwise defaults to `Number.MAX_SAFE_INTEGER`)
@@ -153,7 +152,21 @@ This is what's known as a "Stage 2 query":
       omit: [],
       where: {
         and: [
-          { occupation: 'doctor' }
+          { occupation: 'doctor' },
+          {
+            and: [
+              { age: { '>': 40 } },
+              { age: { '<': 50 } }
+            ]
+          }
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+          // > Why don't we coallesce the "and"s above?  It's kind of ugly.
+          //
+          // Performance trumps prettiness here-- S2Qs are for computers, not humans.
+          // S1Qs should be pretty, but for S2Qs, the priorities are different.  Instead, it's more important
+          // that they (1) are easy to write parsing code for and (2) don't introduce any meaningful overhead
+          // when they are built (remember: we're building these on a per-query basis).
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
         ]
       },
       limit: (Number.MAX_SAFE_INTEGER||9007199254740991),
@@ -199,7 +212,7 @@ Next, Waterline performs a couple of additional transformations:
         { occupation_key: 'doctor' }
       ]
     },
-    limit: 1, //<< note that this was set to `1` automatically, because of being originally a "findOne"
+    limit: 2, //<< note that this was set to `2` automatically, because of being originally a "findOne"
     skip: 90,
     sort: [
       { full_name: 'ASC' }
@@ -207,7 +220,6 @@ Next, Waterline performs a couple of additional transformations:
   }
 }
 ```
-$$$ I replaced limit: 2 with limit: 1, I didn't check the code to see if 2 is meant to be 1 for some strange reason?!
 
 This physical protostatement is what gets sent to the database adapter.
 
@@ -243,12 +255,11 @@ the method to `join`, and provide additional info:
 
     // If `method` is `join`, then join instructions will be included in the criteria:
     joins: [
-      // TODO: document `joins`
+      // TODO: document `joins` (@particlebanana/@sgress454 halp!)
     ]
   },
 }
 ```
-$$$ I don't know how to mess with the joins here and how to document it
 
 
 ### Stage 4 query
@@ -281,6 +292,9 @@ In the database adapter, the physical protostatement is converted into an actual
 
 This is the same kind of statement that you can send directly to the lower-level driver.  Statements are _much_ closer to native queries (e.g. SQL query or MongoDB native queries).  They are still more or less database-agnostic, but less regimented, and completely independent from the database schema.
 
+
+> Not _every_ adapter necessarily uses statements (S4Qs) and native queries (S5Qs).  This will likely change in the future though.
+> If you're implementing a new adapter for Waterline, take a peek at the latest versions of sails-postgresql or sails-mysql for inspiration.  If you need help, [hit us up](https://flagship.sailsjs.com/contact).
 
 
 ### Stage 5 query
