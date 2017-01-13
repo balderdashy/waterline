@@ -538,16 +538,16 @@ Quick reference for what various things inside of the query are called.
 | clause                 | A top-level key in the `criteria`.  There are a specific set of permitted clauses in criterias.  Which clauses are allowed depends on what stage of query this is (for example, stage 3 queries don't permit the use of `omit`, but stage 2 queries _do_)
 | `sort` clause          | When fully-normalized, this is an array of >=1 dictionaries called comparator directives.
 | comparator directive   | An item within the array of a fully normalized `sort` clause.  Should always be a dictionary with exactly one key, which is the name of an attribute (or column name, if this is a stage 3 query).  The RHS value of the key must always be either 'ASC' or 'DESC'.
-| `where` clause         | The `where` clause of a fully normalized criteria always has one key at the top level: either "and" or "or", whose RHS is an array consisting of zero or more conjuncts or disjuncts.
+| `where` clause         | The `where` clause of a fully normalized criteria always has one key at the top level: either (1) a predicate ("and"/"or") whose RHS is an array consisting of zero or more conjuncts or disjuncts, or (2) a single constraint (see below)
 | conjunct               | A dictionary within an `and` array.  When fully normalized, always consists of exactly one key-- an attribute name (or column name), whose RHS is either (A) a nested predicate operator or (B) a filter.
 | disjunct               | A dictionary within an `or` array whose contents work exactly like those of a conjunct (see above).
 | scruple                | Another name for a dictionary which could be a conjunct or disjunct.  Particularly useful when talking about a stage 1 query, since not everything will have been normalized yet.
-| predicate operator     | A _predicate operator_ (or simply a _predicate_) is an array-- more specifically, it is the RHS of a key/value pair where the key is either "and" or "or".  This array consists of 0 or more dictionaries called either "conjuncts" or "disjuncts" (depending on whether it's an "and" or an "or")
-| constraint             | A _constraint_ (ska "filter") is the RHS of a key/value pair within a conjunct or disjunct.  It represents how values for a particular attribute name (or column name) will be qualified.  Once normalized, constraints are always either a primitive (called an _equivalency constraint_ or _eq constraint_) or a dictionary (called a _complex constraint_) consisting of exactly one key/value pairs called a "modifier" (aka "sub-attribute modifier").  In certain special cases, (in stage 1 queries only!) multiple different modifiers can be combined together within a complex constraint (e.g. combining `>` and `<` to indicate a range of values).  In stage 2 queries, these have already been normalized out (using `and`).
+| predicate operator     | A _predicate operator_ (or simply a _predicate_) is an array-- more specifically, it is a key/value pair where the key is either "and" or "or".  The RHS is an array consisting of 0 or more dictionaries called either "conjuncts" or "disjuncts" (depending on whether it's an "and" or an "or", respectively)
+| constraint             | A _constraint_ (ska "filter") is the RHS of a key/value pair within a conjunct or disjunct, or at the very top level of the `where` clause.  It represents how values for a particular attribute name (or column name) will be qualified.  Once normalized, constraints are always either a primitive (called an _equivalency constraint_ or _eq constraint_) or a dictionary (called a _complex constraint_) consisting of exactly one key/value pairs called a "modifier" (aka "sub-attribute modifier").  In certain special cases, (in stage 1 queries only!) multiple different modifiers can be combined together within a complex constraint (e.g. combining `>` and `<` to indicate a range of values).  In stage 2 queries, these have already been normalized out (using `and`).
 | modifier               | The RHS of a key/value pair within a complex constraint, where the key is one of a special list of legal modifiers such as `nin`, `in`, `contains`, `!`, `>=`, etc.  A modifier impacts how values for a particular attribute name (or column name) will be qualified.  The data type for a particular modifier depends on the modifier.  For example, a modifier for key `in` or `nin` must be an array, but a modifier for key `contains` must be either a string or number.
 
 
-```
+```javascript
 // Example: Look up records whose name contains "Ricky", as well as being prefixed or suffixed
 // with some sort of formal-sounding title.
 where: {
@@ -573,6 +573,11 @@ where: {
 }
 ```
 
+
+
+### Example of iterating over a `where` clause from the criteria of a stage 2 query
+
+See https://gist.github.com/mikermcneil/8252ce4b7f15d9e2901003a3a7a800cf.
 
 
 
