@@ -28,6 +28,7 @@
     "bluebird": "3.2.1",
     "flaverr": "^1.0.0",
     "lodash.issafeinteger": "4.0.4",
+    "parley": "^2.1.0",
     "rttc": "^10.0.0-1",
     "switchback": "2.0.1",
     "waterline-schema": "^1.0.0-2"
