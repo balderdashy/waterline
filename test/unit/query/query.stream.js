@@ -2,8 +2,16 @@ var assert = require('assert');
 var Waterline = require('../../../lib/waterline');
 
 describe('Collection Query ::', function() {
-  describe.skip('.stream()', function() {
+  describe('.stream()', function() {
     var query;
+
+    var records = [];
+    for (var i = 1; i <= 100; i++) {
+      records.push({
+        id: i,
+        name: 'user_' + i
+      });
+    }
 
     before(function(done) {
       var waterline = new Waterline();
@@ -25,7 +33,11 @@ describe('Collection Query ::', function() {
       waterline.registerModel(Model);
 
       // Fixture Adapter Def
-      var adapterDef = {};
+      var adapterDef = {
+        find: function(datastore, query, cb) {
+          return cb(undefined, records.slice(query.criteria.skip, query.criteria.skip + query.criteria.limit));
+        }
+      };
 
       var connections = {
         'foo': {
@@ -42,14 +54,50 @@ describe('Collection Query ::', function() {
       });
     });
 
-    it('should implement a streaming interface', function(done) {
-      var stream = query.stream({});
+    it('should allow streaming a single record at a time', function(done) {
 
-      // Just test for error now
-      stream.on('error', function(err) {
-        assert(err);
+      var sum = 0;
+      var stream = query.stream({}).eachRecord(function(rec, next) {
+        sum += rec.id;
+        return next();
+      }).exec(function(err) {
+        if (err) {return done(err);}
+        try {
+          assert.equal(sum, 5050);
+        } catch (e) {return done(e);}
         return done();
       });
     });
+
+    it('should allow streaming a batch of records at a time', function(done) {
+
+      var batch = 0;
+      var stream = query.stream({}).eachBatch(function(recs, next) {
+        batch += recs.length;
+        return next();
+      }).exec(function(err) {
+        if (err) {return done(err);}
+        try {
+          assert.equal(batch, 100);
+        } catch (e) {return done(e);}
+        return done();
+      });
+    });
+
+    it('should work correctly with `.skip()` and `.limit()`', function(done) {
+
+      var sum = 0;
+      var stream = query.stream({}).skip(10).limit(50).eachRecord(function(rec, next) {
+        sum += rec.id;
+        return next();
+      }).exec(function(err) {
+        if (err) {return done(err);}
+        try {
+          assert.equal(sum, 1775);
+        } catch (e) {return done(e);}
+        return done();
+      });
+    });
+
   });
 });
