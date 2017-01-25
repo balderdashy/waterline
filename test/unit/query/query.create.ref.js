@@ -23,7 +23,7 @@ describe('Collection Query ::', function() {
       it('should maintain object references for `ref` type attributes', function(done) {
         var myBlob = new Buffer([1,2,3,4,5]);
         var waterline = new Waterline();
-        waterline.registerModel(Waterline.Model.extend(_.merge({}, modelDef)));
+        waterline.registerModel(Waterline.Model.extend(_.extend({}, modelDef)));
 
         // Fixture Adapter Def
         var adapterDef = {
