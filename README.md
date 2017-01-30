@@ -103,6 +103,8 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
   cascadeOnDestroy: true,
   fetchRecordsOnUpdate: true,
   fetchRecordsOnDestroy: true,
+  fetchRecordsOnCreate: true,
+  fetchRecordsOnCreateEach: true,
 }
 ```
 
