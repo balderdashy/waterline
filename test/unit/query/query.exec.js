@@ -67,7 +67,7 @@ describe('Collection Query ::', function() {
       });
     });
 
-    describe('when passed a switchback (object with multiple handlers)', function() {
+    describe.skip('when passed a switchback (object with multiple handlers)', function() {
       var _error;
       var _results;
 
