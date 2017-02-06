@@ -44,7 +44,7 @@ describe('Collection Transformations ::', function() {
           return '';
         })();
 
-        assert(msg == 'Column Name must be a string on username');
+        assert.strictEqual('Consistency violation: `columnName` must be a string.  But for this attribute (`username`) it is not!', msg);
       });
     });
   });

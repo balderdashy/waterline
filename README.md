@@ -85,10 +85,10 @@ These keys are not set in stone, and may still change prior to release. (They're
 
 Meta Key                              | Default         | Purpose
 :------------------------------------ | :---------------| :------------------------------
-skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
 cascade                               | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection(..., ..., [])`) on plural ("collection") associations when deleting a record.  _Note: In order to do this when the `fetch` meta key IS NOT enabled (which it is NOT by default), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._
 fetch                                 | false           | For adapters: When performing `.update()` or `.create()`, set this to `true` to tell the database adapter to send back all records that were updated/destroyed.  Otherwise, the second argument to the `.exec()` callback is `undefined`.  Warning: Enabling this key may cause performance issues for update/destroy queries that affect large numbers of records.
-skipRecordVerification                | false           | Set to `true` to skip Waterline's post-query verification pass of any records returned from the adapter(s).  Useful for tools like sails-hook-orm's automigration support.
+skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
+skipRecordVerification                | false           | Set to `true` to skip Waterline's post-query verification pass of any records returned from the adapter(s).  Useful for tools like sails-hook-orm's automigrations.  **Warning: Enabling this flag causes Waterline to ignore `customToJSON`!**
 
 
 #### Related model settings
@@ -103,6 +103,8 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
   cascadeOnDestroy: true,
   fetchRecordsOnUpdate: true,
   fetchRecordsOnDestroy: true,
+  fetchRecordsOnCreate: true,
+  fetchRecordsOnCreateEach: true,
 }
 ```
 
