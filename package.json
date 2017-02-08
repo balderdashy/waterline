@@ -52,8 +52,8 @@
   "repository": "git://github.com/balderdashy/waterline.git",
   "main": "./lib/waterline",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha test --recursive",
-    "fasttest": "NODE_ENV=test ./node_modules/mocha/bin/mocha test --recursive",
+    "test": "./node_modules/mocha/bin/mocha test --recursive",
+    "fasttest": "./node_modules/mocha/bin/mocha test --recursive",
     "posttest": "npm run lint",
     "lint": "eslint lib",
     "prepublish": "npm prune",
