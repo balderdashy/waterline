@@ -7,7 +7,6 @@
     "mocha": true
   },
   "rules": {
-    "array-bracket-spacing":        [2, "never"],
     "callback-return":              [2, ["callback", "cb", "next", "done", "proceed"]],
     "camelcase":                    [2, {"properties": "always"}],
     "comma-style":                  [2, "last"],
