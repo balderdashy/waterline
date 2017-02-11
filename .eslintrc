@@ -1,18 +1,30 @@
 {
+  //   ╔═╗╔═╗╦  ╦╔╗╔╔╦╗┬─┐┌─┐
+  //   ║╣ ╚═╗║  ║║║║ ║ ├┬┘│
+  //  o╚═╝╚═╝╩═╝╩╝╚╝ ╩ ┴└─└─┘
   "env": {
     "node": true,
     "mocha": true
   },
   "rules": {
+    "array-bracket-spacing":        [2, "never"],
+    "callback-return":              [2, ["callback", "cb", "next", "done", "proceed"]],
+    "camelcase":                    [2, {"properties": "always"}],
     "comma-style":                  [2, "last"],
     "curly":                        [2],
     "eqeqeq":                       [1, "smart"],
+    "eol-last":                     [2],
     "handle-callback-err":          [2],
+    "indent":                       [2, 2, {"SwitchCase": 1}],
+    "linebreak-style":              [2, "unix"],
     "no-mixed-spaces-and-tabs":     [2, "smart-tabs"],
+    "no-return-assign":             [2, "always"],
     "no-sequences":                 [2],
     "no-trailing-spaces":           [2],
     "no-undef":                     [2],
+    "no-unexpected-multiline":      [1],
     "no-unused-vars":               [2],
+    "one-var":                      [2, "never"],
     "semi":                         [1, "always"]
   }
 }
