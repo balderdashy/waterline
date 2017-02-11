@@ -2,6 +2,9 @@
   //   ╔═╗╔═╗╦  ╦╔╗╔╔╦╗┬─┐┌─┐
   //   ║╣ ╚═╗║  ║║║║ ║ ├┬┘│
   //  o╚═╝╚═╝╩═╝╩╝╚╝ ╩ ┴└─└─┘
+  // A set of basic conventions designed to complement the .jshintrc file.
+  // For the master copy of this file, see the `.eslintrc` template file in
+  // the `sails-generate` package (https://www.npmjs.com/package/sails-generate.)
   "env": {
     "node": true,
     "mocha": true
