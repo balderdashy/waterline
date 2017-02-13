@@ -5,7 +5,6 @@ describe('Collection Query ::', function() {
   describe('.count()', function() {
 
     var orm;
-    var User;
     before(function (done) {
       Waterline.start({
         adapters: {
@@ -34,10 +33,7 @@ describe('Collection Query ::', function() {
         }
       }, function (err, _orm) {
         if (err) { return done(err); }
-
         orm = _orm;
-        User = _orm.collections.user;
-
         return done();
       });
 
@@ -51,7 +47,8 @@ describe('Collection Query ::', function() {
     });
 
     it('should return a number representing the number of things', function(done) {
-      User.count({ name: 'foo' }, function(err, count) {
+      Waterline.getModel('user', orm)
+      .count({ name: 'foo' }, function(err, count) {
         if(err) { return done(err); }
         try {
           assert(typeof count === 'number');
@@ -62,7 +59,8 @@ describe('Collection Query ::', function() {
     });//</it>
 
     it('should allow a query to be built using deferreds', function(done) {
-      User.count()
+      Waterline.getModel('user', orm)
+      .count()
       .exec(function(err, result) {
         if(err) { return done(err); }
         try {
