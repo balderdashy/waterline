@@ -138,14 +138,6 @@ This is what's known as a "Stage 2 query":
     // • `true` - if this is a singular ("model") association
     // • a subcriteria - if this is a plural ("collection") association a fully-normalized, stage 2 Waterline criteria
     // • `false` - special case, only for when this is a plural ("collection") association: when the provided subcriteria would actually be a no-op that will always end up as `[]`
-    //
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // > Side note about what to expect under the relevant key in record(s) when you populate vs. don't populate:
-    // > • When populating a singular association, you'll always get either a dictionary (a child record) or `null` (if no child record matches the fk; e.g. if the fk was old, or if it was `null`)
-    // > • When populating a plural association, you'll always get an array of dictionaries (child records).  Of course, it might be empty.
-    // > • When NOT populating a singular association, you'll get whatever is stored in the database (there is no guarantee it will be correct-- if you fiddle with your database directly at the physical layer, you could mess it up).  Note that we ALWAYS guarantee that the key will be present though, so long as it's not being explicitly excluded by `omit` or `select`.  i.e. even if the database says it's not there, the key will exist as `null`.
-    // > • When NOT populating a plural association, you'll never get the key.  It won't exist on the resulting record(s).
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     friends: {
       select: [ '*' ],
@@ -159,14 +151,14 @@ This is what's known as a "Stage 2 query":
               { age: { '<': 50 } }
             ]
           }
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // > Why don't we coallesce the "and"s above?  It's kind of ugly.
           //
           // Performance trumps prettiness here-- S2Qs are for computers, not humans.
           // S1Qs should be pretty, but for S2Qs, the priorities are different.  Instead, it's more important
           // that they (1) are easy to write parsing code for and (2) don't introduce any meaningful overhead
           // when they are built (remember: we're building these on a per-query basis).
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         ]
       },
       limit: (Number.MAX_SAFE_INTEGER||9007199254740991),
@@ -180,6 +172,33 @@ This is what's known as a "Stage 2 query":
 
 }
 ```
+
+##### Side note about populating
+
+```
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // > Side note about what to expect under the relevant key in record(s) when you populate vs. don't populate:
+    // > • When populating a singular ("model") attribute, you'll always get either a dictionary (a child record) or `null` (if no child record matches the fk; e.g. if the fk was old, or if it was `null`)
+    // > • When populating a plural ("collection") attribute, you'll always get an array of dictionaries (a collection, consisting of child records).  Of course, it might be empty.
+    // > • When NOT populating a singular ("model") attribute, you'll get whatever is stored in the database (there is no guarantee it will be correct-- if you fiddle with your database directly at the physical layer, you could mess it up).  Note that we ALWAYS guarantee that the key will be present though, so long as it's not being explicitly excluded by `omit` or `select`.  i.e. even if the database says it's not there, the key will exist as `null`.
+    // > • When NOT populating a plural ("collection") attribute, you'll never get the key.  It won't exist on the resulting parent record(s).
+    // > • If populating a plural ("collection") attribute, and child records w/ duplicate ids exist in the collection (e.g. because of a corrupted physical database), any duplicate child records are stripped out.
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+Also, some more formal terminology:
+
++ Ideally, one uses the word "association" when one wants to refer to _both sides_ of the association *at the same time*.  It's still possible to understand what it means more generally or when referring to a particular attribute, but it's one of those things that's helpful to be able to get a bit more formal about sometimes.
++ When one needs to be specific, one refers to the attribute defs themselves as "singular attributes" (or more rarely: "model attribute")  and "plural attribute" (aka "collection attribute").
++ one uses "singular" and "plural" to refer to a _particular side_ of the association.  So really, in that parlance, an "association" is never wholly singular or plural-- it's just that the attributes on either side are.  Similarly, you can't always look at a plural or singular attribute and decide whether it's part 2-way or 1-way association (you don't always have enough information)
++ A 1-way (or "exclusive") association is either a vialess collection attribute, or a singular attribute that is not pointed at by a via on the other side
++ A 2-way (or "shared") association is any collection attribute with `via`, or a singular attribute that _is_ pointed at by a via on the other side
++ A 2-way association that is laid out in such a way that it needs a junction model to fully represent it is called a many-to-many association
++ When referring to a record which might be populated, one calls it a "parent record" (or rarely: "primary record")
++ Finally, when referring to a populated key/value pair within a parent record, one refers to it as one of the following:
+  + for singular, when not populated: a "foreign key"
+  + for singular, when populated: a "child record" (aka "foreign record")
+  + for plural, when populated: a "collection" (aka "foreign collection")
 
 
 ### Stage 3 query
