@@ -3,8 +3,8 @@ var Waterline = require('../../../lib/waterline');
 
 describe('Collection Query ::', function() {
   describe('.count()', function() {
-    var WLModel;
 
+    var User;
     before(function (done) {
       var orm = new Waterline();
 
@@ -37,16 +37,17 @@ describe('Collection Query ::', function() {
             adapter: 'foobar'
           }
         }
-      }, function(err, orm) {
+      }, function(err, ontology) {
         if(err) { return done(err); }
 
-        WLModel = orm.collections.user;
+        User = ontology.collections.user;
+
         return done();
       });
     });//</before>
 
     it('should return a number representing the number of things', function(done) {
-      WLModel.count({ name: 'foo'}, function(err, count) {
+      User.count({ name: 'foo'}, function(err, count) {
         if(err) { return done(err); }
         try {
           assert(typeof count === 'number');
@@ -57,7 +58,7 @@ describe('Collection Query ::', function() {
     });//</it>
 
     it('should allow a query to be built using deferreds', function(done) {
-      WLModel.count()
+      User.count()
       .exec(function(err, result) {
         if(err) { return done(err); }
         try {
