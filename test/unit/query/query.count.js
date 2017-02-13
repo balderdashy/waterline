@@ -4,50 +4,54 @@ var Waterline = require('../../../lib/waterline');
 describe('Collection Query ::', function() {
   describe('.count()', function() {
 
+    var orm;
     var User;
     before(function (done) {
-      var orm = new Waterline();
-
-      orm.registerModel(
-        Waterline.Model.extend({
-          identity: 'user',
-          connection: 'foo',
-          primaryKey: 'id',
-          attributes: {
-            id: {
-              type: 'number'
-            },
-            name: {
-              type: 'string'
-            }
-          }
-        })
-      );
-
-      orm.initialize({
+      Waterline.start({
         adapters: {
-          foobar: {
+          'sails-foobar': {
+            identity: 'sails-foobar',
             count: function(datastoreName, s3q, cb) {
               return cb(undefined, 1);
             }
           }
         },
         datastores: {
-          foo: {
-            adapter: 'foobar'
+          default: {
+            adapter: 'sails-foobar'
+          }
+        },
+        models: {
+          user: {
+            identity: 'user',
+            connection: 'default',
+            primaryKey: 'id',
+            attributes: {
+              id: { type: 'number' },
+              name: { type: 'string' }
+            }
           }
         }
-      }, function(err, ontology) {
-        if(err) { return done(err); }
+      }, function (err, _orm) {
+        if (err) { return done(err); }
 
-        User = ontology.collections.user;
+        orm = _orm;
+        User = _orm.collections.user;
 
         return done();
       });
+
     });//</before>
 
+    after(function(done) {
+      // Note that we don't bother attempting to stop the orm
+      // if it doesn't even exist (i.e. because `.start()` failed).
+      if (!orm) { return done(); }
+      Waterline.stop(orm, done);
+    });
+
     it('should return a number representing the number of things', function(done) {
-      User.count({ name: 'foo'}, function(err, count) {
+      User.count({ name: 'foo' }, function(err, count) {
         if(err) { return done(err); }
         try {
           assert(typeof count === 'number');
