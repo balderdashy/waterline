@@ -3,65 +3,69 @@ var Waterline = require('../../../lib/waterline');
 
 describe('Collection Query ::', function() {
   describe('.count()', function() {
-    var query;
+    var WLModel;
 
-    before(function(done) {
-      var waterline = new Waterline();
-      var Model = Waterline.Model.extend({
-        identity: 'user',
-        connection: 'foo',
-        primaryKey: 'id',
-        attributes: {
-          id: {
-            type: 'number'
-          },
-          name: {
-            type: 'string'
+    before(function (done) {
+      var orm = new Waterline();
+
+      orm.registerModel(
+        Waterline.Model.extend({
+          identity: 'user',
+          connection: 'foo',
+          primaryKey: 'id',
+          attributes: {
+            id: {
+              type: 'number'
+            },
+            name: {
+              type: 'string'
+            }
+          }
+        })
+      );
+
+      orm.initialize({
+        adapters: {
+          foobar: {
+            count: function(datastoreName, s3q, cb) {
+              return cb(undefined, 1);
+            }
+          }
+        },
+        datastores: {
+          foo: {
+            adapter: 'foobar'
           }
         }
-      });
+      }, function(err, orm) {
+        if(err) { return done(err); }
 
-      waterline.registerModel(Model);
-
-      // Fixture Adapter Def
-      var adapterDef = { count: function(con, query, cb) { return cb(null, 1); }};
-
-      var connections = {
-        'foo': {
-          adapter: 'foobar'
-        }
-      };
-
-      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
-        if(err) {
-          return done(err);
-        }
-        query = orm.collections.user;
+        WLModel = orm.collections.user;
         return done();
       });
-    });
+    });//</before>
 
-    it('should return a count', function(done) {
-      query.count({ name: 'foo'}, {}, function(err, count) {
-        if(err) {
-          return done(err);
-        }
-
-        assert(count > 0);
-        done();
+    it('should return a number representing the number of things', function(done) {
+      WLModel.count({ name: 'foo'}, function(err, count) {
+        if(err) { return done(err); }
+        try {
+          assert(typeof count === 'number');
+          assert(count > 0);
+        } catch (e) { return done(e); }
+        return done();
       });
-    });
+    });//</it>
 
     it('should allow a query to be built using deferreds', function(done) {
-      query.count()
+      WLModel.count()
       .exec(function(err, result) {
-        if(err) {
-          return done(err);
-        }
-
-        assert(result);
-        done();
+        if(err) { return done(err); }
+        try {
+          assert(result);
+        } catch (e) { return done(e); }
+        return done();
       });
-    });
-  });
-});
+    });//</it>
+
+  });//</describe>
+});//</describe>
