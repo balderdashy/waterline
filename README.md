@@ -12,7 +12,7 @@ It provides a uniform API for accessing stuff from different kinds of databases,
 
 Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
 
-For detailed documentation, see [the Waterline documentation](https://github.com/balderdashy/waterline-docs).
+For detailed documentation, see [the Sails documentation](http://sailsjs.com).
 
 
 > Looking for the version of Waterline used in Sails v0.12?  See https://github.com/balderdashy/waterline/tree/0.11.x.
