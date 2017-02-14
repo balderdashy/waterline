@@ -279,9 +279,9 @@ the method to `join`, and provide additional info:
       // the array will have two items for that population.
       {
         // The identity of the parent model
-        parentCollectionIdentity: 'users,
+        parentCollectionIdentity: 'users',
         // The model tableName of the parent (unless specified all keys are using tableNames)
-        parent: 'user_table_name,
+        parent: 'user_table_name',
         // An alias to use for the join
         parentAlias: 'user_table_name__pets',
         // For singular associations, the populated attribute will have a schema (since it represents
