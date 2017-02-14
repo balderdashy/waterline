@@ -27,27 +27,7 @@ Install from NPM.
 ## Overview
 Waterline uses the concept of an adapter to translate a predefined set of methods into a query that can be understood by your data store. Adapters allow you to use various datastores such as MySQL, PostgreSQL, MongoDB, Redis, etc. and have a clear API for working with your model data.
 
-It also allows an adapter to define its own methods that don't necessarily fit into the CRUD methods defined by default in Waterline. If an adapter defines a custom method, Waterline will simply pass the function arguments down to the adapter.
-
-#### Community Adapters
-
-  - [PostgreSQL](https://github.com/balderdashy/sails-postgresql) - *0.9+ compatible*
-  - [MySQL](https://github.com/balderdashy/sails-mysql) - *0.9+ compatible*
-  - [MongoDB](https://github.com/balderdashy/sails-mongo) - *0.9+ compatible*
-  - [Memory](https://github.com/balderdashy/sails-memory) - *0.9+ compatible*
-  - [Disk](https://github.com/balderdashy/sails-disk) - *0.9+ compatible*
-  - [Microsoft SQL Server](https://github.com/cnect/sails-sqlserver)
-  - [Redis](https://github.com/balderdashy/sails-redis)
-  - [Riak](https://github.com/balderdashy/sails-riak)
-  - [Neo4j](https://github.com/natgeo/sails-neo4j)
-  - [OrientDB](https://github.com/appscot/sails-orientdb)
-  - [ArangoDB](https://github.com/rosmo/sails-arangodb)
-  - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
-  - [GraphQL](https://github.com/wistityhq/waterline-graphql)
-  - [Solr](https://github.com/sajov/sails-solr)
-  - [Apache Derby](https://github.com/dash-/node-sails-derby)
-
-
+Waterline supports [a wide variety of adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters) both core and community maintained.
 
 ## Help
 Need help or have a question?  Click [here](http://sailsjs.com/support).
