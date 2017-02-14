@@ -21,19 +21,19 @@ describe('Collection Transformations ::', function() {
       });
 
       it('should change username key to login', function() {
-        var values = transformer.serialize({ username: 'foo' });
+        var values = transformer.serializeValues({ username: 'foo' });
         assert(values.login);
         assert.equal(values.login, 'foo');
       });
 
       it('should work recursively', function() {
-        var values = transformer.serialize({ where: { user: { username: 'foo' }}});
+        var values = transformer.serializeCriteria({ where: { user: { username: 'foo' }}});
         assert(values.where.user.login);
         assert.equal(values.where.user.login, 'foo');
       });
 
       it('should work on SELECT queries', function() {
-        var values = transformer.serialize(
+        var values = transformer.serializeCriteria(
           {
             where: {
               username: 'foo'
@@ -87,13 +87,13 @@ describe('Collection Transformations ::', function() {
       });
 
       it('should change customer key to customer_uuid', function() {
-        var values = transformer.serialize({ customer: 1 });
+        var values = transformer.serializeValues({ customer: 1 });
         assert(values.customer);
         assert.equal(values.customer, 1);
       });
 
       it('should work recursively', function() {
-        var values = transformer.serialize({ where: { user: { customer: 1 }}});
+        var values = transformer.serializeCriteria({ where: { user: { customer: 1 }}});
         assert(values.where.user.customer);
         assert.equal(values.where.user.customer, 1);
       });
