@@ -3,7 +3,8 @@ var Waterline = require('../../../lib/waterline');
 
 describe('After Destroy Lifecycle Callback ::', function() {
   describe('Destroy ::', function() {
-    var person, status;
+    var person;
+    var status;
 
     before(function(done) {
       var waterline = new Waterline();
@@ -12,6 +13,7 @@ describe('After Destroy Lifecycle Callback ::', function() {
         connection: 'foo',
         primaryKey: 'id',
         fetchRecordsOnCreate: true,
+        fetchRecordsOnDestroy: true,
         attributes: {
           id: {
             type: 'number'
@@ -21,14 +23,9 @@ describe('After Destroy Lifecycle Callback ::', function() {
           }
         },
 
-        afterDestroy: function(arrayOfDestroyedRecordsMaybe, cb) {
-          person.create({ test: 'test' }, function(err, result) {
-            if (err) {
-              return cb(err);
-            }
-            status = result.status;
-            cb();
-          });
+        afterDestroy: function(destroyedRecord, cb) {
+          status = destroyedRecord.status;
+          cb();
         }
       });
 
@@ -36,7 +33,7 @@ describe('After Destroy Lifecycle Callback ::', function() {
 
       // Fixture Adapter Def
       var adapterDef = {
-        destroy: function(con, query, cb) { return cb(undefined, query); },
+        destroy: function(con, query, cb) { return cb(undefined, [{ status: true, id: 1 }]); },
         create: function(con, query, cb) { return cb(undefined, { status: true, id: 1 }); }
       };
 
