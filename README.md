@@ -89,6 +89,7 @@ cascade                               | false           | Set to `true` to autom
 fetch                                 | false           | For adapters: When performing `.update()` or `.create()`, set this to `true` to tell the database adapter to send back all records that were updated/destroyed.  Otherwise, the second argument to the `.exec()` callback is `undefined`.  Warning: Enabling this key may cause performance issues for update/destroy queries that affect large numbers of records.
 skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
 skipRecordVerification                | false           | Set to `true` to skip Waterline's post-query verification pass of any records returned from the adapter(s).  Useful for tools like sails-hook-orm's automigrations.  **Warning: Enabling this flag causes Waterline to ignore `customToJSON`!**
+skipExpandingDefaultSelectClause      | false           | Set to `true` to force Waterline to skip expanding the `select` clause in criteria when it forges stage 3 queries (i.e. the queries that get passed in to adapter methods).  Normally, if a model declares `schema: true`, then the S3Q `select` clause is expanded to an array of column names, even if the S2Q had factory default `select`/`omit` clauses (which is also what it would have if no explicit `select` or `omit` clauses were included in the original S1Q.) Useful for tools like sails-hook-orm's automigrations, where you want temporary access to properties that aren\'t necessarily in the current set of attribute definitions.  **Warning: Do not use this flag in your web application backend-- or at least [ask for help](https://sailsjs.com/support) first.**
 
 
 #### Related model settings
@@ -100,7 +101,8 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
   attributes: {...},
   primaryKey: 'id',
 
-  cascadeOnDestroy: true,
+  skipCascadeOnDestroy: true,
+
   fetchRecordsOnUpdate: true,
   fetchRecordsOnDestroy: true,
   fetchRecordsOnCreate: true,
