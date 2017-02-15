@@ -12,7 +12,7 @@ It provides a uniform API for accessing stuff from different kinds of databases,
 
 Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
 
-For detailed documentation, see [the Waterline documentation](https://github.com/balderdashy/waterline-docs).
+For detailed documentation, see [the Sails documentation](http://sailsjs.com).
 
 
 > Looking for the version of Waterline used in Sails v0.12?  See https://github.com/balderdashy/waterline/tree/0.11.x.
@@ -27,27 +27,7 @@ Install from NPM.
 ## Overview
 Waterline uses the concept of an adapter to translate a predefined set of methods into a query that can be understood by your data store. Adapters allow you to use various datastores such as MySQL, PostgreSQL, MongoDB, Redis, etc. and have a clear API for working with your model data.
 
-It also allows an adapter to define its own methods that don't necessarily fit into the CRUD methods defined by default in Waterline. If an adapter defines a custom method, Waterline will simply pass the function arguments down to the adapter.
-
-#### Community Adapters
-
-  - [PostgreSQL](https://github.com/balderdashy/sails-postgresql) - *0.9+ compatible*
-  - [MySQL](https://github.com/balderdashy/sails-mysql) - *0.9+ compatible*
-  - [MongoDB](https://github.com/balderdashy/sails-mongo) - *0.9+ compatible*
-  - [Memory](https://github.com/balderdashy/sails-memory) - *0.9+ compatible*
-  - [Disk](https://github.com/balderdashy/sails-disk) - *0.9+ compatible*
-  - [Microsoft SQL Server](https://github.com/cnect/sails-sqlserver)
-  - [Redis](https://github.com/balderdashy/sails-redis)
-  - [Riak](https://github.com/balderdashy/sails-riak)
-  - [Neo4j](https://github.com/natgeo/sails-neo4j)
-  - [OrientDB](https://github.com/appscot/sails-orientdb)
-  - [ArangoDB](https://github.com/rosmo/sails-arangodb)
-  - [Apache Cassandra](https://github.com/dtoubelis/sails-cassandra)
-  - [GraphQL](https://github.com/wistityhq/waterline-graphql)
-  - [Solr](https://github.com/sajov/sails-solr)
-  - [Apache Derby](https://github.com/dash-/node-sails-derby)
-
-
+Waterline supports [a wide variety of adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters) both core and community maintained.
 
 ## Help
 Need help or have a question?  Click [here](http://sailsjs.com/support).
@@ -111,65 +91,6 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
 ```
 
 > Not every meta key will necessarily have a model setting that controls it-- in fact, to minimize peak configuration complexity, most will probably not.
-
-
-## New methods
-
-Rough draft of documentation for a few new methods available in Waterline v0.13.
-
-
-#### replaceCollection()
-
-Replace the specified collection of one or more parent records with a new set of members.
-
-```javascript
-// For users 3 and 4, change their "pets" collection to contain ONLY pets 99 and 98.
-User.replaceCollection([3,4], 'pets')
-.members([99,98])
-.exec(function (err) {
-  // ...
-});
-```
-
-Under the covers, what this method _actually does_ varies depending on whether the association passed in uses a junction or not.
-
-> We know a plural association must use a junction if either (A) it is one-way ("via-less") or (B) it reciprocates another _plural_ association.
-
-If the association uses a junction, then any formerly-ascribed junction records are deleted, and junction records are created for the new members.  Otherwise, if the association _doesn't_ use a junction, then the value of the reciprocal association in former child records is set to `null`, and the same value in newly-ascribed child records is set to the parent record's ID.  (Note that, with this second category of association, there can only ever be _one_ parent record.  Attempting to pass in multiple parent records will result in an error.)
-
-
-#### addToCollection()
-
-Add new members to the specified collection of one or more parent records.
-
-```javascript
-// For users 3 and 4, add pets 99 and 98 to the "pets" collection.
-// > (if either user record already has one of those pets in its "pets",
-// > then we just silently skip over it)
-User.addToCollection([3,4], 'pets')
-.members([99,98])
-.exec(function(err){
-  // ...
-});
-```
-
-
-#### removeFromCollection()
-
-Remove members from the the specified collection of one or more parent records.
-
-```javascript
-// For users 3 and 4, remove pets 99 and 98 from their "pets" collection.
-// > (if either user record does not actually have one of those pets in its "pets",
-// > then we just silently skip over it)
-User.removeFromCollection([3,4], 'pets')
-.members([99,98])
-.exec(function(err) {
-  // ...
-});
-```
-
-
 
 
 ## License

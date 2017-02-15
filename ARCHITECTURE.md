@@ -274,7 +274,69 @@ the method to `join`, and provide additional info:
 
     // If `method` is `join`, then join instructions will be included in the criteria:
     joins: [
-      // TODO: document `joins` (@particlebanana/@sgress454 halp!)
+      // The `joins` array can have 1 or 2 dictionaries inside of it for __each__ populated
+      // attribute in the query. If the query requires the use of a join table then
+      // the array will have two items for that population.
+      {
+        // The identity of the parent model
+        parentCollectionIdentity: 'users',
+        // The model tableName of the parent (unless specified all keys are using tableNames)
+        parent: 'user_table_name',
+        // An alias to use for the join
+        parentAlias: 'user_table_name__pets',
+        // For singular associations, the populated attribute will have a schema (since it represents
+        // a real column).  For plural associations, we'll use the primary key column of the parent table.
+        parentKey: 'id',
+        // The identity of the child model (in this case the join table)
+        childCollectionIdentity: 'pets_owners__users_pets',
+        // The tableName of the child model
+        child: 'pets_owners__users_pets',
+        // An alias to use for the join. It's made up of the parent reference + '__' + the attribute to populate
+        childAlias: 'pets_owners__users_pets__pets',
+        // The key on the child model that represents the foreign key value
+        childKey: 'user_pets',
+        // The original model alias used
+        alias: 'pets',
+        // Determines if the parent key is needed on the record. Will be true for
+        // singular associations otherwise false.
+        removeParentKey: false,
+        // Similar to removeParentKey
+        model: false,
+        // Flag determining if multiple records will be returned
+        collection: true
+      },
+      // In this case the "pets" population requires the use of a join table so
+      // two joins are needed to get the correct data. This dictionary represents
+      // the connection between the join table and the child table.
+      {
+        // Parent in this case will be the join table
+        parentCollectionIdentity: 'pets_owners__users_pets',
+        parent: 'pets_owners__users_pets',
+        parentAlias: 'pets_owners__users_pets__pets',
+        parentKey: 'pet_owners',
+        // Child will be the table that holds the actual record being populated
+        childCollectionIdentity: 'pets',
+        child: 'pets',
+        childAlias: 'pets__pets',
+        childKey: 'id',
+        alias: 'pets',
+        // Flag to show that a join table was used so when joining the records
+        // take that into account.
+        junctionTable: true,
+        removeParentKey: false,
+        model: false,
+        collection: true,
+        // Criteria to use for the child table.
+        criteria: {
+          where: {},
+          limit: 9007199254740991,
+          skip: 0,
+          sort: [{
+            id: 'ASC'
+          }],
+          select: ['createdAt', 'updatedAt', 'id', 'name']
+        }
+      }
     ]
   },
 }
