@@ -101,7 +101,7 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
   attributes: {...},
   primaryKey: 'id',
 
-  skipCascadeOnDestroy: true,
+  cascadeOnDestroy: true,
 
   fetchRecordsOnUpdate: true,
   fetchRecordsOnDestroy: true,
