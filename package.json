@@ -31,8 +31,8 @@
     "parley": "^2.2.0",
     "rttc": "^10.0.0-1",
     "switchback": "2.0.1",
-    "waterline-schema": "^1.0.0-5",
-    "waterline-utils": "^1.3.4"
+    "waterline-schema": "^1.0.0-7",
+    "waterline-utils": "^1.3.7"
   },
   "devDependencies": {
     "eslint": "2.11.1",
