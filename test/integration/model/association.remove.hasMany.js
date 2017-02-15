@@ -41,15 +41,18 @@ describe('Model', function() {
         waterline.loadCollection(Preference);
 
         var _values = [
-          { id: 1, preference: [{ foo: 'bar' }, { foo: 'foobar' }] },
-          { id: 2, preference: [{ foo: 'a' }, { foo: 'b' }] },
+          { id: 1, preference: [{ id: 10, foo: 'bar' }, { id: 20, foo: 'foobar' }] },
+          { id: 2, preference: [{ id: 30, foo: 'a' }, { id: 40, foo: 'b' }] },
         ];
 
         var adapterDef = {
           find: function(con, col, criteria, cb) { return cb(null, _values); },
           update: function(con, col, criteria, values, cb) {
             if(col === 'preference') {
-              prefValues.push({ id: criteria.where.id, values: values });
+              prefValues.push({
+                id: criteria.where.id,
+                assoc: criteria.where.user,
+                values: values });
             }
 
             return cb(null, values);
@@ -80,16 +83,18 @@ describe('Model', function() {
 
           var person = models[0];
 
-          person.preferences.remove(1);
-          person.preferences.remove(2);
+          person.preferences.remove(10);
+          person.preferences.remove(20);
 
           person.save(function(err) {
             if(err) return done(err);
 
             assert(prefValues.length === 2);
-            assert(prefValues[0].id === 1);
+            assert(prefValues[0].id === 10);
+            assert(prefValues[0].assoc === 1);
             assert(prefValues[0].values.user === null);
-            assert(prefValues[1].id === 2);
+            assert(prefValues[1].id === 20);
+            assert(prefValues[1].assoc === 1);
             assert(prefValues[1].values.user === null);
 
             done();
