@@ -12,8 +12,7 @@ It provides a uniform API for accessing stuff from different kinds of databases,
 
 Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
 
-> Looking for the version of Waterline used in Sails v0.12?  See https://github.com/balderdashy/waterline/tree/0.11.x.
-> If you're upgrading to v0.13 from a previous release of Waterline _standalone_, take a look at the [upgrading guide](http://sailsjs.com/documentation/upgrading/to-v-1-0).
+> Looking for the version of Waterline used in Sails v0.12?  See the [0.11.x branch](https://github.com/balderdashy/waterline/tree/0.11.x) of this repo.  If you're upgrading to v0.13 from a previous release of Waterline _standalone_, take a look at the [upgrading guide](http://sailsjs.com/documentation/upgrading/to-v-1-0).
 
 ## Installation
 Install from NPM.
@@ -32,20 +31,17 @@ Waterline supports [a wide variety of adapters](http://sailsjs.com/documentation
 The up-to-date documentation for Waterline is maintained on the [Sails framework website](http://sailsjs.com).
 You can find detailed API reference docs under [Reference > Waterline ORM](http://sailsjs.com/documentation/reference/waterline-orm).  For conceptual info (including Waterline standalone usage), and answers to common questions, see [Concepts > Models & ORM](http://sailsjs.com/docs/concepts/extending-sails/adapters/custom-adapters).
 
-### Support
+#### Help
 
-If you have a specific question, or just need to clarify how something works, check out the recommended [community support options](http://sailsjs.com/support), or reach out to the core team [directly](http://sailsjs.com/contact).
-Also, you can stay up to date with security patches, release schedule, tutorials, new adapters, and other resources by following us ([@sailsjs](https://twitter.com/sailsjs)) on Twitter.
+Check out the recommended [community support options](http://sailsjs.com/support) for tutorials and other resources.  If you have a specific question, or just need to clarify how something works, [ask for help](https://gitter.im/balderdashy/sails) or reach out to the core team [directly](http://sailsjs.com/flagship).
+
+You can keep up to date with security patches, the Waterline release schedule, new database adapters, and events in your area by following us ([@sailsjs](https://twitter.com/sailsjs)) on Twitter.
 
 ## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/waterline.svg)](http://npmjs.com/package/waterline)
 To report a bug, [click here](http://sailsjs.com/bugs).
 
-> Or [click here](http://sailsjs.com/support) for tutorials and other resources.
-
 ## Contribute
 Please observe the guidelines and conventions laid out in our [contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
-
-<a href="http://sailsjs.com" target="_blank" title="Node.js framework for building realtime APIs."><img src="https://github-camo.global.ssl.fastly.net/9e49073459ed4e0e2687b80eaf515d87b0da4a6b/687474703a2f2f62616c64657264617368792e6769746875622e696f2f7361696c732f696d616765732f6c6f676f2e706e67" width=60 alt="Sails.js logo (small)"/></a>
 
 #### Tests
 All tests are written with [mocha](https://mochajs.org/) and should be run with [npm](https://www.npmjs.com/):
@@ -102,7 +98,7 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
 
 
 
-## License
+## License &nbsp; <a href="http://sailsjs.com" target="_blank" title="Node.js framework for building realtime APIs."><img src="https://github-camo.global.ssl.fastly.net/9e49073459ed4e0e2687b80eaf515d87b0da4a6b/687474703a2f2f62616c64657264617368792e6769746875622e696f2f7361696c732f696d616765732f6c6f676f2e706e67" width=60 alt="Sails.js logo (small)"/></a>
 [MIT](http://sailsjs.com/license). Copyright © 2012-2017 Mike McNeil, Balderdash Design Co., & The Sails Company
 
 [Waterline](http://waterlinejs.org), like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
