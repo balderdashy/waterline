@@ -49,53 +49,6 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 ``` bash
   $ npm test
 ```
-<!--
-## Meta Keys
-
-As of Waterline 0.13 (Sails v1.0), these keys allow end users to modify the behaviour of Waterline methods. You can pass them as the `meta` query key, or via the `.meta()` query modifier method:
-
-```javascript
-SomeModel.create({...})
-.meta({
-  skipAllLifecycleCallbacks: true
-})
-.exec(...);
-```
-
-These keys are not set in stone, and may still change prior to release. (They're posted here now as a way to gather feedback and suggestions.)
-
-
-
-Meta Key                              | Default         | Purpose
-:------------------------------------ | :---------------| :------------------------------
-cascade                               | false           | Set to `true` to automatically "empty out" (i.e. call `replaceCollection(..., ..., [])`) on plural ("collection") associations when deleting a record.  _Note: In order to do this when the `fetch` meta key IS NOT enabled (which it is NOT by default), Waterline must do an extra `.find().select('id')` before actually performing the `.destroy()` in order to get the IDs of the records that would be destroyed._
-fetch                                 | false           | For adapters: When performing `.update()` or `.create()`, set this to `true` to tell the database adapter to send back all records that were updated/destroyed.  Otherwise, the second argument to the `.exec()` callback is `undefined`.  Warning: Enabling this key may cause performance issues for update/destroy queries that affect large numbers of records.
-skipAllLifecycleCallbacks             | false           | Set to `true` to prevent lifecycle callbacks from running in the query.
-skipRecordVerification                | false           | Set to `true` to skip Waterline's post-query verification pass of any records returned from the adapter(s).  Useful for tools like sails-hook-orm's automigrations.  **Warning: Enabling this flag causes Waterline to ignore `customToJSON`!**
-skipExpandingDefaultSelectClause      | false           | Set to `true` to force Waterline to skip expanding the `select` clause in criteria when it forges stage 3 queries (i.e. the queries that get passed in to adapter methods).  Normally, if a model declares `schema: true`, then the S3Q `select` clause is expanded to an array of column names, even if the S2Q had factory default `select`/`omit` clauses (which is also what it would have if no explicit `select` or `omit` clauses were included in the original S1Q.) Useful for tools like sails-hook-orm's automigrations, where you want temporary access to properties that aren\'t necessarily in the current set of attribute definitions.  **Warning: Do not use this flag in your web application backend-- or at least [ask for help](https://sailsjs.com/support) first.**
-
-
-#### Related model settings
-
-To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, there are a few different model settings you might take advantage of:
-
-```javascript
-{
-  attributes: {...},
-  primaryKey: 'id',
-
-  cascadeOnDestroy: true,
-
-  fetchRecordsOnUpdate: true,
-  fetchRecordsOnDestroy: true,
-  fetchRecordsOnCreate: true,
-  fetchRecordsOnCreateEach: true,
-}
-```
-
-> Not every meta key will necessarily have a model setting that controls it-- in fact, to minimize peak configuration complexity, most will probably not.
--->
-
 
 
 ## License
