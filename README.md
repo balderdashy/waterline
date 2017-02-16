@@ -6,39 +6,46 @@
 [![StackOverflow (waterline)](https://img.shields.io/badge/stackoverflow-waterline-blue.svg)]( http://stackoverflow.com/questions/tagged/waterline)
 [![StackOverflow (sails)](https://img.shields.io/badge/stackoverflow-sails.js-blue.svg)]( http://stackoverflow.com/questions/tagged/sails.js)
 
-Waterline is a brand new kind of storage and retrieval engine.
+Waterline is a next-generation storage and retrieval engine, and the default ORM used in the [Sails framework](http://sailsjs.com).
 
 It provides a uniform API for accessing stuff from different kinds of databases, protocols, and 3rd party APIs. That means you write the same code to get and store things like users, whether they live in Redis, MySQL, MongoDB, or Postgres.
 
 Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
 
-For detailed documentation, see [the Sails documentation](http://sailsjs.com).
-
-
 > Looking for the version of Waterline used in Sails v0.12?  See https://github.com/balderdashy/waterline/tree/0.11.x.
+> If you're upgrading to v0.13 from a previous release of Waterline _standalone_, take a look at the [upgrading guide](http://sailsjs.com/documentation/upgrading/to-v-1-0).
 
 ## Installation
 Install from NPM.
 
 ```bash
-  $ npm install waterline
+  $ npm install waterline --save
 ```
 
 ## Overview
 Waterline uses the concept of an adapter to translate a predefined set of methods into a query that can be understood by your data store. Adapters allow you to use various datastores such as MySQL, PostgreSQL, MongoDB, Redis, etc. and have a clear API for working with your model data.
 
-Waterline supports [a wide variety of adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters) both core and community maintained.
+Waterline supports [a wide variety of adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters), both core and community maintained.
 
-## Help
-Need help or have a question?  Click [here](http://sailsjs.com/support).
+## Usage
 
+The up-to-date documentation for Waterline is maintained on the [Sails framework website](http://sailsjs.com).
+You can find detailed API reference docs under [Reference > Waterline ORM](http://sailsjs.com/documentation/reference/waterline-orm).  For conceptual info (including Waterline standalone usage), and answers to common questions, see [Concepts > Models & ORM](http://sailsjs.com/docs/concepts/extending-sails/adapters/custom-adapters).
+
+### Support
+
+If you have a specific question, or just need to clarify how something works, check out the recommended [community support options](http://sailsjs.com/support), or reach out to the core team [directly](http://sailsjs.com/contact).
+Also, you can stay up to date with security patches, release schedule, tutorials, new adapters, and other resources by following us ([@sailsjs](https://twitter.com/sailsjs)) on Twitter.
 
 ## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/waterline.svg)](http://npmjs.com/package/waterline)
 To report a bug, [click here](http://sailsjs.com/bugs).
 
+> Or [click here](http://sailsjs.com/support) for tutorials and other resources.
 
 ## Contribute
 Please observe the guidelines and conventions laid out in our [contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
+
+<a href="http://sailsjs.com" target="_blank" title="Node.js framework for building realtime APIs."><img src="https://github-camo.global.ssl.fastly.net/9e49073459ed4e0e2687b80eaf515d87b0da4a6b/687474703a2f2f62616c64657264617368792e6769746875622e696f2f7361696c732f696d616765732f6c6f676f2e706e67" width=60 alt="Sails.js logo (small)"/></a>
 
 #### Tests
 All tests are written with [mocha](https://mochajs.org/) and should be run with [npm](https://www.npmjs.com/):
@@ -46,7 +53,7 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 ``` bash
   $ npm test
 ```
-
+<!--
 ## Meta Keys
 
 As of Waterline 0.13 (Sails v1.0), these keys allow end users to modify the behaviour of Waterline methods. You can pass them as the `meta` query key, or via the `.meta()` query modifier method:
@@ -91,12 +98,86 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
 ```
 
 > Not every meta key will necessarily have a model setting that controls it-- in fact, to minimize peak configuration complexity, most will probably not.
+-->
+
 
 
 ## License
 [MIT](http://sailsjs.com/license). Copyright © 2012-2017 Mike McNeil, Balderdash Design Co., & The Sails Company
 
-Waterline, like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
-
+[Waterline](http://waterlinejs.org), like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
 
 ![image_squidhome@2x.png](http://sailsjs.com/images/bkgd_squiddy.png)
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+
+
+## Experimental features
+
+Below, you'll find a handful of experimental features that you might enjoy.
+
+> Please be aware that these are in the early stages and should not be relied upon
+> as production features of Waterline.  They could change at any time-- even on a patch
+release!  **You have been warned!**
+
+#### Experimental lifecycle and accessor methods
+
+```js
+var Waterline = require('waterline');
+```
+
++ `Waterline.start(opts, done)`
++ `Waterline.stop(orm, done)`
++ `Waterline.getModel(modelIdentity, orm)`
+
+> For detailed usage, see the source code (bottom of `lib/waterline.js` in this repo.)
