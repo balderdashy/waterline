@@ -156,6 +156,66 @@ To provide per-model/orm-wide defaults for the `cascade` or `fetch` meta keys, t
 &nbsp;
 
 
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
+&nbsp;
+
+
 
 
 ## Experimental features
@@ -172,8 +232,8 @@ release!  **You have been warned!**
 var Waterline = require('waterline');
 ```
 
-+ `Waterline.start(opts, done)`
-+ `Waterline.stop(orm, done)`
++ `Waterline.start(opts, function(err, orm) { /*...*/ })`
++ `Waterline.stop(orm, function(err) { /*...*/ })`
 + `Waterline.getModel(modelIdentity, orm)`
 
 > For detailed usage, see the source code (bottom of `lib/waterline.js` in this repo.)
