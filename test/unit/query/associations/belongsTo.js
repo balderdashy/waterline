@@ -1,4 +1,6 @@
+var util = require('util');
 var assert = require('assert');
+var _ = require('@sailshq/lodash');
 var Waterline = require('../../../../lib/waterline');
 
 describe('Collection Query ::', function() {
@@ -73,18 +75,22 @@ describe('Collection Query ::', function() {
     });
 
     it('should build a join query', function(done) {
-      Car.findOne()
+      Car.find().limit(1)
       .populate('driver')
-      .exec(function(err) {
+      .exec(function(err, cars) {
         if (err) {
           return done(err);
         }
 
-        assert.equal(generatedQuery.joins[0].parent, 'car');
-        assert.equal(generatedQuery.joins[0].parentKey, 'driver');
-        assert.equal(generatedQuery.joins[0].child, 'user');
-        assert.equal(generatedQuery.joins[0].childKey, 'uuid');
-        assert.equal(generatedQuery.joins[0].removeParentKey, true);
+        try {
+          assert(_.isArray(cars), 'expecting array, but instead got:'+util.inspect(cars, {depth:5}));
+          assert.equal(generatedQuery.joins[0].parent, 'car');
+          assert.equal(generatedQuery.joins[0].parentKey, 'driver');
+          assert.equal(generatedQuery.joins[0].child, 'user');
+          assert.equal(generatedQuery.joins[0].childKey, 'uuid');
+          assert.equal(generatedQuery.joins[0].removeParentKey, true);
+        } catch (e) { return done(e); }
+
         return done();
       });
     });
