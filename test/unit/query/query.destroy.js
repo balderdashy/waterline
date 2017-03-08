@@ -95,7 +95,7 @@ describe('Collection Query', function() {
         waterline.loadCollection(Model);
 
         // Fixture Adapter Def
-        var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, options); }};
+        var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, [{ pkColumn: 1, name: 'foo' }]); }};
 
         var connections = {
           'foo': {
@@ -111,10 +111,10 @@ describe('Collection Query', function() {
       });
 
 
-      it('should use the custom primary key when a single value is passed in', function(done) {
+      it('should transform column names when values are sent back', function(done) {
         query.destroy(1, function(err, values) {
           assert(!err);
-          assert(values.where.pkColumn === 1);
+          assert.equal(values[0].myPk, 1);
           done();
         });
       });

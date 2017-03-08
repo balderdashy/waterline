@@ -26,7 +26,7 @@ describe('Model', function() {
 
       waterline.loadCollection(Collection);
 
-      var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, true); }};
+      var adapterDef = { destroy: function(con, col, options, cb) { return cb(null, [{ id: 1, first_name: 'foo', last_name: 'bar' }]); }};
 
       var connections = {
         'my_foo': {
@@ -46,12 +46,12 @@ describe('Model', function() {
     // TEST METHODS
     ////////////////////////////////////////////////////
 
-    it('should pass status from the adapter destroy method', function(done) {
+    it('should pass data from the adapter destroy method', function(done) {
       var person = new collection._model({ id: 1, first_name: 'foo', last_name: 'bar' });
 
-      person.destroy(function(err, status) {
+      person.destroy(function(err, records) {
         assert(!err);
-        assert(status === true);
+        assert.equal(records[0].last_name, 'bar');
         done();
       });
     });
