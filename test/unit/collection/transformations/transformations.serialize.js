@@ -21,7 +21,8 @@ describe('Collection Transformations ::', function() {
       });
 
       it('should change username key to login', function() {
-        var values = transformer.serializeValues({ username: 'foo' });
+        var values = { username: 'foo' };
+        transformer.serializeValues(values);
         assert(values.login);
         assert.equal(values.login, 'foo');
       });
@@ -87,7 +88,8 @@ describe('Collection Transformations ::', function() {
       });
 
       it('should change customer key to customer_uuid', function() {
-        var values = transformer.serializeValues({ customer: 1 });
+        var values = { customer: 1 };
+        transformer.serializeValues(values);
         assert(values.customer);
         assert.equal(values.customer, 1);
       });
