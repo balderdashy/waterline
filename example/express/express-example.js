@@ -110,7 +110,8 @@ Waterline.start({
 
   // Find all users
   app.get('/users', function(req, res) {
-    orm.models.user.find().exec(function(err, records) {
+    Waterline.getModel('user', orm)
+    .find().exec(function(err, records) {
       if(err) {
         switch (err.name) {
           case 'UsageError':
@@ -128,7 +129,8 @@ Waterline.start({
 
   // Find one user
   app.get('/users/:id', function(req, res) {
-    orm.models.user.findOne({ id: req.params.id }, function(err, record) {
+    Waterline.getModel('user', orm)
+    .findOne({ id: req.params.id }, function(err, record) {
       if(err && err.name === 'UsageError') {
         return res.sendStatus(400);
       }
@@ -150,7 +152,8 @@ Waterline.start({
   // Create a user
   // (This one uses promises, just for fun.)
   app.post('/users', function(req, res) {
-    orm.models.user.create(req.body)
+    Waterline.getModel('user', orm)
+    .create(req.body)
     .meta({fetch:true})
     .catch({name:'UsageError'}, function (err) {
       console.log('Refusing to perform impossible/confusing query.  Details:',err);
@@ -171,7 +174,8 @@ Waterline.start({
 
   // Destroy a user (if it exists)
   app.delete('/users/:id', function(req, res) {
-    orm.models.user.destroy({ id: req.params.id }, function(err) {
+    Waterline.getModel('user', orm)
+    .destroy({ id: req.params.id }, function(err) {
       if(err && err.name === 'UsageError') {
         return res.sendStatus(400);
       }
@@ -198,7 +202,8 @@ Waterline.start({
 
     // In this example, we'll send back a JSON representation of the newly-updated
     // user record, just for kicks.
-    orm.models.user.update({ id: req.params.id })
+    Waterline.getModel('user', orm)
+    .update({ id: req.params.id })
     .set(valuesToSet)
     .meta({fetch:true})
     .exec(function(err, updatedUsers) {
