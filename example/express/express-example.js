@@ -6,13 +6,14 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var DiskAdapter = require('sails-disk');
 var MySQLAdapter = require('sails-mysql');
-// var Waterline = require('waterline');
-
-// ^^ or if running this example in this repo,
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
+var Waterline = require('../../');
+// ^^ or if running this example outside of this repo,
 // require the following instead:
 // ```
-var Waterline = require('../../');
+// var Waterline = require('waterline');
 // ```
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 /**
