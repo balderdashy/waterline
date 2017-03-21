@@ -58,6 +58,8 @@ Waterline.start({
         emailAddress: { type: 'string', required: true },
         firstName: { type: 'string' },
         lastName: { type: 'string' },
+        numChickens: { type: 'number' },
+        pets: { collection: 'pet' }
       }
     },
     pet: {
