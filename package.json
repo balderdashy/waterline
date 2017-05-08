@@ -25,7 +25,7 @@
     "@sailshq/lodash": "^3.10.2",
     "anchor": "^1.1.0",
     "async": "2.0.1",
-    "flaverr": "^1.0.0",
+    "flaverr": "^1.2.1",
     "lodash.issafeinteger": "4.0.4",
     "parley": "^2.2.0",
     "rttc": "^10.0.0-1",
