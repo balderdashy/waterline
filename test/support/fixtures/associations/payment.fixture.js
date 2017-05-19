@@ -1,4 +1,4 @@
-var BaseMetaModel = require('../../../../lib/waterline/collection');
+var BaseMetaModel = require('../../../../lib/waterline/MetaModel');
 
 module.exports = BaseMetaModel.extend({
   identity: 'user',
