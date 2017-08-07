@@ -26,5 +26,33 @@ describe('Core Transformations', function() {
       });
     });
 
+    describe('with columnNames that conflict with other attribute names', function() {
+
+      var transformer;
+
+      before(function() {
+        var attributes = {
+          identity: {
+            type: 'string',
+            columnName: 'aid',
+          },
+          ownerId: {
+            type: 'string',
+            columnName: 'identity',
+          }
+        };
+
+        transformer = new Transformer(attributes, {});
+      });
+
+      it('should change unserialize both attributes correctly', function() {
+        var values = transformer.unserialize({ aid: 'foo', identity: 'bar' });
+        assert(values.identity);
+        assert.equal(values.identity, 'foo');
+        assert(values.ownerId);
+        assert.equal(values.ownerId, 'bar');
+      });
+
+    });
   });
 });
