@@ -17,7 +17,8 @@ describe('Collection Query ::', function() {
         primaryKey: 'id',
         attributes: {
           id: {
-            type: 'number'
+            type: 'number',
+            columnName: 'user_id'
           },
           cars: {
             collection: 'car',
@@ -32,7 +33,12 @@ describe('Collection Query ::', function() {
         primaryKey: 'id',
         attributes: {
           id: {
-            type: 'number'
+            type: 'number',
+            columnName: 'car_id'
+          },
+          name: {
+            type: 'string',
+            columnName: 'car_name'
           },
           drivers: {
             collection: 'user',
@@ -66,7 +72,7 @@ describe('Collection Query ::', function() {
       waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
         if (err) {
           return done(err);
-        };
+        }
         User = orm.collections.user;
         return done();
       });
@@ -74,7 +80,7 @@ describe('Collection Query ::', function() {
 
     it('should build a join query', function(done) {
       User.findOne(1)
-      .populate('cars')
+      .populate('cars', { sort: [{'name': 'ASC'}]})
       .exec(function(err) {
         if (err) {
           return done(err);
@@ -82,7 +88,7 @@ describe('Collection Query ::', function() {
 
         assert.equal(generatedQuery.joins.length, 2);
         assert.equal(generatedQuery.joins[0].parent, 'user');
-        assert.equal(generatedQuery.joins[0].parentKey, 'id');
+        assert.equal(generatedQuery.joins[0].parentKey, 'user_id');
         assert.equal(generatedQuery.joins[0].child, 'car_drivers__user_cars');
         assert.equal(generatedQuery.joins[0].childKey, 'user_cars');
         assert.equal(generatedQuery.joins[0].select, false);
@@ -90,8 +96,13 @@ describe('Collection Query ::', function() {
         assert.equal(generatedQuery.joins[1].parent, 'car_drivers__user_cars');
         assert.equal(generatedQuery.joins[1].parentKey, 'car_drivers');
         assert.equal(generatedQuery.joins[1].child, 'car');
-        assert.equal(generatedQuery.joins[1].childKey, 'id');
+        assert.equal(generatedQuery.joins[1].childKey, 'car_id');
         assert(_.isArray(generatedQuery.joins[1].criteria.select));
+        assert.equal(generatedQuery.joins[1].criteria.select[0], 'car_id');
+        assert.equal(generatedQuery.joins[1].criteria.select[1], 'car_name');
+        assert(_.isArray(generatedQuery.joins[1].criteria.sort));
+        assert(generatedQuery.joins[1].criteria.sort[0].car_name);
+
         assert.equal(generatedQuery.joins[1].removeParentKey, false);
 
         return done();
