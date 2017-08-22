@@ -36,8 +36,7 @@ test_script:
   - node --version
   - npm --version
   # Run the actual tests.
-  # (note that we skip linting)
-  - npm run custom-tests
+  - npm test
 
 
 # Don't actually build.

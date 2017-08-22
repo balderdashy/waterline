@@ -27,6 +27,10 @@
   // EVERYTHING ELSE:
   //////////////////////////////////////////////////////////////////////
 
+  // Allow the use of ES6 features.
+  // (re ES7, see https://github.com/jshint/jshint/issues/2297)
+  "esversion": 6,
+
   // Allow the use of `eval` and `new Function()`
   // (we sometimes actually need to use these things)
   "evil": true,
