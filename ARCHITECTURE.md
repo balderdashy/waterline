@@ -768,7 +768,14 @@ For details, see https://docs.google.com/spreadsheets/d/1whV739iW6O9SxRZLCIe2lpv
 
 
 
+## Errors
 
+| Error `name`            | Meaning                                                        |
+|:------------------------|:---------------------------------------------------------------|
+| UsageError              | Bad usage, caught by Waterline core                            |
+| AdapterError            | Something went wrong in the adapter (e.g. uniqueness constraint violation)    |
+| PropagationError        | A conflict was detected while making additional, internal calls to other model methods within Waterline core (e.g. `replaceCollection()` could not update a required null foreign key, or a conflict was encountered while performing "cascade" polyfill for a `.destroy()`)   |
+| _anything else_         | Something unexpected happened     |
 
 
 
