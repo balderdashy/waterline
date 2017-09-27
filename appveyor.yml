@@ -36,7 +36,7 @@ test_script:
   - node --version
   - npm --version
   # Run the actual tests.
-  - npm fasttest
+  - npm run custom-tests
 
 
 # Don't actually build.
