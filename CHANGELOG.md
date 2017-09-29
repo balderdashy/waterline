@@ -55,21 +55,6 @@
 + For more information and a reference of edge cases, see https://docs.google.com/spreadsheets/d/1whV739iW6O9SxRZLCIe2lpvuAUqm-ie7j7tn_Pjir3s/edit#gid=1927470769
 
 
-### 0.11.6
-
-* [BUGFIX] Remove max engines SVR re #1406. Also normalize 'bugs' URL, and chang…  …     [d89d2a6](https://github.com/balderdashy/waterline/commit/d89d2a6)
-* [INTERNAL] Add latest Node versions, and add 0.11.x branch to CI whitelist.      [ca0814e](https://github.com/balderdashy/waterline/commit/ca0814e)
-* [INTERNAL] Add appveyor.yml for running tests on Windows.      [c88cfa7](https://github.com/balderdashy/waterline/commit/c88cfa7)
-
-### 0.11.5
-
-* [BUGFIX] Fix join table mapping for 2-way collection assocations (i.e. "many to many"), specifically in the case when a `through` model is being used, and custom column names are configured.  Originally identified in [this StackOverflow question](http://stackoverflow.com/questions/37774857/sailsjs-through-association-how-to-create-association)  (Thanks [@ultrasaurus](https://github.com/ultrasaurus)!)   [8b46f0f](https://github.com/balderdashy/waterline/commit/8b46f0f), [1f4ff37](https://github.com/balderdashy/waterline/commit/1f4ff37)
-* [BUGFIX] Make `.add()` idempotent in 2-way collection associations -- i.e. don't error out if the join record already exists.  Fixes [#3784](https://github.com/balderdashy/sails/issues/3784 (Thanks [@linxiaowu66](https://github.com/linxiaowu66)!)      [a14d16a](https://github.com/balderdashy/waterline/commit/a14d16a),[5b0ea8b](https://github.com/balderdashy/waterline/commit/5b0ea8b)
-
-### 0.11.4
-
-* [BUGFIX] Fix auto-updating attributes to take into account custom column names. See [#1360](https://github.com/balderdashy/waterline/pull/1360) for more details. Thanks to [@jenjenut233](https://github.com/jenjenut233) for the patch!   Also fixes https://github.com/balderdashy/sails/issues/3821.
-
 ### 0.12.2
 
 * [BUGFIX] Fix issues with compatibility in alter auto-migrations. This was causing corrupted data depending on the permutation of adapter version and Waterline version. This should be fixed in the SQL adapters that support the new select query modifier.
@@ -87,6 +72,17 @@
 * [ENHANCEMENT] Allows for the use of `.select()` to build out projections in both top level queries and association queries. See [#1310](https://github.com/balderdashy/waterline/pull/1310) for more details and examples.
 
 * [ENHANCEMENT] Allow for the ability to pass in extra data to an adapter function using the `.meta()` option. This could be used for a variety of things inside custom adapters such as passing connections around for transactions or passing config values for muti-tenant functionality. For more details see [#1325](https://github.com/balderdashy/waterline/pull/1325).
+
+### 0.11.6
+
+* [BUGFIX] Remove max engines SVR re #1406. Also normalize 'bugs' URL, and chang…  …     [d89d2a6](https://github.com/balderdashy/waterline/commit/d89d2a6)
+* [INTERNAL] Add latest Node versions, and add 0.11.x branch to CI whitelist.      [ca0814e](https://github.com/balderdashy/waterline/commit/ca0814e)
+* [INTERNAL] Add appveyor.yml for running tests on Windows.      [c88cfa7](https://github.com/balderdashy/waterline/commit/c88cfa7)
+
+### 0.11.5
+
+* [BUGFIX] Fix join table mapping for 2-way collection assocations (i.e. "many to many"), specifically in the case when a `through` model is being used, and custom column names are configured.  Originally identified in [this StackOverflow question](http://stackoverflow.com/questions/37774857/sailsjs-through-association-how-to-create-association)  (Thanks [@ultrasaurus](https://github.com/ultrasaurus)!)   [8b46f0f](https://github.com/balderdashy/waterline/commit/8b46f0f), [1f4ff37](https://github.com/balderdashy/waterline/commit/1f4ff37)
+* [BUGFIX] Make `.add()` idempotent in 2-way collection associations -- i.e. don't error out if the join record already exists.  Fixes [#3784](https://github.com/balderdashy/sails/issues/3784 (Thanks [@linxiaowu66](https://github.com/linxiaowu66)!)      [a14d16a](https://github.com/balderdashy/waterline/commit/a14d16a),[5b0ea8b](https://github.com/balderdashy/waterline/commit/5b0ea8b)
 
 ### 0.11.4
 
