@@ -125,6 +125,7 @@ This is what's known as a "Stage 2 query":
     skip: 90,
 
     // The expanded "sort" clause
+    // (an empty array indicates that the adapter's default sort should be used)
     sort: [
       { name: 'ASC' }
     ]
@@ -346,6 +347,8 @@ the method to `join`, and provide additional info:
 ### Stage 4 query
 
 > _aka "statement"_
+
+**In future releases of Waterline, the concept of a Stage 4 query will likely be removed for performance reasons.**
 
 In the database adapter, the physical protostatement is converted into an actual _statement_:
 
@@ -619,7 +622,7 @@ Examples:
 
 ## Glossary
 
-Quick reference for what various things inside of the query are called.
+Quick reference for what various things inside of any given query are called.  (Some of these terms are formal and specific, and shouldn't come up in everyday use for most people contributing to Waterline.  Still, it's important to have names for things when discussing the finer details.)
 
 > These notes are for the stage 2 and stage 3 queries-- but they are mostly applicable to stage 1 queries and stage 4 queries as well.  Just note that stage 1 queries tend to be much more tolerant in general, whereas stage 4 queries are more strict.  Also realize that the details of what is supported in criteria varies slightly between stages.
 >
@@ -630,16 +633,20 @@ Quick reference for what various things inside of the query are called.
 | Word/Phrase            | Meaning |
 |:-----------------------|:------------------------------------------------------------------------------|
 | query key              | A top-level key in the query itself; e.g. `criteria`, `populates`, `newRecords`, etc.  There are a specific set of permitted query keys (attempting to use any extra keys will cause errors!  But note that instead of attaching ad hoc query keys, you can use `meta` for custom stuff.)
+| `using`                | The `using` query key is a vocative that indicates which model is being "spoken to" by the query.
 | clause                 | A top-level key in the `criteria`.  There are a specific set of permitted clauses in criterias.  Which clauses are allowed depends on what stage of query this is (for example, stage 3 queries don't permit the use of `omit`, but stage 2 queries _do_)
 | `sort` clause          | When fully-normalized, this is an array of >=1 dictionaries called comparator directives.
 | comparator directive   | An item within the array of a fully normalized `sort` clause.  Should always be a dictionary with exactly one key, which is the name of an attribute (or column name, if this is a stage 3 query).  The RHS value of the key must always be either 'ASC' or 'DESC'.
 | `where` clause         | The `where` clause of a fully normalized criteria always has one key at the top level: either (1) a predicate ("and"/"or") whose RHS is an array consisting of zero or more conjuncts or disjuncts, or (2) a single constraint (see below)
 | conjunct               | A dictionary within an `and` array.  When fully normalized, always consists of exactly one key-- an attribute name (or column name), whose RHS is either (A) a nested predicate operator or (B) a filter.
 | disjunct               | A dictionary within an `or` array whose contents work exactly like those of a conjunct (see above).
-| scruple                | Another name for a dictionary which could be a conjunct or disjunct.  Particularly useful when talking about a stage 1 query, since not everything will have been normalized yet.
-| predicate operator     | A _predicate operator_ (or simply a _predicate_) is an array-- more specifically, it is a key/value pair where the key is either "and" or "or".  The RHS is an array consisting of 0 or more dictionaries called either "conjuncts" or "disjuncts" (depending on whether it's an "and" or an "or", respectively)
-| constraint             | A _constraint_ (ska "filter") is the RHS of a key/value pair within a conjunct or disjunct, or at the very top level of the `where` clause.  It represents how values for a particular attribute name (or column name) will be qualified.  Once normalized, constraints are always either a primitive (called an _equivalency constraint_ or _eq constraint_) or a dictionary (called a _complex constraint_) consisting of exactly one key/value pairs called a "modifier" (aka "sub-attribute modifier").  In certain special cases, (in stage 1 queries only!) multiple different modifiers can be combined together within a complex constraint (e.g. combining `>` and `<` to indicate a range of values).  In stage 2 queries, these have already been normalized out (using `and`).
-| modifier               | The RHS of a key/value pair within a complex constraint, where the key is one of a special list of legal modifiers such as `nin`, `in`, `contains`, `!`, `>=`, etc.  A modifier impacts how values for a particular attribute name (or column name) will be qualified.  The data type for a particular modifier depends on the modifier.  For example, a modifier for key `in` or `nin` must be an array, but a modifier for key `contains` must be either a string or number.
+| scruple                | Another, more general name for a dictionary which could be a conjunct, disjunct, or the very top level of the `where` clause.  A scruple could contain either a _constraint_ or a _predicate_. (This terminology is particularly useful when talking about a stage 1 query, since not everything will have been normalized yet.)
+| predicate              | A _predicate scruple_ (usually simply called a _predicate_) is a lone key/value pair whose LHS is a _predicate operator_ (either "and" or "or") and whose RHS is a _predicate set_.
+| predicate operator     | The LHS of a predicate scruple ("and" or "or") is called a _predicate operator_.  (Sometimes also informally known as a _predicate key_.)
+| predicate operands     | The RHS of a predicate scruple is an array of _predicate operands_.  Its items are scruples called either "conjuncts" or "disjuncts", depending on whether the predicate operator is an "and" or an "or", respectively.
+| constraint             | A _constraint scruple_ (usually simply called a _constraint_) is a key/value pair that represents how values for a piece of data will be qualified.  Once normalized, the RHS of a constraint is always either a primitive (making it an _equivalency constraint_) or a dictionary consisting of exactly one key/value pair called a "modifier" aka "sub-attribute modifier" (making the constraint a _complex constraint_).  In certain special cases, (in stage 1 queries only!) multiple different modifiers can be combined together within a complex constraint (e.g. combining `>` and `<` to indicate a range of values).  In stage 2 queries, these have already been normalized out (using `and`).
+| constraint target      | The LHS of a constraint is called the _constraint target_.  Usually, this is the name of a particular attribute in the target model (or column in the target table, if this is stage 3).
+| constraint modifier    | A _complex constraint modifier_ (or simply a _modifier_) is a key/value pair within a complex constraint, where the key is one of a special list of legal operators such as `nin`, `in`, `contains`, `!`, `>=`, etc.  A modifier impacts how values for a particular attribute name (or column name) will be qualified.  The data type for a particular modifier depends on the modifier.  For example, a modifier for key `in` or `nin` must be an array, but a modifier for key `contains` must be either a string or number.
 
 
 ```javascript
