@@ -31,6 +31,7 @@
     "indent":                       [1, 2, {"SwitchCase": 1}],
     "linebreak-style":              [2, "unix"],
     "no-dupe-keys":                 [2],
+    "no-duplicate-case":            [2],
     "no-mixed-spaces-and-tabs":     [2, "smart-tabs"],
     "no-return-assign":             [2, "always"],
     "no-sequences":                 [2],
