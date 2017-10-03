@@ -7,7 +7,7 @@ describe('Collection Query ::', function() {
     describe('with autoCreatedAt', function() {
       var modelDef = {
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
         primaryKey: 'id',
         fetchRecordsOnCreate: true,
         attributes: {

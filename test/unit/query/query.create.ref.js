@@ -5,22 +5,24 @@ var Waterline = require('../../../lib/waterline');
 describe('Collection Query ::', function() {
   describe('.create()', function() {
     describe('with ref values', function() {
-      var modelDef = {
-        identity: 'user',
-        connection: 'foo',
-        primaryKey: 'id',
-        fetchRecordsOnCreate: true,
-        attributes: {
-          id: {
-            type: 'number'
-          },
-          blob: {
-            type: 'ref'
-          }
-        }
-      };
 
       it('should maintain object references for `ref` type attributes', function(done) {
+
+        var modelDef = {
+          identity: 'user',
+          datastore: 'foo',
+          primaryKey: 'id',
+          fetchRecordsOnCreate: true,
+          attributes: {
+            id: {
+              type: 'number'
+            },
+            blob: {
+              type: 'ref'
+            }
+          }
+        };
+
         var myBlob = new Buffer([1,2,3,4,5]);
         var waterline = new Waterline();
         waterline.registerModel(Waterline.Model.extend(_.extend({}, modelDef)));
@@ -45,7 +47,7 @@ describe('Collection Query ::', function() {
           }
           orm.collections.user.create({ blob: myBlob, id: 1 }, done);
         });
-      });
+      });//it
 
     });
   });

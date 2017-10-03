@@ -23,7 +23,7 @@ describe('Collection Query ::', function() {
         models: {
           user: {
             identity: 'user',
-            connection: 'default',
+            datastore: 'default',
             primaryKey: 'id',
             attributes: {
               id: { type: 'number' },
