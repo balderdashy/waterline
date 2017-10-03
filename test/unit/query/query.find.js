@@ -10,7 +10,7 @@ describe('Collection Query ::', function() {
       var waterline = new Waterline();
       var Model = Waterline.Model.extend({
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
         primaryKey: 'id',
         schema: false,
         attributes: {

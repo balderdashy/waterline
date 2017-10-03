@@ -14,7 +14,7 @@ describe('Collection Query ::', function() {
 
       collections.user = Waterline.Model.extend({
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
         primaryKey: 'uuid',
         attributes: {
           uuid: {
@@ -29,7 +29,7 @@ describe('Collection Query ::', function() {
 
       collections.car = Waterline.Model.extend({
         identity: 'car',
-        connection: 'foo',
+        datastore: 'foo',
         primaryKey: 'id',
         attributes: {
           id: {

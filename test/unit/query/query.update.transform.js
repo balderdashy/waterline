@@ -7,7 +7,7 @@ describe('Collection Query ::', function() {
     describe('with transformed values', function() {
       var modelDef = {
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
         primaryKey: 'id',
         attributes: {
           id: {

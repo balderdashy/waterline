@@ -6,7 +6,7 @@ describe('Collection Query ::', function() {
   describe('.createEach()', function() {
     var modelDef = {
       identity: 'user',
-      connection: 'foo',
+      datastore: 'foo',
       primaryKey: 'id',
       fetchRecordsOnCreateEach: true,
       attributes: {

@@ -24,7 +24,7 @@ module.exports = function() {
   var models = {
     foo: {
       identity: 'foo',
-      connection: 'my_foo',
+      datastore: 'my_foo',
       attributes: {
         id: {
           type: 'integer',
@@ -49,7 +49,7 @@ module.exports = function() {
     },
     bar: {
       identity: 'bar',
-      connection: 'my_foo',
+      datastore: 'my_foo',
       attributes: {
         id: {
           type: 'integer',
@@ -68,7 +68,7 @@ module.exports = function() {
     },
     baz: {
       identity: 'baz',
-      connection: 'my_foo',
+      datastore: 'my_foo',
       attributes: {
         id: {
           type: 'integer',
@@ -83,7 +83,7 @@ module.exports = function() {
     },
     bar_foos__foo_bars: {
       identity: 'bar_foos__foo_bars',
-      connection: 'my_foo',
+      datastore: 'my_foo',
       tables: ['bar', 'foo'],
       junctionTable: true,
 
@@ -128,7 +128,7 @@ module.exports = function() {
   // Build Up Waterline Schema
   context.waterline.schema.foo = {
     identity: 'foo',
-    connection: 'my_foo',
+    datastore: 'my_foo',
     attributes: {
       id: {
         type: 'integer',
@@ -156,7 +156,7 @@ module.exports = function() {
 
   context.waterline.schema.bar = {
     identity: 'bar',
-    connection: 'my_foo',
+    datastore: 'my_foo',
     attributes: {
       id: {
         type: 'integer',
@@ -177,7 +177,7 @@ module.exports = function() {
 
   context.waterline.schema.baz = {
     identity: 'baz',
-    connection: 'my_foo',
+    datastore: 'my_foo',
     attributes: {
       id: {
         type: 'integer',
@@ -197,7 +197,7 @@ module.exports = function() {
 
   context.waterline.schema.bar_foos__foo_bars = {
     identity: 'bar_foos__foo_bars',
-    connection: 'my_foo',
+    datastore: 'my_foo',
     tables: ['bar', 'foo'],
     junctionTable: true,
 

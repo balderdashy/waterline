@@ -77,7 +77,7 @@ describe.skip('Alter Mode Recovery with an enforced schema', function () {
     var PersonModel = {
       identity: 'Person',
       tableName: 'person_table',
-      connection: 'test_alter',
+      datastore: 'test_alter',
       migrate: 'alter',
       adapter: 'fake',
       schema: true,

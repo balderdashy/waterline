@@ -9,7 +9,7 @@ describe('Before Create Lifecycle Callback ::', function() {
       var waterline = new Waterline();
       var Model = Waterline.Model.extend({
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
         primaryKey: 'id',
         fetchRecordsOnCreate: true,
         attributes: {
