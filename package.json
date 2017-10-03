@@ -13,12 +13,12 @@
     "@sailshq/lodash": "^3.10.2",
     "anchor": "^1.1.0",
     "async": "2.0.1",
-    "encrypted-attr": "1.0.5",
+    "encrypted-attr": "1.0.6",
     "flaverr": "^1.2.1",
     "lodash.issafeinteger": "4.0.4",
     "parley": "^3.0.0-0",
     "rttc": "^10.0.0-1",
-    "waterline-schema": "^1.0.0-7",
+    "waterline-schema": "^1.0.0-20",
     "waterline-utils": "^1.3.7"
   },
   "devDependencies": {
