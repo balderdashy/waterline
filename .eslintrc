@@ -17,7 +17,7 @@
   },
 
   "parserOptions": {
-    "ecmaVersion": 8
+    "ecmaVersion": 5
   },
 
   "rules": {
