@@ -16,7 +16,7 @@
     "encrypted-attr": "1.0.6",
     "flaverr": "^1.2.1",
     "lodash.issafeinteger": "4.0.4",
-    "parley": "^3.0.0-0",
+    "parley": "^3.3.2",
     "rttc": "^10.0.0-1",
     "waterline-schema": "^1.0.0-20",
     "waterline-utils": "^1.3.7"
