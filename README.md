@@ -5,11 +5,24 @@
 [![StackOverflow (waterline)](https://img.shields.io/badge/stackoverflow-waterline-blue.svg)]( http://stackoverflow.com/questions/tagged/waterline)
 [![StackOverflow (sails)](https://img.shields.io/badge/stackoverflow-sails.js-blue.svg)]( http://stackoverflow.com/questions/tagged/sails.js)
 
-Waterline is a next-generation storage and retrieval engine, and the default ORM used in the [Sails framework](http://sailsjs.com).
+Waterline is a next-generation storage and retrieval engine, and the default ORM used in the [Sails framework](https://sailsjs.com).
 
-It provides a uniform API for accessing stuff from different kinds of databases, protocols, and 3rd party APIs. That means you write the same code to get and store things like users, whether they live in Redis, MySQL, MongoDB, or Postgres.
+It provides a uniform API for accessing stuff from different kinds of [databases and protocols](https://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters). That means you write the same code to get and store things like users, whether they live in MySQL, MongoDB, neDB, or Postgres.
 
 Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate, and Mongoose, but with a fresh perspective and emphasis on modularity, testability, and consistency across adapters.
+
+## No more callbacks
+
+Starting with v0.13, Waterline takes full advantage of ECMAScript & Node 8's `await` keyword.
+
+**In other words, [no more callbacks](https://gist.github.com/mikermcneil/c1028d000cc0cc8bce995a2a82b29245).**
+
+```js
+var newOrg = await Organization.create({
+  slug: 'foo'
+})
+.fetch();
+```
 
 > Looking for the version of Waterline used in Sails v0.12?  See the [0.11.x branch](https://github.com/balderdashy/waterline/tree/0.11.x) of this repo.  If you're upgrading to v0.13 from a previous release of Waterline _standalone_, take a look at the [upgrading guide](http://sailsjs.com/documentation/upgrading/to-v-1-0).
 
@@ -17,7 +30,7 @@ Waterline strives to inherit the best parts of ORMs like ActiveRecord, Hibernate
 Install from NPM.
 
 ```bash
-  $ npm install waterline --save
+  $ npm install waterline
 ```
 
 ## Overview
