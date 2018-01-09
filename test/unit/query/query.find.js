@@ -5,6 +5,7 @@ var Waterline = require('../../../lib/waterline');
 describe('Collection Query ::', function() {
   describe('.find()', function() {
     var query;
+    var query2;
 
     before(function(done) {
       var waterline = new Waterline();
@@ -24,7 +25,25 @@ describe('Collection Query ::', function() {
         }
       });
 
+      var FailOnUndefinedAttributesModel = Waterline.Model.extend({
+        identity: 'client',
+        datastore: 'foo',
+        primaryKey: 'id',
+        schema: false,
+        attributes: {
+          id: {
+            type: 'number'
+          },
+          name: {
+            type: 'string',
+            defaultsTo: 'Foo Bar'
+          }
+        },
+        failOnUndefinedAttributesInWhereClause: true
+      });
+
       waterline.registerModel(Model);
+      waterline.registerModel(FailOnUndefinedAttributesModel);
 
       // Fixture Adapter Def
       var adapterDef = { find: function(con, query, cb) { return cb(null, [{id: 1, criteria: query.criteria}]); }};
@@ -40,6 +59,7 @@ describe('Collection Query ::', function() {
           return done(err);
         }
         query = orm.collections.user;
+        query2 = orm.collections.client;
         return done();
       });
     });
@@ -181,6 +201,27 @@ describe('Collection Query ::', function() {
           assert.equal(results[0].criteria.limit, 10);
           return done();
         });
+      });
+    });
+
+    describe('.where', function() {
+      it('should allow undefined attributes by default', function(done) {
+        query.find()
+        .where({id: undefined})
+          .exec(function(err, results) {
+            assert.equal(typeof err, 'undefined');
+            assert(_.isArray(results));
+            return done();
+          });
+      });
+
+      it('should fail for undefined attributes when set', function(done) {
+        query2.find()
+          .where({id: undefined})
+          .exec(function(err, results) {
+            assert.notEqual(typeof err, 'undefined');
+            return done();
+          });
       });
     });
   });
