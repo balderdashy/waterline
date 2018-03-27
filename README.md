@@ -64,8 +64,8 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 
 
 ## License
-[MIT](http://sailsjs.com/license). Copyright © 2012-2017 Mike McNeil, Balderdash Design Co., & The Sails Company
+[MIT](http://sailsjs.com/license). Copyright © 2012-present Mike McNeil & The Sails Company
 
-[Waterline](http://waterlinejs.org), like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
+[Waterline](http://waterlinejs.org), like the rest of the [Sails framework](https://sailsjs.com), is free and open-source under the [MIT License](https://sailsjs.com/license).
 
 ![image_squidhome@2x.png](http://sailsjs.com/images/bkgd_squiddy.png)
