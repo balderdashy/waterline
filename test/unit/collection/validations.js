@@ -39,12 +39,19 @@ describe('Collection Validator ::', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: { update: function(con, query, cb) { return cb(); } } }, datastores: datastores }, function(err, orm) {
+      waterline.initialize({ adapters: { foobar: { update: function(con, query, cb) { return cb(); }, create: function(con, query, cb) { return cb(); } } }, datastores: datastores }, function(err, orm) {
         if (err) {
           return done(err);
         }
         person = orm.collections.person;
         done();
+      });
+    });
+
+    it('should not return any errors when no validation rules are violated', function(done) {
+      person.create({ sex: 'male' }).exec(function(err) {
+        assert(!err);
+        return done();
       });
     });
 
