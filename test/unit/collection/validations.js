@@ -6,6 +6,7 @@ var Waterline = require('../../../lib/waterline');
 describe('Collection Validator ::', function() {
   describe('.validate()', function() {
     var person;
+    var car;
 
     before(function(done) {
       var waterline = new Waterline();
@@ -31,7 +32,23 @@ describe('Collection Validator ::', function() {
         }
       });
 
+      var Car = Waterline.Model.extend({
+        identity: 'car',
+        datastore: 'foo',
+        primaryKey: 'id',
+        attributes: {
+          id: {
+            type: 'string',
+            required: true,
+            validations: {
+              minLength: 6
+            }
+          }
+        }
+      });
+
       waterline.registerModel(Person);
+      waterline.registerModel(Car);
 
       var datastores = {
         'foo': {
@@ -44,6 +61,7 @@ describe('Collection Validator ::', function() {
           return done(err);
         }
         person = orm.collections.person;
+        car = orm.collections.car;
         done();
       });
     });
@@ -118,6 +136,22 @@ describe('Collection Validator ::', function() {
 
     it('should return an Error with name `UsageError` when a field fails a validation rule in a `update`', function(done) {
       person.update({}, { sex: 'bar' }).exec(function(err) {
+        assert(err);
+        assert.equal(err.name, 'UsageError');
+        assert(err.message.match(/rule/));
+        return done();
+      });
+    });
+
+    it('should return an Error with name `UsageError` when a primary key fails a validation rule in a `create`', function(done) {
+      car.create({ id: 'foobarbax' }).exec(function(err) {
+        assert(!err);
+        return done();
+      });
+    });
+
+    it('should not return any errors when a primary key does not violate any validations.', function(done) {
+      car.create({ id: 'foo' }).exec(function(err) {
         assert(err);
         assert.equal(err.name, 'UsageError');
         assert(err.message.match(/rule/));
