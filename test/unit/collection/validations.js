@@ -98,7 +98,7 @@ describe('Collection Validator ::', function() {
       });
     });
 
-    it('should return an Error with name `UsageError` when a required string field is set to empty string in a `create`', function(done) {
+    it('should return an Error with name `UsageError` when a required string field is set to empty string in a `update`', function(done) {
       person.update({}, { sex: '' }).exec(function(err) {
         assert(err);
         assert.equal(err.name, 'UsageError');
@@ -107,7 +107,7 @@ describe('Collection Validator ::', function() {
       });
     });
 
-    it('should return an Error with name `UsageError` when a field is set to the wrong type in a `create`', function(done) {
+    it('should return an Error with name `UsageError` when a field is set to the wrong type in a `update`', function(done) {
       person.update({}, { age: 'bar' }).exec(function(err) {
         assert(err);
         assert.equal(err.name, 'UsageError');
@@ -116,7 +116,7 @@ describe('Collection Validator ::', function() {
       });
     });
 
-    it('should return an Error with name `UsageError` when a field fails a validation rule in a `create`', function(done) {
+    it('should return an Error with name `UsageError` when a field fails a validation rule in a `update`', function(done) {
       person.update({}, { sex: 'bar' }).exec(function(err) {
         assert(err);
         assert.equal(err.name, 'UsageError');
