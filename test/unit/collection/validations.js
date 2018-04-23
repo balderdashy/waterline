@@ -143,14 +143,15 @@ describe('Collection Validator ::', function() {
       });
     });
 
-    it('should return an Error with name `UsageError` when a primary key fails a validation rule in a `create`', function(done) {
+    it('should not return any errors when a primary key does not violate any validations.', function(done) {
+
       car.create({ id: 'foobarbax' }).exec(function(err) {
         assert(!err);
         return done();
       });
     });
 
-    it('should not return any errors when a primary key does not violate any validations.', function(done) {
+    it('should return an Error with name `UsageError` when a primary key fails a validation rule in a `create`', function(done) {
       car.create({ id: 'foo' }).exec(function(err) {
         assert(err);
         assert.equal(err.name, 'UsageError');
