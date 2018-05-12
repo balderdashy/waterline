@@ -45,7 +45,7 @@ You can find detailed API reference docs under [Reference > Waterline ORM](http:
 
 #### Help
 
-Check out the recommended [community support options](http://sailsjs.com/support) for tutorials and other resources.  If you have a specific question, or just need to clarify how something works, [ask for help](https://gitter.im/balderdashy/sails) or reach out to the core team [directly](http://sailsjs.com/flagship).
+Check out the recommended [community support options](http://sailsjs.com/support) for tutorials and other resources.  If you have a specific question, or just need to clarify [how something works](https://docs.google.com/drawings/d/1u7xb5jDY5i2oeVRP2-iOGGVsFbosqTMWh9wfmY3BTfw/edit), ask [for help](https://gitter.im/balderdashy/sails) or reach out to the [core team](http://sailsjs.com/about) [directly](http://sailsjs.com/flagship).
 
 You can keep up to date with security patches, the Waterline release schedule, new database adapters, and events in your area by following us ([@sailsjs](https://twitter.com/sailsjs)) on Twitter.
 
