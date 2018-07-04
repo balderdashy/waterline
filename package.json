@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "description": "An ORM for Node.js and the Sails framework",
-  "version": "0.13.5-1",
+  "version": "0.13.5-2",
   "homepage": "http://waterlinejs.org",
   "contributors": [
     {
