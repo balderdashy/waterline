@@ -348,7 +348,7 @@ the method to `join`, and provide additional info:
 
 > _aka "statement"_
 
-**In future releases of Waterline, the concept of a Stage 4 query will likely be removed for performance reasons.**
+**In future releases of Waterline and its core adapters, the concept of a Stage 4 query will likely be removed for performance reasons.**
 
 In the database adapter, the physical protostatement is converted into an actual _statement_:
 
@@ -761,7 +761,7 @@ A **reflexive** association is just any association where the associated model i
 
 ##### _What about if you have a plural association with `via` pointed at another plural association, but there is no via on the other side?_
 
-That's an error (i.e. in waterline-schema)*.
+That's an error (i.e. in waterline-schema).
 
 
 
