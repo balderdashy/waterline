@@ -7,6 +7,10 @@
 >
 > [How Waterline Works (diagram)](https://docs.google.com/a/balderdashdesign.com/drawings/d/1u7xb5jDY5i2oeVRP2-iOGGVsFbosqTMWh9wfmY3BTfw/edit?usp=sharing)
 
+#### Computational complexity of various kinds of association mutations
+
+[Link, tweeze, & splice performance for associations in Waterline ≥0.13 (by # of native queries)](https://twitter.com/mikermcneil/status/792179005348655104)
+
 
 ## Overview: Talking to the database
 
