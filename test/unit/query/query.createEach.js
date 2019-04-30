@@ -105,7 +105,7 @@ describe('Collection Query ::', function() {
           }
 
           assert(_.isArray(values));
-          assert.notEqual(values[0].arr !== values[1].arr);
+          assert.notEqual(values[0].arr, values[1].arr);
 
           // Add an item to one array
           values[1].arr.push('another');
