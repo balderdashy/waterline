@@ -50,7 +50,7 @@ describe('After FindOne Lifecycle Callback on findOrCreate::', function() {
       });
     });
 
-    it('should run afterFindOne when findOrCreate finds a record', function(done) {
+    it('should run afterFindOne when findOne finds a record', function(done) {
       person.findOne({ id: 1 }, { }, function(err, record) {
         if (err) {
           return done(err);
