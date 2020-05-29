@@ -3,6 +3,7 @@
 ### Edge
 
 ##### General
+* [BUGFIX] Fix .archive() and .archiveOne() when using custom column names  (#1616)
 * [BREAKING] Waterline attribute names must now be [ECMAScript 5.1-compatible variable names](https://github.com/mikermcneil/machinepack-javascript/blob/3786c05388cf49220a6d3b6dbbc1d80312d247ec/machines/validate-varname.js#L41).
   + Custom column names can still be configured to anything, as long as it is supported by the underlying database.
 * [BREAKING] Breaking changes to criteria usage:
