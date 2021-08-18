@@ -41,7 +41,7 @@ Waterline supports [a wide variety of adapters](http://sailsjs.com/documentation
 ## Usage
 
 The up-to-date documentation for Waterline is maintained on the [Sails framework website](http://sailsjs.com).
-You can find detailed API reference docs under [Reference > Waterline ORM](http://sailsjs.com/documentation/reference/waterline-orm).  For conceptual info (including Waterline standalone usage), and answers to common questions, see [Concepts > Models & ORM](http://sailsjs.com/docs/concepts/extending-sails/adapters/custom-adapters).
+You can find detailed API reference docs under [Reference > Waterline ORM](http://sailsjs.com/documentation/reference/waterline-orm).  For conceptual info (including Waterline standalone usage), and answers to common questions, see [Concepts > Models & ORM](https://sailsjs.com/documentation/concepts/models-and-orm).
 
 #### Help
 
