@@ -12,10 +12,10 @@
 language: node_js
 
 node_js:
-  - "6"
-  - "8"
   - "10"
-  - "node"
+  - "12"
+  - "14"
+  - "16"
 
 branches:
   only:
