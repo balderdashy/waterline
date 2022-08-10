@@ -12,7 +12,7 @@
   "dependencies": {
     "@sailshq/lodash": "^3.10.2",
     "anchor": "^1.2.0",
-    "async": "2.0.1",
+    "async": "2.6.4",
     "encrypted-attr": "1.0.6",
     "flaverr": "^1.9.2",
     "lodash.issafeinteger": "4.0.4",
