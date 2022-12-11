@@ -1,21 +1,21 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.destroy()', function() {
-
     describe('with transformed values', function() {
       var Model;
 
       before(function() {
-
         // Extend for testing purposes
-        Model = Waterline.Collection.extend({
+        Model = Waterline.Model.extend({
           identity: 'user',
-          connection: 'foo',
-
+          datastore: 'foo',
+          primaryKey: 'id',
           attributes: {
+            id: {
+              type: 'number'
+            },
             name: {
               type: 'string',
               columnName: 'login'
@@ -25,15 +25,14 @@ describe('Collection Query', function() {
       });
 
       it('should transform values before sending to adapter', function(done) {
-
         var waterline = new Waterline();
-        waterline.loadCollection(Model);
+        waterline.registerModel(Model);
 
         // Fixture Adapter Def
         var adapterDef = {
-          destroy: function(con, col, options, cb) {
-            assert(options.where.login);
-            return cb(null);
+          destroy: function(con, query, cb) {
+            assert(query.criteria.where.login);
+            return cb();
           }
         };
 
@@ -43,12 +42,13 @@ describe('Collection Query', function() {
           }
         };
 
-        waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-          if(err) return done(err);
-          colls.collections.user.destroy({ name: 'foo' }, done);
+        waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
+          if (err) {
+            return done(err);
+          }
+          orm.collections.user.destroy({ name: 'foo' }, done);
         });
       });
     });
-
   });
 });

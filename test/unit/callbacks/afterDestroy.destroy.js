@@ -1,105 +1,41 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('.afterDestroy()', function() {
-
-  describe('basic function', function() {
-    var person, status;
-
-    before(function(done) {
-      var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
-        identity: 'user',
-        connection: 'foo',
-        attributes: {
-          name: 'string'
-        },
-
-        afterDestroy: function(values, cb) {
-          person.create({ test: 'test' }, function(err, result) {
-            if(err) return cb(err);
-            status = result.status;
-            cb();
-          });
-        }
-      });
-
-      waterline.loadCollection(Model);
-
-      // Fixture Adapter Def
-      var adapterDef = {
-        destroy: function(con, col, options, cb) { return cb(null, options); },
-        create: function(con, col, options, cb) { return cb(null, { status: true }); }
-      };
-
-      var connections = {
-        'foo': {
-          adapter: 'foobar'
-        }
-      };
-
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
-      });
-    });
-
-    /**
-     * Destroy
-     */
-
-    describe('.destroy()', function() {
-
-      it('should run afterDestroy', function(done) {
-        person.destroy({ name: 'test' }, function(err) {
-          assert(!err);
-          assert(status === true);
-          done();
-        });
-      });
-    });
-  });
-
-
-  /**
-   * Test Callbacks can be defined as arrays and run in order.
-   */
-
-  describe('array of functions', function() {
-    var person, status;
+describe('After Destroy Lifecycle Callback ::', function() {
+  describe('Destroy ::', function() {
+    var person;
+    var status;
 
     before(function(done) {
       var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
+      var Model = Waterline.Model.extend({
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
+        primaryKey: 'id',
+        fetchRecordsOnCreate: true,
+        fetchRecordsOnDestroy: true,
         attributes: {
-          name: 'string'
-        },
-
-        afterDestroy: [
-          // Function 1
-          function(values, cb) {
-            status = 'fn1 ';
-            cb();
+          id: {
+            type: 'number'
           },
-
-          // Function 2
-          function(values, cb) {
-            status = status + 'fn2';
-            cb();
+          name: {
+            type: 'string'
           }
-        ]
+        },
+
+        afterDestroy: function(destroyedRecord, cb) {
+          status = destroyedRecord.status;
+          cb();
+        }
       });
+
+      waterline.registerModel(Model);
 
       // Fixture Adapter Def
       var adapterDef = {
-        destroy: function(con, col, options, cb) { return cb(null, options); },
-        create: function(con, col, options, cb) { return cb(null, { status: true }); }
+        destroy: function(con, query, cb) { return cb(undefined, [{ status: true, id: 1 }]); },
+        create: function(con, query, cb) { return cb(undefined, { status: true, id: 1 }); }
       };
-
-      waterline.loadCollection(Model);
 
       var connections = {
         'foo': {
@@ -107,20 +43,24 @@ describe('.afterDestroy()', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
+        }
+        person = orm.collections.user;
+        return done();
       });
     });
 
-    it('should run the functions in order', function(done) {
+    it('should run afterDestroy', function(done) {
       person.destroy({ name: 'test' }, function(err) {
-        assert(!err);
-        assert(status === 'fn1 fn2');
-        done();
+        if (err) {
+          return done(err);
+        }
+
+        assert.equal(status, true);
+        return done();
       });
     });
   });
-
 });

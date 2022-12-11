@@ -27,6 +27,10 @@
   // EVERYTHING ELSE:
   //////////////////////////////////////////////////////////////////////
 
+  // Allow the use of ES6 features.
+  // (re ES7, see https://github.com/jshint/jshint/issues/2297)
+  "esversion": 6,
+
   // Allow the use of `eval` and `new Function()`
   // (we sometimes actually need to use these things)
   "evil": true,
@@ -83,6 +87,14 @@
   //  we have since standardized these practices to make code easier to
   //  read, albeit a bit less exciting)
   "laxcomma": false,
+
+  // Do NOT allow avant garde use of commas in conditional statements.
+  // (this prevents accidentally writing code like:
+  //  ```
+  //  if (!_.contains(['+ci', '-ci', '∆ci', '+ce', '-ce', '∆ce']), change.verb) {...}
+  //  ```
+  //  See the problem in that code?  Neither did we-- that's the problem!)
+  "nocomma": true,
 
   // Strictly enforce the consistent use of single quotes.
   // (this is a convention that was established primarily to make it easier

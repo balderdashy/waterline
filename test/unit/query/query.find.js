@@ -1,30 +1,33 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var _ = require('@sailshq/lodash');
+var Waterline = require('../../../lib/waterline');
 
-describe('Collection Query', function() {
-
+describe('Collection Query ::', function() {
   describe('.find()', function() {
     var query;
 
     before(function(done) {
-
       var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
+      var Model = Waterline.Model.extend({
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
+        primaryKey: 'id',
+        schema: false,
         attributes: {
+          id: {
+            type: 'number'
+          },
           name: {
             type: 'string',
             defaultsTo: 'Foo Bar'
-          },
-          doSomething: function() {}
+          }
         }
       });
 
-      waterline.loadCollection(Model);
+      waterline.registerModel(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { find: function(con, col, criteria, cb) { return cb(null, [criteria]); }};
+      var adapterDef = { find: function(con, query, cb) { return cb(null, [{id: 1, criteria: query.criteria}]); }};
 
       var connections = {
         'foo': {
@@ -32,31 +35,33 @@ describe('Collection Query', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) return done(err);
-        query = colls.collections.user;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
+        if(err) {
+          return done(err);
+        }
+        query = orm.collections.user;
+        return done();
       });
     });
 
     it('should allow options to be optional', function(done) {
-      query.find({}, function(err, values) {
-        assert(!err);
-        done();
+      query.find({}, function(err) {
+        if(err) {
+          return done(err);
+        }
+
+        return done();
       });
     });
 
     it('should return an array', function(done) {
       query.find({}, {}, function(err, values) {
-        assert(Array.isArray(values));
-        done();
-      });
-    });
+        if (err) {
+          return done(err);
+        }
 
-    it('should return an instance of Model', function(done) {
-      query.find({}, {}, function(err, values) {
-        assert(typeof values[0].doSomething === 'function');
-        done();
+        assert(_.isArray(values));
+        return done();
       });
     });
 
@@ -66,96 +71,115 @@ describe('Collection Query', function() {
       .where({ id: { '>': 1 } })
       .limit(1)
       .skip(1)
-      .sort({ name: 0 })
+      .sort([{ name: 'desc' }])
       .exec(function(err, results) {
-        assert(!err);
-        assert(Array.isArray(results));
+        if (err) {
+          return done(err);
+        }
 
-        assert(Object.keys(results[0].where).length === 2);
-        assert(results[0].where.name == 'Foo Bar');
-        assert(results[0].where.id['>'] == 1);
-        assert(results[0].limit == 1);
-        assert(results[0].skip == 1);
-        assert(results[0].sort.name == -1);
+        assert(_.isArray(results));
+        assert.equal(results[0].criteria.limit, 1);
+        assert.equal(results[0].criteria.skip, 1);
+        assert.equal(results[0].criteria.sort[0].name, 'DESC');
 
-        done();
+        return done();
       });
     });
 
     describe('.paginate()', function() {
-      it('should skip to 0 and limit to 10 by default', function(done) {
+      it('should skip to 0 and limit to 30 by default', function(done) {
         query.find()
-        .paginate()
+        .paginate(0)
         .exec(function(err, results) {
-          assert(!err);
-          assert(Array.isArray(results));
+          if (err) {
+            return done(err);
+          }
 
-          assert(results[0].skip === 0);
-          assert(results[0].limit === 10);
+          assert(_.isArray(results));
+          assert.equal(results[0].criteria.skip, 0);
+          assert.equal(results[0].criteria.limit, 30);
 
-          done();
+          return done();
         });
       });
 
       it('should set skip to 0 from page 0', function(done) {
         query.find()
-        .paginate({page: 1})
+        .paginate(1)
         .exec(function(err, results) {
-          assert(results[0].skip === 0);
+          if (err) {
+            return done(err);
+          }
 
-          done();
+          assert.equal(results[0].criteria.skip, 30);
+          return done();
         });
       });
 
       it('should set skip to 0 from page 1', function(done) {
         query.find()
-        .paginate({page: 1})
+        .paginate(1)
         .exec(function(err, results) {
-          assert(results[0].skip === 0);
+          if (err) {
+            return done(err);
+          }
 
-          done();
+          assert.equal(results[0].criteria.skip, 30);
+          return done();
         });
       });
 
-      it('should set skip to 10', function(done) {
+      it('should set skip to 30', function(done) {
         query.find()
-        .paginate({page: 2})
+        .paginate(2)
         .exec(function(err, results) {
-          assert(results[0].skip === 10);
+          if (err) {
+            return done(err);
+          }
 
-          done();
+          assert.equal(results[0].criteria.skip, 60);
+          return done();
         });
       });
 
       it('should set limit to 1', function(done) {
         query.find()
-        .paginate({limit: 1})
+        .paginate(1, 1)
         .exec(function(err, results) {
-          assert(results[0].limit === 1);
+          if (err) {
+            return done(err);
+          }
 
-          done();
-        });
-      });
-
-      it('should set skip to 10 and limit to 10', function(done) {
-        query.find()
-        .paginate({page: 2, limit: 10})
-        .exec(function(err, results) {
-          assert(results[0].skip  === 10);
-          assert(results[0].limit === 10);
-
-          done();
+          assert.equal(results[0].criteria.limit, 1);
+          return done();
         });
       });
 
       it('should set skip to 20 and limit to 10', function(done) {
         query.find()
-        .paginate({page: 3, limit: 10})
+        .paginate(2, 10)
         .exec(function(err, results) {
-          assert(results[0].skip  === 20);
-          assert(results[0].limit === 10);
+          if (err) {
+            return done(err);
+          }
 
-          done();
+          assert.equal(results[0].criteria.skip, 20);
+          assert.equal(results[0].criteria.limit, 10);
+          return done();
+        });
+      });
+
+      it('should set skip to 30 and limit to 10', function(done) {
+        query.find()
+        .paginate(3, 10)
+        .exec(function(err, results) {
+          if (err) {
+            return done(err);
+          }
+
+          assert.equal(results[0].criteria.skip, 30);
+          assert.equal(results[0].criteria.limit, 10);
+          return done();
         });
       });
     });

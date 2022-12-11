@@ -1,11 +1,26 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#   ╔╦╗╦═╗╔═╗╦  ╦╦╔═╗ ┬ ┬┌┬┐┬                           #
+#    ║ ╠╦╝╠═╣╚╗╔╝║╚═╗ └┬┘││││                           #
+#  o ╩ ╩╚═╩ ╩ ╚╝ ╩╚═╝o ┴ ┴ ┴┴─┘                         #
+#                                                       #
+# This file configures Travis CI.                       #
+# (i.e. how we run the tests... mainly)                 #
+#                                                       #
+# https://docs.travis-ci.com/user/customizing-the-build #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 language: node_js
+
 node_js:
-  - "0.10"
-  - "0.12"
-  - "4"
-after_script:
-  - npm run coverage && cat ./coverage/lcov.info | ./node_modules/.bin/codeclimate
-addons:
-  code_climate:
-    repo_token: 351483555263cf9bcd2416c58b0e0ae6ca1b32438aa51bbab2c833560fb67cc0
-sudo: false
+  - "10"
+  - "12"
+  - "14"
+  - "16"
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - ci@sailsjs.com

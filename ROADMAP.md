@@ -8,7 +8,7 @@ This file contains the development roadmap for the upcoming release of Waterline
 
 ## v0.13
 
-This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.11 release of Waterline.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
+This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.13 release of Waterline.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
  + Pull out auto-migrations into https://github.com/balderdashy/sails-hook-orm
  + Remove the 2nd argument to the .exec() callback from `.update()`.
@@ -78,3 +78,30 @@ Feature                                                     | Summary
  Do not mess with identity case                             | Identities of models should not be lowercased per default, better be left as defined. See [issue](https://github.com/balderdashy/waterline/issues/745) for more details.
  Support JSONB in PostgreSQL                                | Add support for JSONB querying in the Postgres adapter. This requires modifing/extending the criteria language. See [issue](https://github.com/balderdashy/sails-postgresql/issues/212) for more details.
  Deep populate                                   | [#1052](https://github.com/balderdashy/waterline/pull/1052)                           | Recursively populate child associations.
+
+
+
+
+&nbsp;
+&nbsp;
+
+
+## Experimental features
+
+Below, you'll find a handful of experimental features.  If you're interested in them, please try them out and provide [feedback](http://twitter.com/sailsjs)!  It helps the core team and other open-source contributors from the community prioritize our efforts, and it lets us know what works and what doesn't.  (As always, we welcome your [contributions](http://sailsjs.com/contribute)!)
+
+> Please be aware that these are in the early stages and should not be relied upon
+> as production features of Waterline.  They could change at any time-- even on a patch
+release!  **You have been warned!**
+
+#### Experimental lifecycle and accessor methods
+
+```js
+var Waterline = require('waterline');
+```
+
++ `Waterline.start(opts, function(err, orm) { /*...*/ })`
++ `Waterline.stop(orm, function(err) { /*...*/ })`
++ `Waterline.getModel(modelIdentity, orm)`
+
+> For detailed usage, see the source code (bottom of `lib/waterline.js` in this repo.)

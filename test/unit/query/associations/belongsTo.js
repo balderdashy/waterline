@@ -1,22 +1,24 @@
-var Waterline = require('../../../../lib/waterline'),
-    assert = require('assert');
+var util = require('util');
+var assert = require('assert');
+var _ = require('@sailshq/lodash');
+var Waterline = require('../../../../lib/waterline');
 
-describe('Collection Query', function() {
+describe('Collection Query ::', function() {
   describe('belongs to association', function() {
-    var Car, generatedCriteria = {};
+    var Car;
+    var generatedQuery;
 
     before(function(done) {
-
       var waterline = new Waterline();
       var collections = {};
 
-      collections.user = Waterline.Collection.extend({
+      collections.user = Waterline.Model.extend({
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
+        primaryKey: 'uuid',
         attributes: {
           uuid: {
-            type: 'string',
-            primaryKey: true
+            type: 'string'
           },
           name: {
             type: 'string',
@@ -25,27 +27,34 @@ describe('Collection Query', function() {
         }
       });
 
-      collections.car = Waterline.Collection.extend({
+      collections.car = Waterline.Model.extend({
         identity: 'car',
-        connection: 'foo',
+        datastore: 'foo',
+        primaryKey: 'id',
         attributes: {
+          id: {
+            type: 'number'
+          },
           driver: {
             model: 'user'
           }
         }
       });
 
-      waterline.loadCollection(collections.user);
-      waterline.loadCollection(collections.car);
+      waterline.registerModel(collections.user);
+      waterline.registerModel(collections.car);
 
       // Fixture Adapter Def
       var adapterDef = {
         identity: 'foo',
-        join: function(con, col, criteria, cb) {
-          generatedCriteria = criteria;
+        join: function(con, query, cb) {
+          generatedQuery = query;
           return cb();
         },
-        find: function(con, col, criteria, cb) {
+        find: function(con, query, cb) {
+          return cb();
+        },
+        findOne: function(con, query, cb) {
           return cb();
         }
       };
@@ -56,37 +65,34 @@ describe('Collection Query', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        Car = colls.collections.car;
-        done();
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
+        }
+        Car = orm.collections.car;
+        return done();
       });
     });
-
 
     it('should build a join query', function(done) {
-      Car.findOne({ driver: 1 })
+      Car.find().limit(1)
       .populate('driver')
-      .exec(function(err, values) {
-        if(err) return done(err);
-        assert(generatedCriteria.joins[0].parent === 'car');
-        assert(generatedCriteria.joins[0].parentKey === 'driver');
-        assert(generatedCriteria.joins[0].child === 'user');
-        assert(generatedCriteria.joins[0].childKey === 'uuid');
-        assert(generatedCriteria.joins[0].removeParentKey === true);
-        done();
-      });
-    });
-    
-    
-    it('should return error if criteria is undefined', function(done) {
-      Car.findOne()
-      .populate('driver')
-      .exec(function(err, values) {
-        assert(err, 'An Error is expected');
-        done();
-      });
-    });
+      .exec(function(err, cars) {
+        if (err) {
+          return done(err);
+        }
 
+        try {
+          assert(_.isArray(cars), 'expecting array, but instead got:'+util.inspect(cars, {depth:5}));
+          assert.equal(generatedQuery.joins[0].parent, 'car');
+          assert.equal(generatedQuery.joins[0].parentKey, 'driver');
+          assert.equal(generatedQuery.joins[0].child, 'user');
+          assert.equal(generatedQuery.joins[0].childKey, 'uuid');
+          assert.equal(generatedQuery.joins[0].removeParentKey, true);
+        } catch (e) { return done(e); }
+
+        return done();
+      });
+    });
   });
 });

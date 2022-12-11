@@ -1,30 +1,36 @@
-var Waterline = require('../../../lib/waterline'),
-    assert = require('assert');
+var assert = require('assert');
+var Waterline = require('../../../lib/waterline');
 
-describe('.afterCreate()', function() {
-
-  describe('basic function', function() {
+describe('After Create Lifecycle Callback ::', function() {
+  describe('.createEach ::', function() {
     var person;
 
     before(function(done) {
       var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
+      var Model = Waterline.Model.extend({
         identity: 'user',
-        connection: 'foo',
+        datastore: 'foo',
+        primaryKey: 'id',
+        fetchRecordsOnCreate: true,
         attributes: {
-          name: 'string'
+          id: {
+            type: 'number'
+          },
+          name: {
+            type: 'string'
+          }
         },
 
         afterCreate: function(values, cb) {
           values.name = values.name + ' updated';
-          cb(null, values);
+          return cb();
         }
       });
 
-      waterline.loadCollection(Model);
+      waterline.registerModel(Model);
 
       // Fixture Adapter Def
-      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
+      var adapterDef = { createEach: function(con, query, cb) { return cb(null, query.newRecords); }};
 
       var connections = {
         'foo': {
@@ -32,88 +38,25 @@ describe('.afterCreate()', function() {
         }
       };
 
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
-      });
-    });
-
-    /**
-     * CreateEach
-     */
-
-    describe('.createEach()', function() {
-
-      it('should run afterCreate and mutate values', function(done) {
-        person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
-          assert(!err);
-          assert(users[0].name === 'test updated');
-          assert(users[1].name === 'test2 updated');
-          done();
-        });
-      });
-    });
-  });
-
-
-  /**
-   * Test Callbacks can be defined as arrays and run in order.
-   */
-
-  describe('array of functions', function() {
-    var person;
-
-    before(function(done) {
-      var waterline = new Waterline();
-      var Model = Waterline.Collection.extend({
-        identity: 'user',
-        connection: 'foo',
-        attributes: {
-          name: 'string'
-        },
-
-        afterCreate: [
-          // Function 1
-          function(values, cb) {
-            values.name = values.name + ' fn1';
-            cb();
-          },
-
-          // Function 2
-          function(values, cb) {
-            values.name = values.name + ' fn2';
-            cb();
-          }
-        ]
-      });
-
-      waterline.loadCollection(Model);
-
-      // Fixture Adapter Def
-      var adapterDef = { create: function(con, col, values, cb) { return cb(null, values); }};
-
-      var connections = {
-        'foo': {
-          adapter: 'foobar'
+      waterline.initialize({ adapters: { foobar: adapterDef }, datastores: connections }, function(err, orm) {
+        if (err) {
+          return done(err);
         }
-      };
-
-      waterline.initialize({ adapters: { foobar: adapterDef }, connections: connections }, function(err, colls) {
-        if(err) done(err);
-        person = colls.collections.user;
-        done();
+        person = orm.collections.user;
+        return done();
       });
     });
 
-    it('should run the functions in order', function(done) {
-      person.createEach([{ name: 'test' }, { name: 'test2' }], function(err, users) {
-        assert(!err);
-        assert(users[0].name === 'test fn1 fn2');
-        assert(users[1].name === 'test2 fn1 fn2');
-        done();
-      });
+    it('should run afterCreate and mutate values', function(done) {
+      person.createEach([{ name: 'test-foo', id: 1 }, { name: 'test-bar', id: 2 }], function(err, users) {
+        if (err) {
+          return done(err);
+        }
+
+        assert.equal(users[0].name, 'test-foo updated');
+        assert.equal(users[1].name, 'test-bar updated');
+        return done();
+      }, { fetch: true });
     });
   });
-
 });
